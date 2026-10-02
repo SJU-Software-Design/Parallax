@@ -1,0 +1,39 @@
+{
+    "passed": true,
+    "scope": "Isolated per-exhibit fixtures: only player position is set near each original exhibit. Pickup uses camera Raycast; resizing and airborne placement use camera aim only. Real PhysX fall, cancel, zone reset, collision penetration and shadow/collider rays. Not a full puzzle playthrough.",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 5060",
+    "props": 11,
+    "casters": 76,
+    "posesChecked": 1154,
+    "colliderShadowRays": 1994,
+    "exhibits": [
+        {
+            "title": "01 · 청화 모란병",
+            "solidParts": 50,
+            "minimumScale": 0.7799050807952881,
+            "maximumScale": 2.799999713897705,
+            "fallMetres": 0.2039322853088379,
+            "resetPassed": true,
+            "cancelPassed": true,
+            "releasePassed": true
+        },
+        {
+            "title": "02 · 겹창 조각",
+            "solidParts": 9,
+            "minimumScale": 0.7001833915710449,
+            "maximumScale": 2.799999952316284,
+            "fallMetres": 0.2039327621459961,
+            "resetPassed": true,
+            "cancelPassed": true,
+            "releasePassed": true
+        }
+    ],
+    "checks": [
+        "01 · 청화 모란병: camera pickup/scaling/rotation, cancel, physical release, shadow rays and zone reset passed",
+        "02 · 겹창 조각: camera pickup/scaling/rotation, cancel, physical release, shadow rays and zone reset passed",
+        "All original props retained; new exhibits installed exactly once; shadow budget 76/128"
+    ],
+    "errors": []
+}

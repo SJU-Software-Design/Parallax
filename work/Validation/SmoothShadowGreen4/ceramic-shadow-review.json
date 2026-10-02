@@ -1,0 +1,35 @@
+{
+    "scope": "Controlled diagnostic poses, not gameplay input. GPU uses the actual GallerySurface shader with only the vase casters and fully open skylights. Reference is the projected triangle mesh, not its colliders. Orange is excess proxy shadow; magenta is missing shadow.",
+    "poses": [
+        {
+            "pose": "upright",
+            "samples": 262144,
+            "meshShadowPixels": 59482,
+            "gpuShadowPixels": 59502,
+            "extraShadowPixels": 20,
+            "missingShadowPixels": 0,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9996638894081116
+        },
+        {
+            "pose": "tilted",
+            "samples": 262144,
+            "meshShadowPixels": 48554,
+            "gpuShadowPixels": 48552,
+            "extraShadowPixels": 6,
+            "missingShadowPixels": 8,
+            "cpuGpuMismatches": 1,
+            "silhouetteIntersectionOverUnion": 0.9997116923332214
+        },
+        {
+            "pose": "enlarged",
+            "samples": 262144,
+            "meshShadowPixels": 88902,
+            "gpuShadowPixels": 88930,
+            "extraShadowPixels": 28,
+            "missingShadowPixels": 0,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9996851682662964
+        }
+    ]
+}

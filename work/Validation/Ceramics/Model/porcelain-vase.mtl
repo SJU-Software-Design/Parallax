@@ -1,0 +1,10 @@
+newmtl porcelain
+Kd 1 1 1
+Ks 0.3 0.3 0.3
+Ns 160
+map_Kd porcelain-peony-wrap.png
+
+newmtl cobalt
+Kd 0.03 0.10 0.25
+Ks 0.3 0.3 0.3
+Ns 200

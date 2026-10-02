@@ -1,0 +1,55 @@
+{
+    "scope": "Controlled diagnostic poses, not gameplay input. GPU uses the actual GallerySurface shader and curved caster with fully open skylights. Reference is the projected triangle mesh, not its colliders. Orange is excess shadow; magenta is missing shadow. IoU must exceed 99%; at most 2 boundary-pixel CPU/GPU disagreements per 262144 samples.",
+    "poses": [
+        {
+            "pose": "upright",
+            "samples": 262144,
+            "meshShadowPixels": 59482,
+            "gpuShadowPixels": 59502,
+            "extraShadowPixels": 20,
+            "missingShadowPixels": 0,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9996638894081116
+        },
+        {
+            "pose": "tilted",
+            "samples": 262144,
+            "meshShadowPixels": 48554,
+            "gpuShadowPixels": 48552,
+            "extraShadowPixels": 6,
+            "missingShadowPixels": 8,
+            "cpuGpuMismatches": 1,
+            "silhouetteIntersectionOverUnion": 0.9997116923332214
+        },
+        {
+            "pose": "enlarged",
+            "samples": 262144,
+            "meshShadowPixels": 93084,
+            "gpuShadowPixels": 93098,
+            "extraShadowPixels": 14,
+            "missingShadowPixels": 0,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9998496174812317
+        },
+        {
+            "pose": "upside-down",
+            "samples": 262144,
+            "meshShadowPixels": 59482,
+            "gpuShadowPixels": 59502,
+            "extraShadowPixels": 20,
+            "missingShadowPixels": 0,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9996638894081116
+        },
+        {
+            "pose": "small-horizontal",
+            "samples": 262144,
+            "meshShadowPixels": 30132,
+            "gpuShadowPixels": 30137,
+            "extraShadowPixels": 6,
+            "missingShadowPixels": 1,
+            "cpuGpuMismatches": 0,
+            "silhouetteIntersectionOverUnion": 0.9997677206993103
+        }
+    ]
+}

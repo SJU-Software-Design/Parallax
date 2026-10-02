@@ -1,0 +1,46 @@
+Mono path[0] = 'C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/work/CeramicDiagnosticPlayer/Parallax_Data/Managed'
+Mono config path = 'C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/work/CeramicDiagnosticPlayer/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/work/CeramicDiagnosticPlayer/Parallax_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5060 (ID=0x2d05)
+    Vendor:   NVIDIA
+    VRAM:     7896 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.070 seconds
+- Finished resetting the current domain, in  0.002 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+<RI> Input initialized.
+UnloadTime: 0.353400 ms
+GALLERY_PERSPECTIVE_PASS Rapid camera turns, aiming below floor, upward growth and rotation attempts kept all 51 displayed intermediate poses collision-valid with enabled kinematic colliders
+GALLERY_PERSPECTIVE_PASS Release after collision attempt preserves accepted safe pose and scale; blocked=True
+GALLERY_PERSPECTIVE_PASS Same pickup, camera direction only: near 1.802997m / 0.4601086x -> far 10.35588m / 2.642727x -> near -> far; no wheel or depth/scale writes
+GALLERY_PERSPECTIVE_PASS Visible and safe shadow masks match at automatic-far-floor: 13120 samples
+GALLERY_PERSPECTIVE_PASS Visible and safe shadow masks match at automatic-far-upper: 13120 samples
+GALLERY_PERSPECTIVE_PASS Far -> near -> drop keeps the small 0.4601086x size and exact release pose; 1.5 seconds of real physics preserves that size
+GALLERY_PERSPECTIVE_PASS PhysX collider rays match perspective-adjusted silhouette: 599 samples
+GALLERY_PERSPECTIVE_PASS Visible and safe shadow masks match at falling-floor: 13120 samples
+GALLERY_PERSPECTIVE_PASS Visible and safe shadow masks match at falling-upper: 13120 samples
+GALLERY_PERSPECTIVE_PASS Upward aiming automatically enlarges object; drop preserves exact pose/scale then real gravity lowers it by 0.4522786m in 0.3s
+GALLERY_PERSPECTIVE_PASS PhysX collider rays match perspective-adjusted silhouette: 600 samples
+GALLERY_PERSPECTIVE_PASS Visible and safe shadow masks match at settled-floor: 13120 samples
+GALLERY_PERSPECTIVE_PASS Camera-only placed tilted object collides, rotates and settles under PhysX, retaining the enlarged scale
+GALLERY_PERSPECTIVE_PASS Zone reset restores original exhibit; camera-only perspective regression completed
+GALLERY_PERSPECTIVE_PASS Independent player-only fixture at (-6, 0.025, 27.85): original third-room mounted picture detaches into a valid, nonpenetrating pose and follows a small aim change; 2 accepted poses checked
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.

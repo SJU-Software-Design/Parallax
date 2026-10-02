@@ -1,0 +1,31 @@
+에셋명: Art Gallery (Free low-poly 3D model)
+제작자: ALLrounder18
+사이트: CGTrader
+모델 ID: 5155429
+다운로드일: 2026-10-02
+가격: 무료
+상품 링크: https://www.cgtrader.com/free-3d-models/interior/hall/art-gallery-2bb88c04-cbb8-4299-a054-29ca54b471ac
+다운로드 페이지: https://www.cgtrader.com/items/5155429/download-page
+제작자: https://www.cgtrader.com/designers/allrounder18
+상품 페이지 라이선스 표기: Royalty Free License / no AI
+정확한 이용 조건: 다운로드 시점의 상품 페이지 및 CGTrader 약관 참조.
+
+원본 폴더에 받은 파일 6종을 수정 없이 보관했습니다.
+1. Art Room.fbx — Unity 등에서 가져올 수 있는 원본 FBX
+2. cgtrader_optimized_Art Room.fbx — 사이트가 제공하는 최적화 FBX
+3. Art Room OBJ.obj — OBJ 모델
+4. Art Room.blend — Blender 편집용 원본
+5. Art Gallery GLB.gltf — 텍스처가 내부에 포함된 glTF
+6. Textures.rar — 텍스처 압축 파일
+
+다운로드목록.csv에는 실제 파일명, 바이트 크기, SHA-256을 기록했습니다.
+브라우저가 저장한 파일명의 + 기호는 공백으로 정리했으며 파일 내용은 변경하지 않았습니다.
+
+Parallax 활용:
+- 원본은 이 폴더에서 보관합니다.
+- Unity에서 사용할 추출/가공 파일은 개발/Unity_프로토타입/Assets/ThirdParty/ALLrounder18에 분리합니다.
+- 추출 스크립트: 개발/Unity_프로토타입/Extract-Gallery.py
+- 원본 그림·액자·전시 파티션·전시대·조명과 텍스처를 새 퍼즐 동선에 맞춰 재배치합니다.
+- 퍼즐용 조각, 큰 공간 구조, 이동/크기/그림자 시스템은 프로젝트 구현입니다.
+
+다른 에셋(예: Sketchfab의 유사한 Art Gallery)과 혼동하지 않도록 제작자 이름을 폴더명에 포함했습니다.

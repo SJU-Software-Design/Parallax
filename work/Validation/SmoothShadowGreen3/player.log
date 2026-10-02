@@ -1,0 +1,235 @@
+Mono path[0] = 'C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/Managed'
+Mono config path = 'C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5060 (ID=0x2d05)
+    Vendor:   NVIDIA
+    VRAM:     7896 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.053 seconds
+- Finished resetting the current domain, in  0.001 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+<RI> Input initialized.
+The file 'C:/Users/mjnse/OneDrive/바탕 화면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/level0' is corrupted! Remove it and launch unity again!
+[Position out of bounds!]
+Crash!!!
+SymInit: Symbol-SearchPath: '.;C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows;C:/Users/mjnse/OneDrive/바탕 ?�면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/Plugins\x86_64;C:/Users/mjnse/OneDrive/바탕 ?�면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/Plugins;C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows;C:\WINDOWS;C:', symOptions: 534, UserName: 'mjnse'
+OS-Version: 10.0.0
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\Parallax.exe:Parallax.exe (00007FF77A810000), size: 679936 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 6000.3.24.31643
+C:\WINDOWS\SYSTEM32\ntdll.dll:ntdll.dll (00007FF9E2480000), size: 2519040 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNEL32.DLL:KERNEL32.DLL (00007FF9E0620000), size: 831488 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNELBASE.dll:KERNELBASE.dll (00007FF9DFD90000), size: 4202496 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\apphelp.dll:apphelp.dll (00007FF9DC560000), size: 651264 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\UnityPlayer.dll:UnityPlayer.dll (00007FF8D92A0000), size: 38117376 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 6000.3.24.31643
+C:\WINDOWS\System32\USER32.dll:USER32.dll (00007FF9E0270000), size: 1896448 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\win32u.dll:win32u.dll (00007FF9DFD60000), size: 159744 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\GDI32.dll:GDI32.dll (00007FF9E0A80000), size: 176128 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8328
+C:\WINDOWS\System32\gdi32full.dll:gdi32full.dll (00007FF9DF8A0000), size: 1216512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcp_win.dll:msvcp_win.dll (00007FF9DFCB0000), size: 667648 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ucrtbase.dll:ucrtbase.dll (00007FF9DFA90000), size: 1359872 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ole32.dll:ole32.dll (00007FF9E1300000), size: 1679360 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\combase.dll:combase.dll (00007FF9E14A0000), size: 3690496 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\VERSION.dll:VERSION.dll (00007FF9D8360000), size: 45056 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\System32\RPCRT4.dll:RPCRT4.dll (00007FF9E1830000), size: 1146880 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcrt.dll:msvcrt.dll (00007FF9E0730000), size: 692224 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 7.0.26100.9444
+C:\WINDOWS\System32\SHLWAPI.dll:SHLWAPI.dll (00007FF9E1950000), size: 417792 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SETUPAPI.dll:SETUPAPI.dll (00007FF9E0D70000), size: 4747264 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ADVAPI32.dll:ADVAPI32.dll (00007FF9E01A0000), size: 770048 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\sechost.dll:sechost.dll (00007FF9E1B20000), size: 692224 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SHELL32.dll:SHELL32.dll (00007FF9E1BD0000), size: 7962624 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\OLEAUT32.dll:OLEAUT32.dll (00007FF9E0AB0000), size: 888832 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\IMM32.dll:IMM32.dll (00007FF9E04E0000), size: 200704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINMM.dll:WINMM.dll (00007FF9D1870000), size: 221184 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\CRYPT32.dll:CRYPT32.dll (00007FF9DF710000), size: 1564672 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\OPENGL32.dll:OPENGL32.dll (00007FF91ECC0000), size: 1097728 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINHTTP.dll:WINHTTP.dll (00007FF9D7480000), size: 1220608 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\WS2_32.dll:WS2_32.dll (00007FF9E2380000), size: 524288 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\bcrypt.dll:bcrypt.dll (00007FF9DF570000), size: 172032 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\HID.DLL:HID.DLL (00007FF9DD9C0000), size: 61440 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\d3d11.dll:d3d11.dll (00007FF9DB1E0000), size: 2490368 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL:IPHLPAPI.DLL (00007FF9DDD50000), size: 208896 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxgi.dll:dxgi.dll (00007FF9DC880000), size: 1290240 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\UIAutomationCore.DLL:UIAutomationCore.DLL (00007FF9AC5C0000), size: 4325376 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 7.2.26100.9278
+C:\WINDOWS\SYSTEM32\Secur32.dll:Secur32.dll (00007FF9DC510000), size: 53248 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7705
+C:\WINDOWS\SYSTEM32\GLU32.dll:GLU32.dll (00007FF990F20000), size: 184320 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\dwmapi.dll:dwmapi.dll (00007FF9DCA30000), size: 192512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\powrprof.dll:powrprof.dll (00007FF9DE400000), size: 385024 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.3912
+C:\WINDOWS\SYSTEM32\dxcore.dll:dxcore.dll (00007FF9DC9C0000), size: 278528 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\SSPICLI.DLL:SSPICLI.DLL (00007FF9DE730000), size: 299008 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\UMPDC.dll:UMPDC.dll (00007FF9DE340000), size: 86016 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8972
+C:\WINDOWS\SYSTEM32\kernel.appcore.dll:kernel.appcore.dll (00007FF9DE470000), size: 110592 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\bcryptPrimitives.dll:bcryptPrimitives.dll (00007FF9DFBF0000), size: 704512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\uxtheme.dll:uxtheme.dll (00007FF9DC780000), size: 688128 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\shcore.dll:shcore.dll (00007FF9E0520000), size: 1028096 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll:mono-2.0-bdwgc.dll (00007FF91E270000), size: 10756096 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\SYSTEM32\windows.storage.dll:windows.storage.dll (00007FF9DD100000), size: 9101312 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\profapi.dll:profapi.dll (00007FF9DF5A0000), size: 167936 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\MSCTF.dll:MSCTF.dll (00007FF9E08A0000), size: 1421312 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll:directxdatabasehelper.dll (00007FF9D8FA0000), size: 385024 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cfgmgr32.dll:cfgmgr32.dll (00007FF9DF300000), size: 335872 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll:nvldumdx.dll (00007FF9D7900000), size: 802816 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\SYSTEM32\msasn1.dll:msasn1.dll (00007FF9DEDA0000), size: 77824 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cryptnet.dll:cryptnet.dll (00007FF9D7730000), size: 241664 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\cryptbase.dll:cryptbase.dll (00007FF9DED40000), size: 49152 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\wldp.dll:wldp.dll (00007FF9DEE20000), size: 434176 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\drvstore.dll:drvstore.dll (00007FF9D75B0000), size: 1548288 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\devobj.dll:devobj.dll (00007FF9DF2C0000), size: 192512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\wintrust.dll:wintrust.dll (00007FF9DF680000), size: 532480 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\imagehlp.dll:imagehlp.dll (00007FF9E2410000), size: 131072 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.4202
+C:\WINDOWS\SYSTEM32\CRYPTSP.dll:CRYPTSP.dll (00007FF9DED20000), size: 110592 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\rsaenh.dll:rsaenh.dll (00007FF9DE360000), size: 233472 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7705
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll:nvgpucomp64.dll (00007FF9D23A0000), size: 80736256 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll:NvMemMapStoragex.dll (00007FF9D18B0000), size: 1245184 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll:nvwgf2umx.dll (00007FF9CC6E0000), size: 84860928 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\system32\nvspcap64.dll:nvspcap64.dll (00007FF94BF20000), size: 3227648 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 11.0.4.159
+C:\WINDOWS\SYSTEM32\ntmarta.dll:ntmarta.dll (00007FF9DE5A0000), size: 221184 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7019
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll:nvppex.dll (00007FF9B5660000), size: 1798144 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\clbcatq.dll:clbcatq.dll (00007FF9E07E0000), size: 712704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 2001.12.10941.16384
+C:\WINDOWS\System32\MMDevApi.dll:MMDevApi.dll (00007FF9D84A0000), size: 675840 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\AUDIOSES.DLL:AUDIOSES.DLL (00007FF9CA7A0000), size: 1798144 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll:resourcepolicyclient.dll (00007FF9DCDB0000), size: 81920 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8115
+C:\WINDOWS\SYSTEM32\xinput1_3.dll:xinput1_3.dll (0000000000400000), size: 122880 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 9.18.944.0
+C:\WINDOWS\SYSTEM32\dcomp.dll:dcomp.dll (00007FF9DBA90000), size: 2248704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll:Microsoft.Internal.WarpPal.dll (00007FF9DAAC0000), size: 106496 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\SYSTEM32\textinputframework.dll:textinputframework.dll (00007FF9AFB30000), size: 1318912 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\system32\Oleacc.dll:Oleacc.dll (00007FF9D7E20000), size: 479232 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 7.2.26100.9278
+C:\WINDOWS\SYSTEM32\dbghelp.dll:dbghelp.dll (00007FF9C7E20000), size: 2408448 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+
+========== OUTPUTTING STACK TRACE ==================
+
+0x00007FF8DA60F224 (UnityPlayer) UnityMain
+0x00007FF8DA60F5BA (UnityPlayer) UnityMain
+SymInit: Symbol-SearchPath: '.;C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows;C:/Users/mjnse/OneDrive/바탕 ?�면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/Plugins\x86_64;C:/Users/mjnse/OneDrive/바탕 ?�면/Parallax_Gallery_v0.8.2_Windows/Parallax_Unity_v0.8.2_SmoothShadows/Parallax_Data/Plugins;C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows;C:\WINDOWS;C:', symOptions: 534, UserName: 'mjnse'
+OS-Version: 10.0.0
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\Parallax.exe:Parallax.exe (00007FF77A810000), size: 679936 (result: 0), SymType: '-exported-', PDB: 'C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\Parallax', fileVersion: 6000.3.24.31643
+C:\WINDOWS\SYSTEM32\ntdll.dll:ntdll.dll (00007FF9E2480000), size: 2519040 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\ntdll.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNEL32.DLL:KERNEL32.DLL (00007FF9E0620000), size: 831488 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\KERNEL32.DLL', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNELBASE.dll:KERNELBASE.dll (00007FF9DFD90000), size: 4202496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\KERNELBASE.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\apphelp.dll:apphelp.dll (00007FF9DC560000), size: 651264 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\apphelp.dll', fileVersion: 10.0.26100.9444
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\UnityPlayer.dll:UnityPlayer.dll (00007FF8D92A0000), size: 38117376 (result: 0), SymType: '-exported-', PDB: 'C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\UnityPlayer', fileVersion: 6000.3.24.31643
+C:\WINDOWS\System32\USER32.dll:USER32.dll (00007FF9E0270000), size: 1896448 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\USER32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\win32u.dll:win32u.dll (00007FF9DFD60000), size: 159744 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\win32u.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\GDI32.dll:GDI32.dll (00007FF9E0A80000), size: 176128 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\GDI32.dll', fileVersion: 10.0.26100.8328
+C:\WINDOWS\System32\gdi32full.dll:gdi32full.dll (00007FF9DF8A0000), size: 1216512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\gdi32full.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcp_win.dll:msvcp_win.dll (00007FF9DFCB0000), size: 667648 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\msvcp_win.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ucrtbase.dll:ucrtbase.dll (00007FF9DFA90000), size: 1359872 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ucrtbase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ole32.dll:ole32.dll (00007FF9E1300000), size: 1679360 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ole32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\combase.dll:combase.dll (00007FF9E14A0000), size: 3690496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\combase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\VERSION.dll:VERSION.dll (00007FF9D8360000), size: 45056 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\VERSION.dll', fileVersion: 10.0.26100.1150
+C:\WINDOWS\System32\RPCRT4.dll:RPCRT4.dll (00007FF9E1830000), size: 1146880 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\RPCRT4.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcrt.dll:msvcrt.dll (00007FF9E0730000), size: 692224 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\msvcrt.dll', fileVersion: 7.0.26100.9444
+C:\WINDOWS\System32\SHLWAPI.dll:SHLWAPI.dll (00007FF9E1950000), size: 417792 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SHLWAPI.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SETUPAPI.dll:SETUPAPI.dll (00007FF9E0D70000), size: 4747264 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SETUPAPI.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ADVAPI32.dll:ADVAPI32.dll (00007FF9E01A0000), size: 770048 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ADVAPI32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\sechost.dll:sechost.dll (00007FF9E1B20000), size: 692224 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\sechost.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SHELL32.dll:SHELL32.dll (00007FF9E1BD0000), size: 7962624 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SHELL32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\OLEAUT32.dll:OLEAUT32.dll (00007FF9E0AB0000), size: 888832 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\OLEAUT32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\IMM32.dll:IMM32.dll (00007FF9E04E0000), size: 200704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\IMM32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINMM.dll:WINMM.dll (00007FF9D1870000), size: 221184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\WINMM.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\CRYPT32.dll:CRYPT32.dll (00007FF9DF710000), size: 1564672 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\CRYPT32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\OPENGL32.dll:OPENGL32.dll (00007FF91ECC0000), size: 1097728 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\OPENGL32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINHTTP.dll:WINHTTP.dll (00007FF9D7480000), size: 1220608 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\WINHTTP.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\WS2_32.dll:WS2_32.dll (00007FF9E2380000), size: 524288 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\WS2_32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\bcrypt.dll:bcrypt.dll (00007FF9DF570000), size: 172032 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\bcrypt.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\HID.DLL:HID.DLL (00007FF9DD9C0000), size: 61440 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\HID.DLL', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\d3d11.dll:d3d11.dll (00007FF9DB1E0000), size: 2490368 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\d3d11.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL:IPHLPAPI.DLL (00007FF9DDD50000), size: 208896 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxgi.dll:dxgi.dll (00007FF9DC880000), size: 1290240 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dxgi.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\UIAutomationCore.DLL:UIAutomationCore.DLL (00007FF9AC5C0000), size: 4325376 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\UIAutomationCore.DLL', fileVersion: 7.2.26100.9278
+C:\WINDOWS\SYSTEM32\Secur32.dll:Secur32.dll (00007FF9DC510000), size: 53248 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\Secur32.dll', fileVersion: 10.0.26100.7705
+C:\WINDOWS\SYSTEM32\GLU32.dll:GLU32.dll (00007FF990F20000), size: 184320 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\GLU32.dll', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\dwmapi.dll:dwmapi.dll (00007FF9DCA30000), size: 192512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dwmapi.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\powrprof.dll:powrprof.dll (00007FF9DE400000), size: 385024 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\powrprof.dll', fileVersion: 10.0.26100.3912
+C:\WINDOWS\SYSTEM32\dxcore.dll:dxcore.dll (00007FF9DC9C0000), size: 278528 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dxcore.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\SSPICLI.DLL:SSPICLI.DLL (00007FF9DE730000), size: 299008 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\SSPICLI.DLL', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\UMPDC.dll:UMPDC.dll (00007FF9DE340000), size: 86016 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\UMPDC.dll', fileVersion: 10.0.26100.8972
+C:\WINDOWS\SYSTEM32\kernel.appcore.dll:kernel.appcore.dll (00007FF9DE470000), size: 110592 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\kernel.appcore.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\bcryptPrimitives.dll:bcryptPrimitives.dll (00007FF9DFBF0000), size: 704512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\bcryptPrimitives.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\uxtheme.dll:uxtheme.dll (00007FF9DC780000), size: 688128 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\uxtheme.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\shcore.dll:shcore.dll (00007FF9E0520000), size: 1028096 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\shcore.dll', fileVersion: 10.0.26100.9444
+C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll:mono-2.0-bdwgc.dll (00007FF91E270000), size: 10756096 (result: 0), SymType: '-exported-', PDB: 'C:\Users\mjnse\OneDrive\���� ȭ��\Parallax_Gallery_v0.8.2_Windows\Parallax_Unity_v0.8.2_SmoothShadows\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc'
+C:\WINDOWS\SYSTEM32\windows.storage.dll:windows.storage.dll (00007FF9DD100000), size: 9101312 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\windows.storage.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\profapi.dll:profapi.dll (00007FF9DF5A0000), size: 167936 (result: 0), SymType: '-nosymbols-', PDB: 'C:\WINDOWS\SYSTEM32\profapi.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\MSCTF.dll:MSCTF.dll (00007FF9E08A0000), size: 1421312 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\MSCTF.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll:directxdatabasehelper.dll (00007FF9D8FA0000), size: 385024 (result: 0), SymType: '-nosymbols-', PDB: 'C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cfgmgr32.dll:cfgmgr32.dll (00007FF9DF300000), size: 335872 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\cfgmgr32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll:nvldumdx.dll (00007FF9D7900000), size: 802816 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\SYSTEM32\msasn1.dll:msasn1.dll (00007FF9DEDA0000), size: 77824 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\msasn1.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cryptnet.dll:cryptnet.dll (00007FF9D7730000), size: 241664 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\cryptnet.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\cryptbase.dll:cryptbase.dll (00007FF9DED40000), size: 49152 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\cryptbase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\wldp.dll:wldp.dll (00007FF9DEE20000), size: 434176 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\wldp.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\drvstore.dll:drvstore.dll (00007FF9D75B0000), size: 1548288 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\drvstore.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\devobj.dll:devobj.dll (00007FF9DF2C0000), size: 192512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\devobj.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\wintrust.dll:wintrust.dll (00007FF9DF680000), size: 532480 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\wintrust.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\imagehlp.dll:imagehlp.dll (00007FF9E2410000), size: 131072 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\imagehlp.dll', fileVersion: 10.0.26100.4202
+C:\WINDOWS\SYSTEM32\CRYPTSP.dll:CRYPTSP.dll (00007FF9DED20000), size: 110592 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\CRYPTSP.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\rsaenh.dll:rsaenh.dll (00007FF9DE360000), size: 233472 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\rsaenh.dll', fileVersion: 10.0.26100.7705
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll:nvgpucomp64.dll (00007FF9D23A0000), size: 80736256 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll:NvMemMapStoragex.dll (00007FF9D18B0000), size: 1245184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll'
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll:nvwgf2umx.dll (00007FF9CC6E0000), size: 84860928 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\system32\nvspcap64.dll:nvspcap64.dll (00007FF94BF20000), size: 3227648 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\nvspcap64.dll', fileVersion: 11.0.4.159
+C:\WINDOWS\SYSTEM32\ntmarta.dll:ntmarta.dll (00007FF9DE5A0000), size: 221184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\ntmarta.dll', fileVersion: 10.0.26100.7019
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll:nvppex.dll (00007FF9B5660000), size: 1798144 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\clbcatq.dll:clbcatq.dll (00007FF9E07E0000), size: 712704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\clbcatq.dll', fileVersion: 2001.12.10941.16384
+C:\WINDOWS\System32\MMDevApi.dll:MMDevApi.dll (00007FF9D84A0000), size: 675840 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\MMDevApi.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\AUDIOSES.DLL:AUDIOSES.DLL (00007FF9CA7A0000), size: 1798144 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\AUDIOSES.DLL', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll:resourcepolicyclient.dll (00007FF9DCDB0000), size: 81920 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll', fileVersion: 10.0.26100.8115
+C:\WINDOWS\SYSTEM32\xinput1_3.dll:xinput1_3.dll (0000000000400000), size: 122880 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\xinput1_3.dll', fileVersion: 9.18.944.0
+C:\WINDOWS\SYSTEM32\dcomp.dll:dcomp.dll (00007FF9DBA90000), size: 2248704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dcomp.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll:Microsoft.Internal.WarpPal.dll (00007FF9DAAC0000), size: 106496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll'
+C:\WINDOWS\SYSTEM32\textinputframework.dll:textinputframework.dll (00007FF9AFB30000), size: 1318912 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\textinputframework.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\system32\Oleacc.dll:Oleacc.dll (00007FF9D7E20000), size: 479232 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\Oleacc.dll', fileVersion: 7.2.26100.9278
+C:\WINDOWS\SYSTEM32\dbghelp.dll:dbghelp.dll (00007FF9C7E20000), size: 2408448 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dbghelp.dll', fileVersion: 10.0.26100.9444
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9882EA2)
+0x00007FF8D9882EA2 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9882915)
+0x00007FF8D9882915 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D956C81E)
+0x00007FF8D956C81E (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A4538A)
+0x00007FF8D9A4538A (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A516BC)
+0x00007FF8D9A516BC (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A41E9C)
+0x00007FF8D9A41E9C (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A41D88)
+0x00007FF8D9A41D88 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A79D24)
+0x00007FF8D9A79D24 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A12050)
+0x00007FF8D9A12050 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A8A85D)
+0x00007FF8D9A8A85D (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A81112)
+0x00007FF8D9A81112 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9A81FFC)
+0x00007FF8D9A81FFC (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D987130C)
+0x00007FF8D987130C (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9872BC8)
+0x00007FF8D9872BC8 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9872E69)
+0x00007FF8D9872E69 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: '잘못된 주소를 액세스하려고 했습니다.' (Address: 00007FF8D9872809)
+0x00007FF8D9872809 (UnityPlayer) (function-name not available)
+0x00007FF8DA55C204 (UnityPlayer) UnityMain
+0x00007FF9E064CD87 (KERNEL32) BaseThreadInitThunk
+0x00007FF9E252CAEC (ntdll) RtlUserThreadStart
+
+========== END OF STACKTRACE ===========
+
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/mjnse/AppData/Local/Temp/Shade Link Team/Parallax - Gallery v0.8.2/Crashes

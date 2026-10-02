@@ -1,0 +1,13 @@
+{
+  "source": "Parallax_Unity_v0.8.2_Ceramics\\Parallax_Data\\sharedassets0.assets",
+  "target": "Parallax_Unity_v0.8.2_SmoothShadows\\Parallax_Data\\sharedassets0.assets",
+  "source_sha256": "20fef6f77f4935b041fd1db86697bf8e137d3bbb7aee60a62d508893e0d72bfb",
+  "target_sha256": "5fcba8010f86241685442ca23fe6567956ff99fe37c9f38008905307986ecd2b",
+  "changed_object_ids": [
+    30
+  ],
+  "fragment_sha256": "25771d76bd5add290a9c9b2a2d71680fb965314b447f22cad408d0bde82982b2",
+  "curve_include_sha256": "a87fc505c639a57d8efd4fb2ebd5ed9d232e2282659c8c04ca3ac44171d87722",
+  "preserved": "all other serialized objects, vertex bytecode, resource bindings",
+  "limitation": "DX11 existing-player fragment replacement; not a Unity Editor build"
+}
