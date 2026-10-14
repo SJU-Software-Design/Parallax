@@ -1,0 +1,4 @@
+Result: Succeeded
+Errors: 0
+Warnings: 0
+Output: C:\Users\MS\OneDrive\Desktop\2026-2 대학교\SW설계기초\codex - 프로젝트\윈도우\실행파일\Parallax_Unity_v0.12.1_Beach/Parallax.exe

@@ -1,0 +1,10 @@
+{
+  "asset": "Medieval library kit",
+  "author": "Rinku Choudhary",
+  "sourceUrl": "https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604",
+  "license": "Free Standard (NoAI)",
+  "source": "Assets/ThirdParty/RinkuChoudhary/LibraryKit.fbx",
+  "integratedProps": 49,
+  "individualBooks": 40,
+  "adaptations": "Original cover/page pairs separated into individual books; carved shelf components rebuilt around three accessible shelves; original worktable lower storage shelves removed for passage. Compound box physics and analytic shadow silhouettes are retained."
+}

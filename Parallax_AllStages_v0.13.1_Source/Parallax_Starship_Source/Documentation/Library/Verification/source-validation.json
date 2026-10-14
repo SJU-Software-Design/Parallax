@@ -1,0 +1,15 @@
+{
+    "passed": true,
+    "unity": "6000.3.24f1",
+    "scenes": [
+        "Assets/Parallax/Gallery/Scenes/Gallery.unity",
+        "Assets/Parallax/Legacy/Scenes/Indoor.unity",
+        "Assets/Parallax/Legacy/Scenes/Courtyard.unity",
+        "Assets/Parallax/Library/Scenes/Library.unity"
+    ],
+    "checkedComponents": 2197,
+    "props": 49,
+    "books": 40,
+    "originalMeshInstances": 128,
+    "shadowCasters": 124
+}

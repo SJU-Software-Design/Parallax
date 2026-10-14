@@ -1,0 +1,11 @@
+{
+  "base": "v0.12.1",
+  "patch": "HoldFix P1",
+  "integration": "Source port: namespace/typed access and 90-degree room bounds. Movement/recovery/continuous collision algorithm retained. Existing stages untouched.",
+  "source": "https://kenney.nl/assets/space-station-kit",
+  "license": "CC0",
+  "patchSources": {
+    "HoldPatch.Intent.cs": "077d1c0cd9ae6153472d96930258b24bc2b48fcd7ebfd930a2eecd7650b96bb8",
+    "HoldPatch.Movement.cs": "664d69bdfb174cdd143b7ec872b9a9826e5496da50c7884611255a0233500ded"
+  }
+}

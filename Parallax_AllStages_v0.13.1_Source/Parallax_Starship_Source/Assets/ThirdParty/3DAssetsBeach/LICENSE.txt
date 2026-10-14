@@ -1,0 +1,7 @@
+Beach Surf and Paddle Kit by 3DAssets.dev
+CC0 1.0 Universal
+https://3dassets.dev/packs/beach-surf-and-paddle-kit
+https://creativecommons.org/publicdomain/zero/1.0/
+Publisher discloses AI-assisted geometry.
+Original GLB files and SHA256 records are preserved in the project asset archive.
+Mesh conversion: glTF transforms baked, right-to-left handed coordinates, centre X/Z and ground origin.

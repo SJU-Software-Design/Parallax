@@ -1,0 +1,35 @@
+{
+    "passed": false,
+    "scope": "Real scene prop water fixtures followed by camera-ray pickup, gradual aiming, perspective collision sweeps, drop, real buoyancy/gravity and settling. Player positions are prepared on shore and exposure is excluded while isolating object recovery. Not a full-stage solve or a manual playtest.",
+    "checks": [
+        "A physically floating enlarged ball is submerged below the old -0.68 m placement limit",
+        "Camera can select and grab 03 · 물살 운반 비치볼 through the water surface",
+        "Recovery grab disables shade, floating state and hand-carried transport credit",
+        "Bank-edge fixture includes the round ball's bounding-box overlap",
+        "Camera can select and grab 03 · 물살 운반 비치볼 through the water surface",
+        "Recovery grab disables shade, floating state and hand-carried transport credit",
+        "Aiming upward lifts the submerged object clear of water; bottom=6.184405",
+        "Submerged pickup no longer locks its position",
+        "Recovered object reaches a collision-free bank placement: ",
+        "Recovered object can be released without resetting the zone",
+        "Recovered object settles on dry land and reactivates its placed shadow",
+        "Released plank retains real water buoyancy",
+        "Camera can select and grab 02 · 짧은 판자 through the water surface",
+        "Recovery grab disables shade, floating state and hand-carried transport credit",
+        "Aiming upward lifts the submerged object clear of water; bottom=3.054779",
+        "Submerged pickup no longer locks its position",
+        "Recovered object reaches a collision-free bank placement: ",
+        "Recovered object can be released without resetting the zone",
+        "Recovered object settles on dry land and reactivates its placed shadow",
+        "Camera can select and grab 02 · 짧은 판자 through the water surface",
+        "Recovery grab disables shade, floating state and hand-carried transport credit",
+        "Aiming underwater still respects the recoverable world depth",
+        "Water recovery does not permit crossing the beach boundary or solid ground",
+        "Cancel works after underwater recovery and blocked movement"
+    ],
+    "failures": [
+        "enlarged floating ball: System.Exception: Aiming upward lifts the submerged object clear of water; bottom=-1.065784; held=03 · 물살 운반 비치볼; invalid=해변 경계 또는 현재 구역을 벗어납니다.; obstacle=end: 해변 경계 또는 현재 구역을 벗어납니다.\r\n  at ShadeLink.Beach.BeachWaterValidation.Require (System.Boolean value, System.String text) [0x00003] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:26 \r\n  at ShadeLink.Beach.BeachWaterValidation.PullOntoBank (ShadeLink.Beach.BeachProp p, UnityEngine.Vector3 bank) [0x00056] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:71 \r\n  at ShadeLink.Beach.BeachWaterValidation.LargeFloatingBall () [0x000d3] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:85 \r\n  at ShadeLink.Beach.BeachWaterValidation.Scenario (System.String name, System.Action run) [0x00000] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:126 ",
+        "sunken parasol: System.Exception: A non-floating parasol lands on a finite underwater floor instead of falling out of reach; held=none; invalid=해변 경계 또는 현재 구역을 벗어납니다.; obstacle=end: 해변 경계 또는 현재 구역을 벗어납니다.\r\n  at ShadeLink.Beach.BeachWaterValidation.Require (System.Boolean value, System.String text) [0x00003] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:26 \r\n  at ShadeLink.Beach.BeachWaterValidation.SunkenParasol () [0x0007d] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:92 \r\n  at ShadeLink.Beach.BeachWaterValidation.Scenario (System.String name, System.Action run) [0x00000] in C:\\Users\\MS\\OneDrive\\Desktop\\2026-2 대학교\\SW설계기초\\codex - 프로젝트\\유니티\\Parallax\\Assets\\Parallax\\Beach\\Validation\\BeachWaterValidation.cs:126 "
+    ],
+    "errors": []
+}

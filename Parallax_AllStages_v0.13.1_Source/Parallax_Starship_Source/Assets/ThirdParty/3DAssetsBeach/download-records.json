@@ -1,0 +1,92 @@
+[
+  {
+    "key": "surfboard",
+    "title": "Longboard Surfboard (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-longboard-surfboard-d5d87547",
+    "download": "https://cdn.3dassets.dev/assets/39414/v1/model.glb",
+    "bytes": 67032,
+    "sha256": "660684cd9f9683ce21050a81313a1972946dfa60c191b1733bd3a27249346573",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "mat",
+    "title": "Striped Beach Towel (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-striped-beach-towel-3da16df7",
+    "download": "https://cdn.3dassets.dev/assets/39437/v1/model.glb",
+    "bytes": 82988,
+    "sha256": "823cb6da143170d01f6261ac52edf8ea48deb40cf59d32fd08d24e2baa8d4c48",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "sandcastle",
+    "title": "Sand Castle (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-sand-castle-07e02ad1",
+    "download": "https://cdn.3dassets.dev/assets/39443/v1/model.glb",
+    "bytes": 230704,
+    "sha256": "a8826e866e9d1e32d2459a524035580a897a1ab339281ee1e12626bd9f470f5f",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "ball",
+    "title": "Beach Ball (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-beach-ball-81bc6380",
+    "download": "https://cdn.3dassets.dev/assets/39442/v1/model.glb",
+    "bytes": 23832,
+    "sha256": "6f13994cf15c976eb1ad3c4c091b33786a2c35078fb4576e5dfc33fd4591bb92",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "volleyball",
+    "title": "Volleyball (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-volleyball-17bb5a66",
+    "download": "https://cdn.3dassets.dev/assets/39444/v1/model.glb",
+    "bytes": 23148,
+    "sha256": "08c6f03936669a942bbc965e65cbcf5de16dca6df8d2b13881cf9bb851329775",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "fence",
+    "title": "Dune Fence Run (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-dune-fence-run-cf3f7f77",
+    "download": "https://cdn.3dassets.dev/assets/39455/v1/model.glb",
+    "bytes": 46868,
+    "sha256": "2d47fcba5e7f9ed4cc33c9f6e105efc730a2a591812b92b3908c0f8ab57d4e76",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "driftwood",
+    "title": "Driftwood Log (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-driftwood-log-c1157bff",
+    "download": "https://cdn.3dassets.dev/assets/39458/v1/model.glb",
+    "bytes": 13608,
+    "sha256": "e857ee51b285a46b6b624b66dbc754bc6fc02e908851829c50eae254d8be3d50",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "umbrella",
+    "title": "Beach Umbrella (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-beach-umbrella-fb839e7d",
+    "download": "https://cdn.3dassets.dev/assets/39456/v1/model.glb",
+    "bytes": 52048,
+    "sha256": "4b23355a007016566d804f96941718395eef491d5f0326b98b51c889765ed4d1",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  },
+  {
+    "key": "chair",
+    "title": "Folding Beach Chair (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-folding-beach-chair-68794f97",
+    "download": "https://cdn.3dassets.dev/assets/39459/v1/model.glb",
+    "bytes": 28168,
+    "sha256": "eb631b23a79b71a6f20e779d7441b3ef19f5f29192ab25d168065324950af3f6",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true
+  }
+]

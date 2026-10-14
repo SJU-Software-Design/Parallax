@@ -1,0 +1,6 @@
+Result: Succeeded
+Mode: authentic-asset
+Errors: 0
+Warnings: 0
+Output: C:\Users\MS\OneDrive\Desktop\2026-2 대학교\SW설계기초\codex - 프로젝트\배포자료\Parallax_Unity_v0.9.0_Library/Parallax.exe
+Unity: 6000.3.24f1

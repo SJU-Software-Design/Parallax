@@ -1,0 +1,70 @@
+Mono path[0] = 'C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/윈도우/실행파일/Parallax_Unity_v0.12.1_Beach/Parallax_Data/Managed'
+Mono config path = 'C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/윈도우/실행파일/Parallax_Unity_v0.12.1_Beach/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/윈도우/실행파일/Parallax_Unity_v0.12.1_Beach/Parallax_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3070 (ID=0x2488)
+    Vendor:   NVIDIA
+    VRAM:     8018 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.117 seconds
+- Finished resetting the current domain, in  0.002 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+<RI> Input initialized.
+UnloadTime: 0.541700 ms
+PLACEMENT_PASS Every movable prop has placement state
+PLACEMENT_PASS Camera ray can grab an original scene object
+PLACEMENT_PASS Grabbing disables protection immediately
+PLACEMENT_PASS Carried renderers do not cast physical safe shadows
+PLACEMENT_PASS Player can walk while carrying an original prop
+PLACEMENT_PASS Player can jump while carrying an original prop
+PLACEMENT_PASS Cancel restores original pose, scale and placement state
+PLACEMENT_PASS Holding a previously installed prop removes its actual scene safety shadow
+PLACEMENT_PASS A physically supported object can be installed
+PLACEMENT_PASS Held object is excluded from player collision and ground probes
+PLACEMENT_PASS Player physically falls through a held platform onto the real floor
+PLACEMENT_PASS Fast release/regrab cycle 1 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 2 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 3 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 4 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 5 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 6 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 7 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 8 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 9 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 10 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 11 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 12 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 13 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 14 gives no protection
+PLACEMENT_PASS Fast release/regrab cycle 15 gives no protection
+PLACEMENT_PASS Protection stays off before continuous settling completes
+PLACEMENT_PASS Stable placement activates both shade eligibility and player collision
+PLACEMENT_PASS An oversized carried object remains inactive
+PLACEMENT_PASS An airborne released object provides no protection
+PLACEMENT_PASS Real gravity landing eventually activates a supported object
+PLACEMENT_PASS A placed prop may support another prop
+PLACEMENT_PASS Removing an active support disables the prop above it
+PLACEMENT_PASS A carried enlarged mirror cannot illuminate or unlock sensors
+PLACEMENT_PASS The same supported mirror placement charges sensors normally
+PLACEMENT_PASS Inactive mesh preview is rendered separately from safety shadows
+PLACEMENT_PASS Picking up a floating object clears carried transport credit
+PLACEMENT_PASS A 30 cm hand-carried move adds no water transport credit on release
+PLACEMENT_PASS Full reset restores usable original placements
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.

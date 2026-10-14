@@ -1,0 +1,466 @@
+{
+    "passed": true,
+    "primarySequencePassed": true,
+    "mountedDetachFixturePassed": true,
+    "scope": "Primary sequence: original first gallery painting, actual camera Raycast grab and camera-only placement; no wheel, direct distance/scale writes, or object/player relocation. Separate labelled fixture: only the player is moved close to the original third-room mounted painting to check initial detachment; its original object and map geometry are unchanged. Real PhysX drop simulation; not a full puzzle playthrough.",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "failure": "",
+    "cameraDirectionsChecked": 1977,
+    "shadowSamples": 65600,
+    "shadowMismatches": 0,
+    "colliderSamples": 1199,
+    "committedPosesChecked": 2234,
+    "blockedPosesChecked": 383,
+    "mountedDetachFixturePosesChecked": 2,
+    "clippedCornerPairs": 40,
+    "grabDistance": 3.920192003250122,
+    "grabScale": 1.0,
+    "nearDistance": 1.8029967546463013,
+    "nearScale": 0.46010857820510867,
+    "farDistance": 10.355878829956055,
+    "farScale": 2.6427273750305177,
+    "maximumViewportError": 0.000001925885044329334,
+    "releasePositionErrorMetres": 0.0,
+    "releaseRotationErrorDegrees": 0.0,
+    "airborneScale": 1.738538146018982,
+    "freeFallDistanceMetres": 0.45227861404418948,
+    "smallReleasePositionErrorMetres": 0.0,
+    "smallReleaseRotationErrorDegrees": 0.0,
+    "smallReleaseScaleError": 0.0,
+    "smallReleaseScale": 0.46010857820510867,
+    "observations": [
+        {
+            "name": "original-pickup",
+            "yaw": 3.1415927410125734,
+            "pitch": 0.16019311547279359,
+            "surfaceDistance": 4.254471778869629,
+            "placementDistance": 3.9007372856140138,
+            "scale": 0.995037317276001,
+            "bottomHeight": 0.9037964344024658,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 2.842170943040401e-14,
+                "y": 2.2968485355377199,
+                "z": 0.2895034849643707
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-camera-3",
+            "yaw": 0.0,
+            "pitch": -1.2999999523162842,
+            "surfaceDistance": 1.7279703617095948,
+            "placementDistance": 1.7640862464904786,
+            "scale": 0.44999995827674868,
+            "bottomHeight": -0.0009805560111999512,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -4.585928081723978e-9,
+                "y": 0.6290193796157837,
+                "z": 2.7483291625976564
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-camera-4",
+            "yaw": 2.799999952316284,
+            "pitch": 0.15000000596046449,
+            "surfaceDistance": 4.5081682205200199,
+            "placementDistance": 4.123577117919922,
+            "scale": 1.0518814325332642,
+            "bottomHeight": 0.8187832832336426,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 1.3658390045166016,
+                "y": 2.291417121887207,
+                "z": 0.2951885163784027
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-camera-7",
+            "yaw": -2.799999952316284,
+            "pitch": 0.5,
+            "surfaceDistance": 5.079347133636475,
+            "placementDistance": 4.123577117919922,
+            "scale": 1.0518814325332642,
+            "bottomHeight": 0.8472003936767578,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 1.323931097984314,
+                "y": 2.3198344707489015,
+                "z": 0.2851937711238861
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-camera-10",
+            "yaw": 0.0,
+            "pitch": 0.699999988079071,
+            "surfaceDistance": -1.0,
+            "placementDistance": 8.044302940368653,
+            "scale": 2.0520176887512209,
+            "bottomHeight": 3.994351387023926,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 6.94251241384336e-7,
+                "y": 6.867176055908203,
+                "z": 10.229500770568848
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-camera-12",
+            "yaw": 1.350000023841858,
+            "pitch": -0.25,
+            "surfaceDistance": 6.729883670806885,
+            "placementDistance": 2.743168354034424,
+            "scale": 0.6997535824775696,
+            "bottomHeight": 0.013458013534545899,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 2.5933656692504885,
+                "y": 0.9931130409240723,
+                "z": 4.740109920501709
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-camera-16",
+            "yaw": -1.350000023841858,
+            "pitch": 0.4000000059604645,
+            "surfaceDistance": 15.578043937683106,
+            "placementDistance": 10.780801773071289,
+            "scale": 2.7500698566436769,
+            "bottomHeight": 2.0398054122924806,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -9.688714027404786,
+                "y": 5.8899030685424809,
+                "z": 6.209681987762451
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-camera-19",
+            "yaw": 0.0,
+            "pitch": 1.25,
+            "surfaceDistance": 8.783071517944336,
+            "placementDistance": 6.170797348022461,
+            "scale": 1.5741058588027955,
+            "bottomHeight": 5.3325042724609379,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 5.325611596163071e-7,
+                "y": 7.536252021789551,
+                "z": 6.051344394683838
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-rotation-0",
+            "yaw": 0.8999999761581421,
+            "pitch": -0.949999988079071,
+            "surfaceDistance": 2.046924352645874,
+            "placementDistance": 1.764086365699768,
+            "scale": 0.44999998807907107,
+            "bottomHeight": -0.0009627342224121094,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 0.9888652563095093,
+                "y": 0.6290372610092163,
+                "z": 5.198606967926025
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-rotation-1",
+            "yaw": -0.8999999761581421,
+            "pitch": 0.5,
+            "surfaceDistance": -1.0,
+            "placementDistance": 7.141115665435791,
+            "scale": 1.8216239213943482,
+            "bottomHeight": 3.1017017364501955,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -4.841034889221191,
+                "y": 5.172416687011719,
+                "z": 8.070825576782227
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-rotation-2",
+            "yaw": 0.8999999761581421,
+            "pitch": 0.5,
+            "surfaceDistance": -1.0,
+            "placementDistance": 4.400371074676514,
+            "scale": 1.1224886178970338,
+            "bottomHeight": 2.7153429985046388,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 3.0534470081329347,
+                "y": 3.8347816467285158,
+                "z": 6.585386753082275
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-rotation-3",
+            "yaw": -0.8999999761581421,
+            "pitch": -0.949999988079071,
+            "surfaceDistance": 2.046924352645874,
+            "placementDistance": 1.764086365699768,
+            "scale": 0.44999998807907107,
+            "bottomHeight": 0.005696415901184082,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -0.8001638054847717,
+                "y": 0.2571417987346649,
+                "z": 4.836582660675049
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "collision-attempt-rotation-4",
+            "yaw": 0.8999999761581421,
+            "pitch": 0.5,
+            "surfaceDistance": -1.0,
+            "placementDistance": 4.437290668487549,
+            "scale": 1.131906509399414,
+            "bottomHeight": 3.0544347763061525,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 3.021730661392212,
+                "y": 3.850356101989746,
+                "z": 6.644043445587158
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-rotation-5",
+            "yaw": -0.8999999761581421,
+            "pitch": 0.5,
+            "surfaceDistance": -1.0,
+            "placementDistance": 4.333907127380371,
+            "scale": 1.1055344343185425,
+            "bottomHeight": 3.0663766860961916,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -2.9341869354248049,
+                "y": 3.8440423011779787,
+                "z": 6.637851715087891
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-rotation-6",
+            "yaw": 0.8999999761581421,
+            "pitch": -0.949999988079071,
+            "surfaceDistance": 2.046924352645874,
+            "placementDistance": 1.764086365699768,
+            "scale": 0.44999998807907107,
+            "bottomHeight": -0.0014124512672424317,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 0.2771404981613159,
+                "y": 0.49262213706970217,
+                "z": 5.493678092956543
+            },
+            "valid": true,
+            "blocked": true
+        },
+        {
+            "name": "collision-attempt-rotation-7",
+            "yaw": -0.8999999761581421,
+            "pitch": 0.5,
+            "surfaceDistance": -1.0,
+            "placementDistance": 6.438410758972168,
+            "scale": 1.6423712968826295,
+            "bottomHeight": 2.4006752967834474,
+            "referenceDistance": 3.920192003250122,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -4.525398254394531,
+                "y": 4.742872714996338,
+                "z": 7.710845470428467
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "near-camera-only",
+            "yaw": 1.0800000429153443,
+            "pitch": -0.6000000238418579,
+            "surfaceDistance": 2.9664783477783205,
+            "placementDistance": 1.8029967546463013,
+            "scale": 0.46010857820510867,
+            "bottomHeight": 0.01718968152999878,
+            "referenceDistance": 3.918633222579956,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 1.3124216794967652,
+                "y": 0.661341667175293,
+                "z": 4.8737664222717289
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "far-camera-only",
+            "yaw": -0.18000000715255738,
+            "pitch": 0.4000000059604645,
+            "surfaceDistance": 21.378032684326173,
+            "placementDistance": 10.355878829956055,
+            "scale": 2.6427273750305177,
+            "bottomHeight": 2.0331687927246095,
+            "referenceDistance": 3.918633222579956,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -1.7076544761657715,
+                "y": 5.732987403869629,
+                "z": 13.425726890563965
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "far-to-near-release",
+            "yaw": 1.0800000429153443,
+            "pitch": -0.6000000238418579,
+            "surfaceDistance": 2.9664783477783205,
+            "placementDistance": 1.8029967546463013,
+            "scale": 0.46010857820510867,
+            "bottomHeight": 0.01718968152999878,
+            "referenceDistance": 3.918633222579956,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 1.3124216794967652,
+                "y": 0.661341667175293,
+                "z": 4.8737664222717289
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "airborne-test-original-regrab",
+            "yaw": 3.1415927410125734,
+            "pitch": 0.15771234035491944,
+            "surfaceDistance": 4.252780437469482,
+            "placementDistance": 3.8991858959198,
+            "scale": 0.9950371980667114,
+            "bottomHeight": 0.903846263885498,
+            "referenceDistance": 3.918633222579956,
+            "referenceScale": 1.0,
+            "position": {
+                "x": 2.842170943040401e-14,
+                "y": 2.296898126602173,
+                "z": 0.2895039916038513
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "upward-airborne-camera-only",
+            "yaw": -0.5400000214576721,
+            "pitch": 0.6500000357627869,
+            "surfaceDistance": -1.0,
+            "placementDistance": 6.812693119049072,
+            "scale": 1.738538146018982,
+            "bottomHeight": 3.497161865234375,
+            "referenceDistance": 3.918633222579956,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -2.788403034210205,
+                "y": 5.848548889160156,
+                "z": 8.75904655456543
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "independent-close-wall-mounted-detachment",
+            "yaw": 3.1415927410125734,
+            "pitch": 0.7356656193733215,
+            "surfaceDistance": 0.8902271389961243,
+            "placementDistance": 0.5569877624511719,
+            "scale": 0.7941192984580994,
+            "bottomHeight": 0.9801456928253174,
+            "referenceDistance": 0.7013905644416809,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -6.0,
+                "y": 2.0919127464294435,
+                "z": 27.3894100189209
+            },
+            "valid": true,
+            "blocked": false
+        },
+        {
+            "name": "independent-close-wall-small-aim-after-detachment",
+            "yaw": 3.2615926265716554,
+            "pitch": 0.8356656432151794,
+            "surfaceDistance": 0.9911984205245972,
+            "placementDistance": 0.6040419936180115,
+            "scale": 0.8612063527107239,
+            "bottomHeight": 0.9641275405883789,
+            "referenceDistance": 0.7013905644416809,
+            "referenceScale": 1.0,
+            "position": {
+                "x": -6.048498153686523,
+                "y": 2.169816493988037,
+                "z": 27.396120071411134
+            },
+            "valid": true,
+            "blocked": false
+        }
+    ],
+    "checks": [
+        "Rapid camera turns, aiming below floor, upward growth and rotation attempts kept all 50 displayed intermediate poses collision-valid with enabled kinematic colliders",
+        "Release after collision attempt preserves accepted safe pose and scale; blocked=True",
+        "Same pickup, camera direction only: near 1.802997m / 0.4601086x -> far 10.35588m / 2.642727x -> near -> far; no wheel or depth/scale writes",
+        "Visible and safe shadow masks match at automatic-far-floor: 13120 samples",
+        "Visible and safe shadow masks match at automatic-far-upper: 13120 samples",
+        "Far -> near -> drop keeps the small 0.4601086x size and exact release pose; 1.5 seconds of real physics preserves that size",
+        "PhysX collider rays match perspective-adjusted silhouette: 599 samples",
+        "Visible and safe shadow masks match at falling-floor: 13120 samples",
+        "Visible and safe shadow masks match at falling-upper: 13120 samples",
+        "Upward aiming automatically enlarges object; drop preserves exact pose/scale then real gravity lowers it by 0.4522786m in 0.3s",
+        "PhysX collider rays match perspective-adjusted silhouette: 600 samples",
+        "Visible and safe shadow masks match at settled-floor: 13120 samples",
+        "Camera-only placed tilted object collides, rotates and settles under PhysX, retaining the enlarged scale",
+        "Zone reset restores original exhibit; camera-only perspective regression completed",
+        "Independent player-only fixture at (-6, 0.025, 27.85): original third-room mounted picture detaches into a valid, nonpenetrating pose and follows a small aim change; 2 accepted poses checked"
+    ],
+    "errors": []
+}

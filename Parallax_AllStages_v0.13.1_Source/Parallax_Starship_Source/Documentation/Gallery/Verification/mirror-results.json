@@ -1,0 +1,45 @@
+{
+    "passed": true,
+    "inputPuzzlePassed": true,
+    "cancelOverlapPassed": true,
+    "scope": "Mirror room entered through the public demo action. Real camera grab, held walking/jumping, safe cancellation and release. Separate optical fixtures check incident occlusion and search a valid shadow pose. Final mirror-room play uses only camera aim, held rotation, CharacterController movement and physical drop, with no object pose/scale writes. This does not claim a full four-room playthrough.",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "shadowSamples": 65600,
+    "shadowMismatches": 0,
+    "heldMovementFrames": 779,
+    "heldWalkDistance": 1.9199999570846558,
+    "heldJumpHeight": 1.1450718641281129,
+    "solutionScale": 0.8610054850578308,
+    "solutionPosition": {
+        "x": -2.460179090499878,
+        "y": 1.205407738685608,
+        "z": 21.9820499420166
+    },
+    "solutionRotation": {
+        "x": 3.5619709404244306e-9,
+        "y": 0.3469361960887909,
+        "z": -3.07054492942882e-9,
+        "w": 0.9378887414932251
+    },
+    "checks": [
+        "Real camera grab: walk 1.92m and jump 1.15m while holding; all committed poses collision-valid; release preserves pose and scale",
+        "Actual mirror ray selection and rotation redirect sunlight to receiver; gate opens only while receiver is lit",
+        "CPU and rendered shadow mask agree at reflected-floor: 13120 samples",
+        "CPU and rendered shadow mask agree at reflected-upper: 13120 samples",
+        "Reflected sunlight produces 18 unsafe samples on the gated corridor; direct light and reflected light both count as exposure",
+        "Blocking sunlight before mirror removes reflected illumination and disables receiver",
+        "CPU and rendered shadow mask agree at shielded-floor: 13120 samples",
+        "CPU and rendered shadow mask agree at shielded-upper: 13120 samples",
+        "Labelled optical fixture found valid shield pose (-2.50, 1.20, 22.00) / 0.85x; sensor remains lit and complete route is safe",
+        "Normal CharacterController movement crosses the shadow corridor and open gate into third-room checkpoint without respawn",
+        "Held input placement observation: player=(-2.50, 0.01, 20.32) shield=(-2.46, 1.22, 21.98) scale=0.8610055 yaw=40.6 blocked=False obstruction=",
+        "Actual camera/held rotation/walking/drop produces settled shield (-2.46, 1.21, 21.98) / 0.8610055x without direct pose or scale setters",
+        "CPU and rendered shadow mask agree at input-solution-floor: 13120 samples",
+        "Complete mirror-room input play: select/rotate mirror, grab/carry/rotate/drop shield, walk its shadow, cross sensor gate and reach next checkpoint",
+        "Cancel refuses to restore an object onto player in its pickup space; stepping clear permits exact restoration",
+        "Demo / whole reset restores mirror angle, shield, gate and player state"
+    ],
+    "errors": []
+}
