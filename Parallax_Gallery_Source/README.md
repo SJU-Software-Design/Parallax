@@ -44,6 +44,22 @@
 
 ## 빌드와 검증
 
+GitHub 저장소에서는 **저장소 최상위 폴더**에서 OS에 맞는 명령을 실행합니다.
+
+```bash
+# macOS
+./scripts/build-mac.sh
+```
+
+```powershell
+# Windows
+.\scripts\build-windows.ps1
+```
+
+같은 Gallery 소스를 빌드하며, 결과는 저장소의 `Builds/macOS/Parallax.app` 또는 `Builds/Windows/Parallax.exe`에 생성됩니다. macOS는 Apple silicon과 Intel을 함께 지원합니다. Unity 버전은 **6000.3.24f1**입니다. 설치 경로 지정과 로그 확인은 [저장소 빌드 안내](../README.md)를 참고하세요.
+
+아래는 기존 Windows 빌드·검증 도구의 사용법입니다.
+
 Unity 메뉴 **Parallax → 미술관 Windows 빌드**를 실행합니다. 이 메뉴는 미술관 씬을 코드로 다시 생성합니다. 씬을 수동 편집했다면 먼저 별도 씬으로 저장하세요.
 
 PowerShell에서는 프로젝트 폴더를 기준으로 다음 명령을 사용할 수 있습니다.
