@@ -1,0 +1,56 @@
+Mono path[0] = 'C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/배포자료/Parallax_Unity_v0.11.0_Beach/Parallax_Data/Managed'
+Mono config path = 'C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/배포자료/Parallax_Unity_v0.11.0_Beach/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.24f1 (4e7b9b5b6244)
+[Subsystems] Discovering subsystems at path C:/Users/MS/OneDrive/Desktop/2026-2 대학교/SW설계기초/codex - 프로젝트/배포자료/Parallax_Unity_v0.11.0_Beach/Parallax_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3070 (ID=0x2488)
+    Vendor:   NVIDIA
+    VRAM:     8018 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.122 seconds
+- Finished resetting the current domain, in  0.002 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+<RI> Input initialized.
+UnloadTime: 0.415100 ms
+BEACH_PASS 19 interactable objects instantiated
+BEACH_PASS Imported visual meshes have exact non-solid shadow queries
+BEACH_PASS Initial checkpoint is shaded
+BEACH_PASS Small mirror can be grabbed by the camera ray
+BEACH_PASS Player walks while carrying mirror
+BEACH_PASS Player jumps while carrying mirror
+BEACH_PASS Camera distance enlarges the held mirror
+BEACH_PASS Cancel restores pickup pose and size
+BEACH_PASS Enlarged aligned mirror illuminates both sensors and opens the gate
+BEACH_PASS Prepared enlarged plank and parasol allow a physical shaded crossing
+BEACH_PASS Released beach ball floats downstream and unlocks the receiving gate
+BEACH_PASS Exit has physical support on the high castle crown
+BEACH_PASS Castle middle refuge is a safe saved checkpoint
+BEACH_PASS Castle fall recovery returns to the middle refuge
+BEACH_PASS Castle jump reaches (9.65, 0.58, 96.00) (actual (9.69, 0.59, 96.00))
+BEACH_PASS Castle jump reaches (8.20, 1.32, 96.00) (actual (8.25, 1.34, 96.00))
+BEACH_PASS Castle jump reaches (6.65, 2.37, 96.00) (actual (6.71, 2.39, 96.00))
+BEACH_PASS Castle jump reaches (5.00, 3.42, 96.00) (actual (5.05, 3.44, 96.00))
+BEACH_PASS Castle jump reaches (3.45, 4.35, 96.00) (actual (3.49, 4.37, 96.00))
+BEACH_PASS Castle jump reaches (2.15, 5.28, 94.90) (actual (2.28, 5.30, 94.90))
+BEACH_PASS Castle jump reaches (1.30, 6.10, 94.20) (actual (1.32, 6.12, 94.21))
+BEACH_PASS Castle jump reaches (0.00, 6.70, 95.40) (actual (0.03, 6.72, 95.37))
+BEACH_PASS Prepared object step and shade allow physical castle ascent and final clear; won=True, safe=True, grounded=True, respawns=0
+BEACH_PASS Pause freezes simulation and input
+BEACH_PASS Full reset clears mirror, current and castle progress
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.

@@ -1,0 +1,170 @@
+{
+  "checked": 41,
+  "changed": 0,
+  "files": [
+    {
+      "path": "Assets/Parallax/Beach/Editor/BeachBuild.cs",
+      "sha256": "8aa33c110ca7c338e1eb13459ae64050717959b67fc79dbb3950390c78001bbd"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachGame.cs",
+      "sha256": "e97f57488bfa7f838f3a2ab3431ecfdb8e6bed1e6a666f0eb9663f91e8c50073"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachHud.cs",
+      "sha256": "953a636f3e99174663020e1581cc0c8b3ff550fa572a4fbea7c7281fb614e021"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachLabel.cs",
+      "sha256": "58f8e4626299e27f455302cb04fade9c0d8895ed42b27dd85388bb7c219067f4"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachLightGate.cs",
+      "sha256": "337f3be8341daa73a793d9d7a5516fbe2292c17725c4feca4a3beb8e8d52a530"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachLighting.cs",
+      "sha256": "66764e77e934a895dac7b6ca0a0009c20ba0d3d2a87ce29a1dcdeb6cff86b30b"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachMirror.cs",
+      "sha256": "a0b0fed1139729c10e1ec77ca5c927ececf0f5c9f6237dffb357328a6c601198"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachPlacementPreview.cs",
+      "sha256": "ecb21f2b9db2342438c6e911162ff0a5dd69709a10409d9d3eee2b2f9f92277e"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachProp.cs",
+      "sha256": "9e246c39ab5b1b240ba2f9d5adb3c1d555a7e09347718af3f95cab1474a1951f"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachWater.cs",
+      "sha256": "06e0f16f2ea8285201a9f2f0077c24da0a86a222150f8e2b852f469c891f302e"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachWaterGateLink.cs",
+      "sha256": "4e67a65a0643e7b450eded6848a72776f3e46d58189da4d3b23f645fc87376d1"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Scripts/BeachWorld.cs",
+      "sha256": "dab1aee714e6effe5bbf70de8ac662d328ebcb986f2ce13637d57b61cff2677b"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Validation/BeachValidation.cs",
+      "sha256": "e7d02bcfb97bcff316ebaa2c9f342fa87033381230070fef9cfc3a8f407ba624"
+    },
+    {
+      "path": "Assets/Parallax/Beach/Validation/BeachWaterValidation.cs",
+      "sha256": "d3fa2edf8cd967e97c08f89ddb9ece01c28d06e2639704d85565f5ac4e3ca6ce"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Editor/GalleryBuild.cs",
+      "sha256": "28e16b9b342e510829263d01b324962e925e6aa76ffdbf28df8592c716892248"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Editor/SourceLayoutValidation.cs",
+      "sha256": "d465e387b397bde6b48f6029453bb26d56bee27f8ff7d7b4130337ebde08db04"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryCaster.cs",
+      "sha256": "a697b272a686e02e987018c704f2c93429c5f239fab40388c7d97cb12d4e4861"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryGame.cs",
+      "sha256": "dde997cffe94fa940035b48b74774d7f1bf524ba6f77ed321a5fe268b2088461"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryGeometry.cs",
+      "sha256": "e034050b8e1f2b6d613318ac75313046cd8c4de7e24bd42cbb56b175343ce091"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryHud.cs",
+      "sha256": "3697d45be1b8c162b4ba102bf935aee38ca83dbf43d098e19956e63bb4a95bf0"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryLabel.cs",
+      "sha256": "238859da43d125c91d59f5854c3de6b0af0201df30afc2f22c05c0e1de90d383"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryLightGate.cs",
+      "sha256": "df0279658a26478f3e54a395f294a467b46c3b2510a4bd51c473179bb24c9ead"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryLightGlass.cs",
+      "sha256": "0598856450497ff11c206fd4687af4872cf2cbb8f7c83601d22926b1590fa0de"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryLighting.cs",
+      "sha256": "a010c69ae0178e1a5a563baf994f96f27291e0e6547913ee7881387a6b0918a7"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryMirror.cs",
+      "sha256": "0aebee9051d8b53645a2dc1876057767d144e43c2084985f0337d3410ccd73f9"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryProp.cs",
+      "sha256": "a4256638bc2f9f54016423e1aaa79736aabdc8308c83b4a9fb41cb806cea3ee8"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Scripts/GalleryWorld.cs",
+      "sha256": "af1e0205e05110b9109ce19f0e7844a5b1b9d1e3b587badba6bcdf0981a69162"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Validation/GalleryMirrorValidation.cs",
+      "sha256": "8ca9fbc8a8fe902fd2d01c00aabf7697069b20ee9ef6c5248048af917e0cac3f"
+    },
+    {
+      "path": "Assets/Parallax/Gallery/Validation/GalleryPerspectiveValidation.cs",
+      "sha256": "384dfb4a0b5bf7d36fc483c511514dfa8fd0786e8bf679ba57a79ce9c683db98"
+    },
+    {
+      "path": "Assets/Parallax/Library/Editor/LibraryAssetImport.cs",
+      "sha256": "ec72726a56840e6199fcb4b8fb16a2713773d2dd2f58b075c9fd5a9b13d20040"
+    },
+    {
+      "path": "Assets/Parallax/Library/Editor/LibraryBuild.cs",
+      "sha256": "b971fa91388328525b42fc281998ca1c4fb7f59bb5538b69a2d73ea33cae8aa2"
+    },
+    {
+      "path": "Assets/Parallax/Library/Editor/LibrarySourceValidation.cs",
+      "sha256": "3de4111513449d1ec2d49447552233470ec9a9726ccdfb9c40bedc93ef5bb714"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryCaster.cs",
+      "sha256": "fd2994afa3ac4dbab2c645b75a521dfc215d85b6b258133932fd4bc02975f9f8"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryGame.cs",
+      "sha256": "260084a6d42b5548200eb157966ab8ae7dee019f3281971dd906eab8960b85fc"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryGeometry.cs",
+      "sha256": "2c6a7b4798be7a812a15a4e0e8f5583977832d0d57a4f6bd51a530913e47f20b"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryHud.cs",
+      "sha256": "3dc898f92bd18b007c5e1728ba09b0c5a05453cdfcb048ecbca996cd209fb4ac"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryLabel.cs",
+      "sha256": "6d17e88ff95ae44768462cce3987a8f381b624271841f235de3a9e4f2a129e28"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryLighting.cs",
+      "sha256": "dca8b27954831f69915c37a7ae2e685be2bdb56e746dd01c17805622b07f9686"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryProp.cs",
+      "sha256": "6079041b52318459bb9eced35bc146b9ea4c9e96c64ebbdcff8b46b3b2da415a"
+    },
+    {
+      "path": "Assets/Parallax/Library/Scripts/LibraryWorld.cs",
+      "sha256": "258d69b07ea76c0563cc152917d5ab6e8e9736ba9f61dbae75bd5d381dfc294c"
+    },
+    {
+      "path": "Assets/Parallax/Library/Validation/LibraryValidation.cs",
+      "sha256": "5d7d5aa4f9a86fd8487c24d43fd4064da2e6292ae49d97d3db64346bd4269df3"
+    }
+  ]
+}

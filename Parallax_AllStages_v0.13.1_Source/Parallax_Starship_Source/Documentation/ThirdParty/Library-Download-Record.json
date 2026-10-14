@@ -1,0 +1,244 @@
+{
+  "asset": "Medieval library kit",
+  "author": "Rinku Choudhary",
+  "sourceUrl": "https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604",
+  "licenseShown": "Free Standard",
+  "licenseUrl": "https://sketchfab.com/licenses",
+  "tag": "NoAI",
+  "downloadedAt": "2026-10-03",
+  "format": "Original FBX with textures",
+  "archiveBytes": 92418363,
+  "archiveSha256": "d3e0d54926c11a31ade17ac9c48327afdcdd9ade28213823b68888317f34703e",
+  "importedAssets": [
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/LibraryKit.fbx",
+      "bytes": 4618112,
+      "sha256": "c743ab629becc26875f3f749afb495637c074b299a2166fd59c869ec79cbea7a"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/bin_lowpoly_bin_Normal.png",
+      "bytes": 4365898,
+      "sha256": "91aadb03708f51fdb0b9ae2a2730aedb47328c4cca33bda34cc52607a98d8a9c"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/chair_lowpoly_chair_BaseColor.png",
+      "bytes": 2910924,
+      "sha256": "28fed9b1f65faea7d4f7a8d22dd40dc6066b162a10c8a6c5179b7f3de42960b5"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/light_lowpoly_light_Roughness.png",
+      "bytes": 1826994,
+      "sha256": "42929e665c3f072a007c37540f330a0a3f32b1fd008b329e084726e8c71d965e"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_02_lowpoly_table_02_Roughness.png",
+      "bytes": 369141,
+      "sha256": "6d6820bfb8b9c82ed010eca62fa15ad4d5d634780f676e702471d6bff6da05a9"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/chair_lowpoly_chair_Normal.png",
+      "bytes": 4577021,
+      "sha256": "7c56110235eb971fc39f49aff269c1cbaa9464941f566f7b4ee6f784649e6007"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/desk_lowpoly_desk_BaseColor.png",
+      "bytes": 5162880,
+      "sha256": "a8c6ea9903a377ba9be33325f5d0699259f5b29f805e6168ccae985eada4f3bc"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_stage_Normal.png",
+      "bytes": 937485,
+      "sha256": "e81816738f0f805f2cda708f3e1bd79ca34d9d59dce00c89146f1e70871b3cdf"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/desk_lowpoly_desk_Roughness.png",
+      "bytes": 1506070,
+      "sha256": "dc3281e2abf1fef9cb0d74baa6eb5542d1594fc51e82cb6816dae855e630ef9c"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/bin_lowpoly_bin_BaseColor.png",
+      "bytes": 2945811,
+      "sha256": "ad8ac80e7740694db62bc02b4a54d2bd5dd13125be0e4c5e7b6fc33e0c1b2951"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_lowpoly_table_Normal.png",
+      "bytes": 4680339,
+      "sha256": "22a5f0d7897109ccebc7c1efaaf678c8d4876ee9d71b7d4a6736dbdac92899ac"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/light_lowpoly_light_BaseColor.png",
+      "bytes": 2611231,
+      "sha256": "5babcfaf07428d55497822d9fd0aaf47db71909f12e95f76e440cae7d90d0942"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/shell_lowpoly_shell_Roughness.png",
+      "bytes": 1276243,
+      "sha256": "4d3eee9fffaa98d1935b752ee3d4f6f9ba4b4887894d7644d267a6262d23b5e4"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/small_shell_lowpoly_small_shell_Normal.png",
+      "bytes": 1067539,
+      "sha256": "dddbe6defcebe4c4167a5923e1da17a8b1bd8bf5bd9a7fd944a23b5fa2bfa276"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/long_table_lowpoly_long_table_Normal.png",
+      "bytes": 3087568,
+      "sha256": "e9e8dcd1e3aa163ec7b6a0a18bc485fab9b8ffa9048277939ccbc176fa2b1571"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/round_table_lowpoly_round_table_BaseColor.png",
+      "bytes": 3591264,
+      "sha256": "9732ea8b53df9705a7c1a95c8fb983c769f30578cb0789dd2f9962a2c2cb0faa"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_ladder_BaseColor.png",
+      "bytes": 5891859,
+      "sha256": "cb4da42754e3599e4819dfdb10c388c5418362dd2cab0ee2a23b6a18bd042822"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/light_lowpoly_light_Normal.png",
+      "bytes": 709711,
+      "sha256": "f3390f1dff442f5bb62a8e2ebc40d4913236d70dfa7581e4b89afecffb43f7ae"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/timer_lowpoly_timer_Normal.png",
+      "bytes": 1145624,
+      "sha256": "6db781deb9f3d28944b548e6fba9bf609dc9fb3ec665868072585b91d54d19e9"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_ladder_Roughness.png",
+      "bytes": 2133156,
+      "sha256": "4c80c30090545131b9dc206a91e21ce45c553eb0bc8d9c32cd2949c2632971ae"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/bin_lowpoly_bin_Roughness.png",
+      "bytes": 1701375,
+      "sha256": "2801e103788dcdc5f70f83b6a074258b6b0048a01d5410890fba79f2818e0591"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/small_shell_lowpoly_small_shell_Roughness.png",
+      "bytes": 651078,
+      "sha256": "a2a50be9dc4f59d051a9acf4fdb40cad6213fd515ea101dfa13ef35c1a8da304"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/timer_lowpoly_timer_BaseColor.png",
+      "bytes": 3061211,
+      "sha256": "b3092397095fd283be59b0085922bffd1613cae6d8205782f5b1c70ae476bcd4"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/long_table_lowpoly_long_table_Roughness.png",
+      "bytes": 408330,
+      "sha256": "8c6b95dc8b6510f92b54048458c96ceffc17326f4c4268f788033371568823f2"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/long_table_lowpoly_long_table_BaseColor.png",
+      "bytes": 2766218,
+      "sha256": "9ded2262102bff0ce783a3fb8d8c1266b885606bbd1a00db1ec6c74e84bc7e19"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/desk_lowpoly_desk_Normal.png",
+      "bytes": 5152505,
+      "sha256": "279119f3fc3d982281932e4e4fe99b937338c1fc493a949050e62f50bab1b794"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/shell_lowpoly_shell_BaseColor.png",
+      "bytes": 3267778,
+      "sha256": "ced985bb533f7f3b794c5c37a00c22c75b1ed9a0688dc6a3db5696c289f5e31f"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/book_cover_1.jpg",
+      "bytes": 202224,
+      "sha256": "5e92dca218ae5e7ca2d5809750c42b6114d0ed354fd37e9c95dcb359409c0984"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/desk_lowpoly_desk_Metallic.png",
+      "bytes": 684780,
+      "sha256": "9e152ec02a652c5d76fc05c3024f3fbeeaf2e6fc747beda279d2c420eb47f3aa"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/round_table_lowpoly_round_table_Normal.png",
+      "bytes": 674290,
+      "sha256": "39166bd9e9f344ce88a61192ece178798202d2439afbfbaa1ccb9ecfb502ae4d"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/book_cover.jpg",
+      "bytes": 191082,
+      "sha256": "efe41caf175f6674fb225d6314826fc1c1bb0c2e67837858451cc8ebcd7bd72f"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/small_shell_lowpoly_small_shell_BaseColor.png",
+      "bytes": 1701362,
+      "sha256": "574c628b8e0816e1560cf495a2ab9a12fd9357fee98f085fbafde7f05c7d4961"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_stage_BaseColor.png",
+      "bytes": 4224835,
+      "sha256": "d28e00abec6142aa6e0ade613adc03202282cc966f330a989d736bae0ccb9570"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_lowpoly_table_BaseColor.png",
+      "bytes": 3812555,
+      "sha256": "c392bd29a005addbbdd0d98610897e94f0c0152dcc46b1d6c2a7c2fe3fa71b41"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/timer_lowpoly_timer_Metallic.png",
+      "bytes": 335945,
+      "sha256": "f87f3f2d6af1daf85a6ac9529efe25f1cf88c550ac00af16fd6decb12720f29b"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_lowpoly_table_Roughness.png",
+      "bytes": 498551,
+      "sha256": "fe462c404745be7d552427cf253ecaab3763b32d2389dc2520b82e683c1b8ed5"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_stage_Roughness.png",
+      "bytes": 186623,
+      "sha256": "d89f0bbe59b42cc2cc7048ee44a3e5ca30c6175e284ba5a08fbc5ae148f2bbe2"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/timer_lowpoly_timer_Roughness.png",
+      "bytes": 1213939,
+      "sha256": "3ffb6ee6f1de1374e5ad0d3b4575417e65565185ca89234dfe5d7c81ecc6db34"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_02_lowpoly_table_02_BaseColor.png",
+      "bytes": 2528836,
+      "sha256": "cb1438696c19eefedf4362008e0b0f27f800fc401a4f23d6e43dbb0d7840ee69"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/ladder_lowpoly_stage_Metallic.png",
+      "bytes": 4166,
+      "sha256": "41a8c2d58782abca9d4b79dc2b4d59fa460a731b081212ba4723c7b64017b780"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/light_lowpoly_light_Metallic.png",
+      "bytes": 11841,
+      "sha256": "d0454ac993654575cc2f51f84c17cd06c86b73d633e728e2e637ea19519815ed"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/chair_lowpoly_chair_Roughness.png",
+      "bytes": 497512,
+      "sha256": "4e4f660b5fd864889093d70b508208787aab4c4ba5b4974e40fbbe2291fffd22"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/book_cover_2.jpg",
+      "bytes": 168467,
+      "sha256": "cf012bea150ee1824d25f2e1682ee363ab73c344114e31e53be632ae11f196c4"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/round_table_lowpoly_round_table_Roughness.png",
+      "bytes": 795934,
+      "sha256": "ccb527089cc9195e29021d037bc3c1a5526b73615772a9ff76ced42d671c3f80"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/shell_lowpoly_shell_Normal.png",
+      "bytes": 2035455,
+      "sha256": "53b2682c4dd6ac3aa8972616bff725db848659909940cd960b0cf603dbf88233"
+    },
+    {
+      "file": "Assets/ThirdParty/RinkuChoudhary/Textures/table_02_lowpoly_table_02_Normal.png",
+      "bytes": 219211,
+      "sha256": "1411dec25ff65fbb488bc837554abe1a4751f2ba82cfd4cf7a90571eb5b02332"
+    }
+  ]
+}

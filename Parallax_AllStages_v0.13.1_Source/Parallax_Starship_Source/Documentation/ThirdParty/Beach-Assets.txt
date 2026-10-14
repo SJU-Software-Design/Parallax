@@ -1,0 +1,30 @@
+Beach assets — integration record / 2026-10-07
+
+Source: 3DAssets.dev, Beach Surf and Paddle Kit
+Pack: https://3dassets.dev/packs/beach-surf-and-paddle-kit
+License stated by publisher: CC0 1.0 Universal
+License reference: https://creativecommons.org/publicdomain/zero/1.0/
+Public downloads. No signup, Google login, purchase, or account creation was used.
+
+Imported 9 assets:
+Beach umbrella, beach ball, volleyball, beach chair, beach mat,
+sandcastle, beach fence, driftwood, surfboard.
+The volleyball model is imported for optional reuse. The playable map uses the beach-ball model.
+
+Used original geometry and palette materials. Converted GLB node transforms and
+handedness to flattened mesh JSON, then imported as Unity mesh/prefab/material.
+No downloaded scripts, native libraries, packages, or installers were executed.
+Planks, mirror frame, gates, shelters, signs and gameplay scripts are project-authored.
+
+Publisher discloses AI-assisted asset geometry generation (Claude Opus 5.5).
+The imported models contain geometry/materials; physics, lighting and gameplay
+integration in this project are implemented separately.
+
+Raw GLBs and download hashes:
+에셋/Beach_Surf_and_Paddle_Kit_3DAssets/download-records.json
+Unity copy:
+Assets/ThirdParty/3DAssetsBeach/download-records.json
+Assets/ThirdParty/3DAssetsBeach/LICENSE.txt
+
+Earlier gallery/library assets retain their existing source and license records.
+CC0 for this beach pack does not change the licenses of those other assets.
