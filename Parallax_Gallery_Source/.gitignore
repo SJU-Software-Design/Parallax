@@ -1,0 +1,13 @@
+/Library/
+/Temp/
+/Obj/
+/Logs/
+/UserSettings/
+/Builds/
+/SourcePackages/
+__pycache__/
+*.pyc
+*.csproj
+*.sln
+*.pidb
+*.user
