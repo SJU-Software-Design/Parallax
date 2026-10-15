@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShadeLink.Library
 {
-    public sealed class LibraryProp : MonoBehaviour
+    public sealed class LibraryProp : MonoBehaviour, IInteractionProp
     {
         public string title;
         public string kind, objectId;
@@ -108,5 +108,15 @@ namespace ShadeLink.Library
             properties.SetColor("_Selection", selected ? (invalid ? new Color(.55f, .065f, .025f) : new Color(.03f, .35f, .28f)) : Color.black);
             foreach (var r in renderers) r.SetPropertyBlock(properties);
         }
+        Rigidbody IInteractionProp.Body => body;
+        BoxCollider[] IInteractionProp.Parts => parts;
+        PlacementSupport IInteractionProp.Placement => placement;
+        float IInteractionProp.MinScale => minScale;
+        float IInteractionProp.MaxScale => maxScale;
+        Action IInteractionProp.CaptureAuxiliaryState()
+        {
+            return null;
+        }
+
     }
 }

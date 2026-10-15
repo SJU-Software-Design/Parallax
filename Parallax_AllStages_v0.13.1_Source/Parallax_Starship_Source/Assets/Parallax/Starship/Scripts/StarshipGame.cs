@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace ShadeLink.Starship
 {
-    public sealed class StarshipGame : MonoBehaviour
+    public sealed class StarshipGame : MonoBehaviour, IObjectInteractionHost<StarshipProp>
     {
         public const string Version="0.13.1";
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=11;
+        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public StarshipLighting lighting;
@@ -20,13 +20,13 @@ namespace ShadeLink.Starship
         public bool adjustingMirror;
         public Player player;
         public float yaw, pitch=-.08f, exposure, elapsed, verticalVelocity;
-        public float holdDistance { get; internal set; }
-        public float referenceDistance { get; internal set; }
-        public float referenceScale { get; internal set; }
+        public float holdDistance { get => Interaction.Depth; internal set => Interaction.Depth=value; }
+        public float referenceDistance => Interaction.ReferenceDistance;
+        public float referenceScale => Interaction.ReferenceScale;
         public bool HasPlacementSurface { get; internal set; }
         public bool PlacementBlocked { get; internal set; }
         public string PlacementObstacle { get; internal set; }
-        public Quaternion heldRotation;
+        public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
         public bool visitedUpper;
         public StarshipEnding ending;
@@ -34,15 +34,8 @@ namespace ShadeLink.Starship
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
-        Vector3 pickupPosition, pickupScale;
-        Quaternion pickupRotation;
-        Vector3 pickupVelocity, pickupAngularVelocity;
-        bool pickupKinematic, pickupGravity, pickupSleeping,pickupFloating;
-        float pickupDrift;Vector3 pickupLastDrift;
-        PlacementSupport.Snapshot pickupPlacement;
         public PlacementLesson lesson;
-        RaycastHit aimHit;
-        public Vector3 GrabLocalPoint { get; internal set; }
+        public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
         float coyote, jumpBuffer;
 
         void Awake()
@@ -159,45 +152,8 @@ namespace ShadeLink.Starship
             Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
             Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
         }
-        public void UpdateAim()
-        {
-            StarshipProp previous=aimed;aimed=null;aimedMirror=null;
-            if(held==null&&Physics.Raycast(view.transform.position,view.transform.forward,out aimHit,Reach,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
-            {aimed=aimHit.collider.GetComponentInParent<StarshipProp>();aimedMirror=null;}
-            if(previous!=null&&previous!=held&&previous!=aimed)previous.Highlight(false,false);
-            if(aimed!=null)aimed.Highlight(true,false);
-            
-        }
-        public void Interact()
-        {
-            if(!active||won)return;
-            if(held!=null){Drop();return;}
-            UpdateAim();
-            if(aimedMirror!=null){adjustingMirror=!adjustingMirror;Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);return;}
-            adjustingMirror=false;if(aimed==null)return;
-            if(Physics.Raycast(controller.transform.position+Vector3.up*.15f,Vector3.down,out var support,.3f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore)&&support.collider.GetComponentInParent<StarshipProp>()==aimed)
-            {Tell("서 있는 발판는 잡을 수 없습니다. 먼저 다른 발판으로 이동하세요.");return;}
-            foreach(var prop in props)
-            {
-                if(prop==aimed)continue;
-                var bounds=prop.WorldBounds;
-                if(Physics.Raycast(new Vector3(bounds.center.x,bounds.min.y+.04f,bounds.center.z),Vector3.down,out var below,.14f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore)&&below.collider.GetComponentInParent<StarshipProp>()==aimed)
-                {Tell("위에 놓인 사물을 먼저 옮겨 주세요.");return;}
-            }
-            held=aimed;pickupPosition=held.transform.position;pickupRotation=held.transform.rotation;pickupScale=held.transform.localScale;
-            held.InitializePhysics();pickupPlacement=held.placement.Capture();pickupFloating=held.floating;pickupDrift=held.driftDistance;pickupLastDrift=held.lastDriftPosition;
-            pickupKinematic=held.body.isKinematic;pickupGravity=held.body.useGravity;pickupSleeping=held.body.IsSleeping();
-            pickupVelocity=held.body.linearVelocity;pickupAngularVelocity=held.body.angularVelocity;
-            GrabLocalPoint=held.transform.InverseTransformPoint(aimHit.point);
-            referenceScale=held.transform.localScale.x;
-            referenceDistance=Mathf.Max(.01f,aimHit.distance);
-            holdDistance=referenceDistance;heldRotation=held.transform.rotation;invalid=false;
-            CachePlacementSamples();
-            PlacementBlocked=false;
-            held.BeginHold();
-            UpdateHeldPose();
-            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
-        }
+        public void UpdateAim() { Interaction.UpdateAim(); }
+        public void Interact() { Interaction.Interact(); }
         void CachePlacementSamples() { StarshipHold.Begin(this); }
         public float RequestedScale => StarshipHold.RequestedScale(this);
         // F remains a refresh shortcut; ordinary aiming already runs the same resolver every frame.
@@ -252,43 +208,8 @@ namespace ShadeLink.Starship
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop()
-        {
-            if(held==null)return false;
-            UpdateHeldPose();
-            // Release exactly the displayed pose, without resolving another surface on this click.
-            invalid=!ValidPlacement(held,out invalidReason);
-            if(invalid){held.Highlight(true,true);Tell(invalidReason);return false;}
-            held.Release();
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;StarshipHold.Clear(this);drops++;Physics.SyncTransforms();lighting.Synchronize();return true;
-        }
-        public void Cancel(bool force=false)
-        {
-            adjustingMirror=false;if(held==null)return;
-            Vector3 currentPosition=held.transform.position,currentScale=held.transform.localScale;
-            Quaternion currentRotation=held.transform.rotation;
-            held.transform.SetPositionAndRotation(pickupPosition,pickupRotation);held.transform.localScale=pickupScale;
-            if(!force)
-            {
-                foreach(var part in held.parts)if(IntersectsPlayer(part))
-                {
-                    held.transform.SetPositionAndRotation(currentPosition,currentRotation);held.transform.localScale=currentScale;
-                    Physics.SyncTransforms();Tell("잡기 전 위치에 서 있습니다. 옆으로 이동한 뒤 취소하세요.");return;
-                }
-            }
-            foreach(var p in held.parts)p.enabled=true;
-            if(held.isBall&&held.sphere!=null){held.sphere.enabled=!pickupKinematic;foreach(var part in held.parts)part.enabled=pickupKinematic;}
-            held.body.position=pickupPosition;held.body.rotation=pickupRotation;held.RefreshMass();
-            held.body.isKinematic=pickupKinematic;held.body.useGravity=pickupGravity;
-            held.body.collisionDetectionMode=pickupKinematic?CollisionDetectionMode.ContinuousSpeculative:CollisionDetectionMode.ContinuousDynamic;
-            if(!pickupKinematic)
-            {
-                held.body.linearVelocity=pickupVelocity;held.body.angularVelocity=pickupAngularVelocity;
-                if(pickupSleeping)held.body.Sleep();else held.body.WakeUp();
-            }
-            held.floating=pickupFloating;held.driftDistance=pickupDrift;held.lastDriftPosition=pickupLastDrift;held.placement.Restore(pickupPlacement);
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;StarshipHold.Clear(this);Physics.SyncTransforms();lighting.Synchronize();
-        }
+        public bool Drop() { return Interaction.Drop(); }
+        public void Cancel(bool force=false) { Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
@@ -343,6 +264,42 @@ namespace ShadeLink.Starship
             exposure=Mathf.Clamp01(exposure+dt*(safe?-1.2f:.72f));
             if(exposure>=1||player.feet.y< -3||StarshipWater.InHazard(player.feet))Respawn();
         }
+        ObjectInteraction<StarshipProp> interaction;
+        ObjectInteraction<StarshipProp> Interaction => interaction??(interaction=new ObjectInteraction<StarshipProp>(this));
+        Camera IObjectInteractionHost<StarshipProp>.Camera => view;
+        CharacterController IObjectInteractionHost<StarshipProp>.Controller => controller;
+        StarshipProp[] IObjectInteractionHost<StarshipProp>.Props => props;
+        StarshipProp IObjectInteractionHost<StarshipProp>.Held { get => held; set => held=value; }
+        StarshipProp IObjectInteractionHost<StarshipProp>.Aimed { get => aimed; set => aimed=value; }
+        int IObjectInteractionHost<StarshipProp>.InteractionMask => StarshipWorld.PhysicalMask;
+        bool IObjectInteractionHost<StarshipProp>.CanInteract => active&&!won;
+        void IObjectInteractionHost<StarshipProp>.AimChanged(RaycastHit hit)
+        {
+            aimedMirror=null;
+        }
+        bool IObjectInteractionHost<StarshipProp>.TrySpecialInteraction()
+        {
+            if(aimedMirror!=null)
+            {
+                adjustingMirror=!adjustingMirror;
+                Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);
+                return true;
+            }
+            adjustingMirror=false;return false;
+        }
+        void IObjectInteractionHost<StarshipProp>.CancelSpecialInteraction() { adjustingMirror=false; }
+        void IObjectInteractionHost<StarshipProp>.StartPlacement()
+        {
+            invalid=false;CachePlacementSamples();PlacementBlocked=false;held.BeginHold();
+            UpdateHeldPose();
+            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
+        }
+        void IObjectInteractionHost<StarshipProp>.PrepareRelease() { UpdateHeldPose(); }
+        bool IObjectInteractionHost<StarshipProp>.ValidateRelease(out string reason)
+        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
+        bool IObjectInteractionHost<StarshipProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
+        void IObjectInteractionHost<StarshipProp>.FinishInteraction(bool released) { invalid=false;StarshipHold.Clear(this);if(released)drops++;lighting.Synchronize(); }
+
     }
 }
 

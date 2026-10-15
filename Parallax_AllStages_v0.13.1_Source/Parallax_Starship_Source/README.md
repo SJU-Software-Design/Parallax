@@ -24,11 +24,23 @@ Q/E 회전 / Z/X 기울기 / C 바로 세우기 / H 구역 힌트 / T 설치 연
 R 구역 초기화 / Shift+R 전체 초기화 / Esc 메뉴.
 가까운 표면을 보면 작아지고 먼 표면을 보면 커집니다. 마우스 휠로 크기를 조절하지 않습니다.
 
+미술관·도서관·해변·우주선은 `Assets/Parallax/Shared/Scripts/ObjectInteraction.cs`의 잡기·놓기·취소 처리를 함께 사용합니다. 대상 선택과 배치 표면 탐색은 `InteractionRaycast.cs`를 사용하며 거리 상한이 없습니다. 보이는 먼 사물도 다시 잡을 수 있습니다. 벽의 가림, 사물 크기 범위, 맵 경계, 충돌 검사와 각 스테이지의 퍼즐 규칙은 유지합니다.
+
 [설치 규칙과 예외](Documentation/Placement/설치규칙안내.txt) · [검증 결과와 범위](Documentation/Placement/검증결과.txt) · [공통 코드 설명](Documentation/Placement/코드길잡이.md).
 [해변 안내](Documentation/Beach/플레이안내.txt) · [미술관 안내](Documentation/Gallery/플레이안내.txt) · [도서관 안내](Documentation/Library/플레이안내.txt).
 [우주선 안내](Documentation/Starship/플레이안내.txt) · [우주선 검증 범위](Documentation/Starship/검증결과.txt) · [변경 출처](Documentation/Starship/provenance.json).
 
 ## 빌드와 검사
+
+공통 상호작용 검사는 Unity Editor를 닫은 상태에서 아래처럼 실행합니다. Editor를 계속 사용할 때는 `Assets`, `Packages`, `ProjectSettings`를 별도 폴더에 복사하고 `-projectPath`에 그 경로를 지정하세요. 검사는 임시 씬에서 실제 물리 컴포넌트로 네 맵의 먼 거리 잡기·배치, 놓기·취소와 충돌 차단을 확인하고 JSON 결과를 남깁니다.
+
+```sh
+"/Applications/Unity/Hub/Editor/6000.3.24f1/Unity.app/Contents/MacOS/Unity" \
+  -batchmode -nographics -quit -projectPath "$PWD" \
+  -executeMethod ShadeLink.Editor.ObjectInteractionTests.Run \
+  -interactionReport /tmp/parallax-interaction-results.json \
+  -logFile /tmp/parallax-interaction.log
+```
 
 ```powershell
 .\Tools\Build\Build-Starship.ps1

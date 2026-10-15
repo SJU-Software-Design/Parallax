@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ShadeLink.Starship;
+using ShadeLink;
 using UnityEngine;
 
 // Companion patch: the shipped Prop, support, water and release code stay intact.
@@ -88,7 +89,7 @@ public static partial class StarshipHold
         Session s = Get(game);
         s.eye = game.view.transform.position; s.forward = game.view.transform.forward; s.requestedRotation = game.heldRotation;
         s.minDepth = game.held.minScale / s.ratio;
-        s.maxDepth = Mathf.Min(48f, game.held.maxScale / s.ratio);
+        s.maxDepth = game.held.maxScale / s.ratio;
         s.roomMin = s.minDepth; s.roomMax = s.maxDepth;
         RaycastHit selected = default(RaycastHit);
         bool surface = CenterSurface(s, out selected);
@@ -121,36 +122,14 @@ public static partial class StarshipHold
     }
     static bool CenterSurface(Session s, out RaycastHit selected)
     {
-        selected = default(RaycastHit); float closest = 49f;
-        int count;
-        while (true)
-        {
-            count = Physics.RaycastNonAlloc(s.eye,s.forward,s.hits,48f,Mask,QueryTriggerInteraction.Ignore);
-            s.queries++;
-            if (count < s.hits.Length) break;
-            if (s.hits.Length >= 4096)
-            {
-                // Rare saturation fallback: never assume unsorted truncated hits
-                // include the nearest non-self surface.
-                s.hits = Physics.RaycastAll(s.eye,s.forward,48f,Mask,QueryTriggerInteraction.Ignore);
-                count = s.hits.Length; break;
-            }
-            Array.Resize(ref s.hits,s.hits.Length*2);
-        }
-        for (int i = 0; i < count; i++)
-        {
-            RaycastHit hit = s.hits[i];
-            if (hit.collider == null || Own(s,hit.collider) || hit.collider == s.game.controller || hit.distance >= closest) continue;
-            selected = hit; closest = hit.distance;
-        }
-        return closest < 49f;
+        bool found=InteractionRaycast.Nearest(s.eye,s.forward,s.game.controller,s.prop.transform,Mask,
+            ref s.hits,out selected,out int queries);
+        s.queries+=queries;return found;
     }
     internal static bool Own(Session s, Collider other)
     { return other.GetComponentInParent<StarshipProp>() == s.prop; }
     internal static void Clip(float origin,float velocity,float min,float max,ref float lo,ref float hi)
     {
-        if (Mathf.Abs(velocity) < 1e-6f) { if (origin < min || origin > max) { lo=1; hi=0; } return; }
-        float a=(min-origin)/velocity,b=(max-origin)/velocity;
-        lo=Mathf.Max(lo,Mathf.Min(a,b)); hi=Mathf.Min(hi,Mathf.Max(a,b));
+        InteractionRaycast.ClipDepth(origin,velocity,min,max,ref lo,ref hi);
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ShadeLink.Library
 {
-    public sealed class LibraryGame : MonoBehaviour
+    public sealed class LibraryGame : MonoBehaviour, IObjectInteractionHost<LibraryProp>
     {
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=11;
+        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public LibraryLighting lighting;
@@ -15,26 +15,19 @@ namespace ShadeLink.Library
         public LibraryProp held, aimed;
         public Player player;
         public float yaw=-1f, pitch=-.08f, exposure, elapsed, verticalVelocity;
-        public float holdDistance { get; private set; }
-        public float referenceDistance { get; private set; }
-        public float referenceScale { get; private set; }
+        public float holdDistance { get => Interaction.Depth; private set => Interaction.Depth=value; }
+        public float referenceDistance => Interaction.ReferenceDistance;
+        public float referenceScale => Interaction.ReferenceScale;
         public bool HasPlacementSurface { get; private set; }
         public bool PlacementBlocked { get; private set; }
-        public Quaternion heldRotation;
+        public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
         public bool visitedUpper;
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
-        Vector3 pickupPosition, pickupScale;
-        Quaternion pickupRotation;
-        Vector3 pickupVelocity, pickupAngularVelocity;
-        bool pickupKinematic, pickupGravity, pickupSleeping;
-        PlacementSupport.Snapshot pickupPlacement;
         public PlacementLesson lesson;
-        RaycastHit aimHit;
-        readonly RaycastHit[] aimHits=new RaycastHit[64];
-        public Vector3 GrabLocalPoint { get; private set; }
+        public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
         readonly List<Vector3> placementSamples=new List<Vector3>();
         readonly RaycastHit[] placementHits=new RaycastHit[64];
         struct HoldShape { public Vector3 center,half; public Quaternion rotation; }
@@ -146,56 +139,8 @@ namespace ShadeLink.Library
             Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
             Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
         }
-        public void UpdateAim()
-        {
-            LibraryProp previous=aimed;aimed=null;
-            aimHit=default;
-            if(held==null)
-            {
-                // The camera can lie inside PhysX's inflated character query volume.
-                // Ignore only our controller, while the nearest real wall/prop still occludes.
-                int count=Physics.RaycastNonAlloc(view.transform.position,view.transform.forward,aimHits,Reach,~0,QueryTriggerInteraction.Ignore);
-                float nearest=float.PositiveInfinity;
-                for(int i=0;i<count;i++)
-                {
-                    var hit=aimHits[i];
-                    if(hit.collider==controller||hit.distance>=nearest)continue;
-                    nearest=hit.distance;aimHit=hit;
-                }
-                if(aimHit.collider!=null)aimed=aimHit.collider.GetComponentInParent<LibraryProp>();
-            }
-            if(previous!=null&&previous!=held&&previous!=aimed)previous.Highlight(false,false);
-            if(aimed!=null)aimed.Highlight(true,false);
-        }
-        public void Interact()
-        {
-            if(!active||won)return;
-            if(held!=null){Drop();return;}
-            UpdateAim();if(aimed==null)return;
-            if(Physics.Raycast(controller.transform.position+Vector3.up*.15f,Vector3.down,out var support,.3f)&&support.collider.GetComponentInParent<LibraryProp>()==aimed)
-            {Tell("서 있는 사물은 잡을 수 없습니다. 먼저 바닥이나 다른 발판으로 이동하세요.");return;}
-            foreach(var prop in props)
-            {
-                if(prop==aimed)continue;
-                var bounds=prop.WorldBounds;
-                if(Physics.Raycast(new Vector3(bounds.center.x,bounds.min.y+.04f,bounds.center.z),Vector3.down,out var below,.14f)&&below.collider.GetComponentInParent<LibraryProp>()==aimed)
-                {Tell("위에 놓인 책이나 사물을 먼저 옮겨 주세요.");return;}
-            }
-            held=aimed;pickupPosition=held.transform.position;pickupRotation=held.transform.rotation;pickupScale=held.transform.localScale;
-            held.InitializePhysics();pickupPlacement=held.placement.Capture();
-            pickupKinematic=held.body.isKinematic;pickupGravity=held.body.useGravity;pickupSleeping=held.body.IsSleeping();
-            pickupVelocity=held.body.linearVelocity;pickupAngularVelocity=held.body.angularVelocity;
-            GrabLocalPoint=held.transform.InverseTransformPoint(aimHit.point);
-            referenceScale=held.transform.localScale.x;
-            referenceDistance=Mathf.Max(.01f,aimHit.distance);
-            holdDistance=referenceDistance;heldRotation=held.transform.rotation;invalid=false;
-            CachePlacementSamples();
-            initialPlacement=true;PlacementBlocked=false;
-            held.BeginHold();
-            bookExtraction=false;
-            if(held.kind=="Book")ExtractBook();else UpdateHeldPose();
-            grabs++;Tell("시선으로 가까운 곳·먼 곳을 조준하면 크기가 자동으로 바뀝니다 · 클릭으로 놓기",6);
-        }
+        public void UpdateAim() { Interaction.UpdateAim(); }
+        public void Interact() { Interaction.Interact(); }
         void ExtractBook()
         {
             // A selected book must leave its narrow shelf compartment before turning.
@@ -242,55 +187,19 @@ namespace ShadeLink.Library
         public float RequestedScale => held==null?1:referenceScale*holdDistance/referenceDistance;
         // F remains a refresh shortcut; ordinary aiming already runs the same resolver every frame.
         public void MatchSurfaceDepth() { UpdateHeldPose(); }
-        bool PlacementRay(Vector3 velocity,out float depth)
-        {
-            float length=velocity.magnitude;depth=48;bool found=false;
-            if(length<.00001f)return false;
-            int count=Physics.RaycastNonAlloc(view.transform.position,velocity/length,placementHits,48*length,~0,QueryTriggerInteraction.Ignore);
-            for(int i=0;i<count;i++)
-            {
-                var hit=placementHits[i];
-                if(hit.collider==controller||hit.collider.GetComponentInParent<LibraryProp>()==held)continue;
-                depth=Mathf.Min(depth,(hit.distance-.02f)/length);found=true;
-            }
-            return found;
-        }
-        static void ClipDepth(float origin,float velocity,float minimum,float maximum,ref float lo,ref float hi)
-        {
-            if(Mathf.Abs(velocity)<.000001f)
-            {if(origin<minimum||origin>maximum){lo=1;hi=0;}return;}
-            float a=(minimum-origin)/velocity,b=(maximum-origin)/velocity;
-            lo=Mathf.Max(lo,Mathf.Min(a,b));hi=Mathf.Min(hi,Mathf.Max(a,b));
-        }
         void ResolvePlacementDepth()
         {
-            Vector3 eye=view.transform.position,forward=view.transform.forward;
-            float ratio=referenceScale/referenceDistance;
-            float minDepth=held.minScale/ratio,maxDepth=Mathf.Min(48,held.maxScale/ratio);
-            float roomMin=minDepth,roomMax=maxDepth;
-            Vector2 zone=LibraryWorld.ZoneDepth(held.zone);
-            Bounds room=LibraryWorld.PlayBounds;
-            bool surface=PlacementRay(forward,out float surfaceDepth);
-            foreach(var local in placementSamples)
-            {
-                // Every point moves along a ray from the eye as distance and scale grow together.
-                Vector3 velocity=forward+heldRotation*((local-GrabLocalPoint)*ratio);
-                if(PlacementRay(velocity,out float contact)){surfaceDepth=Mathf.Min(surfaceDepth,contact);surface=true;}
-                ClipDepth(eye.x,velocity.x,room.min.x+.01f,room.max.x-.01f,ref roomMin,ref roomMax);
-                ClipDepth(eye.y,velocity.y,.006f,room.max.y-.01f,ref roomMin,ref roomMax);
-                ClipDepth(eye.z,velocity.z,zone.x+.01f,zone.y-.01f,ref roomMin,ref roomMax);
-            }
-            HasPlacementSurface=surface;
-            // Looking through an opening retains the last depth for free airborne placement.
-            float target=surface?surfaceDepth:holdDistance;
-            // Keep the short extraction distance while still aiming into that same slot.
-            // Once the player turns away, ordinary surface-distance placement resumes.
+            Vector2 zone=LibraryWorld.ZoneDepth(held.zone);Bounds room=LibraryWorld.PlayBounds;
+            var minimum=new Vector3(room.min.x+.01f,.006f,zone.x+.01f);
+            var maximum=new Vector3(room.max.x-.01f,room.max.y-.01f,zone.y-.01f);
+            float maximumIntent=float.PositiveInfinity;
             if(bookExtraction)
             {
-                if(Vector3.Angle(forward,bookExtractionDirection)<12f)target=Mathf.Min(target,bookExtractionDepth);
+                if(Vector3.Angle(view.transform.forward,bookExtractionDirection)<12f)maximumIntent=bookExtractionDepth;
                 else bookExtraction=false;
             }
-            holdDistance=roomMin<=roomMax?Mathf.Clamp(target,roomMin,roomMax):Mathf.Clamp(target,minDepth,maxDepth);
+            Interaction.ResolveDepth(placementSamples,minimum,maximum,out bool surface,maximumIntent);
+            HasPlacementSurface=surface;
         }
         public void RotateHeld(float yawDegrees,float pitchDegrees)
         {
@@ -434,34 +343,8 @@ namespace ShadeLink.Library
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop()
-        {
-            if(held==null)return false;
-            // Release exactly the displayed pose, without resolving another surface on this click.
-            invalid=!ValidPlacement(held,out invalidReason);
-            if(invalid){held.Highlight(true,true);Tell(invalidReason);return false;}
-            held.Release();
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;drops++;Physics.SyncTransforms();lighting.Synchronize();return true;
-        }
-        public void Cancel(bool force=false)
-        {
-            if(held==null)return;
-            Vector3 currentPosition=held.transform.position,currentScale=held.transform.localScale;Quaternion currentRotation=held.transform.rotation;
-            held.transform.SetPositionAndRotation(pickupPosition,pickupRotation);held.transform.localScale=pickupScale;
-            if(!force)foreach(var part in held.parts)if(IntersectsPlayer(part))
-            {held.transform.SetPositionAndRotation(currentPosition,currentRotation);held.transform.localScale=currentScale;Physics.SyncTransforms();Tell("잡기 전 위치에 서 있습니다. 옆으로 이동한 뒤 취소하세요.");return;}
-            foreach(var p in held.parts)p.enabled=true;
-            held.body.position=pickupPosition;held.body.rotation=pickupRotation;held.RefreshMass();
-            held.body.isKinematic=pickupKinematic;held.body.useGravity=pickupGravity;
-            held.body.collisionDetectionMode=pickupKinematic?CollisionDetectionMode.ContinuousSpeculative:CollisionDetectionMode.ContinuousDynamic;
-            if(!pickupKinematic)
-            {
-                held.body.linearVelocity=pickupVelocity;held.body.angularVelocity=pickupAngularVelocity;
-                if(pickupSleeping)held.body.Sleep();else held.body.WakeUp();
-            }
-            held.placement.Restore(pickupPlacement);
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;Physics.SyncTransforms();lighting.Synchronize();
-        }
+        public bool Drop() { return Interaction.Drop(); }
+        public void Cancel(bool force=false) { Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
@@ -503,5 +386,34 @@ namespace ShadeLink.Library
             exposure=Mathf.Clamp01(exposure+dt*(safe?-1.7f:2.2f));
             if(exposure>=1||player.feet.y< -3)Respawn();
         }
+        ObjectInteraction<LibraryProp> interaction;
+        ObjectInteraction<LibraryProp> Interaction => interaction??(interaction=new ObjectInteraction<LibraryProp>(this));
+        Camera IObjectInteractionHost<LibraryProp>.Camera => view;
+        CharacterController IObjectInteractionHost<LibraryProp>.Controller => controller;
+        LibraryProp[] IObjectInteractionHost<LibraryProp>.Props => props;
+        LibraryProp IObjectInteractionHost<LibraryProp>.Held { get => held; set => held=value; }
+        LibraryProp IObjectInteractionHost<LibraryProp>.Aimed { get => aimed; set => aimed=value; }
+        int IObjectInteractionHost<LibraryProp>.InteractionMask => ~0;
+        bool IObjectInteractionHost<LibraryProp>.CanInteract => active&&!won;
+        void IObjectInteractionHost<LibraryProp>.AimChanged(RaycastHit hit)
+        {
+        }
+        bool IObjectInteractionHost<LibraryProp>.TrySpecialInteraction()
+        {
+            return false;
+        }
+        void IObjectInteractionHost<LibraryProp>.CancelSpecialInteraction() {  }
+        void IObjectInteractionHost<LibraryProp>.StartPlacement()
+        {
+            invalid=false;CachePlacementSamples();initialPlacement=true;PlacementBlocked=false;held.BeginHold();
+            bookExtraction=false;if(held.kind=="Book")ExtractBook();else UpdateHeldPose();
+            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
+        }
+        void IObjectInteractionHost<LibraryProp>.PrepareRelease() {  }
+        bool IObjectInteractionHost<LibraryProp>.ValidateRelease(out string reason)
+        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
+        bool IObjectInteractionHost<LibraryProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
+        void IObjectInteractionHost<LibraryProp>.FinishInteraction(bool released) { invalid=false;if(released)drops++;lighting.Synchronize(); }
+
     }
 }
