@@ -12,6 +12,7 @@ namespace ShadeLink.Gallery
         Camera reflectionCamera;
         RenderTexture reflectionTexture;
         Material mirrorMaterial, rayMaterial;
+        MaterialPropertyBlock highlightBlock;
         LineRenderer incoming, outgoing;
         public Vector3 ReflectedDirection => Vector3.Reflect(-GalleryLighting.ToSun, transform.forward).normalized;
         public void Restore() { angle = homeAngle; ApplyAngle(); }
@@ -25,9 +26,9 @@ namespace ShadeLink.Gallery
         public void Highlight(bool selected)
         {
             if (face == null) return;
-            var block = new MaterialPropertyBlock();
-            block.SetColor("_Selection", selected ? new Color(.02f, .15f, .13f) : Color.black);
-            face.SetPropertyBlock(block);
+            if (highlightBlock == null) highlightBlock = new MaterialPropertyBlock();
+            highlightBlock.SetColor("_Selection", selected ? new Color(.02f, .15f, .13f) : Color.black);
+            face.SetPropertyBlock(highlightBlock);
         }
         void Start()
         {

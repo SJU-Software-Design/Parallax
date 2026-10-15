@@ -23,12 +23,19 @@ public static partial class StarshipHold
     }
 
     public static string Status(StarshipGame game) { return game.held == null ? "None" : Get(game).status; }
-    public static int QueryCount(StarshipGame game) { return game.held == null ? 0 : Get(game).queries; }
+    public static int QueryCount(StarshipGame game) { return RecoveryQueryCount(game)+(game.held==null?0:game.SharedPlacementQueries); }
+    public static int RecoveryQueryCount(StarshipGame game) { return game.held == null ? 0 : Get(game).queries; }
     public static void Update(StarshipGame game)
     {
         if (game.held == null) { Sessions.Remove(game); return; }
         Session s = Get(game); s.queries=0; s.exhausted=false; s.finishing=false; s.obstacle=null;
         Resolve(game);
+        if(s.feasible&&game.TryApplySharedPlacement())
+        {
+            s.routeStage=-1;s.status="Tracking";s.history.Clear();Record(s,Current(s));
+            s.setBlocked(false);s.setObstacle(null);game.invalid=false;
+            game.held.Highlight(true,false);game.lighting.Synchronize();return;
+        }
         if(s.routeStage>=0 && (Vector3.Distance(s.eye,s.routeEye)>.15f || Vector3.Angle(s.forward,s.routeAim)>10f ||
             Quaternion.Angle(s.requestedRotation,s.routeRotation)>10f || Mathf.Abs(s.desired-s.routeRequest)>.15f))
         {s.routeStage=-1;s.routeCandidate=0;}
@@ -113,7 +120,8 @@ public static partial class StarshipHold
         s.setBlocked(blocked); s.setObstacle(blocked?s.obstacle:null);
         // Same bounds/player/shape rules as shipped validation, with every
         // endpoint physics query counted and space reserved for this final check.
-        s.finishing=true;game.invalid=!CheckPose(s,accepted,out game.invalidReason);s.finishing=false;
+        s.finishing=true;game.invalid=!CheckPose(s,accepted,out game.invalidReason)||!s.feasible;s.finishing=false;
+        if(!s.feasible)game.invalidReason="현재 크기로 조준한 위치에 놓을 공간이 없습니다.";
         Physics.SyncTransforms();
         game.held.Highlight(true,game.invalid);
         game.lighting.Synchronize();

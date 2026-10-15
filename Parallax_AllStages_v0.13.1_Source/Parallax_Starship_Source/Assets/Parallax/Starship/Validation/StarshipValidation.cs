@@ -16,10 +16,10 @@ namespace ShadeLink.Starship
         [Serializable] sealed class Report
         {
             public bool passed;public string version,scope,failure;public string[] checks,errors;
-            public int props,shadowMeshes,maxHoldQueries;
+            public int props,shadowMeshes,maxHoldQueries,maxRecoveryQueries;
             public float growth,driftDistance;
         }
-        int maxQueries;float growth,drift;
+        int maxQueries,maxRecoveryQueries;float growth,drift;
         void Require(bool value,string message)
         {if(!value)throw new Exception(message);checks.Add(message);Debug.Log("STARSHIP_PASS "+message);}
         void Log(string message,string stack,LogType kind)
@@ -32,7 +32,12 @@ namespace ShadeLink.Starship
         {
             game.Tick(Dt,move,jump);
             foreach(var w in FindObjectsByType<StarshipWater>(FindObjectsSortMode.None))w.Simulate(Dt);
-            Physics.Simulate(Dt);maxQueries=Mathf.Max(maxQueries,StarshipHold.QueryCount(game));
+            Physics.Simulate(Dt);RecordQueries();
+        }
+        void RecordQueries()
+        {
+            maxQueries=Mathf.Max(maxQueries,StarshipHold.QueryCount(game));
+            maxRecoveryQueries=Mathf.Max(maxRecoveryQueries,StarshipHold.RecoveryQueryCount(game));
         }
         void Settle(int count=45){for(int i=0;i<count;i++)Step(Vector2.zero);}
         IEnumerator WalkTo(Vector3 target,bool jump=false)
@@ -95,7 +100,7 @@ namespace ShadeLink.Starship
                 if(!more){sequences.Pop();continue;}
                 if(next is IEnumerator nested)sequences.Push(nested);else yield return next;
             }
-            var report=new Report{passed=failure==null&&errors.Count==0,version=StarshipGame.Version,scope="Runtime Unity/PhysX camera interaction and HoldFix port regressions. Explicit prepared fixtures isolate optical, rack, bridge, current, high-deck and enlarged EXIT mechanisms. Corridor traversal and ending run via normal Tick movement. Images are explicit camera renders; hidden-window IMGUI capture is unavailable. This is not an unassisted full-map solve or a human difficulty/FPS benchmark.",failure=failure?.ToString(),checks=checks.ToArray(),errors=errors.ToArray(),props=game.props.Length,shadowMeshes=game.lighting.Count,maxHoldQueries=maxQueries,growth=growth,driftDistance=drift};
+            var report=new Report{passed=failure==null&&errors.Count==0,version=StarshipGame.Version,scope="Runtime Unity/PhysX camera interaction and HoldFix port regressions. Explicit prepared fixtures isolate optical, rack, bridge, current, high-deck and enlarged EXIT mechanisms. Corridor traversal and ending run via normal Tick movement. Images are explicit camera renders; hidden-window IMGUI capture is unavailable. This is not an unassisted full-map solve or a human difficulty/FPS benchmark.",failure=failure?.ToString(),checks=checks.ToArray(),errors=errors.ToArray(),props=game.props.Length,shadowMeshes=game.lighting.Count,maxHoldQueries=maxQueries,maxRecoveryQueries=maxRecoveryQueries,growth=growth,driftDistance=drift};
             File.WriteAllText(Path.Combine(output,"starship-results.json"),JsonUtility.ToJson(report,true));Physics.simulationMode=previous;Application.logMessageReceived-=Log;
             Application.Quit(report.passed?0:1);
         }
@@ -139,10 +144,11 @@ namespace ShadeLink.Starship
             var b=cargo.WorldBounds;
             var blocker=StarshipWorld.Box("Regression / side contact",b.center+Vector3.right*(b.extents.x+.13f),new Vector3(.24f,3,2),cargo.renderers[0].sharedMaterial);
             Look(StarshipWorld.Point(0,new Vector3(-5,.1f,3)));
-            for(int i=0;i<180;i++){game.UpdateHeldPose();maxQueries=Mathf.Max(maxQueries,StarshipHold.QueryCount(game));}
+            for(int i=0;i<180;i++){game.UpdateHeldPose();RecordQueries();}
             Vector3 anchor=cargo.transform.TransformPoint(game.GrabLocalPoint)-game.view.transform.position;
             Require(Vector3.Angle(anchor,game.view.transform.forward)<1.2f&&!game.invalid,"Contacted equipment recovers to a newly aimed free location");
-            Require(maxQueries<=256,"Held movement stays inside the inherited per-update query budget");
+            Require(maxRecoveryQueries<=256,"Contact recovery stays inside its inherited 256-query budget");
+            Require(maxQueries>maxRecoveryQueries,"Held query telemetry includes dense perspective rays and endpoint refinement");
             UnityEngine.Object.DestroyImmediate(blocker);game.Cancel();
             Require(game.held==null&&Vector3.Distance(cargo.transform.position,home)<.01f&&Vector3.Distance(cargo.transform.localScale,homeScale)<.01f,"Cancel restores pickup pose/scale after obstruction recovery");
             game.ResetAll();game.Resume();Grab(cargo);

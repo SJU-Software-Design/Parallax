@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ShadeLink.Gallery
 {
-    public sealed class GalleryGame : MonoBehaviour
+    public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=11;
+        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public GalleryLighting lighting;
@@ -18,26 +18,20 @@ namespace ShadeLink.Gallery
         public bool adjustingMirror;
         public Player player;
         public float yaw, pitch=-.08f, exposure, elapsed, verticalVelocity;
-        public float holdDistance { get; private set; }
-        public float referenceDistance { get; private set; }
-        public float referenceScale { get; private set; }
+        public float holdDistance { get => Interaction.Depth; private set => Interaction.Depth=value; }
+        public float referenceDistance => Interaction.ReferenceDistance;
+        public float referenceScale => Interaction.ReferenceScale;
         public bool HasPlacementSurface { get; private set; }
         public bool PlacementBlocked { get; private set; }
         public string PlacementObstacle { get; private set; }
-        public Quaternion heldRotation;
+        public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
         public bool visitedUpper;
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
-        Vector3 pickupPosition, pickupScale;
-        Quaternion pickupRotation;
-        Vector3 pickupVelocity, pickupAngularVelocity;
-        bool pickupKinematic, pickupGravity, pickupSleeping;
-        PlacementSupport.Snapshot pickupPlacement;
         public PlacementLesson lesson;
-        RaycastHit aimHit;
-        public Vector3 GrabLocalPoint { get; private set; }
+        public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
         readonly List<Vector3> placementSamples=new List<Vector3>();
         readonly RaycastHit[] placementHits=new RaycastHit[64];
         struct HoldShape { public Vector3 center,half; public Quaternion rotation; }
@@ -162,45 +156,8 @@ namespace ShadeLink.Gallery
             Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
             Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
         }
-        public void UpdateAim()
-        {
-            GalleryProp previous=aimed;aimed=null;aimedMirror=null;
-            if(held==null&&Physics.Raycast(view.transform.position,view.transform.forward,out aimHit,Reach,~0,QueryTriggerInteraction.Ignore))
-            {aimed=aimHit.collider.GetComponentInParent<GalleryProp>();aimedMirror=aimHit.collider.GetComponentInParent<GalleryMirror>();}
-            if(previous!=null&&previous!=held&&previous!=aimed)previous.Highlight(false,false);
-            if(aimed!=null)aimed.Highlight(true,false);
-            if(mirror!=null)mirror.Highlight(adjustingMirror||aimedMirror==mirror);
-        }
-        public void Interact()
-        {
-            if(!active||won)return;
-            if(held!=null){Drop();return;}
-            UpdateAim();
-            if(aimedMirror!=null){adjustingMirror=!adjustingMirror;Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);return;}
-            adjustingMirror=false;if(aimed==null)return;
-            if(Physics.Raycast(controller.transform.position+Vector3.up*.15f,Vector3.down,out var support,.3f)&&support.collider.GetComponentInParent<GalleryProp>()==aimed)
-            {Tell("서 있는 전시대는 잡을 수 없습니다. 먼저 다른 발판으로 이동하세요.");return;}
-            foreach(var prop in props)
-            {
-                if(prop==aimed)continue;
-                var bounds=prop.WorldBounds;
-                if(Physics.Raycast(new Vector3(bounds.center.x,bounds.min.y+.04f,bounds.center.z),Vector3.down,out var below,.14f)&&below.collider.GetComponentInParent<GalleryProp>()==aimed)
-                {Tell("위에 놓인 전시물을 먼저 옮겨 주세요.");return;}
-            }
-            held=aimed;pickupPosition=held.transform.position;pickupRotation=held.transform.rotation;pickupScale=held.transform.localScale;
-            held.InitializePhysics();pickupPlacement=held.placement.Capture();
-            pickupKinematic=held.body.isKinematic;pickupGravity=held.body.useGravity;pickupSleeping=held.body.IsSleeping();
-            pickupVelocity=held.body.linearVelocity;pickupAngularVelocity=held.body.angularVelocity;
-            GrabLocalPoint=held.transform.InverseTransformPoint(aimHit.point);
-            referenceScale=held.transform.localScale.x;
-            referenceDistance=Mathf.Max(.01f,aimHit.distance);
-            holdDistance=referenceDistance;heldRotation=held.transform.rotation;invalid=false;
-            CachePlacementSamples();
-            initialPlacement=true;PlacementBlocked=false;
-            held.BeginHold();
-            UpdateHeldPose();
-            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
-        }
+        public void UpdateAim() { Interaction.UpdateAim(); }
+        public void Interact() { Interaction.Interact(); }
         void CachePlacementSamples()
         {
             placementSamples.Clear();
@@ -223,47 +180,12 @@ namespace ShadeLink.Gallery
         public float RequestedScale => held==null?1:held.transform.localScale.x;
         // F remains a refresh shortcut; ordinary aiming already runs the same resolver every frame.
         public void MatchSurfaceDepth() { UpdateHeldPose(); }
-        bool PlacementRay(Vector3 velocity,out float depth)
-        {
-            float length=velocity.magnitude;depth=48;bool found=false;
-            if(length<.00001f)return false;
-            int count=Physics.RaycastNonAlloc(view.transform.position,velocity/length,placementHits,48*length,~0,QueryTriggerInteraction.Ignore);
-            for(int i=0;i<count;i++)
-            {
-                var hit=placementHits[i];
-                if(hit.collider==controller||hit.collider.GetComponentInParent<GalleryProp>()==held)continue;
-                depth=Mathf.Min(depth,(hit.distance-.02f)/length);found=true;
-            }
-            return found;
-        }
-        static void ClipDepth(float origin,float velocity,float minimum,float maximum,ref float lo,ref float hi)
-        {
-            if(Mathf.Abs(velocity)<.000001f)
-            {if(origin<minimum||origin>maximum){lo=1;hi=0;}return;}
-            float a=(minimum-origin)/velocity,b=(maximum-origin)/velocity;
-            lo=Mathf.Max(lo,Mathf.Min(a,b));hi=Mathf.Min(hi,Mathf.Max(a,b));
-        }
         void ResolvePlacementDepth()
         {
-            Vector3 eye=view.transform.position,forward=view.transform.forward;
-            float ratio=referenceScale/referenceDistance;
-            float minDepth=held.minScale/ratio,maxDepth=Mathf.Min(48,held.maxScale/ratio);
-            float roomMin=minDepth,roomMax=maxDepth;
-            float zoneNear=new[]{.18f,14.3f,27.3f,40.3f}[held.zone],zoneFar=new[]{13.7f,26.7f,39.75f,53.8f}[held.zone];
-            bool surface=PlacementRay(forward,out float surfaceDepth);
-            foreach(var local in placementSamples)
-            {
-                // Every point moves along a ray from the eye as distance and scale grow together.
-                Vector3 velocity=forward+heldRotation*((local-GrabLocalPoint)*ratio);
-                if(PlacementRay(velocity,out float contact)){surfaceDepth=Mathf.Min(surfaceDepth,contact);surface=true;}
-                ClipDepth(eye.x,velocity.x,-13.79f,13.79f,ref roomMin,ref roomMax);
-                ClipDepth(eye.y,velocity.y,.006f,9.74f,ref roomMin,ref roomMax);
-                ClipDepth(eye.z,velocity.z,zoneNear+.01f,zoneFar-.01f,ref roomMin,ref roomMax);
-            }
+            float near=new[]{.18f,14.3f,27.3f,40.3f}[held.zone],far=new[]{13.7f,26.7f,39.75f,53.8f}[held.zone];
+            var minimum=new Vector3(-13.79f,.006f,near+.01f);var maximum=new Vector3(13.79f,9.74f,far-.01f);
+            Interaction.ResolveDepth(minimum,maximum,out bool surface);
             HasPlacementSurface=surface;
-            // Looking through an opening retains the last depth for free airborne placement.
-            float target=surface?surfaceDepth:holdDistance;
-            holdDistance=roomMin<=roomMax?Mathf.Clamp(target,roomMin,roomMax):Mathf.Clamp(target,minDepth,maxDepth);
         }
         public void RotateHeld(float yawDegrees,float pitchDegrees)
         {
@@ -279,6 +201,17 @@ namespace ShadeLink.Gallery
             start.direction=oldAnchor.normalized;start.depth=oldAnchor.magnitude;
             Quaternion requestedRotation=heldRotation;
             ResolvePlacementDepth();
+            if(!Interaction.PlacementFeasible)
+            {
+                PlacementBlocked=true;invalid=true;invalidReason="현재 크기로 조준한 위치에 놓을 공간이 없습니다.";
+                held.Highlight(true,true);return;
+            }
+            if(Interaction.TryApplyPlacement())
+            {
+                initialPlacement=false;PlacementBlocked=false;invalid=false;
+                PlacementObstacle=null;
+                held.Highlight(true,false);lighting.Synchronize();return;
+            }
             HoldPose target=PerspectivePose(eye,view.transform.forward,holdDistance,requestedRotation);
             HoldPose accepted=start;PlacementBlocked=false;PlacementObstacle=null;
             // Mounted pictures start with a tiny wall/boundary overlap. Detach only a short,
@@ -326,7 +259,7 @@ namespace ShadeLink.Gallery
                 }
                 if(!PlacementBlocked)initialPlacement=false;
             }
-            ApplyPreview(accepted);holdDistance=accepted.depth;heldRotation=accepted.rotation;
+            ApplyPreview(accepted);
             Physics.SyncTransforms();
             invalid=!ValidPlacement(held,out invalidReason);held.Highlight(true,invalid);lighting.Synchronize();
         }
@@ -413,41 +346,8 @@ namespace ShadeLink.Gallery
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop()
-        {
-            if(held==null)return false;
-            // Release exactly the displayed pose, without resolving another surface on this click.
-            invalid=!ValidPlacement(held,out invalidReason);
-            if(invalid){held.Highlight(true,true);Tell(invalidReason);return false;}
-            held.Release();
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;drops++;Physics.SyncTransforms();lighting.Synchronize();return true;
-        }
-        public void Cancel(bool force=false)
-        {
-            adjustingMirror=false;if(held==null)return;
-            Vector3 currentPosition=held.transform.position,currentScale=held.transform.localScale;
-            Quaternion currentRotation=held.transform.rotation;
-            held.transform.SetPositionAndRotation(pickupPosition,pickupRotation);held.transform.localScale=pickupScale;
-            if(!force)
-            {
-                foreach(var part in held.parts)if(IntersectsPlayer(part))
-                {
-                    held.transform.SetPositionAndRotation(currentPosition,currentRotation);held.transform.localScale=currentScale;
-                    Physics.SyncTransforms();Tell("잡기 전 위치에 서 있습니다. 옆으로 이동한 뒤 취소하세요.");return;
-                }
-            }
-            foreach(var p in held.parts)p.enabled=true;
-            held.body.position=pickupPosition;held.body.rotation=pickupRotation;held.RefreshMass();
-            held.body.isKinematic=pickupKinematic;held.body.useGravity=pickupGravity;
-            held.body.collisionDetectionMode=pickupKinematic?CollisionDetectionMode.ContinuousSpeculative:CollisionDetectionMode.ContinuousDynamic;
-            if(!pickupKinematic)
-            {
-                held.body.linearVelocity=pickupVelocity;held.body.angularVelocity=pickupAngularVelocity;
-                if(pickupSleeping)held.body.Sleep();else held.body.WakeUp();
-            }
-            held.placement.Restore(pickupPlacement);
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;Physics.SyncTransforms();lighting.Synchronize();
-        }
+        public bool Drop() { return Interaction.Drop(); }
+        public void Cancel(bool force=false) { Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
@@ -490,5 +390,42 @@ namespace ShadeLink.Gallery
             exposure=Mathf.Clamp01(exposure+dt*(safe?-1.7f:2.2f));
             if(exposure>=1||player.feet.y< -3)Respawn();
         }
+        ObjectInteraction<GalleryProp> interaction;
+        ObjectInteraction<GalleryProp> Interaction => interaction??(interaction=new ObjectInteraction<GalleryProp>(this));
+        Camera IObjectInteractionHost<GalleryProp>.Camera => view;
+        CharacterController IObjectInteractionHost<GalleryProp>.Controller => controller;
+        GalleryProp[] IObjectInteractionHost<GalleryProp>.Props => props;
+        GalleryProp IObjectInteractionHost<GalleryProp>.Held { get => held; set => held=value; }
+        GalleryProp IObjectInteractionHost<GalleryProp>.Aimed { get => aimed; set => aimed=value; }
+        int IObjectInteractionHost<GalleryProp>.InteractionMask => ~0;
+        bool IObjectInteractionHost<GalleryProp>.CanInteract => active&&!won;
+        void IObjectInteractionHost<GalleryProp>.AimChanged(RaycastHit hit)
+        {
+            aimedMirror=hit.collider==null?null:hit.collider.GetComponentInParent<GalleryMirror>();
+            if(mirror!=null)mirror.Highlight(adjustingMirror||aimedMirror==mirror);
+        }
+        bool IObjectInteractionHost<GalleryProp>.TrySpecialInteraction()
+        {
+            if(aimedMirror!=null)
+            {
+                adjustingMirror=!adjustingMirror;
+                Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);
+                return true;
+            }
+            adjustingMirror=false;return false;
+        }
+        void IObjectInteractionHost<GalleryProp>.CancelSpecialInteraction() { adjustingMirror=false; }
+        void IObjectInteractionHost<GalleryProp>.StartPlacement()
+        {
+            invalid=false;CachePlacementSamples();initialPlacement=true;PlacementBlocked=false;held.BeginHold();
+            UpdateHeldPose();
+            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
+        }
+        void IObjectInteractionHost<GalleryProp>.PrepareRelease() {  }
+        bool IObjectInteractionHost<GalleryProp>.ValidateRelease(out string reason)
+        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
+        bool IObjectInteractionHost<GalleryProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
+        void IObjectInteractionHost<GalleryProp>.FinishInteraction(bool released) { invalid=false;if(released)drops++;lighting.Synchronize(); }
+
     }
 }

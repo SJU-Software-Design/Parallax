@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShadeLink.Beach
 {
-    public sealed class BeachProp : MonoBehaviour
+    public sealed class BeachProp : MonoBehaviour, IInteractionProp
     {
         public string title;
         public int zone;
@@ -118,5 +118,16 @@ namespace ShadeLink.Beach
             properties.SetColor("_EmissionColor", selected ? (invalid ? new Color(.55f, .065f, .025f) : new Color(.025f, .16f, .24f)) : Color.black);
             foreach (var r in renderers) r.SetPropertyBlock(properties);
         }
+        Rigidbody IInteractionProp.Body => body;
+        BoxCollider[] IInteractionProp.Parts => parts;
+        PlacementSupport IInteractionProp.Placement => placement;
+        float IInteractionProp.MinScale => minScale;
+        float IInteractionProp.MaxScale => maxScale;
+        Action IInteractionProp.CaptureAuxiliaryState()
+        {
+            bool wasFloating=floating;float drift=driftDistance;Vector3 last=lastDriftPosition;
+            return ()=>{floating=wasFloating;driftDistance=drift;lastDriftPosition=last;};
+        }
+
     }
 }
