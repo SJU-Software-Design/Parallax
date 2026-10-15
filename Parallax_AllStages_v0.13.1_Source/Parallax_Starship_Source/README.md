@@ -24,7 +24,9 @@ Q/E 회전 / Z/X 기울기 / C 바로 세우기 / H 구역 힌트 / T 설치 연
 R 구역 초기화 / Shift+R 전체 초기화 / Esc 메뉴.
 가까운 표면을 보면 작아지고 먼 표면을 보면 커집니다. 마우스 휠로 크기를 조절하지 않습니다.
 
-미술관·도서관·해변·우주선은 `Assets/Parallax/Shared/Scripts/ObjectInteraction.cs`의 잡기·놓기·취소 처리를 함께 사용합니다. 대상 선택과 배치 표면 탐색은 `InteractionRaycast.cs`를 사용하며 거리 상한이 없습니다. 보이는 먼 사물도 다시 잡을 수 있습니다. 벽의 가림, 사물 크기 범위, 맵 경계, 충돌 검사와 각 스테이지의 퍼즐 규칙은 유지합니다.
+미술관·도서관·해변·우주선은 `Assets/Parallax/Shared/Scripts/ObjectInteraction.cs`의 잡기·놓기·취소 처리를 함께 사용합니다. 대상 선택과 배치 표면 탐색은 `InteractionRaycast.cs`를 사용하며 거리 상한이 없습니다. 보이는 먼 사물도 다시 잡을 수 있습니다.
+
+배치 깊이는 공통 `PerspectivePlacement.cs`에서 계산합니다. 잡은 물체의 카메라 기준 방향과 화면상 크기를 유지하면서, 복합 BoxCollider의 보이는 면 전체에 화면 간격 기준으로 레이를 분포합니다. 각 레이에서 물체의 뒤쪽 면과 배경 사이의 간격을 검사해 겹치지 않는 가장 먼 깊이를 구하며, 물체의 빈 틈은 검사 면에서 제외합니다. 최종 위치는 전체 충돌 부피로 다시 확인합니다. 아주 얇은 구조물은 유한한 레이 간격 사이로 빠질 수 있어 최종 충돌 검사와 기존 접촉 복구를 함께 사용합니다. Q/E, Z/X로 직접 회전하면 화면 모양은 달라질 수 있습니다. 벽의 가림, 사물 크기 범위, 맵 경계, 충돌 검사와 각 스테이지의 퍼즐 규칙은 유지합니다.
 
 [설치 규칙과 예외](Documentation/Placement/설치규칙안내.txt) · [검증 결과와 범위](Documentation/Placement/검증결과.txt) · [공통 코드 설명](Documentation/Placement/코드길잡이.md).
 [해변 안내](Documentation/Beach/플레이안내.txt) · [미술관 안내](Documentation/Gallery/플레이안내.txt) · [도서관 안내](Documentation/Library/플레이안내.txt).
@@ -32,7 +34,7 @@ R 구역 초기화 / Shift+R 전체 초기화 / Esc 메뉴.
 
 ## 빌드와 검사
 
-공통 상호작용 검사는 Unity Editor를 닫은 상태에서 아래처럼 실행합니다. Editor를 계속 사용할 때는 `Assets`, `Packages`, `ProjectSettings`를 별도 폴더에 복사하고 `-projectPath`에 그 경로를 지정하세요. 검사는 임시 씬에서 실제 물리 컴포넌트로 네 맵의 먼 거리 잡기·배치, 놓기·취소와 충돌 차단을 확인하고 JSON 결과를 남깁니다.
+공통 상호작용 검사는 Unity Editor를 닫은 상태에서 아래처럼 실행합니다. Editor를 계속 사용할 때는 `Assets`, `Packages`, `ProjectSettings`를 별도 폴더에 복사하고 `-projectPath`에 그 경로를 지정하세요. 검사는 임시 씬에서 실제 물리 컴포넌트로 네 맵의 먼 거리 잡기·배치, 놓기·취소와 충돌 차단을 확인하고 JSON 결과를 남깁니다. 화면 크기 유지, 빠른 시점 회전, 좁은 기둥, 면 안쪽 돌출부, 복합 물체의 빈 틈, 최소 크기로도 배치 불가능한 벽과 검사 횟수 기록을 포함한 53개 항목을 검사합니다.
 
 ```sh
 "/Applications/Unity/Hub/Editor/6000.3.24f1/Unity.app/Contents/MacOS/Unity" \

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShadeLink
@@ -48,11 +47,20 @@ namespace ShadeLink
         RaycastHit[] hits = new RaycastHit[64];
         RaycastHit aimHit;
         Pickup pickup;
+        PerspectivePlacement placement;
+        bool placementFeasible;
+        public bool PlacementFeasible => placementFeasible;
+        public int PlacementQueries => placement==null?0:placement.Queries;
+        Quaternion relativeRotation=Quaternion.identity;
         public float ReferenceDistance { get; private set; }
         public float ReferenceScale { get; private set; }
         public Vector3 GrabLocalPoint { get; private set; }
         public float Depth { get; set; }
-        public Quaternion Rotation { get; set; }
+        public Quaternion Rotation
+        {
+            get => host.Camera.transform.rotation*relativeRotation;
+            set => relativeRotation=Quaternion.Inverse(host.Camera.transform.rotation)*value;
+        }
 
         sealed class Pickup
         {
@@ -114,7 +122,8 @@ namespace ShadeLink
             GrabLocalPoint = held.transform.InverseTransformPoint(aimHit.point);
             ReferenceScale = held.transform.localScale.x;
             ReferenceDistance = Mathf.Max(.01f, aimHit.distance);
-            Depth = ReferenceDistance; Rotation = held.transform.rotation;
+            Depth = ReferenceDistance; Rotation = held.transform.rotation;placementFeasible=true;
+            placement=new PerspectivePlacement(held.transform,held.Parts,GrabLocalPoint,ReferenceScale,ReferenceDistance);
             host.StartPlacement();
         }
 
@@ -123,6 +132,8 @@ namespace ShadeLink
             var held = host.Held;
             if (held == null) return false;
             host.PrepareRelease();
+            if(!placementFeasible)
+            { held.Highlight(true,true);host.Tell("현재 크기로 조준한 위치에 놓을 공간이 없습니다.");return false; }
             if (!host.ValidateRelease(out var reason))
             { held.Highlight(true, true); host.Tell(reason); return false; }
             held.Release(); Finish(true); return true;
@@ -157,37 +168,36 @@ namespace ShadeLink
 
         void Finish(bool released)
         {
-            host.Held.Highlight(false, false); host.Held = null; host.Aimed = null; pickup = null;
+            host.Held.Highlight(false, false); host.Held = null; host.Aimed = null; pickup = null;placement=null;
             Physics.SyncTransforms(); host.FinishInteraction(released);
         }
 
-        bool PlacementRay(Vector3 velocity, out float depth)
+        public PerspectivePlacement.Result ResolvePlacement(Vector3 minimum,Vector3 maximum,float maximumIntent=float.PositiveInfinity)
         {
-            float length = velocity.magnitude; depth = float.PositiveInfinity;
-            if (length < .00001f || !InteractionRaycast.Nearest(host.Camera.transform.position, velocity / length,
-                host.Controller, host.Held.transform, host.InteractionMask, ref hits, out var hit, out _)) return false;
-            depth = (hit.distance - .02f) / length; return true;
+            var result=placement.Resolve(host.Camera,Rotation,host.Controller,host.InteractionMask,host.Held.MinScale,host.Held.MaxScale,
+                minimum,maximum,Depth,maximumIntent);
+            Depth=result.Depth;placementFeasible=result.Feasible;return result;
         }
 
-        public float ResolveDepth(List<Vector3> samples, Vector3 minimum, Vector3 maximum,
+        public bool TryApplyPlacement()
+        {
+            if(!placementFeasible)return false;
+            var prop=host.Held;Vector3 position=prop.transform.position,size=prop.transform.localScale;
+            Quaternion rotation=prop.transform.rotation,requested=Rotation;
+            float scale=ReferenceScale*Depth/ReferenceDistance;
+            prop.transform.localScale=Vector3.one*scale;
+            prop.transform.SetPositionAndRotation(host.Camera.transform.position+host.Camera.transform.forward*Depth-
+                requested*(GrabLocalPoint*scale),requested);
+            Physics.SyncTransforms();
+            if(host.ValidateRelease(out _))return true;
+            prop.transform.localScale=size;prop.transform.SetPositionAndRotation(position,rotation);Physics.SyncTransforms();
+            return false;
+        }
+
+        public float ResolveDepth(Vector3 minimum, Vector3 maximum,
             out bool hasSurface, float maximumIntent = float.PositiveInfinity)
         {
-            var held = host.Held; Vector3 eye = host.Camera.transform.position, forward = host.Camera.transform.forward;
-            float ratio = ReferenceScale / ReferenceDistance;
-            float minDepth = held.MinScale / ratio, maxDepth = held.MaxScale / ratio;
-            float roomMin = minDepth, roomMax = maxDepth;
-            hasSurface = PlacementRay(forward, out float surfaceDepth);
-            foreach (var local in samples)
-            {
-                Vector3 velocity = forward + Rotation * ((local - GrabLocalPoint) * ratio);
-                if (PlacementRay(velocity, out float contact)) { surfaceDepth = Mathf.Min(surfaceDepth, contact); hasSurface = true; }
-                InteractionRaycast.ClipDepth(eye.x, velocity.x, minimum.x, maximum.x, ref roomMin, ref roomMax);
-                InteractionRaycast.ClipDepth(eye.y, velocity.y, minimum.y, maximum.y, ref roomMin, ref roomMax);
-                InteractionRaycast.ClipDepth(eye.z, velocity.z, minimum.z, maximum.z, ref roomMin, ref roomMax);
-            }
-            float target = Mathf.Min(hasSurface ? surfaceDepth : Depth, maximumIntent);
-            Depth = roomMin <= roomMax ? Mathf.Clamp(target, roomMin, roomMax) : Mathf.Clamp(target, minDepth, maxDepth);
-            return Depth;
+            var result=ResolvePlacement(minimum,maximum,maximumIntent);hasSurface=result.HasSurface;return result.Depth;
         }
     }
 }

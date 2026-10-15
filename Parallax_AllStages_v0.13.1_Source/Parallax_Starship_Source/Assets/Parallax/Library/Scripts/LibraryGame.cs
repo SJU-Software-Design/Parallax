@@ -198,7 +198,7 @@ namespace ShadeLink.Library
                 if(Vector3.Angle(view.transform.forward,bookExtractionDirection)<12f)maximumIntent=bookExtractionDepth;
                 else bookExtraction=false;
             }
-            Interaction.ResolveDepth(placementSamples,minimum,maximum,out bool surface,maximumIntent);
+            Interaction.ResolveDepth(minimum,maximum,out bool surface,maximumIntent);
             HasPlacementSurface=surface;
         }
         public void RotateHeld(float yawDegrees,float pitchDegrees)
@@ -215,6 +215,16 @@ namespace ShadeLink.Library
             start.direction=oldAnchor.normalized;start.depth=oldAnchor.magnitude;
             Quaternion requestedRotation=heldRotation;
             ResolvePlacementDepth();
+            if(!Interaction.PlacementFeasible)
+            {
+                PlacementBlocked=true;invalid=true;invalidReason="현재 크기로 조준한 위치에 놓을 공간이 없습니다.";
+                held.Highlight(true,true);return;
+            }
+            if(Interaction.TryApplyPlacement())
+            {
+                initialPlacement=false;PlacementBlocked=false;invalid=false;
+                held.Highlight(true,false);lighting.Synchronize();return;
+            }
             HoldPose target=PerspectivePose(eye,view.transform.forward,holdDistance,requestedRotation);
             HoldPose accepted=start;PlacementBlocked=false;
             // Shelf books start close to their supporting shelf. Detach only a short,
@@ -262,7 +272,7 @@ namespace ShadeLink.Library
                 }
                 if(!PlacementBlocked)initialPlacement=false;
             }
-            ApplyPreview(accepted);holdDistance=accepted.depth;heldRotation=accepted.rotation;
+            ApplyPreview(accepted);
             Physics.SyncTransforms();
             invalid=!ValidPlacement(held,out invalidReason);held.Highlight(true,invalid);lighting.Synchronize();
         }

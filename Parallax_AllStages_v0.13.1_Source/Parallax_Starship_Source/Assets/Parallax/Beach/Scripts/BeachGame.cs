@@ -188,7 +188,7 @@ namespace ShadeLink.Beach
         {
             float near=BeachWorld.ZoneNear[held.zone],far=BeachWorld.ZoneFar[held.zone];
             var minimum=new Vector3(-13.79f,BeachWorld.WaterBedY+.02f,near+.01f);var maximum=new Vector3(13.79f,15.74f,far-.01f);
-            Interaction.ResolveDepth(placementSamples,minimum,maximum,out bool surface);
+            Interaction.ResolveDepth(minimum,maximum,out bool surface);
             HasPlacementSurface=surface;
         }
         public void RotateHeld(float yawDegrees,float pitchDegrees)
@@ -205,6 +205,17 @@ namespace ShadeLink.Beach
             start.direction=oldAnchor.normalized;start.depth=oldAnchor.magnitude;
             Quaternion requestedRotation=heldRotation;
             ResolvePlacementDepth();
+            if(!Interaction.PlacementFeasible)
+            {
+                PlacementBlocked=true;invalid=true;invalidReason="현재 크기로 조준한 위치에 놓을 공간이 없습니다.";
+                held.Highlight(true,true);return;
+            }
+            if(Interaction.TryApplyPlacement())
+            {
+                initialPlacement=false;PlacementBlocked=false;invalid=false;
+                PlacementObstacle=null;
+                held.Highlight(true,false);lighting.Synchronize();return;
+            }
             HoldPose target=PerspectivePose(eye,view.transform.forward,holdDistance,requestedRotation);
             HoldPose accepted=start;PlacementBlocked=false;PlacementObstacle=null;
             // Mounted pictures start with a tiny wall/boundary overlap. Detach only a short,
@@ -252,7 +263,7 @@ namespace ShadeLink.Beach
                 }
                 if(!PlacementBlocked)initialPlacement=false;
             }
-            ApplyPreview(accepted);holdDistance=accepted.depth;heldRotation=accepted.rotation;
+            ApplyPreview(accepted);
             Physics.SyncTransforms();
             invalid=!ValidPlacement(held,out invalidReason);held.Highlight(true,invalid);lighting.Synchronize();
         }

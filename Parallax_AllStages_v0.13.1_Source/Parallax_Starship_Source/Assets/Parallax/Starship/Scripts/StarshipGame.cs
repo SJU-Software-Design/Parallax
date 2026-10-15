@@ -161,6 +161,10 @@ namespace ShadeLink.Starship
         
         
         void ResolvePlacementDepth() { StarshipHold.Resolve(this); }
+        internal PerspectivePlacement.Result ResolveSharedPlacement(Bounds room) => Interaction.ResolvePlacement(
+            room.min+new Vector3(.01f,.05f,.01f),room.max-Vector3.one*.01f);
+        internal int SharedPlacementQueries => Interaction.PlacementQueries;
+        internal bool TryApplySharedPlacement() => Interaction.TryApplyPlacement();
         public void RotateHeld(float yawDegrees,float pitchDegrees)
         {
             if(held==null)return;

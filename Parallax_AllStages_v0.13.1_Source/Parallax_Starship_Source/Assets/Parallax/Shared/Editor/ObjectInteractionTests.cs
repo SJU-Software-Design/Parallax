@@ -80,13 +80,122 @@ namespace ShadeLink.Editor
         static void Near(Vector3 actual, Vector3 expected, string message)
         { Require(Vector3.Distance(actual, expected) < .002f, message + ": " + actual + " != " + expected); }
 
+        static Vector2 ProjectedSize(Component prop, Camera camera)
+        {
+            Vector2 minimum=Vector2.one*float.PositiveInfinity,maximum=Vector2.one*float.NegativeInfinity;
+            foreach(var part in (BoxCollider[])Get(prop,"parts"))
+                for(int i=0;i<8;i++)
+                {
+                    Vector3 point=part.transform.TransformPoint(part.center+Vector3.Scale(part.size*.5f,
+                        new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));
+                    Vector2 projected=camera.WorldToViewportPoint(point);
+                    minimum=Vector2.Min(minimum,projected);maximum=Vector2.Max(maximum,projected);
+                }
+            return maximum-minimum;
+        }
+
         public static void Run()
         {
             if (!Application.isBatchMode) throw new InvalidOperationException("Run these scene fixtures in a separate batch-mode project.");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var result = new Results();
+            Check(result,"Starship","successful dense placement reports its physics queries",()=>
+            {
+                using(var f=new Fixture("Starship"))
+                {
+                    f.Grab();var wall=f.Blocker(new Vector3(0,2,12));wall.transform.localScale=new Vector3(100,100,.2f);
+                    Physics.SyncTransforms();Call(f.game,"UpdateHeldPose");
+                    Require(StarshipHold.QueryCount((ShadeLink.Starship.StarshipGame)f.game)>8,"Dense placement physics work was omitted from the query report");
+                }
+            });
             foreach (string stage in new[] { "Gallery", "Library", "Beach", "Starship" })
             {
+                Check(result, stage, "a too-close surface cannot project the minimum-sized prop behind a wall", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        f.Grab();f.view.transform.rotation=Quaternion.Euler(0,60,0);
+                        var wall=f.Blocker(f.view.transform.position+f.view.transform.forward*.5f);
+                        wall.transform.rotation=f.view.transform.rotation;wall.transform.localScale=new Vector3(100,100,.2f);
+                        Physics.SyncTransforms();Call(f.game,"UpdateHeldPose");
+                        Require((bool)Get(f.game,"PlacementBlocked"),"Minimum-size clamping projected the prop past an occluding wall");
+                        Require(!(bool)Call(f.game,"Drop"),"Released at an unreachable aim instead of keeping the prop in hand");
+                    }
+                });
+                Check(result, stage, "a post visible through a compound frame hole does not block placement", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        UnityEngine.Object.DestroyImmediate(f.prop.GetComponent<BoxCollider>());
+                        foreach(float x in new[]{-.75f,.75f})
+                        {
+                            var leg=f.New("Frame upright");leg.transform.SetParent(f.prop.transform,false);leg.transform.localPosition=new Vector3(x,0,0);
+                            leg.AddComponent<BoxCollider>().size=new Vector3(.3f,1,.4f);
+                        }
+                        var top=f.New("Frame top");top.transform.SetParent(f.prop.transform,false);top.transform.localPosition=new Vector3(0,.45f,0);
+                        top.AddComponent<BoxCollider>().size=new Vector3(1.8f,.1f,.4f);Call(f.prop,"Remember");
+                        f.view.transform.position=new Vector3(-.75f,2,0);Physics.SyncTransforms();f.Grab();
+                        var wall=f.Blocker(new Vector3(0,2,12));wall.transform.localScale=new Vector3(100,100,.2f);
+                        var post=f.New("Post through empty frame");post.AddComponent<BoxCollider>();
+                        post.transform.position=new Vector3(.5f,2,8);post.transform.localScale=new Vector3(.08f,.08f,.2f);
+                        Physics.SyncTransforms();for(int i=0;i<120;i++)Call(f.game,"UpdateHeldPose");
+                        Vector3 anchor=f.prop.transform.TransformPoint((Vector3)Get(f.game,"GrabLocalPoint"))-f.view.transform.position;
+                        Require(anchor.magnitude>10.9f,"The empty silhouette hole was treated as solid");
+                        object[] validation={f.prop,null};Require((bool)Call(f.game,"ValidPlacement",validation),"Frame overlaps the post");
+                    }
+                });
+                Check(result, stage, "unobstructed quick camera turns keep the prop on the aim immediately", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        Vector2 original=ProjectedSize(f.prop,f.view);f.Grab();
+                        f.view.transform.rotation=Quaternion.Euler(0,60,0);Call(f.game,"UpdateHeldPose");
+                        Vector3 anchor=f.prop.transform.TransformPoint((Vector3)Get(f.game,"GrabLocalPoint"))-f.view.transform.position;
+                        Require(Vector3.Angle(anchor,f.view.transform.forward)<.1f,"Free-space projection lagged behind the aim");
+                        Vector2 actual=ProjectedSize(f.prop,f.view);
+                        Require(Mathf.Abs(actual.x/original.x-1)<.005f&&Mathf.Abs(actual.y/original.y-1)<.005f,"Quick turn changed screen size");
+                    }
+                });
+                Check(result, stage, "camera yaw and pitch preserve the held screen footprint", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        Vector2 original=ProjectedSize(f.prop,f.view);f.Grab();
+                        var wall=f.Blocker(new Vector3(0,2,12));wall.transform.localScale=new Vector3(100,100,.2f);
+                        f.view.transform.rotation=Quaternion.Euler(-5,20,0);Physics.SyncTransforms();
+                        for(int i=0;i<120;i++)Call(f.game,"UpdateHeldPose");
+                        Vector2 actual=ProjectedSize(f.prop,f.view);
+                        Require(Mathf.Abs(actual.x/original.x-1)<.005f&&Mathf.Abs(actual.y/original.y-1)<.005f,
+                            "Camera movement changed the apparent size: "+actual.x/original.x+", "+actual.y/original.y);
+                    }
+                });
+                Check(result, stage, "narrow posts allow the maximum non-overlapping perspective depth", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        f.prop.transform.rotation=Quaternion.Euler(0,20,0);Physics.SyncTransforms();
+                        Vector2 original=ProjectedSize(f.prop,f.view);f.Grab();
+                        var post=f.Blocker(new Vector3(0,2,12));post.transform.localScale=new Vector3(.08f,4,.2f);Physics.SyncTransforms();
+                        for(int i=0;i<120;i++)Call(f.game,"UpdateHeldPose");
+                        Vector3 anchor=f.prop.transform.TransformPoint((Vector3)Get(f.game,"GrabLocalPoint"));
+                        float depth=Vector3.Distance(anchor,f.view.transform.position);
+                        Require(Mathf.Abs(depth-9.599f)<.012f,"Stopped short of the physically available depth: "+depth);
+                        object[] validation={f.prop,null};Require((bool)Call(f.game,"ValidPlacement",validation),"Maximum-depth pose overlaps the post");
+                        Vector2 actual=ProjectedSize(f.prop,f.view);
+                        Require(Mathf.Abs(actual.x/original.x-1)<.005f&&Mathf.Abs(actual.y/original.y-1)<.005f,"Depth search changed screen size");
+                    }
+                });
+                Check(result, stage, "interior-face bumps limit the requested depth before movement", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        f.Grab();f.Blocker(new Vector3(0,2,12));
+                        var bump=f.New("Interior face bump");bump.AddComponent<BoxCollider>();
+                        bump.transform.position=new Vector3(.35f,2.35f,8);bump.transform.localScale=new Vector3(.12f,.12f,.2f);
+                        Physics.SyncTransforms();Call(f.game,"UpdateHeldPose");
+                        Require((float)Get(f.game,"holdDistance")<6.48f,"Surface search missed an obstruction inside the visible face");
+                    }
+                });
                 Check(result, stage, "near pickup and cancel preserve pose and physics", () =>
                 {
                     using (var f = new Fixture(stage))
@@ -158,7 +267,8 @@ namespace ShadeLink.Editor
                 {
                     using (var f = new Fixture(stage))
                     {
-                        f.Grab(); f.Blocker(f.prop.transform.position);
+                        f.Grab();var wall=f.Blocker(f.view.transform.position+f.view.transform.forward*.5f);
+                        wall.transform.localScale=new Vector3(100,100,.2f);Physics.SyncTransforms();Call(f.game,"UpdateHeldPose");
                         Require(!(bool)Call(f.game, "Drop"), "Released a prop overlapping a wall");
                         Require(ReferenceEquals(Get(f.game, "held"), f.prop), "Invalid release lost the held prop");
                     }
