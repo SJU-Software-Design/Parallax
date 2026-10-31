@@ -25,7 +25,7 @@ namespace ShadeLink.Gallery
             if(game.checkpoint==1&&game.lightGate!=null)GUI.Label(new Rect(48,112,510,34),game.lightGate.illuminated?"센서: 빛 감지 · 문 열림 · 그림자로 이동하세요":"센서: 빛 없음 · 거울의 각도를 바꾸세요",small);
             if(game.active&&!game.won)
             {
-                Panel(new Rect(798,448,4,4),game.held!=null?(game.invalid?new Color(1,.3f,.1f):mint):paper);
+                PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null,game.held!=null,game.invalid||game.PlacementBlocked,mint,paper);
                 Panel(new Rect(1195,25,377,88),new Color(.035f,.065f,.08f,.9f));
                 GUI.Label(new Rect(1215,34,338,33),game.safe?"그늘 · 안전":"햇빛 · 그늘로 이동하세요",text);
                 Panel(new Rect(1215,79,333,9),new Color(.14f,.22f,.25f));
@@ -34,8 +34,8 @@ namespace ShadeLink.Gallery
                 {
                     Panel(new Rect(405,590,790,175),new Color(.035f,.065f,.08f,.94f));
                     GUI.Label(new Rect(427,605,746,32),game.held.title+"  ·  거리 "+game.holdDistance.ToString("0.00")+"m  ·  크기 ×"+game.RequestedScale.ToString("0.00"),text);
-                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 시선: 배치 표면과 크기 조절\nQ/E: 회전  ·  Z/X: 기울기  ·  C: 바로 세우기",small);
-                    GUI.Label(new Rect(427,711,746,40),game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 다른 방향으로 이동하거나 클릭해 놓으세요":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  오른쪽 클릭: 잡기 취소",small);
+                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 회전\nQ/E: 회전  ·  Z/X: 기울기  ·  C: 바로 세우기",small);
+                    GUI.Label(new Rect(427,711,746,40),game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 방향을 바꾸거나 Backspace로 취소":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  Backspace: 잡기 취소",small);
                 }
                 else if(game.adjustingMirror&&game.mirror!=null)
                 {
@@ -56,15 +56,16 @@ namespace ShadeLink.Gallery
             if(!game.active||game.won)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.045f,.055f,.7f));
-                Panel(new Rect(362,160,876,590),new Color(.04f,.075f,.09f,.96f));
-                GUI.Label(new Rect(412,200,770,66),game.won?"전시의 끝에 도착했습니다":game.started?"잠시 쉬어 가기":"PARALLAX  /  GALLERY v0.12.0",title);
-                GUI.Label(new Rect(412,280,770,235),game.won?
+                Panel(new Rect(362,55,876,790),new Color(.04f,.075f,.09f,.96f));
+                GUI.Label(new Rect(412,95,770,66),game.won?"전시의 끝에 도착했습니다":game.started?"잠시 쉬어 가기":"PARALLAX  /  GALLERY v0.12.0",title);
+                GUI.Label(new Rect(412,180,770,235),game.won?
                     "높이와 그늘을 함께 설계해 출구에 도착했습니다.\n\n클리어 시간  "+System.TimeSpan.FromSeconds(game.elapsed).ToString(@"mm\:ss")+"   /   재시도  "+game.respawns+"회\n\n전시물: Art Gallery — ALLrounder18 (CGTrader)":
-                    "햇빛과 반사광을 피해, 그림자로 출구까지 이동하세요.\n전시물을 잡은 상태에서도 WASD 이동과 점프가 가능합니다.\n시선이 향한 표면의 거리에 따라 실제 크기가 바뀝니다.\n\n두 번째 전시실: 거울 클릭 → Q/E로 빛의 방향 변경.\n빛으로 센서를 켜 문을 열고, 차광판으로 통로를 가리세요.\n\n왼쪽 클릭 잡기 / 놓기 · 오른쪽 클릭 취소\nR 현재 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · T 설치 연습",text);
-                if(GUI.Button(new Rect(412,572,370,62),game.won?"처음부터 다시 전시 보기":game.started?"계속하기":"미술관 입장",button))game.Resume();
-                if(GUI.Button(new Rect(812,572,370,62),"종료",button))Application.Quit();
-                if(GUI.Button(new Rect(412,644,770,48),"거울 전시실 바로 체험",button))game.StartMirrorDemo();
-                GUI.Label(new Rect(412,708,770,32),"v0.12.0 · 거울 반사 퍼즐 · 사물을 들고 이동 · 4개 전시실",small);
+                    "햇빛과 반사광을 피해, 그림자로 출구까지 이동하세요.\n전시물을 잡은 상태에서도 WASD 이동과 점프가 가능합니다.\n시선이 향한 표면의 거리에 따라 실제 크기가 바뀝니다.\n\n두 번째 전시실: 거울 클릭 → Q/E로 빛의 방향 변경.\n빛으로 센서를 켜 문을 열고, 차광판으로 통로를 가리세요.\n\n왼쪽 클릭 잡기 / 놓기 · 오른쪽 버튼 + 마우스 회전 · Backspace 취소\nR 현재 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · T 설치 연습",text);
+                PlayerControls.DrawOptions(new Rect(412,440,770,143),game.font);
+                if(GUI.Button(new Rect(412,615,370,62),game.won?"처음부터 다시 전시 보기":game.started?"계속하기":"미술관 입장",button))game.Resume();
+                if(GUI.Button(new Rect(812,615,370,62),"종료",button))Application.Quit();
+                if(GUI.Button(new Rect(412,691,770,48),"거울 전시실 바로 체험",button))game.StartMirrorDemo();
+                GUI.Label(new Rect(412,784,770,32),"v0.12.0 · 거울 반사 퍼즐 · 사물을 들고 이동 · 4개 전시실",small);
             }
         }
     }

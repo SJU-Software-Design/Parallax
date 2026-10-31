@@ -11,7 +11,7 @@ namespace ShadeLink.Beach
         Camera depthCamera;RenderTexture target;Shader replacement;
         readonly List<Renderer> candidates=new List<Renderer>();
         readonly Dictionary<GameObject,int> layers=new Dictionary<GameObject,int>();
-        const int PreviewLayer=29;
+        const int PreviewLayer=30;
         void Awake()
         {
             replacement=Shader.Find("Parallax/PlacementDepth");

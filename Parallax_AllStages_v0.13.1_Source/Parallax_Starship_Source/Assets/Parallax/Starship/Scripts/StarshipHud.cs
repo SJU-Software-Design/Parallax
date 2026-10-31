@@ -48,12 +48,12 @@ namespace ShadeLink.Starship
                     Panel(new Rect(515,102,675,5),new Color(.12f,.23f,.31f));
                     Panel(new Rect(515,102,675*gate.charge,5),accent);
                 }
-                Panel(new Rect(798,448,4,4),game.invalid?Color.red:accent);
+                PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null,game.held!=null,game.invalid||game.PlacementBlocked,accent,paper);
                 if(game.held!=null)
                 {
                     Panel(new Rect(380,646,840,143),ink);
                     GUI.Label(new Rect(400,659,800,32),game.held.title+" · 목표 ×"+game.RequestedScale.ToString("0.00")+" / 현재 ×"+game.held.transform.localScale.x.ToString("0.00"),text);
-                    GUI.Label(new Rect(400,701,800,55),"시선으로 확대·축소 · Q/E 회전 · Z/X 기울기 · C 세우기\n클릭 놓기 · 오른쪽 클릭 취소 · 안착 뒤 그늘과 발판 활성",small);
+                    GUI.Label(new Rect(400,701,800,55),"오른쪽 버튼 + 마우스 회전 · Q/E 회전 · Z/X 기울기 · C 세우기\n시선으로 크기 조절 · 클릭 놓기 · Backspace 취소 · 안착 뒤 그늘 활성",small);
                     GUI.Label(new Rect(400,760,800,26),game.invalid?game.invalidReason:game.PlacementBlocked?"접촉 중 · 조준을 바꾸면 우회 경로를 찾습니다":"놓기 전에는 안전한 그늘이 생기지 않습니다",small);
                 }
                 else if(game.aimed!=null)GUI.Label(new Rect(580,482,690,40),"[클릭] "+game.aimed.title,text);
@@ -72,13 +72,14 @@ namespace ShadeLink.Starship
             }
             if(!game.active&&!game.won)
             {
-                Panel(new Rect(0,0,1600,900),new Color(.008f,.017f,.033f,.66f));Panel(new Rect(350,170,900,575),ink);
-                GUI.Label(new Rect(393,207,816,63),game.started?"잠시 쉬어 가기":"PARALLAX / HELIOS",title);
-                GUI.Label(new Rect(393,295,816,245),game.started?"실험선의 장비와 배치는 그대로 유지됩니다.\n\nH를 누르면 단서를 확인할 수 있습니다.":
+                Panel(new Rect(0,0,1600,900),new Color(.008f,.017f,.033f,.66f));Panel(new Rect(350,55,900,790),ink);
+                GUI.Label(new Rect(393,95,816,63),game.started?"잠시 쉬어 가기":"PARALLAX / HELIOS",title);
+                GUI.Label(new Rect(393,180,816,235),game.started?"실험선의 장비와 배치는 그대로 유지됩니다.\n\nH를 누르면 단서를 확인할 수 있습니다.":
                     "빛과 원근을 연구하던 실험용 우주선.\n남겨진 장비를 연결해 마지막 출구를 찾으세요.\n\n화물 · 반사판 · 보관 랙 · 냉각수 · 상층 정비 구역\n여러 기믹을 함께 사용하는 종합 퍼즐입니다.\n\nWASD 이동 / Space 점프 / 클릭 잡기·놓기\n먼 표면을 보면 커지고 가까운 표면을 보면 작아집니다.",text);
-                if(GUI.Button(new Rect(393,581,387,62),game.started?"계속하기":"실험선 입장",button))game.Resume();
-                if(GUI.Button(new Rect(814,581,387,62),"종료",button))Application.Quit();
-                GUI.Label(new Rect(393,684,816,30),"v"+StarshipGame.Version+" · 힌트 기본 숨김 · 구역별 복귀 · Kenney / CC0",small);
+                PlayerControls.DrawOptions(new Rect(393,440,816,143),game.font);
+                if(GUI.Button(new Rect(393,615,387,62),game.started?"계속하기":"실험선 입장",button))game.Resume();
+                if(GUI.Button(new Rect(814,615,387,62),"종료",button))Application.Quit();
+                GUI.Label(new Rect(393,785,816,30),"v"+StarshipGame.Version+" · 힌트 기본 숨김 · 구역별 복귀 · Kenney / CC0",small);
             }
         }
     }

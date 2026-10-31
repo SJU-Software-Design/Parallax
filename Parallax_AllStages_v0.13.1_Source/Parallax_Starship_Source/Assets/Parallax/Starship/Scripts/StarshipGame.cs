@@ -7,7 +7,7 @@ namespace ShadeLink.Starship
     public sealed class StarshipGame : MonoBehaviour, IObjectInteractionHost<StarshipProp>
     {
         public const string Version="0.13.1";
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=InteractionRaycast.MaximumDistance;
+        public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public StarshipLighting lighting;
@@ -36,14 +36,23 @@ namespace ShadeLink.Starship
         public float noticeUntil;
         public PlacementLesson lesson;
         public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
-        float coyote, jumpBuffer;
+        public Vector3 HeldDirection => Interaction.HeldDirection;
+        PlayerMovementAudio movementAudio;
+        readonly FirstPersonMotor motor=new FirstPersonMotor { GroundFilter=PlacementSupport.IsUsableGround };
+        readonly PlayerControls controls=new PlayerControls();
+        bool gameJumpHeld, pendingDrop;
 
         void Awake()
         {
+            FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
             automated=Array.IndexOf(Environment.GetCommandLineArgs(),"-starship-test")>=0;
-            Application.runInBackground=automated;Application.targetFrameRate=90;
+            Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            font=Font.CreateDynamicFontFromOSFont(new[]{"Apple SD Gothic Neo","AppleGothic","Arial"},32);
+#else
             font=Font.CreateDynamicFontFromOSFont(new[]{"Malgun Gothic","맑은 고딕","Arial"},32);
+#endif
             player=new Player(new Vector2(controller.transform.position.x,controller.transform.position.z));
             player.feet=controller.transform.position;
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
@@ -58,14 +67,23 @@ namespace ShadeLink.Starship
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;Time.timeScale=0;
             if(automated)gameObject.AddComponent<StarshipValidation>().game=this;
         }
+        void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
         void OnDestroy() { Time.timeScale=1; StarshipHold.Clear(this); }
         public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
         public void Resume()
         {
-            if(won)ResetAll();active=started=true;Time.timeScale=1;
+            if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        void ClearControlInput()
+        {
+            motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
+        }
+        void ResetControlState()
+        {
+            motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
+        }
         void OnApplicationFocus(bool focused) { if(!focused&&!automated)Pause(); }
         public void ResetAll()
         {
@@ -89,8 +107,9 @@ namespace ShadeLink.Starship
         }
         public void PlacePlayer(Vector3 point)
         {
+            ResetControlState();
             controller.enabled=false;controller.transform.position=point+Vector3.up*.025f;controller.enabled=true;
-            player.feet=controller.transform.position;verticalVelocity=0;coyote=.12f;jumpBuffer=0;
+            player.feet=controller.transform.position;player.grounded=false;
             Physics.SyncTransforms();SyncView();
         }
         public void Respawn()
@@ -112,28 +131,35 @@ namespace ShadeLink.Starship
         }
         public bool CanStand(Vector3 feet)
         {
-            foreach(var hit in Physics.OverlapCapsule(feet+Vector3.up*.28f,feet+Vector3.up*1.49f,.225f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
-                if(hit!=controller)return false;
+            foreach(var hit in Physics.OverlapCapsule(feet+controller.center-Vector3.up*(controller.height*.5f-controller.radius),feet+controller.center+Vector3.up*(controller.height*.5f-controller.radius),controller.radius-.012f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
+                if(hit!=controller&&PlacementSupport.IsUsableGround(hit))return false;
             return true;
         }
         public void SyncView()
         {
-            view.transform.position=controller.transform.position+Vector3.up*Rules.EyeHeight;
+            view.transform.position=controller.transform.position+Vector3.up*1.55f;
             view.transform.rotation=Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
             if(player!=null)player.feet=controller.transform.position;
         }
         void Update()
         {
             if(automated)return;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(active)Pause();else Resume();}
+            if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
             if(!active||won)return;
             if(ending.phase>=StarshipEnding.Phase.Drifting)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
             if(ending.phase==StarshipEnding.Phase.None&&Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(Input.GetKeyDown(KeyCode.H)){hintLevel=(hintLevel+1)%3;showHints=hintLevel>0;}
-            yaw+=Input.GetAxisRaw("Mouse X")*.023f;pitch=Mathf.Clamp(pitch+Input.GetAxisRaw("Mouse Y")*.023f,-1.35f,1.3f);
+            var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
+            motor.SmoothKeyboardInput=!controls.UsingGamepad;
+            Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
+            if(held!=null&&frame.RotateHeld)
+            {
+                Vector2 turn=PlayerControls.ObjectRotationDegrees(frame.Look);RotateHeld(turn.x,turn.y);
+            }
+            else PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);
             SyncView();UpdateAim();
-            if(Input.GetMouseButtonDown(1))Cancel();
+            if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
             if(held!=null)
             {
@@ -144,15 +170,25 @@ namespace ShadeLink.Starship
             }
             else if(adjustingMirror&&mirror!=null)
             {
-                if(Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
+                if(Input.GetMouseButtonDown(1)||Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
                 else mirror.Turn(((Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0))*28*Time.deltaTime);
             }
-            if(Input.GetMouseButtonDown(0))StarshipHold.InteractInput(this);
-            float f=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0),r=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
-            Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
-            Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
+            if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
+            gameJumpHeld=frame.JumpHeld;
+            Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
+                -Mathf.Sin(yaw)*frame.Move.x+Mathf.Cos(yaw)*frame.Move.y);
+            Tick(Time.deltaTime,direction,frame.JumpPressed);
+        }
+        void LateUpdate()
+        {
+            if(automated||!active||won)return;
+            if(ending.phase>=StarshipEnding.Phase.Drifting)return;
+            SyncView();AdvanceHeld(Time.deltaTime);
+            if(pendingDrop){pendingDrop=false;Drop();}
+            if(held==null)UpdateAim();
         }
         public void UpdateAim() { Interaction.UpdateAim(); }
+        public void AdvanceHeld(float dt) { Interaction.Advance(dt);UpdateHeldPose(); }
         public void Interact() { Interaction.Interact(); }
         void CachePlacementSamples() { StarshipHold.Begin(this); }
         public float RequestedScale => StarshipHold.RequestedScale(this);
@@ -212,8 +248,8 @@ namespace ShadeLink.Starship
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop() { return Interaction.Drop(); }
-        public void Cancel(bool force=false) { Interaction.Cancel(force); }
+        public bool Drop() { pendingDrop=false;return Interaction.Drop(); }
+        public void Cancel(bool force=false) { pendingDrop=false;Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
@@ -231,21 +267,16 @@ namespace ShadeLink.Starship
             if(ending.phase>=StarshipEnding.Phase.Drifting){ending.Tick(dt);return;}
             foreach(var prop in props)prop.placement.Tick(dt);
             lighting.Synchronize();if(lightGate!=null)lightGate.Tick(dt,lighting,controller);if(waterGate!=null)waterGate.Tick(dt,lighting,controller);
-            move=Vector2.ClampMagnitude(move,1);
-            bool grounded=controller.isGrounded;
-            if(!grounded&&verticalVelocity<=0&&Physics.SphereCast(controller.transform.position+Vector3.up*.29f,.20f,Vector3.down,out var ground,.14f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore))grounded=ground.normal.y>.6f&&PlacementSupport.IsUsableGround(ground.collider);
-            coyote=grounded?.10f:Mathf.Max(0,coyote-dt);jumpBuffer=jump?.12f:Mathf.Max(0,jumpBuffer-dt);
-            if(grounded&&verticalVelocity<0)verticalVelocity=-2;
-            if(jumpBuffer>0&&coyote>0){verticalVelocity=Mathf.Sqrt(2*Gravity*JumpHeight);jumpBuffer=coyote=0;}
-            verticalVelocity-=Gravity*dt;
             Vector3 supportMotion=Vector3.zero;
-            if(grounded&&Physics.Raycast(controller.transform.position+Vector3.up*.18f,Vector3.down,out var platformHit,.3f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
+            if((motor.Grounded||controller.isGrounded)&&Physics.Raycast(controller.transform.position+Vector3.up*.18f,Vector3.down,out var platformHit,.3f,StarshipWorld.PhysicalMask,QueryTriggerInteraction.Ignore)&&PlacementSupport.IsUsableGround(platformHit.collider))
             {var platform=platformHit.collider.GetComponentInParent<StarshipProp>();if(platform!=null&&platform.placement.Ready&&platform.floating&&!platform.body.isKinematic)supportMotion=Vector3.ProjectOnPlane(platform.body.linearVelocity,Vector3.up);}
-            CollisionFlags flags=controller.Move((new Vector3(move.x*Speed,verticalVelocity,move.y*Speed)+supportMotion)*dt);
-            if((flags&CollisionFlags.Above)!=0&&verticalVelocity>0)verticalVelocity=0;
-            player.feet=controller.transform.position;player.grounded=controller.isGrounded;
-            SyncView();if(held!=null)UpdateHeldPose();
-            StarshipHold.FlushInteraction(this);
+            Vector2 localMove=new Vector2(move.x*Mathf.Cos(yaw)-move.y*Mathf.Sin(yaw),move.x*Mathf.Sin(yaw)+move.y*Mathf.Cos(yaw));
+            motor.VerticalVelocity=verticalVelocity;
+            motor.Step(controller,localMove,yaw,jump,gameJumpHeld||jump,dt,StarshipWorld.PhysicalMask,supportMotion);
+            verticalVelocity=motor.VerticalVelocity;
+            movementAudio?.Tick(motor.Velocity,motor.Grounded,move.sqrMagnitude>.0001f,dt);
+            player.feet=controller.transform.position;player.grounded=motor.Grounded;
+            SyncView();if(automated&&held!=null)AdvanceHeld(dt);
             if(ending.phase==StarshipEnding.Phase.None)UpdateExposure(dt);else{safe=true;exposure=0;}
             lesson.Tick(dt);
             ending.Tick(dt);
@@ -260,7 +291,7 @@ namespace ShadeLink.Starship
                 {castleRest=true;Tell("상층 정비 쉼터 저장 · 사용한 발판과 차광판을 회수해 재배치하세요.",6);}
                 if(checkpoint==4)ending.CheckEntrance();
             }
-            SyncView();
+            if(ending.phase<StarshipEnding.Phase.Drifting)SyncView();
         }
         void UpdateExposure(float dt)
         {

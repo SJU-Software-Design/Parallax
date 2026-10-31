@@ -209,11 +209,10 @@ namespace ShadeLink.Gallery
             }
             var playerObject=new GameObject("Gallery player"); playerObject.transform.SetParent(root,false);
             playerObject.transform.position=Checkpoints[0];
-            var controller=playerObject.AddComponent<CharacterController>(); controller.height=1.75f;controller.radius=.24f;
-            controller.center=new Vector3(0,.875f,0);controller.stepOffset=.25f;controller.slopeLimit=48;controller.skinWidth=.015f;controller.minMoveDistance=0;
+            var controller=playerObject.AddComponent<CharacterController>();FirstPersonMotor.Configure(controller,null);
             game.controller=controller;
-            var cameraObject=new GameObject("Gallery view");cameraObject.transform.SetParent(playerObject.transform,false);cameraObject.transform.localPosition=Vector3.up*Rules.EyeHeight;
-            game.view=cameraObject.AddComponent<Camera>();game.view.fieldOfView=72;game.view.nearClipPlane=.045f;game.view.farClipPlane=100;
+            var cameraObject=new GameObject("Gallery view");cameraObject.transform.SetParent(playerObject.transform,false);cameraObject.transform.localPosition=Vector3.up*1.55f;
+            game.view=cameraObject.AddComponent<Camera>();FirstPersonMotor.Configure(controller,game.view);PlayerControls.ConfigureCamera(game.view);game.view.farClipPlane=100;
             game.view.clearFlags=CameraClearFlags.SolidColor;game.view.backgroundColor=new Color(.64f,.79f,.86f);
             cameraObject.AddComponent<AudioListener>();
             RenderSettings.fog=false;RenderSettings.skybox=null;RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=Color.white;

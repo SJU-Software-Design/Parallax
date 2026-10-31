@@ -30,17 +30,19 @@ namespace ShadeLink
         RaycastHit[] hits=new RaycastHit[64];
         Collider[] overlaps=new Collider[32];
         Quaternion cachedRotation;
+        Vector3 cachedDirection;
         float cachedFov,cachedAspect;
         int cachedWidth,cachedHeight;
         bool cached;
 
         public PerspectivePlacement(Transform prop,BoxCollider[] parts,Vector3 grabPoint,float scale,float distance)
         {
-            held=prop;grab=grabPoint;ratio=scale/distance;shapes=new Shape[parts.Length];corners=new Vector3[parts.Length*8];
+            Vector3 shapeRatio=prop.localScale/scale;
+            held=prop;grab=Vector3.Scale(grabPoint,shapeRatio);ratio=scale/distance;shapes=new Shape[parts.Length];corners=new Vector3[parts.Length*8];
             for(int i=0;i<parts.Length;i++)
             {
                 var part=parts[i];Vector3 size=Vector3.Scale(part.size*.5f,part.transform.lossyScale)/scale;
-                shapes[i]=new Shape {center=prop.InverseTransformPoint(part.transform.TransformPoint(part.center)),
+                shapes[i]=new Shape {center=Vector3.Scale(prop.InverseTransformPoint(part.transform.TransformPoint(part.center)),shapeRatio),
                     half=new Vector3(Mathf.Abs(size.x),Mathf.Abs(size.y),Mathf.Abs(size.z)),
                     rotation=Quaternion.Inverse(prop.rotation)*part.transform.rotation};
                 for(int k=0;k<8;k++)corners[i*8+k]=shapes[i].center+shapes[i].rotation*Vector3.Scale(shapes[i].half,
@@ -49,12 +51,13 @@ namespace ShadeLink
         }
 
         public Result Resolve(Camera camera,Quaternion rotation,Collider player,int mask,float minimumScale,float maximumScale,
-            Vector3 minimum,Vector3 maximum,float previousDepth,float maximumIntent=float.PositiveInfinity)
+            Vector3 minimum,Vector3 maximum,float maximumIntent=float.PositiveInfinity,Vector3 direction=default)
         {
             Queries=0;
+            mask&=~(1<<HeldCollisionState.Layer);
             float minDepth=minimumScale/ratio,maxDepth=maximumScale/ratio,lo=minDepth,hi=maxDepth;
             Transform view=camera.transform;Quaternion cameraRotation=view.rotation;
-            Vector3 eye=view.position,forward=cameraRotation*Vector3.forward;
+            Vector3 eye=view.position,forward=direction.sqrMagnitude<.000001f?view.forward:direction.normalized;
             foreach(var point in corners)
             {
                 Vector3 velocity=forward+rotation*((point-grab)*ratio);
@@ -62,7 +65,7 @@ namespace ShadeLink
                 InteractionRaycast.ClipDepth(eye.y,velocity.y,minimum.y,maximum.y,ref lo,ref hi);
                 InteractionRaycast.ClipDepth(eye.z,velocity.z,minimum.z,maximum.z,ref lo,ref hi);
             }
-            CacheSamples(camera,Quaternion.Inverse(cameraRotation)*rotation);
+            CacheSamples(camera,Quaternion.Inverse(cameraRotation)*rotation,Quaternion.Inverse(cameraRotation)*forward);
             bool surface=false;float limit=float.PositiveInfinity;
             foreach(var sample in samples)
             {
@@ -70,7 +73,8 @@ namespace ShadeLink
                 Queries+=queries;
                 if(found){surface=true;limit=Mathf.Min(limit,Mathf.Max(0,hit.distance-ContactSkin)/sample.backDistance);}
             }
-            float target=Mathf.Min(surface?limit:previousDepth,maximumIntent);
+            if(surface)limit*=.99f;
+            float target=Mathf.Min(surface?limit:400f,maximumIntent);
             bool feasible=lo<=hi&&Mathf.Min(limit,maximumIntent)>=lo;
             target=feasible?Mathf.Clamp(target,lo,hi):Mathf.Clamp(target,minDepth,maxDepth);
             // Finite raster samples can straddle a thin obstacle's edge. Refine
@@ -88,29 +92,30 @@ namespace ShadeLink
             return new Result {Depth=target,RoomMinimum=lo,RoomMaximum=hi,Feasible=feasible,HasSurface=surface,Samples=samples.Count};
         }
 
-        void CacheSamples(Camera camera,Quaternion rotation)
+        void CacheSamples(Camera camera,Quaternion rotation,Vector3 direction)
         {
             int width=Mathf.Max(1,camera.pixelWidth),height=Mathf.Max(1,camera.pixelHeight);
-            if(cached&&Quaternion.Angle(cachedRotation,rotation)<.01f&&Mathf.Abs(cachedFov-camera.fieldOfView)<.001f&&
+            if(cached&&Vector3.Angle(cachedDirection,direction)<.01f&&Quaternion.Angle(cachedRotation,rotation)<.01f&&Mathf.Abs(cachedFov-camera.fieldOfView)<.001f&&
                 Mathf.Abs(cachedAspect-camera.aspect)<.001f&&cachedWidth==width&&cachedHeight==height)return;
-            cached=true;cachedRotation=rotation;cachedFov=camera.fieldOfView;cachedAspect=camera.aspect;cachedWidth=width;cachedHeight=height;
+            cached=true;cachedDirection=direction;cachedRotation=rotation;cachedFov=camera.fieldOfView;cachedAspect=camera.aspect;cachedWidth=width;cachedHeight=height;
             samples.Clear();projected.Clear();
             float halfHeight=Mathf.Tan(camera.fieldOfView*Mathf.Deg2Rad*.5f),halfWidth=halfHeight*camera.aspect;
             Vector2 lower=Vector2.one*float.PositiveInfinity,upper=Vector2.one*float.NegativeInfinity;
             foreach(var shape in shapes)
             {
-                var projection=new Shape {center=Vector3.forward+rotation*((shape.center-grab)*ratio),
+                var projection=new Shape {center=direction+rotation*((shape.center-grab)*ratio),
                     half=shape.half*ratio,rotation=rotation*shape.rotation};
                 Quaternion inverse=Quaternion.Inverse(projection.rotation);
                 projected.Add(new ProjectedShape {shape=projection,inverse=inverse,origin=inverse*(-projection.center)});
             }
             foreach(var point in corners)
             {
-                Vector3 v=Vector3.forward+rotation*((point-grab)*ratio);
+                Vector3 v=direction+rotation*((point-grab)*ratio);
                 if(v.z<=.00001f){lower=new Vector2(-halfWidth,-halfHeight);upper=-lower;continue;}
                 Vector2 screen=new Vector2(v.x/v.z,v.y/v.z);lower=Vector2.Min(lower,screen);upper=Vector2.Max(upper,screen);
             }
-            lower=Vector2.Max(lower,new Vector2(-halfWidth,-halfHeight));upper=Vector2.Min(upper,new Vector2(halfWidth,halfHeight));
+            // The carried silhouette can extend beyond the screen. Those parts
+            // must still constrain placement against walls and door frames.
             if(lower.x>upper.x||lower.y>upper.y)return;
             int columns=Mathf.Max(2,Mathf.CeilToInt((upper.x-lower.x)/(2*halfWidth)*width/PixelSpacing));
             int rows=Mathf.Max(2,Mathf.CeilToInt((upper.y-lower.y)/(2*halfHeight)*height/PixelSpacing));

@@ -16,7 +16,6 @@ namespace ShadeLink.Library
         public Renderer[] renderers;
         public Rigidbody body;
         public PlacementSupport placement;
-        static PhysicsMaterial exhibitMaterial;
         public void Remember()
         {
             homePosition = transform.position; homeRotation = transform.rotation; homeScale = transform.localScale;
@@ -24,7 +23,8 @@ namespace ShadeLink.Library
         }
         public void Restore()
         {
-            InitializePhysics();
+            InitializePhysics(); PropReleasePhysics.Attach(body).CancelPendingRelease();
+            HeldCollisionState.Attach(body).Restore();
             StopMotion(); body.isKinematic = true; body.useGravity = false;
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             transform.SetPositionAndRotation(homePosition, homeRotation); transform.localScale = homeScale;
@@ -35,19 +35,20 @@ namespace ShadeLink.Library
         }
         public void InitializePhysics()
         {
-            if (body != null) return;
-            body = GetComponent<Rigidbody>();
-            if (body == null) body = gameObject.AddComponent<Rigidbody>();
-            body.isKinematic = true; body.useGravity = false;
-            body.constraints = RigidbodyConstraints.None;
-            body.interpolation = RigidbodyInterpolation.None;
-            body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-            body.linearDamping = .03f; body.angularDamping = .15f;
-            body.solverIterations = 12; body.solverVelocityIterations = 6;
-            if (exhibitMaterial == null)
-                exhibitMaterial = new PhysicsMaterial("Exhibit contact") { staticFriction = .7f, dynamicFriction = .6f, bounciness = 0 };
-            foreach (var p in parts) p.sharedMaterial = exhibitMaterial;
-            RefreshMass();
+            if (body == null) body = GetComponent<Rigidbody>();
+            bool createdBody = body == null;
+            if (createdBody) body = gameObject.AddComponent<Rigidbody>();
+            if (parts == null) parts = GetComponentsInChildren<BoxCollider>();
+            parts = Array.FindAll(parts, part => part != null && part.GetComponentInParent<Rigidbody>(true) == body);
+            if (renderers == null) renderers = GetComponentsInChildren<Renderer>();
+            // Capture original CCD and mass before the temporary home/held modes.
+            var physics = PropReleasePhysics.Attach(body);
+            physics.InitializeProfile(createdBody, (platform ? 12f : 8f) * Mathf.Pow(transform.localScale.x, 3));
+            if (createdBody)
+            {
+                body.isKinematic = true; body.useGravity = false;
+                body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            }
             placement=GetComponent<PlacementSupport>();if(placement==null)placement=gameObject.AddComponent<PlacementSupport>();
             placement.Initialize(body,renderers);
         }
@@ -58,17 +59,15 @@ namespace ShadeLink.Library
         }
         public void RefreshMass()
         {
-            body.mass = Mathf.Clamp((platform ? 12f : 8f) * Mathf.Pow(transform.localScale.x, 3), .25f, 5000f);
-            body.ResetCenterOfMass(); body.ResetInertiaTensor();
+            PropReleasePhysics.Attach(body).RefreshMass();
         }
         public void BeginHold()
         {
-            InitializePhysics(); StopMotion();
+            InitializePhysics(); PropReleasePhysics.Attach(body).BeginHold(); StopMotion();
             placement.BeginHold();
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             body.isKinematic = true; body.useGravity = false;
-            // Kinematic colliders keep other moving bodies from entering the held exhibit.
-            // The placement solver explicitly ignores these colliders in its own rays/sweeps.
+            // Held colliders remain queryable; their layer isolates solver contacts.
             foreach (var p in parts) p.enabled = true;
         }
         public void Release()
@@ -77,11 +76,8 @@ namespace ShadeLink.Library
             foreach (var p in parts) p.enabled = true;
             Physics.SyncTransforms();
             body.position = transform.position; body.rotation = transform.rotation;
-            RefreshMass(); body.constraints = RigidbodyConstraints.None;
-            body.isKinematic = false; body.useGravity = true;
-            body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
-            body.WakeUp();
+            RefreshMass();
+            PropReleasePhysics.Attach(body).Release();
             placement.Released();
         }
         public Bounds WorldBounds
@@ -115,7 +111,7 @@ namespace ShadeLink.Library
         float IInteractionProp.MaxScale => maxScale;
         Action IInteractionProp.CaptureAuxiliaryState()
         {
-            return null;
+            return PropReleasePhysics.Attach(body).CaptureState();
         }
 
     }

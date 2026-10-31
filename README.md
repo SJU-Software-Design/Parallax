@@ -2,6 +2,10 @@
 
 공유 Unity 프로젝트는 `Parallax_Gallery_Source`입니다. 현재 공유된 소스는 Gallery v0.8.2이며, Unity **6000.3.24f1**과 Built-in 렌더 파이프라인을 사용합니다.
 
+2026-10-31 조작감 개선은 Gallery 단독판과 `Parallax_AllStages_v0.13.1_Source/Parallax_Starship_Source`의 Gallery·Library·Beach·Starship에 적용했습니다. 왼쪽 클릭으로 잡기/놓기, 오른쪽 버튼을 누른 채 마우스로 회전, Backspace로 잡기 취소가 가능합니다. 이동·점프·원근 배치 수치와 검증 결과는 [조작감 적용 기록](docs/controls/superliminal-control-feel.md)에 정리했습니다.
+
+후속 물리 패키지를 반영해 운반 중 접촉 분리, 감쇠·질량 기준, CCD 복귀, 취소 복원을 보강했습니다. [물리 변경 전후 요약](docs/controls/superliminal-physics-package-update.md)과 새 실행 파일은 `Builds/PhysicsUpdate/`에서 확인할 수 있습니다.
+
 ## OS별 빌드
 
 Unity Hub에서 위 버전의 Editor를 설치하고 로그인한 뒤, 프로젝트를 한 번 열어 에셋 가져오기를 완료합니다. 커맨드라인 빌드 전에는 같은 프로젝트를 연 Unity Editor를 종료하세요. 사용하는 OS의 Build Support (Mono)가 없다면 Unity Hub에서 추가합니다.

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ShadeLink.Gallery
 {
-    public sealed class GalleryGame : MonoBehaviour
+    public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=11;
+        public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public GalleryLighting lighting;
@@ -15,77 +15,96 @@ namespace ShadeLink.Gallery
         public GalleryProp held, aimed;
         public Player player;
         public float yaw, pitch=-.08f, exposure, elapsed, verticalVelocity;
-        public float holdDistance { get; private set; }
-        public float referenceDistance { get; private set; }
-        public float referenceScale { get; private set; }
+        public float holdDistance { get => Interaction.Depth; private set => Interaction.Depth=value; }
+        public float referenceDistance => Interaction.ReferenceDistance;
+        public float referenceScale => Interaction.ReferenceScale;
         public bool HasPlacementSurface { get; private set; }
         public bool PlacementBlocked { get; private set; }
-        public Quaternion heldRotation;
+        public string PlacementObstacle { get; private set; }
+        public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
         public bool visitedUpper;
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
-        Vector3 pickupPosition, pickupScale;
-        Quaternion pickupRotation;
-        Vector3 pickupVelocity, pickupAngularVelocity;
-        bool pickupKinematic, pickupGravity, pickupSleeping;
-        RaycastHit aimHit;
-        public Vector3 GrabLocalPoint { get; private set; }
+        public PlacementLesson lesson;
+        public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
+        public Vector3 HeldDirection => Interaction.HeldDirection;
         readonly List<Vector3> placementSamples=new List<Vector3>();
         readonly RaycastHit[] placementHits=new RaycastHit[64];
         struct HoldShape { public Vector3 center,half; public Quaternion rotation; }
         struct HoldPose { public Vector3 position,direction; public Quaternion rotation; public float depth,scale; }
         readonly List<HoldShape> holdShapes=new List<HoldShape>();
         bool initialPlacement;
-        float coyote, jumpBuffer;
+        PlayerMovementAudio movementAudio;
+        readonly FirstPersonMotor motor=new FirstPersonMotor { GroundFilter=PlacementSupport.IsUsableGround };
+        readonly PlayerControls controls=new PlayerControls();
+        bool gameJumpHeld, pendingDrop;
 
         void Awake()
         {
-            automated=Array.IndexOf(Environment.GetCommandLineArgs(),"-gallery-perspective-test")>=0;
-            Application.runInBackground=automated;Application.targetFrameRate=90;
+            FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
+            var arguments=Environment.GetCommandLineArgs();
+            automated=Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
+            Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            font=Font.CreateDynamicFontFromOSFont(new[]{"Apple SD Gothic Neo","AppleGothic","Arial"},32);
+#else
             font=Font.CreateDynamicFontFromOSFont(new[]{"Malgun Gothic","맑은 고딕","Arial"},32);
+#endif
             player=new Player(new Vector2(controller.transform.position.x,controller.transform.position.z));
             player.feet=controller.transform.position;
-            foreach(var prop in props)prop.InitializePhysics();
+            foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
+            foreach(var prop in props)prop.placement.ResetPlaced();
             lighting.Rebuild();SyncView();
             gameObject.AddComponent<GalleryHud>().game=this;
+            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won,()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
             if(automated)gameObject.AddComponent<GalleryPerspectiveValidation>().game=this;
         }
+        void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
         void OnDestroy() { Time.timeScale=1; }
         public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
         public void Resume()
         {
-            if(won)ResetAll();active=started=true;Time.timeScale=1;
+            if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        void ClearControlInput()
+        {
+            motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
+        }
+        void ResetControlState()
+        {
+            motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
+        }
         void OnApplicationFocus(bool focused) { if(!focused&&!automated)Pause(); }
         public void ResetAll()
         {
-            if(held!=null)Cancel();foreach(var p in props)p.Restore();
-            checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;
+            if(held!=null)Cancel(true);foreach(var p in props)p.Restore();
+            checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;lesson?.Restart();
             PlacePlayer(GalleryWorld.Checkpoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
         }
         public void ResetZone()
         {
-            if(held!=null)Cancel();
+            if(held!=null)Cancel(true);
             foreach(var p in props) if(p.zone==checkpoint)p.Restore();
             PlacePlayer(GalleryWorld.Checkpoints[checkpoint]);exposure=0;lighting.Synchronize();
             Tell("현재 구역의 전시물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
         }
-        void PlacePlayer(Vector3 point)
+        public void PlacePlayer(Vector3 point)
         {
+            ResetControlState();
             controller.enabled=false;controller.transform.position=point+Vector3.up*.025f;controller.enabled=true;
-            player.feet=controller.transform.position;verticalVelocity=0;coyote=.12f;jumpBuffer=0;
+            player.feet=controller.transform.position;player.grounded=false;
             Physics.SyncTransforms();SyncView();
         }
         public void Respawn()
         {
-            if(held!=null)Cancel();
+            if(held!=null)Cancel(true);
             var spawn=GalleryWorld.Checkpoints[checkpoint];
             if(!CanStand(spawn))
             {
@@ -101,27 +120,34 @@ namespace ShadeLink.Gallery
         }
         public bool CanStand(Vector3 feet)
         {
-            foreach(var hit in Physics.OverlapCapsule(feet+Vector3.up*.28f,feet+Vector3.up*1.49f,.225f,~0,QueryTriggerInteraction.Ignore))
-                if(hit!=controller)return false;
+            foreach(var hit in Physics.OverlapCapsule(feet+controller.center-Vector3.up*(controller.height*.5f-controller.radius),feet+controller.center+Vector3.up*(controller.height*.5f-controller.radius),controller.radius-.012f,~0,QueryTriggerInteraction.Ignore))
+                if(hit!=controller&&PlacementSupport.IsUsableGround(hit))return false;
             return true;
         }
         public void SyncView()
         {
-            view.transform.position=controller.transform.position+Vector3.up*Rules.EyeHeight;
+            view.transform.position=controller.transform.position+Vector3.up*1.55f;
             view.transform.rotation=Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
             if(player!=null)player.feet=controller.transform.position;
         }
         void Update()
         {
             if(automated)return;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(active)Pause();else Resume();}
+            if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
             if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
-            yaw+=Input.GetAxisRaw("Mouse X")*.023f;pitch=Mathf.Clamp(pitch+Input.GetAxisRaw("Mouse Y")*.023f,-1.35f,1.3f);
+            var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
+            motor.SmoothKeyboardInput=!controls.UsingGamepad;
+            Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
+            if(held!=null&&frame.RotateHeld)
+            {
+                Vector2 turn=PlayerControls.ObjectRotationDegrees(frame.Look);RotateHeld(turn.x,turn.y);
+            }
+            else PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);
             SyncView();UpdateAim();
-            if(Input.GetMouseButtonDown(1))Cancel();
+            if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
             if(held!=null)
             {
@@ -129,49 +155,23 @@ namespace ShadeLink.Gallery
                 float tilt=(Input.GetKey(KeyCode.X)?1:0)-(Input.GetKey(KeyCode.Z)?1:0);
                 RotateHeld(turn*75*Time.deltaTime,tilt*75*Time.deltaTime);
                 if(Input.GetKeyDown(KeyCode.C))heldRotation=Quaternion.Euler(0,Mathf.Round(heldRotation.eulerAngles.y/15)*15,0);
-                UpdateHeldPose();
             }
-            if(Input.GetMouseButtonDown(0))Interact();
-            float f=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0),r=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
-            Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
-            Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
+            if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
+            gameJumpHeld=frame.JumpHeld;
+            Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
+                -Mathf.Sin(yaw)*frame.Move.x+Mathf.Cos(yaw)*frame.Move.y);
+            Tick(Time.deltaTime,direction,frame.JumpPressed);
         }
-        public void UpdateAim()
+        void LateUpdate()
         {
-            GalleryProp previous=aimed;aimed=null;
-            if(held==null&&Physics.Raycast(view.transform.position,view.transform.forward,out aimHit,Reach,~0,QueryTriggerInteraction.Ignore))
-                aimed=aimHit.collider.GetComponentInParent<GalleryProp>();
-            if(previous!=null&&previous!=held&&previous!=aimed)previous.Highlight(false,false);
-            if(aimed!=null)aimed.Highlight(true,false);
+            if(automated||!active||won)return;
+            SyncView();AdvanceHeld(Time.deltaTime);
+            if(pendingDrop){pendingDrop=false;Drop();}
+            if(held==null)UpdateAim();
         }
-        public void Interact()
-        {
-            if(!active||won)return;
-            if(held!=null){Drop();return;}
-            UpdateAim();if(aimed==null)return;
-            if(Physics.Raycast(controller.transform.position+Vector3.up*.15f,Vector3.down,out var support,.3f)&&support.collider.GetComponentInParent<GalleryProp>()==aimed)
-            {Tell("서 있는 전시대는 잡을 수 없습니다. 먼저 다른 발판으로 이동하세요.");return;}
-            foreach(var prop in props)
-            {
-                if(prop==aimed)continue;
-                var bounds=prop.WorldBounds;
-                if(Physics.Raycast(new Vector3(bounds.center.x,bounds.min.y+.04f,bounds.center.z),Vector3.down,out var below,.14f)&&below.collider.GetComponentInParent<GalleryProp>()==aimed)
-                {Tell("위에 놓인 전시물을 먼저 옮겨 주세요.");return;}
-            }
-            held=aimed;pickupPosition=held.transform.position;pickupRotation=held.transform.rotation;pickupScale=held.transform.localScale;
-            held.InitializePhysics();
-            pickupKinematic=held.body.isKinematic;pickupGravity=held.body.useGravity;pickupSleeping=held.body.IsSleeping();
-            pickupVelocity=held.body.linearVelocity;pickupAngularVelocity=held.body.angularVelocity;
-            GrabLocalPoint=held.transform.InverseTransformPoint(aimHit.point);
-            referenceScale=held.transform.localScale.x;
-            referenceDistance=Mathf.Max(.01f,aimHit.distance);
-            holdDistance=referenceDistance;heldRotation=held.transform.rotation;invalid=false;
-            CachePlacementSamples();
-            initialPlacement=true;PlacementBlocked=false;
-            held.BeginHold();
-            UpdateHeldPose();
-            grabs++;Tell("시선으로 가까운 곳·먼 곳을 조준하면 크기가 자동으로 바뀝니다 · 클릭으로 놓기",6);
-        }
+        public void UpdateAim() { Interaction.UpdateAim(); }
+        public void AdvanceHeld(float dt) { Interaction.Advance(dt);UpdateHeldPose(); }
+        public void Interact() { Interaction.Interact(); }
         void CachePlacementSamples()
         {
             placementSamples.Clear();
@@ -180,61 +180,26 @@ namespace ShadeLink.Gallery
             {
                 Vector3 half=part.size*.5f;
                 holdShapes.Add(new HoldShape {
-                    center=held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center)),
+                    center=Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center))),
                     half=Vector3.Scale(half,part.transform.lossyScale)/referenceScale,
                     rotation=Quaternion.Inverse(held.transform.rotation)*part.transform.rotation });
                 for(int i=0;i<8;i++)
-                    placementSamples.Add(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+
-                        Vector3.Scale(half,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)))));
+                    placementSamples.Add(Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+
+                        Vector3.Scale(half,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1))))));
                 // Faces and centres also catch a narrow obstruction inside the silhouette.
                 foreach(var direction in new[]{Vector3.zero,Vector3.right,Vector3.left,Vector3.up,Vector3.down,Vector3.forward,Vector3.back})
-                    placementSamples.Add(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+Vector3.Scale(half,direction))));
+                    placementSamples.Add(Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+Vector3.Scale(half,direction)))));
             }
         }
-        public float RequestedScale => held==null?1:referenceScale*holdDistance/referenceDistance;
+        public float RequestedScale => held==null?1:held.transform.localScale.x;
         // F remains a refresh shortcut; ordinary aiming already runs the same resolver every frame.
         public void MatchSurfaceDepth() { UpdateHeldPose(); }
-        bool PlacementRay(Vector3 velocity,out float depth)
-        {
-            float length=velocity.magnitude;depth=48;bool found=false;
-            if(length<.00001f)return false;
-            int count=Physics.RaycastNonAlloc(view.transform.position,velocity/length,placementHits,48*length,~0,QueryTriggerInteraction.Ignore);
-            for(int i=0;i<count;i++)
-            {
-                var hit=placementHits[i];
-                if(hit.collider==controller||hit.collider.GetComponentInParent<GalleryProp>()==held)continue;
-                depth=Mathf.Min(depth,(hit.distance-.02f)/length);found=true;
-            }
-            return found;
-        }
-        static void ClipDepth(float origin,float velocity,float minimum,float maximum,ref float lo,ref float hi)
-        {
-            if(Mathf.Abs(velocity)<.000001f)
-            {if(origin<minimum||origin>maximum){lo=1;hi=0;}return;}
-            float a=(minimum-origin)/velocity,b=(maximum-origin)/velocity;
-            lo=Mathf.Max(lo,Mathf.Min(a,b));hi=Mathf.Min(hi,Mathf.Max(a,b));
-        }
         void ResolvePlacementDepth()
         {
-            Vector3 eye=view.transform.position,forward=view.transform.forward;
-            float ratio=referenceScale/referenceDistance;
-            float minDepth=held.minScale/ratio,maxDepth=Mathf.Min(48,held.maxScale/ratio);
-            float roomMin=minDepth,roomMax=maxDepth;
-            float zoneNear=new[]{.18f,14.3f,27.3f,40.3f}[held.zone],zoneFar=new[]{13.7f,26.7f,39.75f,53.8f}[held.zone];
-            bool surface=PlacementRay(forward,out float surfaceDepth);
-            foreach(var local in placementSamples)
-            {
-                // Every point moves along a ray from the eye as distance and scale grow together.
-                Vector3 velocity=forward+heldRotation*((local-GrabLocalPoint)*ratio);
-                if(PlacementRay(velocity,out float contact)){surfaceDepth=Mathf.Min(surfaceDepth,contact);surface=true;}
-                ClipDepth(eye.x,velocity.x,-13.79f,13.79f,ref roomMin,ref roomMax);
-                ClipDepth(eye.y,velocity.y,.006f,9.74f,ref roomMin,ref roomMax);
-                ClipDepth(eye.z,velocity.z,zoneNear+.01f,zoneFar-.01f,ref roomMin,ref roomMax);
-            }
+            float near=new[]{.18f,14.3f,27.3f,40.3f}[held.zone],far=new[]{13.7f,26.7f,39.75f,53.8f}[held.zone];
+            var minimum=new Vector3(-13.79f,.006f,near+.01f);var maximum=new Vector3(13.79f,9.74f,far-.01f);
+            Interaction.ResolveDepth(minimum,maximum,out bool surface);
             HasPlacementSurface=surface;
-            // Looking through an opening retains the last depth for free airborne placement.
-            float target=surface?surfaceDepth:holdDistance;
-            holdDistance=roomMin<=roomMax?Mathf.Clamp(target,roomMin,roomMax):Mathf.Clamp(target,minDepth,maxDepth);
         }
         public void RotateHeld(float yawDegrees,float pitchDegrees)
         {
@@ -250,8 +215,19 @@ namespace ShadeLink.Gallery
             start.direction=oldAnchor.normalized;start.depth=oldAnchor.magnitude;
             Quaternion requestedRotation=heldRotation;
             ResolvePlacementDepth();
-            HoldPose target=PerspectivePose(eye,view.transform.forward,holdDistance,requestedRotation);
-            HoldPose accepted=start;PlacementBlocked=false;
+            if(!Interaction.PlacementFeasible)
+            {
+                PlacementBlocked=true;invalid=true;invalidReason="현재 크기로 조준한 위치에 놓을 공간이 없습니다.";
+                held.Highlight(true,true);return;
+            }
+            if(Interaction.TryApplyPlacement())
+            {
+                initialPlacement=false;PlacementBlocked=false;invalid=false;
+                PlacementObstacle=null;
+                held.Highlight(true,false);lighting.Synchronize();return;
+            }
+            HoldPose target=PerspectivePose(eye,Interaction.HeldDirection,holdDistance,requestedRotation);
+            HoldPose accepted=start;PlacementBlocked=false;PlacementObstacle=null;
             // Mounted pictures start with a tiny wall/boundary overlap. Detach only a short,
             // already collision-free distance on the original pickup ray before sweeping.
             bool detach=initialPlacement&&Vector3.Distance(start.position,target.position)<.6f&&
@@ -264,7 +240,7 @@ namespace ShadeLink.Gallery
             else
             {
                 float localRadius=0;
-                foreach(var point in placementSamples)localRadius=Mathf.Max(localRadius,(point-GrabLocalPoint).magnitude);
+                foreach(var point in placementSamples)localRadius=Mathf.Max(localRadius,(point-Interaction.ScaledGrabLocalPoint).magnitude);
                 // Retract before turning, then extend on the new ray. A large object must not
                 // drag its lower edge through the floor while aiming from far to near.
                 float travelDepth=Mathf.Min(start.depth,target.depth);
@@ -297,24 +273,30 @@ namespace ShadeLink.Gallery
                 }
                 if(!PlacementBlocked)initialPlacement=false;
             }
-            ApplyPreview(accepted);holdDistance=accepted.depth;heldRotation=accepted.rotation;
+            ApplyPreview(accepted);
             Physics.SyncTransforms();
             invalid=!ValidPlacement(held,out invalidReason);held.Highlight(true,invalid);lighting.Synchronize();
         }
         HoldPose PerspectivePose(Vector3 eye,Vector3 direction,float depth,Quaternion rotation)
         {
             float scale=referenceScale*depth/referenceDistance;
-            return new HoldPose {position=eye+direction*depth-rotation*(GrabLocalPoint*scale),direction=direction,
+            return new HoldPose {position=eye+direction*depth-rotation*(Interaction.ScaledGrabLocalPoint*scale),direction=direction,
                 depth=depth,scale=scale,rotation=rotation};
         }
         HoldPose InterpolatePreview(Vector3 eye,HoldPose from,HoldPose to,float t)
         {
-            return PerspectivePose(eye,Vector3.Slerp(from.direction,to.direction,t).normalized,
-                Mathf.Lerp(from.depth,to.depth,t),Quaternion.Slerp(from.rotation,to.rotation,t));
+            // Moving the camera changes the old anchor's depth without changing its
+            // already accepted physical size. Start continuously at that actual pose;
+            // rescaling the first sample to the new depth would grow it into the floor.
+            Vector3 direction=Vector3.Slerp(from.direction,to.direction,t).normalized;
+            float depth=Mathf.Lerp(from.depth,to.depth,t),scale=Mathf.Lerp(from.scale,to.scale,t);
+            Quaternion rotation=Quaternion.Slerp(from.rotation,to.rotation,t);
+            return new HoldPose {position=eye+direction*depth-rotation*(Interaction.ScaledGrabLocalPoint*scale),
+                direction=direction,depth=depth,scale=scale,rotation=rotation};
         }
         void ApplyPreview(HoldPose pose)
         {
-            held.transform.localScale=Vector3.one*pose.scale;
+            held.transform.localScale=Interaction.ScaleAt(pose.scale);
             held.transform.SetPositionAndRotation(pose.position,pose.rotation);
         }
         bool ClearTransition(HoldPose from,HoldPose to)
@@ -330,11 +312,11 @@ namespace ShadeLink.Gallery
                 {
                     var hit=placementHits[i];
                     if(hit.collider==controller||hit.collider.GetComponentInParent<GalleryProp>()==held)continue;
-                    return false;
+                    PlacementObstacle="sweep: "+hit.collider.name;return false;
                 }
             }
             ApplyPreview(to);
-            return ValidPlacement(held,out _);
+            bool valid=ValidPlacement(held,out var reason);if(!valid)PlacementObstacle="end: "+reason;return valid;
         }
         public bool ValidPlacement(GalleryProp prop,out string reason)
         {
@@ -378,36 +360,14 @@ namespace ShadeLink.Gallery
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop()
-        {
-            if(held==null)return false;
-            // Release exactly the displayed pose, without resolving another surface on this click.
-            invalid=!ValidPlacement(held,out invalidReason);
-            if(invalid){held.Highlight(true,true);Tell(invalidReason);return false;}
-            held.Release();
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;drops++;Physics.SyncTransforms();lighting.Synchronize();return true;
-        }
-        public void Cancel()
-        {
-            if(held==null)return;
-            held.transform.SetPositionAndRotation(pickupPosition,pickupRotation);held.transform.localScale=pickupScale;
-            foreach(var p in held.parts)p.enabled=true;
-            held.body.position=pickupPosition;held.body.rotation=pickupRotation;held.RefreshMass();
-            held.body.isKinematic=pickupKinematic;held.body.useGravity=pickupGravity;
-            held.body.collisionDetectionMode=pickupKinematic?CollisionDetectionMode.ContinuousSpeculative:CollisionDetectionMode.ContinuousDynamic;
-            if(!pickupKinematic)
-            {
-                held.body.linearVelocity=pickupVelocity;held.body.angularVelocity=pickupAngularVelocity;
-                if(pickupSleeping)held.body.Sleep();else held.body.WakeUp();
-            }
-            held.Highlight(false,false);held=null;aimed=null;invalid=false;Physics.SyncTransforms();lighting.Synchronize();
-        }
+        public bool Drop() { pendingDrop=false;return Interaction.Drop(); }
+        public void Cancel(bool force=false) { pendingDrop=false;Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
             {
                 Vector3 p=feet+offset;Vector3 normal=Vector3.up;
-                if(Physics.Raycast(p+Vector3.up*.08f,Vector3.down,out var floor,.18f,~0,QueryTriggerInteraction.Ignore)&&floor.collider!=controller)
+                if(Physics.Raycast(p+Vector3.up*.08f,Vector3.down,out var floor,.18f,~0,QueryTriggerInteraction.Ignore)&&floor.collider!=controller&&PlacementSupport.IsUsableGround(floor.collider))
                 {p=floor.point;normal=floor.normal;}
                 if(lighting.IsSunlit(p,normal))return false;
             }
@@ -416,18 +376,17 @@ namespace ShadeLink.Gallery
         public void Tick(float dt,Vector2 move,bool jump=false)
         {
             if(!active||won)return;dt=Mathf.Clamp(dt,0,.05f);elapsed+=dt;
-            if(held!=null){UpdateExposure(dt);SyncView();return;}
-            move=Vector2.ClampMagnitude(move,1);
-            bool grounded=controller.isGrounded;
-            if(!grounded&&verticalVelocity<=0&&Physics.SphereCast(controller.transform.position+Vector3.up*.29f,.20f,Vector3.down,out var ground,.14f,~0,QueryTriggerInteraction.Ignore))grounded=ground.normal.y>.6f;
-            coyote=grounded?.10f:Mathf.Max(0,coyote-dt);jumpBuffer=jump?.12f:Mathf.Max(0,jumpBuffer-dt);
-            if(grounded&&verticalVelocity<0)verticalVelocity=-2;
-            if(jumpBuffer>0&&coyote>0){verticalVelocity=Mathf.Sqrt(2*Gravity*JumpHeight);jumpBuffer=coyote=0;}
-            verticalVelocity-=Gravity*dt;
-            CollisionFlags flags=controller.Move(new Vector3(move.x*Speed,verticalVelocity,move.y*Speed)*dt);
-            if((flags&CollisionFlags.Above)!=0&&verticalVelocity>0)verticalVelocity=0;
-            player.feet=controller.transform.position;player.grounded=controller.isGrounded;
+            foreach(var prop in props)prop.placement.Tick(dt);
+            Vector3 supportMotion=Vector3.zero;
+            Vector2 localMove=new Vector2(move.x*Mathf.Cos(yaw)-move.y*Mathf.Sin(yaw),move.x*Mathf.Sin(yaw)+move.y*Mathf.Cos(yaw));
+            motor.VerticalVelocity=verticalVelocity;
+            motor.Step(controller,localMove,yaw,jump,gameJumpHeld||jump,dt,~0,supportMotion);
+            verticalVelocity=motor.VerticalVelocity;
+            movementAudio?.Tick(motor.Velocity,motor.Grounded,move.sqrMagnitude>.0001f,dt);
+            player.feet=controller.transform.position;player.grounded=motor.Grounded;
+            SyncView();if(automated&&held!=null)AdvanceHeld(dt);
             UpdateExposure(dt);
+            lesson.Tick(dt);
             if(player.feet.z>36&&player.feet.z<41&&player.feet.y>1.9f)visitedUpper=true;
             int next=player.feet.z>42.6f&&visitedUpper?3:player.feet.z>28?2:player.feet.z>15?1:0;
             if(next>checkpoint&&safe&&player.grounded){checkpoint=next;Tell("0"+(checkpoint+1)+" 구역 저장 · R로 이 구역만 다시 시작할 수 있습니다.",6);}
@@ -441,5 +400,29 @@ namespace ShadeLink.Gallery
             exposure=Mathf.Clamp01(exposure+dt*(safe?-1.7f:2.2f));
             if(exposure>=1||player.feet.y< -3)Respawn();
         }
+        ObjectInteraction<GalleryProp> interaction;
+        ObjectInteraction<GalleryProp> Interaction => interaction??(interaction=new ObjectInteraction<GalleryProp>(this));
+        Camera IObjectInteractionHost<GalleryProp>.Camera => view;
+        CharacterController IObjectInteractionHost<GalleryProp>.Controller => controller;
+        GalleryProp[] IObjectInteractionHost<GalleryProp>.Props => props;
+        GalleryProp IObjectInteractionHost<GalleryProp>.Held { get => held; set => held=value; }
+        GalleryProp IObjectInteractionHost<GalleryProp>.Aimed { get => aimed; set => aimed=value; }
+        int IObjectInteractionHost<GalleryProp>.InteractionMask => ~0;
+        bool IObjectInteractionHost<GalleryProp>.CanInteract => active&&!won;
+        void IObjectInteractionHost<GalleryProp>.AimChanged(RaycastHit hit) { }
+        bool IObjectInteractionHost<GalleryProp>.TrySpecialInteraction() { return false; }
+        void IObjectInteractionHost<GalleryProp>.CancelSpecialInteraction() { }
+        void IObjectInteractionHost<GalleryProp>.StartPlacement()
+        {
+            invalid=false;CachePlacementSamples();initialPlacement=true;PlacementBlocked=false;held.BeginHold();
+            UpdateHeldPose();
+            grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
+        }
+        void IObjectInteractionHost<GalleryProp>.PrepareRelease() { UpdateHeldPose(); }
+        bool IObjectInteractionHost<GalleryProp>.ValidateRelease(out string reason)
+        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
+        bool IObjectInteractionHost<GalleryProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
+        void IObjectInteractionHost<GalleryProp>.FinishInteraction(bool released) { invalid=false;if(released)drops++;lighting.Synchronize(); }
+
     }
 }
