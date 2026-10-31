@@ -348,8 +348,8 @@ namespace ShadeLink.Starship
             var quietLight=new GameObject("Quiet room light").AddComponent<Light>();quietLight.transform.SetParent(root,false);quietLight.transform.position=Point(4,new Vector3(0,4,-5));quietLight.type=LightType.Point;quietLight.range=20;quietLight.intensity=1.2f;quietLight.color=new Color(.55f,.73f,1);
             Connections();Exterior();game.ending.BuildCorridor(root,ink,black,cyan,white);
             var player=new GameObject("플레이어");player.transform.SetParent(root,false);player.transform.position=Checkpoints[0]+Vector3.up*.025f;
-            var controller=player.AddComponent<CharacterController>();controller.height=1.75f;controller.radius=.24f;controller.center=new Vector3(0,.875f,0);controller.stepOffset=.24f;controller.skinWidth=.015f;controller.minMoveDistance=0;game.controller=controller;
-            var cam=new GameObject("Starship view");cam.transform.SetParent(root,false);game.view=cam.AddComponent<Camera>();game.view.fieldOfView=70;game.view.nearClipPlane=.05f;game.view.farClipPlane=1100;cam.AddComponent<AudioListener>();
+            var controller=player.AddComponent<CharacterController>();FirstPersonMotor.Configure(controller,null);game.controller=controller;
+            var cam=new GameObject("Starship view");cam.transform.SetParent(root,false);game.view=cam.AddComponent<Camera>();FirstPersonMotor.Configure(controller,game.view);PlayerControls.ConfigureCamera(game.view);game.view.farClipPlane=1100;cam.AddComponent<AudioListener>();
             game.props=props.ToArray();return game;
         }
     }

@@ -45,22 +45,37 @@ namespace ShadeLink
     {
         readonly IObjectInteractionHost<T> host;
         RaycastHit[] hits = new RaycastHit[64];
+        RaycastHit[] assistHits = new RaycastHit[20];
         RaycastHit aimHit;
         Pickup pickup;
         PerspectivePlacement placement;
         bool placementFeasible;
+        Vector3 initialDirection = Vector3.forward;
+        float alignmentTime;
+        public float PickupAssistRadius { get; set; } = .05f;
+        public float OverlapReduction { get; private set; } = 1;
+        public Vector3 HeldDirection => host.Camera.transform.rotation * Vector3.Slerp(initialDirection, Vector3.forward,
+            1 - Mathf.Pow(1 - Mathf.Clamp01(alignmentTime / .8f), 2));
+        public void Advance(float dt) { alignmentTime = Mathf.Min(.8f, alignmentTime + Mathf.Max(0, dt)); }
         public bool PlacementFeasible => placementFeasible;
         public int PlacementQueries => placement==null?0:placement.Queries;
-        Quaternion relativeRotation=Quaternion.identity;
         public float ReferenceDistance { get; private set; }
         public float ReferenceScale { get; private set; }
+        public Vector3 ReferenceShapeRatio { get; private set; } = Vector3.one;
         public Vector3 GrabLocalPoint { get; private set; }
+        public Vector3 ScaledGrabLocalPoint => ShapePoint(GrabLocalPoint);
         public float Depth { get; set; }
+        Quaternion relativeRotation=Quaternion.identity;
+        Quaternion CameraBasis => Quaternion.LookRotation(Vector3.Cross(host.Camera.transform.right,Vector3.up),Vector3.up);
+        // These puzzle props stay upright while looking up/down. Horizontal
+        // camera turns carry their orientation; explicit tilt remains available.
         public Quaternion Rotation
         {
-            get => host.Camera.transform.rotation*relativeRotation;
-            set => relativeRotation=Quaternion.Inverse(host.Camera.transform.rotation)*value;
+            get => CameraBasis*relativeRotation;
+            set => relativeRotation=Quaternion.Inverse(CameraBasis)*value;
         }
+        public Vector3 ShapePoint(Vector3 localPoint) => Vector3.Scale(localPoint,ReferenceShapeRatio);
+        public Vector3 ScaleAt(float scale) => ReferenceShapeRatio*scale;
 
         sealed class Pickup
         {
@@ -78,9 +93,9 @@ namespace ShadeLink
         public void UpdateAim()
         {
             T previous = host.Aimed; host.Aimed = null; aimHit = default;
-            if (host.Held == null && InteractionRaycast.Nearest(host.Camera.transform.position,
-                host.Camera.transform.forward, host.Controller, null, host.InteractionMask, ref hits, out aimHit, out _))
-                host.Aimed = aimHit.collider.GetComponentInParent<T>();
+            if (host.Held == null)
+                host.Aimed = InteractionRaycast.Pick<T>(host.Camera.transform.position, host.Camera.transform.forward,
+                    host.Controller, host.InteractionMask, PickupAssistRadius, ref hits, ref assistHits, out aimHit);
             if (previous != null && previous != host.Held && previous != host.Aimed) previous.Highlight(false, false);
             if (host.Aimed != null) host.Aimed.Highlight(true, false);
             host.AimChanged(aimHit);
@@ -114,15 +129,23 @@ namespace ShadeLink
                 position = held.transform.position, rotation = held.transform.rotation, scale = held.transform.localScale,
                 velocity = body.linearVelocity, angularVelocity = body.angularVelocity,
                 kinematic = body.isKinematic, gravity = body.useGravity, sleeping = body.IsSleeping(),
-                placement = held.Placement.Capture(), colliders = held.GetComponentsInChildren<Collider>(),
+                placement = held.Placement.Capture(), colliders = Array.FindAll(held.GetComponentsInChildren<Collider>(true),
+                    collider=>collider.GetComponentInParent<Rigidbody>(true)==body),
                 restoreAuxiliary = held.CaptureAuxiliaryState()
             };
             pickup.enabled = new bool[pickup.colliders.Length];
             for (int i = 0; i < pickup.colliders.Length; i++) pickup.enabled[i] = pickup.colliders[i].enabled;
-            GrabLocalPoint = held.transform.InverseTransformPoint(aimHit.point);
+            // Perspective scaling is about the object's centre, not the clicked face.
+            GrabLocalPoint = Vector3.zero;
             ReferenceScale = held.transform.localScale.x;
-            ReferenceDistance = Mathf.Max(.01f, aimHit.distance);
-            Depth = ReferenceDistance; Rotation = held.transform.rotation;placementFeasible=true;
+            ReferenceShapeRatio = pickup.scale / ReferenceScale;
+            Vector3 offset = pickup.position - host.Camera.transform.position;
+            ReferenceDistance = Mathf.Max(.01f, offset.magnitude);
+            initialDirection = Quaternion.Inverse(host.Camera.transform.rotation) * offset.normalized;
+            alignmentTime = 0; OverlapReduction = 1;
+            Vector3 forward = Vector3.ProjectOnPlane(pickup.rotation * Vector3.forward, Vector3.up);
+            if (forward.sqrMagnitude < .0001f) forward = Vector3.Cross(pickup.rotation * Vector3.right, Vector3.up);
+            Depth = ReferenceDistance; Rotation = Quaternion.LookRotation(forward, Vector3.up);placementFeasible=true;
             placement=new PerspectivePlacement(held.transform,held.Parts,GrabLocalPoint,ReferenceScale,ReferenceDistance);
             host.StartPlacement();
         }
@@ -175,7 +198,7 @@ namespace ShadeLink
         public PerspectivePlacement.Result ResolvePlacement(Vector3 minimum,Vector3 maximum,float maximumIntent=float.PositiveInfinity)
         {
             var result=placement.Resolve(host.Camera,Rotation,host.Controller,host.InteractionMask,host.Held.MinScale,host.Held.MaxScale,
-                minimum,maximum,Depth,maximumIntent);
+                minimum,maximum,maximumIntent,HeldDirection);
             Depth=result.Depth;placementFeasible=result.Feasible;return result;
         }
 
@@ -185,12 +208,35 @@ namespace ShadeLink
             var prop=host.Held;Vector3 position=prop.transform.position,size=prop.transform.localScale;
             Quaternion rotation=prop.transform.rotation,requested=Rotation;
             float scale=ReferenceScale*Depth/ReferenceDistance;
-            prop.transform.localScale=Vector3.one*scale;
-            prop.transform.SetPositionAndRotation(host.Camera.transform.position+host.Camera.transform.forward*Depth-
-                requested*(GrabLocalPoint*scale),requested);
+            prop.transform.localScale=ScaleAt(scale);
+            prop.transform.SetPositionAndRotation(host.Camera.transform.position+HeldDirection*Depth-
+                requested*(ScaledGrabLocalPoint*scale),requested);
+            OverlapReduction=1;
+            Vector3 boundsSize=prop.WorldBounds.size;
+            if(Mathf.Max(boundsSize.x,Mathf.Max(boundsSize.y,boundsSize.z))>=.5f && OverlapsPlayer(prop))
+            {
+                float lo=Mathf.Min(1,prop.MinScale/scale),hi=1;
+                prop.transform.localScale=ScaleAt(scale*lo);
+                if(!OverlapsPlayer(prop))
+                {
+                    for(int i=0;i<10;i++)
+                    {
+                        float mid=(lo+hi)*.5f;prop.transform.localScale=ScaleAt(scale*mid);
+                        if(OverlapsPlayer(prop))hi=mid;else lo=mid;
+                    }
+                    OverlapReduction=lo;prop.transform.localScale=ScaleAt(scale*lo);
+                }
+                else prop.transform.localScale=ScaleAt(scale);
+            }
             Physics.SyncTransforms();
-            if(host.ValidateRelease(out _))return true;
+            if(host.ValidateRelease(out _)){prop.RefreshMass();return true;}
             prop.transform.localScale=size;prop.transform.SetPositionAndRotation(position,rotation);Physics.SyncTransforms();
+            return false;
+        }
+
+        bool OverlapsPlayer(T prop)
+        {
+            foreach(var part in prop.Parts)if(host.IntersectsPlayer(part))return true;
             return false;
         }
 

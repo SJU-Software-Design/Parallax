@@ -164,8 +164,8 @@ namespace ShadeLink.Beach
             // Unreachable shoreline dressing establishes the resort silhouette.
             for(int z=7;z<105;z+=13){Model("surfboard",root,new Vector3(-17,0,z),1.4f);Model("driftwood",root,new Vector3(17,-.1f,z+3),1.7f);}
             var player=new GameObject("플레이어");player.transform.SetParent(root,false);player.transform.position=Checkpoints[0]+Vector3.up*.025f;
-            var controller=player.AddComponent<CharacterController>();controller.height=1.75f;controller.radius=.24f;controller.center=new Vector3(0,.875f,0);controller.stepOffset=.24f;controller.skinWidth=.015f;controller.minMoveDistance=0;game.controller=controller;
-            var cam=new GameObject("Beach view");cam.transform.SetParent(root,false);game.view=cam.AddComponent<Camera>();game.view.fieldOfView=70;game.view.nearClipPlane=.05f;game.view.farClipPlane=260;game.view.backgroundColor=new Color(.59f,.80f,.92f);cam.AddComponent<AudioListener>();
+            var controller=player.AddComponent<CharacterController>();FirstPersonMotor.Configure(controller,null);game.controller=controller;
+            var cam=new GameObject("Beach view");cam.transform.SetParent(root,false);game.view=cam.AddComponent<Camera>();FirstPersonMotor.Configure(controller,game.view);PlayerControls.ConfigureCamera(game.view);game.view.farClipPlane=260;game.view.backgroundColor=new Color(.59f,.80f,.92f);cam.AddComponent<AudioListener>();
             game.props=props.ToArray();game.lighting.mirror=mirror;return game;
         }
     }

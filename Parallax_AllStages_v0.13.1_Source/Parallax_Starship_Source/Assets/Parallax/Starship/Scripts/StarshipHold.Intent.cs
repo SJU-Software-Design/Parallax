@@ -17,6 +17,7 @@ public static partial class StarshipHold
         public StarshipGame game;
         public StarshipProp prop;
         public Shape[] shapes;
+        public Vector3 shapeRatio, grab;
         public float ratio, radius, desired, minDepth, maxDepth, roomMin, roomMax;
         public bool feasible;
         public Action<float> setDepth;
@@ -50,19 +51,21 @@ public static partial class StarshipHold
             setObstacle = x=>value.PlacementObstacle=x;
             intersectsPlayer = value.IntersectsPlayer;
             ratio = value.referenceScale / Mathf.Max(.01f, value.referenceDistance);
+            shapeRatio = prop.transform.localScale / value.referenceScale;
+            grab = Vector3.Scale(value.GrabLocalPoint, shapeRatio);
             desired = value.referenceDistance;
             shapes = new Shape[prop.parts.Length];
             for (int i = 0; i < shapes.Length; i++)
             {
                 BoxCollider part = prop.parts[i];
-                shapes[i] = new Shape { center = prop.transform.InverseTransformPoint(part.transform.TransformPoint(part.center)),
+                shapes[i] = new Shape { center = Vector3.Scale(prop.transform.InverseTransformPoint(part.transform.TransformPoint(part.center)), shapeRatio),
                     half = Vector3.Scale(part.size * .5f, Abs(part.transform.lossyScale)) / value.referenceScale,
                     rotation = Quaternion.Inverse(prop.transform.rotation) * part.transform.rotation, collider = part };
                 for (int k = 0; k < 8; k++)
                 {
                     Vector3 corner = shapes[i].center + shapes[i].rotation * Vector3.Scale(shapes[i].half,
                         new Vector3((k & 1) == 0 ? -1 : 1, (k & 2) == 0 ? -1 : 1, (k & 4) == 0 ? -1 : 1));
-                    radius = Mathf.Max(radius, (corner-value.GrabLocalPoint).magnitude);
+                    radius = Mathf.Max(radius, (corner-grab).magnitude);
                 }
             }
         }
@@ -84,7 +87,7 @@ public static partial class StarshipHold
     {
         if (game.held == null) return;
         Session s = Get(game);
-        s.eye = game.view.transform.position; s.forward = game.view.transform.forward; s.requestedRotation = game.heldRotation;
+        s.eye = game.view.transform.position; s.forward = game.HeldDirection; s.requestedRotation = game.heldRotation;
         s.minDepth = game.held.minScale / s.ratio;
         s.maxDepth = game.held.maxScale / s.ratio;
         var result=game.ResolveSharedPlacement(StarshipWorld.ZoneBounds(game.held.zone));

@@ -33,6 +33,13 @@ namespace ShadeLink.Editor
 
             string outputDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "Builds", platform));
             string output = Path.Combine(outputDir, executable);
+            var args = Environment.GetCommandLineArgs();
+            int outputAt = Array.IndexOf(args, "-parallaxBuildOutput");
+            if (outputAt >= 0 && outputAt + 1 < args.Length)
+            {
+                output = Path.GetFullPath(args[outputAt + 1]);
+                outputDir = Path.GetDirectoryName(output);
+            }
             Directory.CreateDirectory(outputDir);
             string platformName = BuildPipeline.GetBuildTargetName(target);
             string previousArchitecture = EditorUserBuildSettings.GetPlatformSettings(platformName, "Architecture");

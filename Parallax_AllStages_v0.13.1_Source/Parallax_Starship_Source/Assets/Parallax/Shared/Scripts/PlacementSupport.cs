@@ -27,7 +27,8 @@ namespace ShadeLink
 
         public void Initialize(Rigidbody rigidbody,Renderer[] renderers,bool mountedAtHome=false)
         {
-            if(initialized)return;initialized=true;body=rigidbody;Visuals=renderers;shapes=GetComponentsInChildren<Collider>();
+            if(initialized)return;initialized=true;body=rigidbody;Visuals=renderers;
+            shapes=Array.FindAll(GetComponentsInChildren<Collider>(true),shape=>shape.GetComponentInParent<Rigidbody>(true)==body);
             homeAttached=mountedAtHome;homePosition=transform.position;homeRotation=transform.rotation;homeScale=transform.lossyScale;
             originals=new Material[Visuals.Length][];ghosts=new Material[Visuals.Length][];shadowModes=new ShadowCastingMode[Visuals.Length];
             var shader=Shader.Find("Parallax/PlacementGhost");
@@ -80,7 +81,7 @@ namespace ShadeLink
             // Sample actual collider surfaces, not a large compound bounding box.
             foreach(var shape in shapes)
             {
-                if(shape==null||!shape.enabled||shape.isTrigger)continue;var b=shape.bounds;
+                if(shape==null||!shape.enabled||!shape.gameObject.activeInHierarchy||shape.isTrigger)continue;var b=shape.bounds;
                 for(int i=0;i<5;i++)
                 {
                     var below=new Vector3(b.center.x,b.min.y-.08f,b.center.z);
@@ -111,7 +112,7 @@ namespace ShadeLink
         void UpdatePlayerCollision()
         {
             if(player==null||shapes==null||!player.enabled)return;
-            foreach(var shape in shapes)if(shape!=null&&shape.enabled)Physics.IgnoreCollision(player,shape,!Ready);
+            foreach(var shape in shapes)if(shape!=null&&shape.enabled&&shape.gameObject.activeInHierarchy)Physics.IgnoreCollision(player,shape,!Ready);
         }
         void OnDestroy(){if(ghosts!=null)foreach(var set in ghosts)foreach(var m in set)if(m!=null)Destroy(m);}
     }

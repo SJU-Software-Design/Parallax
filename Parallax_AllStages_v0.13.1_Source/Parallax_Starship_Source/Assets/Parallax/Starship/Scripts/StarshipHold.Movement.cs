@@ -129,7 +129,7 @@ public static partial class StarshipHold
     }
     static Pose Rebase(Session s,Pose pose)
     {
-        Vector3 anchor=pose.position+pose.rotation*(s.game.GrabLocalPoint*pose.scale)-s.eye;
+        Vector3 anchor=pose.position+pose.rotation*(s.grab*pose.scale)-s.eye;
         pose.depth=anchor.magnitude;pose.direction=anchor.normalized;return pose;
     }
     static void Record(Session s,Pose pose)
@@ -162,7 +162,7 @@ public static partial class StarshipHold
         Vector3 tangent=displacement-normal*Vector3.Dot(displacement,normal);
         if(tangent.magnitude<.001f) return false;
         Pose slide=accepted;slide.position+=tangent.normalized*Mathf.Min(StepDistance,tangent.magnitude);
-        Vector3 anchor=slide.position+slide.rotation*(s.game.GrabLocalPoint*slide.scale)-s.eye;
+        Vector3 anchor=slide.position+slide.rotation*(s.grab*slide.scale)-s.eye;
         slide.depth=anchor.magnitude;slide.direction=anchor.normalized;
         // A lateral contact step may temporarily decouple actual scale/depth;
         // the next tracking step restores the unchanged perspective request.
@@ -181,7 +181,7 @@ public static partial class StarshipHold
     {
         float scale=s.ratio*depth;
         return new Pose{direction=direction,depth=depth,scale=scale,rotation=rotation,
-            position=s.eye+direction*depth-rotation*(s.game.GrabLocalPoint*scale)};
+            position=s.eye+direction*depth-rotation*(s.grab*scale)};
     }
     static Pose Interpolate(Session s,Pose from,Pose to,float t)
     {
@@ -189,7 +189,7 @@ public static partial class StarshipHold
         float depth=Mathf.Lerp(from.depth,to.depth,t),scale=Mathf.Lerp(from.scale,to.scale,t);
         Quaternion rotation=Quaternion.Slerp(from.rotation,to.rotation,t);
         return new Pose{direction=direction,depth=depth,scale=scale,rotation=rotation,
-            position=s.eye+direction*depth-rotation*(s.game.GrabLocalPoint*scale)};
+            position=s.eye+direction*depth-rotation*(s.grab*scale)};
     }
     static float Motion(Session s,Pose a,Pose b)
     {
@@ -198,7 +198,7 @@ public static partial class StarshipHold
             +s.radius*(Mathf.Abs(a.scale-b.scale)+Mathf.Max(a.scale,b.scale)*Quaternion.Angle(a.rotation,b.rotation)*Rad);
     }
     static void Apply(Session s,Pose pose)
-    {s.prop.transform.localScale=Vector3.one*pose.scale;s.prop.transform.SetPositionAndRotation(pose.position,pose.rotation);}
+    {s.prop.transform.localScale=s.shapeRatio*pose.scale;s.prop.transform.SetPositionAndRotation(pose.position,pose.rotation);}
     static bool Spend(Session s)
     {if(s.queries>=(s.finishing?QueryBudget:QueryBudget-s.shapes.Length)){s.exhausted=true;return false;}s.queries++;return true;}
 

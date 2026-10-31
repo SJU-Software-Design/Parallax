@@ -7,7 +7,7 @@ namespace ShadeLink.Beach
     public sealed class BeachGame : MonoBehaviour, IObjectInteractionHost<BeachProp>
     {
         public const string Version="0.12.1";
-        public const float Speed=3.6f, Gravity=17, JumpHeight=1.18f, Reach=InteractionRaycast.MaximumDistance;
+        public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
         public BeachLighting lighting;
@@ -34,23 +34,32 @@ namespace ShadeLink.Beach
         public float noticeUntil;
         public PlacementLesson lesson;
         public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
+        public Vector3 HeldDirection => Interaction.HeldDirection;
         readonly List<Vector3> placementSamples=new List<Vector3>();
         readonly RaycastHit[] placementHits=new RaycastHit[64];
         struct HoldShape { public Vector3 center,half; public Quaternion rotation; }
         struct HoldPose { public Vector3 position,direction; public Quaternion rotation; public float depth,scale; }
         readonly List<HoldShape> holdShapes=new List<HoldShape>();
         bool initialPlacement;
-        float coyote, jumpBuffer;
+        PlayerMovementAudio movementAudio;
+        readonly FirstPersonMotor motor=new FirstPersonMotor { GroundFilter=PlacementSupport.IsUsableGround };
+        readonly PlayerControls controls=new PlayerControls();
+        bool gameJumpHeld, pendingDrop;
 
         void Awake()
         {
+            FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
             var arguments=Environment.GetCommandLineArgs();
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
             bool waterTest=Array.IndexOf(arguments,"-beach-water-test")>=0;
             automated=placementTest||waterTest||Array.IndexOf(arguments,"-beach-test")>=0;
-            Application.runInBackground=automated;Application.targetFrameRate=90;
+            Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            font=Font.CreateDynamicFontFromOSFont(new[]{"Apple SD Gothic Neo","AppleGothic","Arial"},32);
+#else
             font=Font.CreateDynamicFontFromOSFont(new[]{"Malgun Gothic","맑은 고딕","Arial"},32);
+#endif
             player=new Player(new Vector2(controller.transform.position.x,controller.transform.position.z));
             player.feet=controller.transform.position;
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
@@ -66,14 +75,23 @@ namespace ShadeLink.Beach
             else if(waterTest)gameObject.AddComponent<BeachWaterValidation>().game=this;
             else if(automated)gameObject.AddComponent<BeachValidation>().game=this;
         }
+        void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
         void OnDestroy() { Time.timeScale=1; }
         public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
         public void Resume()
         {
-            if(won)ResetAll();active=started=true;Time.timeScale=1;
+            if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        void ClearControlInput()
+        {
+            motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
+        }
+        void ResetControlState()
+        {
+            motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
+        }
         void OnApplicationFocus(bool focused) { if(!focused&&!automated)Pause(); }
         public void ResetAll()
         {
@@ -97,8 +115,9 @@ namespace ShadeLink.Beach
         }
         public void PlacePlayer(Vector3 point)
         {
+            ResetControlState();
             controller.enabled=false;controller.transform.position=point+Vector3.up*.025f;controller.enabled=true;
-            player.feet=controller.transform.position;verticalVelocity=0;coyote=.12f;jumpBuffer=0;
+            player.feet=controller.transform.position;player.grounded=false;
             Physics.SyncTransforms();SyncView();
         }
         public void Respawn()
@@ -120,27 +139,34 @@ namespace ShadeLink.Beach
         }
         public bool CanStand(Vector3 feet)
         {
-            foreach(var hit in Physics.OverlapCapsule(feet+Vector3.up*.28f,feet+Vector3.up*1.49f,.225f,BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
-                if(hit!=controller)return false;
+            foreach(var hit in Physics.OverlapCapsule(feet+controller.center-Vector3.up*(controller.height*.5f-controller.radius),feet+controller.center+Vector3.up*(controller.height*.5f-controller.radius),controller.radius-.012f,BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
+                if(hit!=controller&&PlacementSupport.IsUsableGround(hit))return false;
             return true;
         }
         public void SyncView()
         {
-            view.transform.position=controller.transform.position+Vector3.up*Rules.EyeHeight;
+            view.transform.position=controller.transform.position+Vector3.up*1.55f;
             view.transform.rotation=Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
             if(player!=null)player.feet=controller.transform.position;
         }
         void Update()
         {
             if(automated)return;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(active)Pause();else Resume();}
+            if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
             if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
-            yaw+=Input.GetAxisRaw("Mouse X")*.023f;pitch=Mathf.Clamp(pitch+Input.GetAxisRaw("Mouse Y")*.023f,-1.35f,1.3f);
+            var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
+            motor.SmoothKeyboardInput=!controls.UsingGamepad;
+            Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
+            if(held!=null&&frame.RotateHeld)
+            {
+                Vector2 turn=PlayerControls.ObjectRotationDegrees(frame.Look);RotateHeld(turn.x,turn.y);
+            }
+            else PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);
             SyncView();UpdateAim();
-            if(Input.GetMouseButtonDown(1))Cancel();
+            if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
             if(held!=null)
             {
@@ -148,19 +174,27 @@ namespace ShadeLink.Beach
                 float tilt=(Input.GetKey(KeyCode.X)?1:0)-(Input.GetKey(KeyCode.Z)?1:0);
                 RotateHeld(turn*75*Time.deltaTime,tilt*75*Time.deltaTime);
                 if(Input.GetKeyDown(KeyCode.C))heldRotation=Quaternion.Euler(0,Mathf.Round(heldRotation.eulerAngles.y/15)*15,0);
-                UpdateHeldPose();
             }
             else if(adjustingMirror&&mirror!=null)
             {
-                if(Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
+                if(Input.GetMouseButtonDown(1)||Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
                 else mirror.Turn(((Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0))*28*Time.deltaTime);
             }
-            if(Input.GetMouseButtonDown(0))Interact();
-            float f=(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0),r=(Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0);
-            Vector2 direction=new Vector2(Mathf.Sin(yaw)*f+Mathf.Cos(yaw)*r,Mathf.Cos(yaw)*f-Mathf.Sin(yaw)*r);
-            Tick(Mathf.Min(Time.deltaTime,.05f),direction,Input.GetKeyDown(KeyCode.Space));
+            if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
+            gameJumpHeld=frame.JumpHeld;
+            Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
+                -Mathf.Sin(yaw)*frame.Move.x+Mathf.Cos(yaw)*frame.Move.y);
+            Tick(Time.deltaTime,direction,frame.JumpPressed);
+        }
+        void LateUpdate()
+        {
+            if(automated||!active||won)return;
+            SyncView();AdvanceHeld(Time.deltaTime);
+            if(pendingDrop){pendingDrop=false;Drop();}
+            if(held==null)UpdateAim();
         }
         public void UpdateAim() { Interaction.UpdateAim(); }
+        public void AdvanceHeld(float dt) { Interaction.Advance(dt);UpdateHeldPose(); }
         public void Interact() { Interaction.Interact(); }
         void CachePlacementSamples()
         {
@@ -170,15 +204,15 @@ namespace ShadeLink.Beach
             {
                 Vector3 half=part.size*.5f;
                 holdShapes.Add(new HoldShape {
-                    center=held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center)),
+                    center=Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center))),
                     half=Vector3.Scale(half,part.transform.lossyScale)/referenceScale,
                     rotation=Quaternion.Inverse(held.transform.rotation)*part.transform.rotation });
                 for(int i=0;i<8;i++)
-                    placementSamples.Add(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+
-                        Vector3.Scale(half,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)))));
+                    placementSamples.Add(Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+
+                        Vector3.Scale(half,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1))))));
                 // Faces and centres also catch a narrow obstruction inside the silhouette.
                 foreach(var direction in new[]{Vector3.zero,Vector3.right,Vector3.left,Vector3.up,Vector3.down,Vector3.forward,Vector3.back})
-                    placementSamples.Add(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+Vector3.Scale(half,direction))));
+                    placementSamples.Add(Interaction.ShapePoint(held.transform.InverseTransformPoint(part.transform.TransformPoint(part.center+Vector3.Scale(half,direction)))));
             }
         }
         public float RequestedScale => held==null?1:held.transform.localScale.x;
@@ -216,7 +250,7 @@ namespace ShadeLink.Beach
                 PlacementObstacle=null;
                 held.Highlight(true,false);lighting.Synchronize();return;
             }
-            HoldPose target=PerspectivePose(eye,view.transform.forward,holdDistance,requestedRotation);
+            HoldPose target=PerspectivePose(eye,Interaction.HeldDirection,holdDistance,requestedRotation);
             HoldPose accepted=start;PlacementBlocked=false;PlacementObstacle=null;
             // Mounted pictures start with a tiny wall/boundary overlap. Detach only a short,
             // already collision-free distance on the original pickup ray before sweeping.
@@ -230,7 +264,7 @@ namespace ShadeLink.Beach
             else
             {
                 float localRadius=0;
-                foreach(var point in placementSamples)localRadius=Mathf.Max(localRadius,(point-GrabLocalPoint).magnitude);
+                foreach(var point in placementSamples)localRadius=Mathf.Max(localRadius,(point-Interaction.ScaledGrabLocalPoint).magnitude);
                 // Retract before turning, then extend on the new ray. A large object must not
                 // drag its lower edge through the floor while aiming from far to near.
                 float travelDepth=Mathf.Min(start.depth,target.depth);
@@ -270,7 +304,7 @@ namespace ShadeLink.Beach
         HoldPose PerspectivePose(Vector3 eye,Vector3 direction,float depth,Quaternion rotation)
         {
             float scale=referenceScale*depth/referenceDistance;
-            return new HoldPose {position=eye+direction*depth-rotation*(GrabLocalPoint*scale),direction=direction,
+            return new HoldPose {position=eye+direction*depth-rotation*(Interaction.ScaledGrabLocalPoint*scale),direction=direction,
                 depth=depth,scale=scale,rotation=rotation};
         }
         HoldPose InterpolatePreview(Vector3 eye,HoldPose from,HoldPose to,float t)
@@ -281,12 +315,12 @@ namespace ShadeLink.Beach
             Vector3 direction=Vector3.Slerp(from.direction,to.direction,t).normalized;
             float depth=Mathf.Lerp(from.depth,to.depth,t),scale=Mathf.Lerp(from.scale,to.scale,t);
             Quaternion rotation=Quaternion.Slerp(from.rotation,to.rotation,t);
-            return new HoldPose {position=eye+direction*depth-rotation*(GrabLocalPoint*scale),
+            return new HoldPose {position=eye+direction*depth-rotation*(Interaction.ScaledGrabLocalPoint*scale),
                 direction=direction,depth=depth,scale=scale,rotation=rotation};
         }
         void ApplyPreview(HoldPose pose)
         {
-            held.transform.localScale=Vector3.one*pose.scale;
+            held.transform.localScale=Interaction.ScaleAt(pose.scale);
             held.transform.SetPositionAndRotation(pose.position,pose.rotation);
         }
         bool ClearTransition(HoldPose from,HoldPose to)
@@ -350,8 +384,8 @@ namespace ShadeLink.Beach
             var d=Vector3.Max(Vector3.zero,new Vector3(Mathf.Abs(point.x),Mathf.Abs(point.y),Mathf.Abs(point.z))-half);
             return d.sqrMagnitude;
         }
-        public bool Drop() { return Interaction.Drop(); }
-        public void Cancel(bool force=false) { Interaction.Cancel(force); }
+        public bool Drop() { pendingDrop=false;return Interaction.Drop(); }
+        public void Cancel(bool force=false) { pendingDrop=false;Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
@@ -368,20 +402,16 @@ namespace ShadeLink.Beach
             if(!active||won)return;dt=Mathf.Clamp(dt,0,.05f);elapsed+=dt;
             foreach(var prop in props)prop.placement.Tick(dt);
             lighting.Synchronize();if(lightGate!=null)lightGate.Tick(dt,lighting,controller);if(waterGate!=null)waterGate.Tick(dt,lighting,controller);
-            move=Vector2.ClampMagnitude(move,1);
-            bool grounded=controller.isGrounded;
-            if(!grounded&&verticalVelocity<=0&&Physics.SphereCast(controller.transform.position+Vector3.up*.29f,.20f,Vector3.down,out var ground,.14f,BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore))grounded=ground.normal.y>.6f&&PlacementSupport.IsUsableGround(ground.collider);
-            coyote=grounded?.10f:Mathf.Max(0,coyote-dt);jumpBuffer=jump?.12f:Mathf.Max(0,jumpBuffer-dt);
-            if(grounded&&verticalVelocity<0)verticalVelocity=-2;
-            if(jumpBuffer>0&&coyote>0){verticalVelocity=Mathf.Sqrt(2*Gravity*JumpHeight);jumpBuffer=coyote=0;}
-            verticalVelocity-=Gravity*dt;
             Vector3 supportMotion=Vector3.zero;
-            if(grounded&&Physics.Raycast(controller.transform.position+Vector3.up*.18f,Vector3.down,out var platformHit,.3f,BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore))
+            if((motor.Grounded||controller.isGrounded)&&Physics.Raycast(controller.transform.position+Vector3.up*.18f,Vector3.down,out var platformHit,.3f,BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore)&&PlacementSupport.IsUsableGround(platformHit.collider))
             {var platform=platformHit.collider.GetComponentInParent<BeachProp>();if(platform!=null&&platform.placement.Ready&&platform.floating&&!platform.body.isKinematic)supportMotion=Vector3.ProjectOnPlane(platform.body.linearVelocity,Vector3.up);}
-            CollisionFlags flags=controller.Move((new Vector3(move.x*Speed,verticalVelocity,move.y*Speed)+supportMotion)*dt);
-            if((flags&CollisionFlags.Above)!=0&&verticalVelocity>0)verticalVelocity=0;
-            player.feet=controller.transform.position;player.grounded=controller.isGrounded;
-            SyncView();if(held!=null)UpdateHeldPose();
+            Vector2 localMove=new Vector2(move.x*Mathf.Cos(yaw)-move.y*Mathf.Sin(yaw),move.x*Mathf.Sin(yaw)+move.y*Mathf.Cos(yaw));
+            motor.VerticalVelocity=verticalVelocity;
+            motor.Step(controller,localMove,yaw,jump,gameJumpHeld||jump,dt,BeachWorld.PhysicalMask,supportMotion);
+            verticalVelocity=motor.VerticalVelocity;
+            movementAudio?.Tick(motor.Velocity,motor.Grounded,move.sqrMagnitude>.0001f,dt);
+            player.feet=controller.transform.position;player.grounded=motor.Grounded;
+            SyncView();if(automated&&held!=null)AdvanceHeld(dt);
             UpdateExposure(dt);
             lesson.Tick(dt);
             int next=player.feet.z>73&&waterGate.unlocked?3:player.feet.z>48?2:player.feet.z>24&&lightGate.unlocked?1:0;
@@ -430,7 +460,7 @@ namespace ShadeLink.Beach
             UpdateHeldPose();
             grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
         }
-        void IObjectInteractionHost<BeachProp>.PrepareRelease() {  }
+        void IObjectInteractionHost<BeachProp>.PrepareRelease() { UpdateHeldPose(); }
         bool IObjectInteractionHost<BeachProp>.ValidateRelease(out string reason)
         { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
         bool IObjectInteractionHost<BeachProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
