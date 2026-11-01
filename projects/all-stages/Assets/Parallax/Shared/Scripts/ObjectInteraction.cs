@@ -78,15 +78,9 @@ namespace ShadeLink
         public Vector3 GrabLocalPoint { get; private set; }
         public Vector3 ScaledGrabLocalPoint => ShapePoint(GrabLocalPoint);
         public float Depth { get; set; }
-        Quaternion relativeRotation=Quaternion.identity;
-        Quaternion CameraBasis => Quaternion.LookRotation(Vector3.Cross(host.Camera.transform.right,Vector3.up),Vector3.up);
-        // These puzzle props stay upright while looking up/down. Horizontal
-        // camera turns carry their orientation; explicit tilt remains available.
-        public Quaternion Rotation
-        {
-            get => CameraBasis*relativeRotation;
-            set => relativeRotation=Quaternion.Inverse(CameraBasis)*value;
-        }
+        // Looking around moves the carry target without tilting the prop.
+        // Only the explicit rotate/tilt/straighten controls change its world orientation.
+        public Quaternion Rotation { get; set; } = Quaternion.identity;
         public Vector3 ShapePoint(Vector3 localPoint) => Vector3.Scale(localPoint,ReferenceShapeRatio);
         public Vector3 ScaleAt(float scale) => ReferenceShapeRatio*scale;
 
@@ -156,9 +150,7 @@ namespace ShadeLink
             ReferenceDistance = Mathf.Max(.01f, offset.magnitude);
             initialDirection = Quaternion.Inverse(host.Camera.transform.rotation) * offset.normalized;
             alignmentTime = 0; OverlapReduction = 1;
-            Vector3 forward = Vector3.ProjectOnPlane(pickup.rotation * Vector3.forward, Vector3.up);
-            if (forward.sqrMagnitude < .0001f) forward = Vector3.Cross(pickup.rotation * Vector3.right, Vector3.up);
-            Depth = ReferenceDistance; Rotation = Quaternion.LookRotation(forward, Vector3.up);placementFeasible=true;
+            Depth = ReferenceDistance; Rotation = pickup.rotation;placementFeasible=true;
             placement=new PerspectivePlacement(held.transform,held.Parts,GrabLocalPoint,ReferenceScale,ReferenceDistance);
             host.StartPlacement();
         }

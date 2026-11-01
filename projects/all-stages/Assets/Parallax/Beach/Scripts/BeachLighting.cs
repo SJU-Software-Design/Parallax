@@ -20,7 +20,7 @@ namespace ShadeLink.Beach
         {
             mirror=FindFirstObjectByType<BeachMirror>();
             if(!Application.isPlaying)return;
-            if(queryRoot!=null)Destroy(queryRoot);
+            if(queryRoot!=null){queryRoot.SetActive(false);Destroy(queryRoot);}
             proxies.Clear();queryRoot=new GameObject("Beach · non-solid shadow queries");
             for(int i=0;i<32;i++)Physics.IgnoreLayerCollision(ShadowLayer,i,true);
             Physics.queriesHitBackfaces=true;
@@ -40,7 +40,8 @@ namespace ShadeLink.Beach
         {
             foreach(var p in proxies)
             {
-                if(p.source==null)continue;
+                // Scene shutdown can destroy the separate query collider before its source.
+                if(p.source==null||p.collider==null||p.renderer==null)continue;
                 p.collider.enabled=p.source.gameObject.activeInHierarchy&&p.renderer.enabled&&(p.owner==null||p.owner.placement.Ready);
                 var t=p.collider.transform;t.SetPositionAndRotation(p.source.position,p.source.rotation);t.localScale=p.source.lossyScale;
             }
@@ -60,6 +61,24 @@ namespace ShadeLink.Beach
         }
         public bool MirrorReceivesSun(Vector3 at)=>mirror!=null&&!Blocked(at+ToSun*.06f,ToSun,100,mirror.prop);
         public bool IsDirectLit(Vector3 surface,Vector3 normal)=>Vector3.Dot(normal,ToSun)>.025f&&!Blocked(surface+normal*.035f,ToSun,100);
+        // Return the nearest real rendered-mesh shadow, including fixed scenery
+        // (whose owner is null). Shadow puzzles can distinguish an allowed prop
+        // from a roof covering the entire receiver without pose/scale shortcuts.
+        public bool TryGetDirectShadowCaster(Vector3 surface,Vector3 normal,out BeachProp owner)
+        {
+            owner=null;
+            if(Vector3.Dot(normal,ToSun)<=.025f)return true;
+            // Advance along the light ray so a steep sun does not shift the
+            // sampled silhouette vertically on an upright receiver board.
+            int count=Physics.RaycastNonAlloc(surface+ToSun*.035f,ToSun,hits,100,1<<ShadowLayer,QueryTriggerInteraction.Ignore);
+            Collider nearest=null;float distance=float.PositiveInfinity;
+            for(int i=0;i<count;i++)
+                if(hits[i].distance>=.008f&&hits[i].distance<distance)
+                {nearest=hits[i].collider;distance=hits[i].distance;}
+            if(nearest==null)return false;
+            foreach(var proxy in proxies)if(proxy.collider==nearest){owner=proxy.owner;break;}
+            return true;
+        }
         public bool IsReflectedLit(Vector3 surface,Vector3 normal)
         {
             if(mirror==null||!mirror.Illuminated)return false;

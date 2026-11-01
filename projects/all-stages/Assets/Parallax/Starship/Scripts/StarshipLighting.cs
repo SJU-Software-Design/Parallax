@@ -41,7 +41,8 @@ namespace ShadeLink.Starship
             bool moved=false;
             foreach(var p in proxies)
             {
-                if(p.source==null)continue;
+                // Scene shutdown can destroy the separate query collider before its source.
+                if(p.source==null||p.collider==null||p.renderer==null)continue;
                 bool enabled=p.source.gameObject.activeInHierarchy&&p.renderer.enabled&&(p.owner==null||p.owner.placement.Ready);
                 if(p.collider.enabled!=enabled){p.collider.enabled=enabled;moved=true;}
                 Vector3 at=p.source.position,scale=p.source.lossyScale;Quaternion rotation=p.source.rotation;

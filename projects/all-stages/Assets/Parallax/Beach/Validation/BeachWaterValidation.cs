@@ -39,9 +39,10 @@ namespace ShadeLink.Beach
             }
             game.lighting.Synchronize();
         }
-        void Fixture(BeachProp p,Vector3 position,float scale)
+        void Fixture(BeachProp p,Vector3 position,float scale,float yaw=0)
         {
             p.Restore();p.transform.SetPositionAndRotation(position,Quaternion.identity);p.transform.localScale=Vector3.one*scale;
+            p.transform.rotation=Quaternion.Euler(0,yaw,0);
             p.body.position=position;p.body.rotation=Quaternion.identity;Physics.SyncTransforms();p.Release();
         }
         void Look(Vector3 target,bool gradual=false)
@@ -76,14 +77,6 @@ namespace ShadeLink.Beach
             PhysicsSteps(180);
             Require(p.WorldBounds.min.y>-.025f&&p.placement.Ready,"Recovered object settles on dry land and reactivates its placed shadow");
         }
-        void LargeFloatingBall()
-        {
-            game.ResetAll();game.Resume();game.checkpoint=2;
-            var p=game.props.First(x=>x.title=="03 · 물살 운반 비치볼");
-            Fixture(p,new Vector3(2,-.6f,60.5f),4.8f);PhysicsSteps(150);
-            Require(p.floating&&p.WorldBounds.min.y<-.70f,"A physically floating enlarged ball is submerged below the old -0.68 m placement limit");
-            game.PlacePlayer(new Vector3(8.8f,0,63));Grab(p);PullOntoBank(p,new Vector3(8.8f,0,66));
-        }
         void SunkenParasol()
         {
             game.ResetAll();game.Resume();game.checkpoint=1;
@@ -92,21 +85,18 @@ namespace ShadeLink.Beach
             Require(p.WorldBounds.min.y> -2.1f&&p.WorldBounds.min.y<-.8f,"A non-floating parasol lands on a finite underwater floor instead of falling out of reach");
             game.PlacePlayer(new Vector3(0,0,31.3f));Grab(p);PullOntoBank(p,new Vector3(-4.5f,0,31));
         }
-        void BankContactBall()
-        {
-            game.ResetAll();game.Resume();game.checkpoint=2;
-            var p=game.props.First(x=>x.title=="03 · 물살 운반 비치볼");
-            Fixture(p,new Vector3(6.95f,-.06f,66.85f),1);PhysicsSteps(3);
-            Require(Physics.OverlapBox(p.WorldBounds.center,p.WorldBounds.extents,Quaternion.identity,BeachWorld.PhysicalMask,
-                QueryTriggerInteraction.Ignore).Any(c=>c.name=="마른 모래 둑"),"Bank-edge fixture includes the round ball's bounding-box overlap");
-            game.PlacePlayer(new Vector3(8.8f,0,65));Grab(p);PullOntoBank(p,new Vector3(8.8f,0,62));
-        }
         void SubmergedPlank()
         {
             game.ResetAll();game.Resume();game.checkpoint=1;
             var p=game.props.First(x=>x.title=="02 · 짧은 판자");
-            Fixture(p,new Vector3(0,-.09f,36.5f),1.3f);PhysicsSteps(180);
+            Fixture(p,new Vector3(0,-.09f,36.5f),1.3f,35);PhysicsSteps(180);
             Require(p.floating,"Released plank retains real water buoyancy");
+            Vector3 settled=p.body.position;
+            PhysicsSteps(600);
+            float drift=Vector2.Distance(new Vector2(settled.x,settled.z),new Vector2(p.body.position.x,p.body.position.z));
+            Require(BeachWater.Supports(p)&&p.placement.Ready,"The first crossing keeps a settled plank buoyant and usable after ten seconds");
+            Require(drift<.05f&&new Vector2(p.body.linearVelocity.x,p.body.linearVelocity.z).magnitude<.025f,
+                "The first crossing has no directional drift after settling; displacement="+drift);
             game.PlacePlayer(new Vector3(0,0,31));Grab(p);PullOntoBank(p,new Vector3(0,0,29));
         }
         void SolidBoundary()
@@ -141,14 +131,12 @@ namespace ShadeLink.Beach
             output=at>=0?args[at+1]:Path.Combine(Application.persistentDataPath,"BeachWaterValidation");Directory.CreateDirectory(output);
             Application.logMessageReceived+=Log;
             var previous=Physics.simulationMode;Physics.simulationMode=SimulationMode.Script;yield return null;
-            Scenario("enlarged floating ball",LargeFloatingBall);yield return null;
             Scenario("sunken parasol",SunkenParasol);yield return null;
-            Scenario("bank contact ball",BankContactBall);yield return null;
             Scenario("submerged plank",SubmergedPlank);yield return null;
             Scenario("solid boundary",SolidBoundary);yield return null;
             Scenario("water danger",WaterRemainsHazardous);yield return null;
             var report=new Report{passed=failures.Count==0&&errors.Count==0,
-                scope="Real scene prop water fixtures followed by camera-ray pickup, gradual aiming, perspective collision sweeps, drop, real buoyancy/gravity and settling. Player positions are prepared on shore and exposure is excluded while isolating object recovery. Not a full-stage solve or a manual playtest.",
+                scope="Essential plank and parasol water fixtures followed by camera-ray pickup, gradual aiming, perspective collision sweeps, drop, real buoyancy/gravity and settling. Decorative beach balls are no longer selectable and are outside this water-recovery scope. Boat travel and arrival use their separate native validator. Player positions are prepared on shore and exposure is excluded while isolating object recovery. Not a full-stage solve or a manual playtest.",
                 checks=checks.ToArray(),failures=failures.ToArray(),errors=errors.ToArray()};
             File.WriteAllText(Path.Combine(output,"water-results.json"),JsonUtility.ToJson(report,true));
             Physics.simulationMode=previous;Application.logMessageReceived-=Log;Application.Quit(report.passed?0:1);
