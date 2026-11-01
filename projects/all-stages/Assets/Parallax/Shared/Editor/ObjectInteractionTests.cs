@@ -94,13 +94,12 @@ namespace ShadeLink.Editor
             return maximum-minimum;
         }
 
-        static Vector2 ReferenceCubeSize(Camera camera)
+        static Vector2 ReferenceCubeSize(Camera camera, Quaternion orientation)
         {
             // The fixture starts as a unit cube with its centre at z=5.
-            // Keep that geometry upright on the current aim ray so this
+            // Keep its requested world orientation on the current aim ray so this
             // comparison measures perspective scaling independently of camera angle.
             Vector3 center=camera.transform.position+camera.transform.forward*5;
-            Quaternion orientation=Quaternion.LookRotation(Vector3.Cross(camera.transform.right,Vector3.up),Vector3.up);
             Vector2 minimum=Vector2.one*float.PositiveInfinity,maximum=Vector2.one*float.NegativeInfinity;
             for(int i=0;i<8;i++)
             {
@@ -148,6 +147,19 @@ namespace ShadeLink.Editor
                     using(var f=new Fixture(stage))
                     {
                         f.prop.gameObject.layer=8;f.Grab();
+                        if(stage=="Beach"||stage=="Starship")
+                        {
+                            // Query objects have a separate scene root and may be destroyed first.
+                            var lighting=(Component)Get(f.game,"lighting");
+                            var type=lighting.GetType().GetNestedType("Proxy",BindingFlags.NonPublic);
+                            object proxy=Activator.CreateInstance(type,true);
+                            var query=f.New("Destroyed shutdown shadow query").AddComponent<MeshCollider>();
+                            type.GetField("source").SetValue(proxy,f.prop.transform);
+                            type.GetField("renderer").SetValue(proxy,f.prop.GetComponent<Renderer>());
+                            type.GetField("collider").SetValue(proxy,query);
+                            var proxies=(System.Collections.IList)lighting.GetType().GetField("proxies",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(lighting);
+                            proxies.Add(proxy);UnityEngine.Object.DestroyImmediate(query);
+                        }
                         var disabled=f.game.GetType().GetMethod("OnDisable",BindingFlags.NonPublic|BindingFlags.Instance);
                         Require(disabled!=null,"Host has no held-state shutdown cleanup");disabled.Invoke(f.game,null);
                         Require(Get(f.game,"held")==null&&f.prop.gameObject.layer==8,"Host shutdown stranded a carried object");
@@ -259,32 +271,30 @@ namespace ShadeLink.Editor
             });
             foreach (string stage in new[] { "Gallery", "Library", "Beach", "Starship" })
             {
-                Check(result, stage, "tilted pickup levels the object and cancel restores its original rotation", () =>
+                Check(result, stage, "tilted pickup and cancel preserve the original world rotation", () =>
                 {
                     using (var f = new Fixture(stage))
                     {
                         Quaternion original = Quaternion.Euler(20, 37, 25);
                         f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
-                        Require(Vector3.Dot(f.prop.transform.up, Vector3.up) > .99999f, "Picked object retained its tilt");
-                        Require(Vector3.Dot(f.prop.transform.forward, Quaternion.Euler(0, 37, 0) * Vector3.forward) > .99999f,
-                            "Leveling changed the object's horizontal facing");
+                        Require(Quaternion.Angle(f.prop.transform.rotation, original) < .01f,
+                            "Pickup changed the object's original world rotation");
                         Call(f.game, "Cancel", false);
                         Require(Quaternion.Angle(f.prop.transform.rotation, original) < .01f, "Cancel lost original tilt");
                     }
                 });
-                Check(result, stage, "looking up down and sideways keeps the held object level", () =>
+                Check(result, stage, "looking up down and sideways preserves the held world rotation", () =>
                 {
                     using (var f = new Fixture(stage))
                     {
-                        f.Grab();
+                        Quaternion original = Quaternion.Euler(20, 37, 25);
+                        f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
                         foreach (var angle in new[] { new Vector3(25, 0, 0), new Vector3(-25, 0, 0), new Vector3(0, 40, 0) })
                         {
                             f.view.transform.rotation = Quaternion.Euler(angle);
                             Call(f.game, "UpdateHeldPose");
-                            Require(Vector3.Dot(f.prop.transform.up, Vector3.up) > .99999f, "Camera movement tilted the held object");
-                            var expected=Quaternion.LookRotation(Vector3.Cross(f.view.transform.right,Vector3.up),Vector3.up);
-                            Require(Quaternion.Angle(f.prop.transform.rotation, expected) < .01f,
-                                "Camera yaw did not carry the object's horizontal orientation");
+                            Require(Quaternion.Angle(f.prop.transform.rotation, original) < .01f,
+                                "Camera movement changed the object's world rotation");
                         }
                     }
                 });
@@ -348,25 +358,58 @@ namespace ShadeLink.Editor
                 {
                     using(var f=new Fixture(stage))
                     {
-                        f.Grab();
+                        Quaternion original=f.prop.transform.rotation;f.Grab();
                         f.view.transform.rotation=Quaternion.Euler(0,60,0);Call(f.game,"UpdateHeldPose");
                         Vector3 anchor=f.prop.transform.TransformPoint((Vector3)Get(f.game,"GrabLocalPoint"))-f.view.transform.position;
                         Require(Vector3.Angle(anchor,f.view.transform.forward)<.1f,"Free-space projection lagged behind the aim");
-                        Vector2 original=ReferenceCubeSize(f.view),actual=ProjectedSize(f.prop,f.view);
-                        Require(Mathf.Abs(actual.x/original.x-1)<.005f&&Mathf.Abs(actual.y/original.y-1)<.005f,"Quick turn changed screen size");
+                        Require(Quaternion.Angle(f.prop.transform.rotation,original)<.01f,"Quick camera turn rotated the held prop");
+                        Vector2 reference=ReferenceCubeSize(f.view,original),actual=ProjectedSize(f.prop,f.view);
+                        Require(Mathf.Abs(actual.x/reference.x-1)<.005f&&Mathf.Abs(actual.y/reference.y-1)<.005f,"Quick turn changed perspective scaling");
                     }
                 });
-                Check(result, stage, "camera yaw and pitch preserve perspective scaling with an upright object", () =>
+                Check(result, stage, "camera yaw and pitch preserve the picked-up world orientation", () =>
                 {
                     using(var f=new Fixture(stage))
                     {
-                        f.Grab();
+                        // Use a non-square, already turned prop so a changed world
+                        // orientation cannot hide behind the symmetry of a cube.
+                        f.prop.GetComponent<BoxCollider>().size=new Vector3(1.8f,.6f,.4f);
+                        Quaternion original=Quaternion.Euler(0,15,0);
+                        f.prop.transform.rotation=original;Physics.SyncTransforms();f.Grab();
                         var wall=f.Blocker(new Vector3(0,2,12));wall.transform.localScale=new Vector3(100,100,.2f);
+                        foreach(var cameraAngles in new[]{new Vector3(-5,20,0),new Vector3(8,-25,0),Vector3.zero})
+                        {
+                            f.view.transform.rotation=Quaternion.Euler(cameraAngles);Physics.SyncTransforms();
+                            for(int i=0;i<120;i++)Call(f.game,"UpdateHeldPose");
+                            Require(Quaternion.Angle((Quaternion)Get(f.game,"heldRotation"),original)<.01f,
+                                "Camera movement changed the requested world orientation");
+                            Require(Quaternion.Angle(f.prop.transform.rotation,original)<.01f,
+                                "Camera movement tilted the carried prop");
+                        }
+                    }
+                });
+                Check(result, stage, "manual rotation survives camera movement and release", () =>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        Quaternion original=f.prop.transform.rotation;f.Grab();
+                        Call(f.game,"RotateHeld",30f,-12f);
+                        Quaternion requested=Quaternion.AngleAxis(30,Vector3.up)*original*Quaternion.AngleAxis(-12,Vector3.right);
+                        Require(Quaternion.Angle((Quaternion)Get(f.game,"heldRotation"),requested)<.01f,
+                            "Manual rotation no longer changes the requested orientation");
                         f.view.transform.rotation=Quaternion.Euler(-5,20,0);Physics.SyncTransforms();
                         for(int i=0;i<120;i++)Call(f.game,"UpdateHeldPose");
-                        Vector2 original=ReferenceCubeSize(f.view),actual=ProjectedSize(f.prop,f.view);
-                        Require(Mathf.Abs(actual.x/original.x-1)<.005f&&Mathf.Abs(actual.y/original.y-1)<.005f,
-                            "Camera movement changed the apparent size: "+actual.x/original.x+", "+actual.y/original.y);
+                        Vector2 reference=ReferenceCubeSize(f.view,requested),actual=ProjectedSize(f.prop,f.view);
+                        Require(Mathf.Abs(actual.x/reference.x-1)<.005f&&Mathf.Abs(actual.y/reference.y-1)<.005f,
+                            "Camera movement changed perspective scaling: "+actual.x/reference.x+", "+actual.y/reference.y);
+                        Require(Quaternion.Angle(f.prop.transform.rotation,requested)<.01f,
+                            "Camera movement changed the manually selected orientation");
+                        Vector3 position=f.prop.transform.position,size=f.prop.transform.localScale;
+                        Require((bool)Call(f.game,"Drop"),"Manually rotated drop was rejected");
+                        Require(Quaternion.Angle(f.prop.transform.rotation,requested)<.01f,
+                            "Release discarded the manually selected orientation");
+                        Near(f.prop.transform.position,position,"Rotated release changed the preview position");
+                        Near(f.prop.transform.localScale,size,"Rotated release changed the preview size");
                     }
                 });
                 Check(result, stage, "narrow posts allow the maximum non-overlapping perspective depth", () =>
@@ -406,10 +449,14 @@ namespace ShadeLink.Editor
                         var body = (Rigidbody)Get(f.prop, "body"); body.isKinematic = false; body.useGravity = true;
                         body.linearVelocity = new Vector3(.4f, .2f, -.3f); body.angularVelocity = new Vector3(.1f, .2f, .3f);
                         var position = f.prop.transform.position; var size = f.prop.transform.localScale;
-                        f.Grab(); Call(f.game, "Cancel", false);
+                        var rotation = f.prop.transform.rotation;
+                        f.Grab(); Call(f.game, "RotateHeld", 30f, -12f);
+                        f.view.transform.rotation=Quaternion.Euler(-5,20,0);
+                        Call(f.game,"UpdateHeldPose");Call(f.game, "Cancel", false);
                         Require(Get(f.game, "held") == null, "Cancel retained the held prop");
                         Near(f.prop.transform.position, position, "Cancel changed pickup position");
                         Near(f.prop.transform.localScale, size, "Cancel changed pickup size");
+                        Require(Quaternion.Angle(f.prop.transform.rotation,rotation)<.01f,"Cancel changed pickup orientation");
                         Require(!body.isKinematic && body.useGravity, "Cancel lost dynamic physics ownership");
                         Near(body.linearVelocity, new Vector3(.4f, .2f, -.3f), "Cancel lost linear velocity");
                         Near(body.angularVelocity, new Vector3(.1f, .2f, .3f), "Cancel lost angular velocity");

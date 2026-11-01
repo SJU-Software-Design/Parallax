@@ -88,5 +88,59 @@
     "sha256": "eb631b23a79b71a6f20e779d7441b3ef19f5f29192ab25d168065324950af3f6",
     "license": "CC0 1.0 Universal",
     "aiGenerated": true
+  },
+  {
+    "key": "hirehut",
+    "title": "Surf Hire Hut (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-surf-hire-hut-465717eb",
+    "download": "https://cdn.3dassets.dev/assets/39434/v1/model.glb",
+    "bytes": 521200,
+    "sha256": "2d0042cd552eda9e5e1bfbfb63bdab51d800bdf0d7806cb294e013ceb9fff17b",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true,
+    "raw_archive": "../.tmp/beach-refresh-assets/hirehut.glb",
+    "imported_json": "projects/all-stages/Assets/ThirdParty/3DAssetsBeach/hirehut.json",
+    "model_size": [
+      4.360000133514404,
+      3.517308343006892,
+      4.055819624931072
+    ],
+    "triangles": 27548
+  },
+  {
+    "key": "cooler",
+    "title": "Cooler Box (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-cooler-box-3c6c2b15",
+    "download": "https://cdn.3dassets.dev/assets/39438/v1/model.glb",
+    "bytes": 48848,
+    "sha256": "0b66c61a2f22a2c2ff628a293e223ad28607264265669d8c2ce9c52f25776562",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true,
+    "raw_archive": "../.tmp/beach-refresh-assets/cooler.glb",
+    "imported_json": "projects/all-stages/Assets/ThirdParty/3DAssetsBeach/cooler.json",
+    "model_size": [
+      0.6862632036209106,
+      0.5190484626403706,
+      0.43952511951623374
+    ],
+    "triangles": 1512
+  },
+  {
+    "key": "boardrack",
+    "title": "Stocked Surfboard Rack (Beach Surf and Paddle Kit)",
+    "source": "https://3dassets.dev/assets/beach-surf-and-paddle-kit-stocked-surfboard-rack-59834705",
+    "download": "https://cdn.3dassets.dev/assets/39463/v1/model.glb",
+    "bytes": 306120,
+    "sha256": "6b4f7b9b0a2bd53fb20d7b44cd78309f5b8a9ec614e12f1b88526828b00755fb",
+    "license": "CC0 1.0 Universal",
+    "aiGenerated": true,
+    "raw_archive": "../.tmp/beach-refresh-assets/boardrack.glb",
+    "imported_json": "projects/all-stages/Assets/ThirdParty/3DAssetsBeach/boardrack.json",
+    "model_size": [
+      2.4400861074724864,
+      2.9999999991059303,
+      0.9001672059132302
+    ],
+    "triangles": 16828
   }
 ]

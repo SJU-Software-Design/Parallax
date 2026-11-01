@@ -1,5 +1,7 @@
 # Parallax
 
+해변맵 최신 소스는 **v0.16.1**입니다. 모래성 목표가 보이는 열린 해변, 태양광 센서, 그림자 조립 보드와 직접 운반하는 그늘 배, 두 성벽 조각과 파라솔로 오르는 마지막 퍼즐을 포함합니다. Unity에서 `projects/all-stages/Assets/Parallax/Beach/Scenes/Beach.unity`를 열거나 Windows에서 `해변_실행.cmd`를 실행하세요. 첫 실행은 설치된 Unity 6000.3.24f1로 저장된 씬을 빌드합니다. [해변 플레이·검증 안내](projects/all-stages/README.md#해변-v0161).
+
 최신 Gallery 실행본은 **v5**입니다. 뒤로 이동할 때 크기 상한 때문에 빈 공간에서 거리가 고정되던 문제를 수정했습니다. [영상 원인 분석과 수정](docs/controls/held-backward-v5-review.md). 물체를 잡으면 거리 제한 원인과 지점을 표시하며 **F3**으로 켜고 끕니다. [진단 화면 읽는 법](docs/controls/held-distance-diagnostics.md).
 
 Unity **6000.3.24f1 / Built-in / Mono** 원근·그림자 퍼즐 프로젝트입니다. 개발의 기준은 **`projects/all-stages`**이며 Gallery·Library·Beach·Starship이 들어 있습니다. Gallery 단독판도 `projects/gallery`에 보존하고 같은 공통 조작 수정을 적용합니다.

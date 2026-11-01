@@ -58,7 +58,9 @@ namespace ShadeLink
             Require(held()!=null,"Camera ray can grab an original scene object");var grabbed=held();
             Require(!grabbed.Ready&&grabbed.Held,"Grabbing disables protection immediately");
             Require(grabbed.Visuals.All(r=>r.shadowCastingMode==UnityEngine.Rendering.ShadowCastingMode.Off),"Carried renderers do not cast physical safe shadows");
-            var start=feet();for(int i=0;i<18;i++)Step(Vector2.left);distance=Vector3.Distance(start,feet());
+            var start=feet();
+            // Check carried movement after the keyboard input ramp (up to 1/3 s) has completed.
+            for(int i=0;i<30;i++)Step(Vector2.left);distance=Vector3.Distance(start,feet());
             Require(distance>.45f&&held()==grabbed,"Player can walk while carrying an original prop");
             float floor=feet().y,peak=floor;for(int i=0;i<55;i++){Step(Vector2.zero,i==0);peak=Mathf.Max(peak,feet().y);}jumpHeight=peak-floor;
             Require(jumpHeight>.75f&&held()==grabbed,"Player can jump while carrying an original prop");
@@ -127,10 +129,17 @@ namespace ShadeLink
             var parasol=beach.props.First(p=>p.title.Contains("01")&&p.title.Contains("파라솔"));parasol.Restore();parasol.transform.position=new Vector3(6,.02f,15);parasol.transform.localScale=Vector3.one*2.6f;Physics.SyncTransforms();parasol.placement.ResetPlaced();sync();
             var preview=beach.GetComponent<BeachPlacementPreview>();view.transform.position=new Vector3(13,9,7);view.transform.LookAt(new Vector3(5,0,16));preview.Refresh();Capture("installed");parasol.BeginHold();sync();preview.Refresh();Capture("carried-preview");
             Require(!parasol.placement.Ready&&Shader.GetGlobalFloat("_PlacementPreviewActive")>.5f,"Inactive mesh preview is rendered separately from safety shadows");
-            var ball=beach.props.First(p=>p.isBall);ball.driftDistance=9;ball.BeginHold();Require(ball.driftDistance==0&&!ball.floating,"Picking up a floating object clears carried transport credit");
-            ball.transform.position=new Vector3(0,-.15f,57);ball.BeginHold();ball.transform.position+=Vector3.forward*.3f;Physics.SyncTransforms();ball.Release();
+            // Use the essential first-crossing plank; beach balls are static decoration.
+            var plank=beach.props.First(p=>p.title=="02 · 짧은 판자");plank.Restore();
+            plank.floating=true;plank.driftDistance=9;plank.BeginHold();
+            Require(plank.driftDistance==0&&!plank.floating,"Picking up the essential plank clears its floating state and carried transport credit");
+            plank.transform.SetPositionAndRotation(new Vector3(0,-.15f,36.5f),Quaternion.identity);
+            plank.transform.localScale=Vector3.one;plank.transform.position+=Vector3.forward*.3f;
+            Physics.SyncTransforms();Vector3 released=plank.transform.position;plank.Release();
+            Require(Vector3.Distance(plank.lastDriftPosition,released)<.001f&&plank.driftDistance==0,
+                "Releasing the essential plank starts its water tracking at the release pose");
             foreach(var water in FindObjectsByType<BeachWater>(FindObjectsSortMode.None))water.Simulate(Dt);
-            Require(ball.driftDistance==0,"A 30 cm hand-carried move adds no water transport credit on release");
+            Require(plank.floating&&BeachWater.Supports(plank),"The released first-crossing plank remains buoyant in the calm channel");
         }
         void Capture(string name)
         {

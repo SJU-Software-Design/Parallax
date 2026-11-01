@@ -56,7 +56,7 @@ namespace ShadeLink.Beach
         {
             var line = new GameObject(title).AddComponent<LineRenderer>();line.transform.SetParent(transform, false);
             line.sharedMaterial = rayMaterial; line.positionCount = 2; line.useWorldSpace = true;
-            line.startWidth = line.endWidth = .026f; line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            line.startWidth = line.endWidth = .055f; line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             return line;
         }
         void LateUpdate()
@@ -70,7 +70,7 @@ namespace ShadeLink.Beach
             {
                 incoming.SetPosition(0, p + BeachLighting.ToSun * 16);
                 incoming.SetPosition(1, p);
-                float length = 22;
+                float length = 32;
                 foreach (var hit in Physics.RaycastAll(p + d * .08f, d, length, BeachWorld.PhysicalMask, QueryTriggerInteraction.Ignore))
                 {
                     if (hit.collider.GetComponentInParent<BeachMirror>() == this || hit.collider.GetComponentInParent<BeachProp>() == prop) continue;

@@ -12,3 +12,6 @@
 /projects/*/Validation/
 __pycache__/
 .DS_Store
+
+# Saved-scene launcher output (capitalized on Windows).
+/Builds/

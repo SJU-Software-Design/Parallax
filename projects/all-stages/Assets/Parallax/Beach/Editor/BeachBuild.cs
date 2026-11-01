@@ -38,13 +38,34 @@ namespace ShadeLink.Editor
         public static void Prepare()
         {
             Directory.CreateDirectory(Generated);Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));AssetDatabase.Refresh();
-            var models=new Dictionary<string,GameObject>();foreach(string key in new[]{"umbrella","ball","chair","mat","sandcastle","fence","driftwood","surfboard","volleyball"})models[key]=Import(key);
+            var models=new Dictionary<string,GameObject>();foreach(string key in new[]{"umbrella","ball","chair","mat","sandcastle","fence","driftwood","surfboard","volleyball","hirehut","boardrack","cooler"})models[key]=Import(key);
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);var game=BeachWorld.Build(key=>models[key]);
+            // Procedural parasol fabric/ribs must be assets before the saved scene
+            // is reopened or copied into the isolated player-build project.
+            foreach(var filter in game.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var mesh=filter.sharedMesh;
+                if(mesh==null||AssetDatabase.Contains(mesh))continue;
+                string meshPath=Generated+mesh.name.Replace('/','_')+".asset";
+                var saved=Save(mesh,meshPath);filter.sharedMesh=saved;
+                foreach(var collider in filter.GetComponents<MeshCollider>())if(collider.sharedMesh==mesh||collider.sharedMesh==null)collider.sharedMesh=saved;
+            }
             foreach(var material in BeachWorld.Materials)
             {
                 string path=Generated+material.name.Replace('/','_')+".mat";var existing=AssetDatabase.LoadAssetAtPath<Material>(path);
                 if(existing==null)AssetDatabase.CreateAsset(material,path);
-                else{EditorUtility.CopySerialized(material,existing);foreach(var renderer in game.GetComponentsInChildren<Renderer>())if(renderer.sharedMaterial==material)renderer.sharedMaterial=existing;if(RenderSettings.skybox==material)RenderSettings.skybox=existing;UnityEngine.Object.DestroyImmediate(material);}
+                else
+                {
+                    EditorUtility.CopySerialized(material,existing);
+                    foreach(var renderer in game.GetComponentsInChildren<Renderer>(true))
+                    {
+                        var slots=renderer.sharedMaterials;bool changed=false;
+                        for(int i=0;i<slots.Length;i++)if(slots[i]==material){slots[i]=existing;changed=true;}
+                        if(changed)renderer.sharedMaterials=slots;
+                    }
+                    if(RenderSettings.skybox==material)RenderSettings.skybox=existing;
+                    UnityEngine.Object.DestroyImmediate(material);
+                }
             }
             EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
             PlayerSettings.productName="Parallax - Last Beach v"+BeachGame.Version;PlayerSettings.bundleVersion=BeachGame.Version;PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
@@ -59,7 +80,7 @@ namespace ShadeLink.Editor
         static void BuildPlayer(string output,string resultPath)
         {
             Prepare();Directory.CreateDirectory(Path.GetDirectoryName(output));
-            if(ShaderUtil.ShaderHasError(Shader.Find("Parallax/BeachWater")))throw new Exception("Beach water shader compile failed");
+            if(ShaderUtil.ShaderHasError(Shader.Find("Parallax/BeachWaterRefresh")))throw new Exception("Beach water shader compile failed");
             var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.CleanBuildCache});
             Directory.CreateDirectory(Path.GetDirectoryName(resultPath));File.WriteAllText(resultPath,"Result: "+report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nWarnings: "+report.summary.totalWarnings+"\nOutput: "+output);
             if(report.summary.result!=BuildResult.Succeeded)throw new Exception("Beach build failed");Debug.Log("BEACH_BUILD_OK "+output);

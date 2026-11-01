@@ -36,6 +36,7 @@ namespace ShadeLink.Beach
             body.position = homePosition; body.rotation = homeRotation;
             RefreshMass();
             Highlight(false, false); Physics.SyncTransforms();placement.ResetPlaced();
+            GetComponent<BeachBoat>()?.OnPropRestored();
         }
         public void InitializePhysics()
         {
@@ -67,6 +68,7 @@ namespace ShadeLink.Beach
         }
         public void BeginHold()
         {
+            GetComponent<BeachBoat>()?.OnPickedUp();
             InitializePhysics(); PropReleasePhysics.Attach(body).BeginHold(); StopMotion();
             placement.BeginHold();floating=false;driftDistance=0;lastDriftPosition=transform.position;
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
@@ -89,6 +91,7 @@ namespace ShadeLink.Beach
             if(isBall&&sphere!=null){foreach(var part in parts)part.enabled=false;sphere.enabled=true;}
             PropReleasePhysics.Attach(body).Release();
             placement.Released();
+            GetComponent<BeachBoat>()?.OnReleased();
         }
         public Bounds WorldBounds
         {
@@ -123,7 +126,8 @@ namespace ShadeLink.Beach
         {
             bool wasFloating=floating;float drift=driftDistance;Vector3 last=lastDriftPosition;
             Action restoreRelease=PropReleasePhysics.Attach(body).CaptureState();
-            return ()=>{floating=wasFloating;driftDistance=drift;lastDriftPosition=last;restoreRelease();};
+            Action restoreBoat=GetComponent<BeachBoat>()?.CaptureState();
+            return ()=>{floating=wasFloating;driftDistance=drift;lastDriftPosition=last;restoreRelease();restoreBoat?.Invoke();};
         }
 
     }

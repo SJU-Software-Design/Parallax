@@ -28,3 +28,19 @@ Assets/ThirdParty/3DAssetsBeach/LICENSE.txt
 
 Earlier gallery/library assets retain their existing source and license records.
 CC0 for this beach pack does not change the licenses of those other assets.
+
+
+Entrance refresh — 2026-11-01
+
+Added three geometry-only assets from the same public CC0 pack:
+Surf Hire Hut (hirehut), Stocked Surfboard Rack (boardrack), Cooler Box (cooler).
+These fixed environment objects decorate the rental and picnic clusters outside
+the central entrance-to-receiver walking corridor and the castle sightline.
+Detailed source URLs, original-byte SHA256, bounds and triangle counts are in
+Assets/ThirdParty/3DAssetsBeach/refresh-download-records.json.
+The previous nine model JSON files and their meta GUIDs were preserved.
+New raw GLBs, the official manifest snapshot and source download hashes are in
+the workspace .tmp/beach-refresh-assets directory.
+Only the previously local geometry-conversion function was reused; no downloaded
+scripts, packages, native libraries or installers were executed.
+Materials keep the kit palette; collision, lighting and gameplay are authored locally.
