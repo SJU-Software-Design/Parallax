@@ -7,10 +7,10 @@ if [[ $# -gt 1 ]]; then
 fi
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-project_dir="$repo_dir/Parallax_Gallery_Source"
+project_dir="$repo_dir/projects/gallery"
 version_file="$project_dir/ProjectSettings/ProjectVersion.txt"
 if [[ ! -f "$version_file" ]]; then
-    echo "The complete Parallax_Gallery_Source Unity project is required." >&2
+    echo "The complete projects/gallery Unity project is required." >&2
     exit 1
 fi
 unity_version="$(sed -n 's/^m_EditorVersion: //p' "$version_file" | tr -d '\r')"
@@ -20,7 +20,7 @@ if [[ ! -x "$unity_editor" ]]; then
     exit 1
 fi
 
-output_dir="$repo_dir/Builds/macOS"
+output_dir="$repo_dir/builds/macos/gallery"
 log_file="$output_dir/build.log"
 result_file="$output_dir/build-result.txt"
 mkdir -p "$output_dir"
@@ -32,6 +32,7 @@ if "$unity_editor" -batchmode -nographics -quit \
     -standaloneBuildSubtarget Player \
     -projectPath "$project_dir" \
     -executeMethod ShadeLink.Editor.GalleryPlatformBuild.BuildMacOS \
+    -parallaxBuildOutput "$output_dir/Parallax.app" \
     -logFile "$log_file"; then
     if [[ ! -d "$output_dir/Parallax.app/Contents/MacOS" || ! -f "$result_file" ]] ||
         ! grep -q '^Result: Succeeded' "$result_file"; then

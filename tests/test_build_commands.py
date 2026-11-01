@@ -12,6 +12,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 PWSH = os.environ.get("PWSH_BINARY") or shutil.which("pwsh")
+BASH = os.environ.get("BASH_BINARY") or (r"C:\Program Files\Git\bin\bash.exe" if os.name == "nt" else "/bin/bash")
 
 FAKE_UNITY = r'''
 import json, os, sys
@@ -22,7 +23,7 @@ def value(flag):
     return args[args.index(flag) + 1]
 project = Path(value("-projectPath"))
 platform = "macOS" if value("-buildTarget") == "StandaloneOSX" else "Windows"
-output = project.parent / "Builds" / platform
+output = Path(value("-parallaxBuildOutput")).parent
 output.mkdir(parents=True, exist_ok=True)
 Path(value("-logFile")).write_text("Fake Unity log\n")
 exit_code = int(os.environ.get("PARALLAX_TEST_EXIT", "0"))
@@ -47,13 +48,13 @@ class BuildCommandTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.base = Path(self.temp.name)
         self.repo = self.base / "한글 repository with spaces"
-        self.project = self.repo / "Parallax_Gallery_Source"
+        self.project = self.repo / "projects/gallery"
         settings = self.project / "ProjectSettings"
         settings.mkdir(parents=True)
         (settings / "ProjectVersion.txt").write_text("m_EditorVersion: 6000.3.24f1\n")
         tools = self.project / "Tools"
         tools.mkdir()
-        shutil.copy2(ROOT / "Parallax_Gallery_Source/Tools/Common.ps1", tools)
+        shutil.copy2(ROOT / "projects/gallery/Tools/Common.ps1", tools)
         (self.repo / "scripts").mkdir()
         for name in ["build-mac.sh", "build-windows.ps1"]:
             source = ROOT / "scripts" / name
@@ -62,18 +63,42 @@ class BuildCommandTests(unittest.TestCase):
         self.editor = self.base / "Unity editor with spaces"
         self.editor.write_text("#!" + sys.executable + "\n" + FAKE_UNITY)
         self.editor.chmod(0o755)
+        if os.name == "nt":
+            helper = self.base / "fake_unity.py"
+            helper.write_text(FAKE_UNITY, encoding="utf-8")
+            source = self.base / "FakeUnity.cs"
+            source.write_text(r'''using System; using System.IO; using System.Web.Script.Serialization;
+class FakeUnity {
+ static string Value(string[] args,string key){return args[Array.IndexOf(args,key)+1];}
+ static string Env(string key){return Environment.GetEnvironmentVariable(key);}
+ static int Main(string[] args){
+ File.WriteAllText(Env("PARALLAX_TEST_CAPTURE"),new JavaScriptSerializer().Serialize(args));
+ string output=Path.GetDirectoryName(Value(args,"-parallaxBuildOutput"));Directory.CreateDirectory(output);
+ File.WriteAllText(Value(args,"-logFile"),"Fake Unity log\n");
+ int exit=0;int.TryParse(Env("PARALLAX_TEST_EXIT"),out exit);if(exit!=0)return exit;
+ if(String.IsNullOrEmpty(Env("PARALLAX_TEST_NO_ARTIFACT"))){
+ if(Value(args,"-buildTarget")=="StandaloneOSX"){
+ string app=Path.Combine(output,"Parallax.app/Contents/MacOS");Directory.CreateDirectory(app);File.WriteAllText(Path.Combine(app,"Parallax"),"fake executable");
+ }else File.WriteAllText(Path.Combine(output,"Parallax.exe"),"fake executable");}
+ if(String.IsNullOrEmpty(Env("PARALLAX_TEST_NO_REPORT")))File.WriteAllText(Path.Combine(output,"build-result.txt"),"Result: "+(Env("PARALLAX_TEST_RESULT")??"Succeeded")+"\n");
+ return 0;
+ }}''', encoding="utf-8")
+            self.editor = self.base / "Unity editor with spaces.exe"
+            compiler = Path(os.environ["WINDIR"]) / "Microsoft.NET/Framework64/v4.0.30319/csc.exe"
+            subprocess.run([str(compiler), "/nologo", "/reference:System.Web.Extensions.dll", "/out:"+str(self.editor), str(source)], check=True, capture_output=True)
         self.capture = self.base / "arguments.json"
         self.env = os.environ.copy()
-        self.env.update(UNITY_EDITOR_PATH=str(self.editor), PARALLAX_TEST_CAPTURE=str(self.capture))
+        self.env.update(UNITY_EDITOR_PATH=self.editor.as_posix(), PARALLAX_TEST_CAPTURE=str(self.capture),
+                        PARALLAX_TEST_PYTHON=sys.executable, PARALLAX_TEST_HELPER=str(self.base / "fake_unity.py"))
 
     def run_build(self, platform, editor=None, **variables):
         name = "build-mac.sh" if platform == "macOS" else "build-windows.ps1"
         script = self.repo / "scripts" / name
         self.assertTrue(script.is_file(), f"Missing build command: {name}")
-        command = ["/bin/bash", str(script)] if platform == "macOS" else [PWSH, "-NoProfile", "-File", str(script)]
+        command = [BASH, script.as_posix()] if platform == "macOS" else [PWSH, "-NoProfile", "-File", str(script)]
         if editor:
-            command += [str(editor)] if platform == "macOS" else ["-UnityEditor", str(editor)]
-        return subprocess.run(command, cwd=self.base, env=dict(self.env, **variables), capture_output=True, text=True)
+            command += [editor.as_posix()] if platform == "macOS" else ["-UnityEditor", str(editor)]
+        return subprocess.run(command, cwd=self.base, env=dict(self.env, **variables), capture_output=True, text=True, encoding="utf-8", errors="replace")
 
     def platforms(self):
         if PWSH:
@@ -85,14 +110,14 @@ class BuildCommandTests(unittest.TestCase):
             with self.subTest(platform=platform):
                 result = self.run_build(platform)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                args = json.loads(self.capture.read_text())
+                args = json.loads(self.capture.read_text(encoding="utf-8-sig"))
                 target = "StandaloneOSX" if platform == "macOS" else "StandaloneWindows64"
                 method = "BuildMacOS" if platform == "macOS" else "BuildWindows"
                 self.assertEqual(args[args.index("-buildTarget") + 1], target)
                 self.assertEqual(args[args.index("-standaloneBuildSubtarget") + 1], "Player")
                 self.assertEqual(args[args.index("-executeMethod") + 1], "ShadeLink.Editor.GalleryPlatformBuild." + method)
-                self.assertEqual(args[args.index("-projectPath") + 1], str(self.project))
-                self.assertEqual(args[args.index("-logFile") + 1], str(self.repo / "Builds" / platform / "build.log"))
+                self.assertEqual(Path(args[args.index("-projectPath") + 1]).resolve(), self.project.resolve())
+                self.assertEqual(Path(args[args.index("-logFile") + 1]).resolve(), (self.repo / "builds" / platform.lower() / "gallery/build.log").resolve())
                 self.assertIn("-batchmode", args)
                 self.assertIn("-quit", args)
 
@@ -100,9 +125,9 @@ class BuildCommandTests(unittest.TestCase):
         for platform in self.platforms():
             result = self.run_build(platform)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertTrue((self.repo / "Builds/macOS/Parallax.app/Contents/MacOS/Parallax").is_file())
+        self.assertTrue((self.repo / "builds/macos/gallery/Parallax.app/Contents/MacOS/Parallax").is_file())
         if PWSH:
-            self.assertTrue((self.repo / "Builds/Windows/Parallax.exe").is_file())
+            self.assertTrue((self.repo / "builds/windows/gallery/Parallax.exe").is_file())
 
     def test_explicit_editor_path_takes_precedence_over_environment(self):
         for platform in self.platforms():
