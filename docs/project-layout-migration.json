@@ -1,0 +1,38 @@
+[
+  {
+    "From": "Parallax_AllStages_v0.13.1_Source/Parallax_Starship_Source",
+    "To": "projects/all-stages"
+  },
+  {
+    "From": "Parallax_Gallery_Source",
+    "To": "projects/gallery"
+  },
+  {
+    "From": "Parallax_Unity_v0.13.1_Starship",
+    "To": "builds/archive/starship-0.13.1"
+  },
+  {
+    "From": "Parallax_Unity_v0.8.2_Gallery",
+    "To": "builds/archive/gallery-0.8.2"
+  },
+  {
+    "From": "Parallax_Unity_v0.8.2_Ceramics",
+    "To": "builds/archive/gallery-ceramics-0.8.2"
+  },
+  {
+    "From": "Parallax_Unity_v0.8.2_Exhibits",
+    "To": "builds/archive/gallery-exhibits-0.8.2"
+  },
+  {
+    "From": "Parallax_Unity_v0.8.2_SmoothShadows",
+    "To": "builds/archive/gallery-smooth-shadows-0.8.2"
+  },
+  {
+    "From": "outputs",
+    "To": "artifacts/reports"
+  },
+  {
+    "From": "work",
+    "To": "archive/work"
+  }
+]

@@ -1,3 +1,14 @@
-/Builds/
+/builds/*
+!/builds/archive/
+/artifacts/validation/
+/artifacts/tools/
+/.idea/
+/projects/*/Library/
+/projects/*/Temp/
+/projects/*/Obj/
+/projects/*/Logs/
+/projects/*/UserSettings/
+/projects/*/Builds/
+/projects/*/Validation/
 __pycache__/
 .DS_Store

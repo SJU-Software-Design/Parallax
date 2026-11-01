@@ -2,10 +2,10 @@ param([string]$UnityEditor)
 $ErrorActionPreference = 'Stop'
 
 $repoDir = Split-Path -Parent $PSScriptRoot
-$projectDir = Join-Path $repoDir 'Parallax_Gallery_Source'
+$projectDir = Join-Path $repoDir 'projects/gallery'
 . (Join-Path $projectDir 'Tools/Common.ps1')
 $editor = Resolve-ParallaxUnityEditor -UnityEditor $UnityEditor -ProjectPath $projectDir
-$outputDir = Join-Path $repoDir 'Builds/Windows'
+$outputDir = Join-Path $repoDir 'builds/windows/gallery'
 $logFile = Join-Path $outputDir 'build.log'
 $resultFile = Join-Path $outputDir 'build-result.txt'
 New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
@@ -15,9 +15,10 @@ $unityArgs = @('-batchmode', '-nographics', '-quit', '-buildTarget', 'Standalone
     '-standaloneBuildSubtarget', 'Player',
     '-projectPath', ('"' + $projectDir + '"'),
     '-executeMethod', 'ShadeLink.Editor.GalleryPlatformBuild.BuildWindows',
+    '-parallaxBuildOutput', ('"' + (Join-Path $outputDir 'Parallax.exe') + '"'),
     '-logFile', ('"' + $logFile + '"'))
 Write-Output "Building Gallery for Windows. Log: $logFile"
-$process = Start-Process -FilePath $editor -ArgumentList $unityArgs -Wait -PassThru
+$process = Start-Process -FilePath $editor -ArgumentList $unityArgs -WindowStyle Hidden -Wait -PassThru
 if ($process.ExitCode -ne 0) { throw "Windows build failed ($($process.ExitCode)). See $logFile" }
 if (-not (Test-Path -LiteralPath (Join-Path $outputDir 'Parallax.exe') -PathType Leaf) -or
     -not (Test-Path -LiteralPath $resultFile -PathType Leaf)) {

@@ -1,56 +1,75 @@
 # Parallax
 
-공유 Unity 프로젝트는 `Parallax_Gallery_Source`입니다. 현재 공유된 소스는 Gallery v0.8.2이며, Unity **6000.3.24f1**과 Built-in 렌더 파이프라인을 사용합니다.
+최신 Gallery 실행본은 **v5**입니다. 뒤로 이동할 때 크기 상한 때문에 빈 공간에서 거리가 고정되던 문제를 수정했습니다. [영상 원인 분석과 수정](docs/controls/held-backward-v5-review.md). 물체를 잡으면 거리 제한 원인과 지점을 표시하며 **F3**으로 켜고 끕니다. [진단 화면 읽는 법](docs/controls/held-distance-diagnostics.md).
 
-2026-10-31 조작감 개선은 Gallery 단독판과 `Parallax_AllStages_v0.13.1_Source/Parallax_Starship_Source`의 Gallery·Library·Beach·Starship에 적용했습니다. 왼쪽 클릭으로 잡기/놓기, 오른쪽 버튼을 누른 채 마우스로 회전, Backspace로 잡기 취소가 가능합니다. 이동·점프·원근 배치 수치와 검증 결과는 [조작감 적용 기록](docs/controls/superliminal-control-feel.md)에 정리했습니다.
+Unity **6000.3.24f1 / Built-in / Mono** 원근·그림자 퍼즐 프로젝트입니다. 개발의 기준은 **`projects/all-stages`**이며 Gallery·Library·Beach·Starship이 들어 있습니다. Gallery 단독판도 `projects/gallery`에 보존하고 같은 공통 조작 수정을 적용합니다.
 
-후속 물리 패키지를 반영해 운반 중 접촉 분리, 감쇠·질량 기준, CCD 복귀, 취소 복원을 보강했습니다. [물리 변경 전후 요약](docs/controls/superliminal-physics-package-update.md)과 새 실행 파일은 `Builds/PhysicsUpdate/`에서 확인할 수 있습니다.
+## 폴더
 
-## OS별 빌드
-
-Unity Hub에서 위 버전의 Editor를 설치하고 로그인한 뒤, 프로젝트를 한 번 열어 에셋 가져오기를 완료합니다. 커맨드라인 빌드 전에는 같은 프로젝트를 연 Unity Editor를 종료하세요. 사용하는 OS의 Build Support (Mono)가 없다면 Unity Hub에서 추가합니다.
-
-아래 명령은 저장소 최상위 폴더에서 실행합니다. 두 명령은 같은 Gallery 소스를 사용하며, 기존 방식처럼 빌드 전에 Gallery 씬을 코드로 다시 생성합니다. 수동 편집한 씬은 먼저 별도 씬으로 저장하세요.
-
-| OS | 명령 | 실행 파일 |
-| --- | --- | --- |
-| macOS | `./scripts/build-mac.sh` | `Builds/macOS/Parallax.app` |
-| Windows PowerShell | `.\scripts\build-windows.ps1` | `Builds/Windows/Parallax.exe` |
-
-macOS 빌드는 Apple silicon과 Intel을 함께 지원하는 Universal 빌드입니다. Windows 빌드는 64비트입니다. 빌드 결과와 로그는 OS별 폴더에 보관하고 Git에서는 제외합니다. Windows 실행 파일을 공유할 때는 `Parallax_Data` 등 관련 파일이 들어 있는 `Builds/Windows` 폴더 전체를 전달하세요.
-
-맥에서 빌드 후 실행:
-
-```bash
-open Builds/macOS/Parallax.app
+```text
+projects/
+  all-stages/       네 스테이지의 주 Unity 프로젝트
+  gallery/          Gallery 단독 Unity 프로젝트
+builds/
+  archive/          기존 배포 실행본 — 이번 소스 수정은 포함하지 않음
+  windows/          새 Windows 빌드 출력
+  macos/            새 macOS 빌드 출력
+artifacts/
+  reports/          이전 검토·검증 산출물
+  validation/       이번 검사 로그와 결과, Git 제외
+archive/work/       이전 제작 도구·임시 소스·진단 실행본 보존
+scripts/            저장소 공통 빌드·검증 명령
+tests/              빌드 명령 회귀 검사
+docs/               현재 설명과 변경 기록
 ```
 
-Editor가 기본 설치 경로에 없다면 실행 파일 경로를 지정할 수 있습니다. 지정한 Editor도 **6000.3.24f1**이어야 합니다.
+파일을 삭제하지 않고 이동했습니다. [이전→현재 경로](docs/project-layout-migration.json)를 참고하세요. Unity의 `Assets` 내부 경로와 기존 `.meta` GUID는 유지합니다.
 
-```bash
-./scripts/build-mac.sh "/path/to/Unity.app/Contents/MacOS/Unity"
-```
+## 이번 접촉 수정
+
+가까운 사물이나 벽에 접근하면 **들고 있는 물체의 거리와 크기를 함께 줄이고, 멀어지면 다시 회복**합니다. 운반 미리보기의 크기 하한과 플레이어 겹침 허용은 놓기 조건과 분리했습니다. 놓을 수 없는 상태에서도 시선 추적은 계속하며, 그 이유를 표시합니다. 다른 소품과 벽은 여전히 투영 장애물이며 실제 놓기 검사는 유지합니다.
+
+상세 원인·동작·제한·검증은 [접촉 수정 기록](docs/controls/held-contact-v2-fix.md)에 정리했습니다. 좌클릭 잡기·놓기, 우클릭 누른 채 마우스 회전, Backspace 취소를 사용합니다.
+
+## 열기와 실행
+
+Unity Hub에서 `projects/all-stages` 또는 `projects/gallery`를 프로젝트로 추가합니다. 네 스테이지의 씬은 `projects/all-stages/Assets/Parallax/<스테이지>/Scenes/`에 있습니다.
+
+기존 실행본은 `builds/archive`에 보존했습니다. **`추가판_실행.cmd` 또는 `play-gallery.cmd`는 2026-11-01의 새 Gallery 수정판**, `play-starship.cmd`는 새 Starship 수정판을 실행합니다. 이전 Gallery는 `play-archive-gallery.cmd`로 실행합니다. 새 실행본은 정식 Unity Editor에서 씬·셰이더·코드를 모두 재빌드했습니다.
+
+## 빌드
+
+Editor를 닫고 저장소 최상위에서 실행합니다. Build Support (Mono)가 필요합니다. 기존처럼 빌드 도구가 씬을 재생성하므로 수동 편집한 씬은 별도 이름으로 저장하세요.
 
 ```powershell
+# Gallery 단독판 → builds/windows/gallery/Parallax.exe
 .\scripts\build-windows.ps1 -UnityEditor 'C:\path\to\Editor\Unity.exe'
+
+# 전체 프로젝트의 Starship → builds/windows/all-stages/Parallax_Unity_v0.13.1_Starship/
+.\projects\all-stages\Tools\Build\Build-Starship.ps1 -UnityEditor 'C:\path\to\Editor\Unity.exe'
 ```
-
-두 스크립트 모두 `UNITY_EDITOR_PATH` 환경 변수도 지원합니다. 기본적으로 macOS는 `/Applications/Unity/Hub/Editor`, Windows는 Unity Hub 및 로컬 Editor 설치 경로에서 프로젝트의 Unity 버전을 찾습니다.
-
-Windows에서 스크립트 실행 정책 때문에 차단되면, 해당 빌드 프로세스에만 적용되는 다음 명령을 사용합니다.
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-windows.ps1
-```
-
-빌드가 실패하면 `Builds/macOS/build.log` 또는 `Builds/Windows/build.log`를 확인하세요. `build-result.txt`에는 Unity 빌드 결과가 기록됩니다. Unity 메뉴의 **Parallax → OS별 빌드**에서도 같은 빌드를 실행할 수 있습니다.
-
-## 명령 검증
-
-실제 Unity를 실행하지 않고 경로·인수 전달, 출력 분리, 실패 처리를 검증합니다.
 
 ```bash
-python3 -m unittest discover -s tests -v
+# Gallery 단독판 → builds/macos/gallery/Parallax.app
+./scripts/build-mac.sh '/Applications/Unity/Hub/Editor/6000.3.24f1/Unity.app/Contents/MacOS/Unity'
 ```
 
-PowerShell 7의 `pwsh`가 있으면 Windows 명령도 함께 검증합니다. 별도 경로에 있다면 `PWSH_BINARY` 환경 변수로 지정하세요. 이 검증은 실제 Unity 컴파일·플레이 검증을 대체하지 않습니다.
+Editor 경로는 `UNITY_EDITOR_PATH` 환경 변수도 지원합니다. 전체 프로젝트의 다른 스테이지는 각 `Tools/Build` 명령이나 Unity의 Parallax 메뉴를 사용합니다. 내보낸 Unity 프로젝트만 별도로 연 경우 빌드는 해당 프로젝트의 `Builds` 아래로 저장됩니다.
+
+## 검증
+
+두 Unity 프로젝트 각각에서 아래 Editor 진입점을 실행합니다.
+
+```text
+-executeMethod ShadeLink.Editor.PhysicsPackageValidation.RunAll
+```
+
+2026-11-01에 Unity 6000.3.24f1과 Windows Mono 지원을 설치하고 두 프로젝트를 정식 Editor에서 검사·빌드했습니다. Gallery 실제 실행 검사 16개는 통과했습니다. Starship은 빌드 오류가 없지만 전체 자동 진행은 상층 이동 경로에서 미통과로 남았습니다. 자세한 결과는 [정식 Windows 빌드 기록](docs/builds/windows-contact-v2.md)에 있습니다. 처음의 임시 Mono 검사 기록은 [접촉 수정 기록](docs/controls/held-contact-v2-fix.md)에 보존했습니다.
+
+빌드 명령의 경로·출력·실패 처리는 다음으로 검사합니다. Windows에서는 PowerShell 7과 .NET Framework C# 컴파일러, macOS 명령까지 검사하려면 Git Bash가 필요합니다.
+
+```text
+python -m unittest discover -s tests -v
+```
+
+에셋 저작자·라이선스는 각 프로젝트의 `Assets/ThirdParty`, `Documentation/ThirdParty` 및 기존 실행본의 고지 파일에 보존합니다.
