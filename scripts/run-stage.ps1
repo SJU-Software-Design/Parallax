@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Gallery','Library','Beach','Starship','All')]
+    [ValidateSet('Gallery','Library','Beach','Starship','Tutorial','All')]
     [string]$Stage = 'All',
     [switch]$BuildOnly,
     [switch]$Rebuild,
@@ -12,7 +12,7 @@ $sourceDir = Join-Path $repoDir 'projects\all-stages'
 $buildRoot = Join-Path $repoDir 'Builds\Latest'
 $buildProject = Join-Path $repoDir 'Builds\StageProject'
 $builderFile = Join-Path $PSScriptRoot 'unity\StagePlayerBuild.cs'
-$stageNames = @{ Gallery='미술관'; Library='도서관'; Beach='해변'; Starship='우주선' }
+$stageNames = @{ Gallery='미술관'; Library='도서관'; Beach='해변'; Starship='우주선'; Tutorial='튜토리얼' }
 
 function Get-SourceFingerprint {
     $lines = New-Object System.Collections.Generic.List[string]

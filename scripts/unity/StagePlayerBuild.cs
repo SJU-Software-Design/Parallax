@@ -39,7 +39,7 @@ namespace Parallax.StageLauncher.Editor
                 foreach (string stage in Argument("-parallaxStages").Split(','))
                 {
                     if (stage != "Gallery" && stage != "Library" &&
-                        stage != "Beach" && stage != "Starship")
+                        stage != "Beach" && stage != "Starship" && stage != "Tutorial")
                         throw new ArgumentException("Unknown stage: " + stage);
 
                     string scene = "Assets/Parallax/" + stage + "/Scenes/" + stage + ".unity";

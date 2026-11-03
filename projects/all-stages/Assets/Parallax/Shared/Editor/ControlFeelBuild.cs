@@ -20,6 +20,21 @@ namespace ShadeLink.Editor
             BuildMac("Beach", BeachBuild.Prepare);
         }
 
+        [MenuItem("Parallax/원근 튜토리얼 macOS 빌드")]
+        public static void BuildMacTutorial()
+        {
+            string previousName = PlayerSettings.productName;
+            try
+            {
+                PlayerSettings.productName = "Parallax - Perspective Tutorial";
+                BuildMac("Tutorial", TutorialBuild.Prepare);
+            }
+            finally
+            {
+                PlayerSettings.productName = previousName;
+            }
+        }
+
         static void BuildMac(string stage, Action prepare)
         {
             if(!BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Standalone,BuildTarget.StandaloneOSX))
