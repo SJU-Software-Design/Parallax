@@ -15,7 +15,10 @@ namespace ShadeLink.Tutorial
         const float RoomHeight = 16f;
         const float TableTargetSize = .70f;
         public const float TableHeight = .82f;
-        static readonly Vector3 TablePosition = new Vector3(1.35f, 0, 2.35f);
+        static readonly float LayoutShiftX = -16f / 3f - 4.8f;
+        static readonly Vector3 PlayerStart = new Vector3(-16f / 3f, .03f, 0);
+        static readonly Vector3 BoardPosition = new Vector3(-.8f + LayoutShiftX, 0, 4.3f);
+        static readonly Vector3 TablePosition = new Vector3(3.35f + LayoutShiftX, 0, 2.35f);
         static readonly Vector3 TableHome = TablePosition + Vector3.up * (TableHeight + StartSize * .5f);
         static readonly Color Accent = new Color(1f, .58f, .18f);
         static readonly Color TableAccent = new Color(.97f, .83f, .32f);
@@ -223,16 +226,61 @@ namespace ShadeLink.Tutorial
 
         void AddPips(Transform cube)
         {
-            foreach (Vector3 face in new[] { Vector3.back, Vector3.up, Vector3.right, Vector3.forward, Vector3.down, Vector3.left })
+            var faces = new[]
             {
-                var pip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                pip.name = "Die pip";
-                pip.GetComponent<Collider>().enabled = false;
-                pip.GetComponent<Renderer>().sharedMaterial = dark;
-                pip.transform.SetParent(cube, false);
-                pip.transform.localPosition = face * .5f;
-                pip.transform.localRotation = Quaternion.FromToRotation(Vector3.up, face);
-                pip.transform.localScale = new Vector3(.18f, .012f, .18f);
+                (normal: Vector3.up, value: 1),
+                (normal: Vector3.down, value: 6),
+                (normal: Vector3.forward, value: 2),
+                (normal: Vector3.back, value: 5),
+                (normal: Vector3.right, value: 3),
+                (normal: Vector3.left, value: 4)
+            };
+
+            foreach (var face in faces)
+            {
+                Vector3 axisU = Vector3.Cross(face.normal, Vector3.up);
+                if (axisU.sqrMagnitude < .001f) axisU = Vector3.right;
+                axisU.Normalize();
+                Vector3 axisV = Vector3.Cross(face.normal, axisU).normalized;
+
+                foreach (Vector2 point in PipLayout(face.value))
+                {
+                    var pip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    pip.name = $"Die pip {face.value}";
+                    pip.GetComponent<Collider>().enabled = false;
+                    pip.GetComponent<Renderer>().sharedMaterial = dark;
+                    pip.transform.SetParent(cube, false);
+                    pip.transform.localPosition = face.normal * .5f + axisU * point.x + axisV * point.y;
+                    pip.transform.localRotation = Quaternion.FromToRotation(Vector3.up, face.normal);
+                    pip.transform.localScale = new Vector3(.18f, .012f, .18f);
+                }
+            }
+        }
+
+        static Vector2[] PipLayout(int value)
+        {
+            const float offset = .22f;
+            switch (value)
+            {
+                case 1: return new[] { Vector2.zero };
+                case 2: return new[] { new Vector2(-offset, -offset), new Vector2(offset, offset) };
+                case 3: return new[] { new Vector2(-offset, -offset), Vector2.zero, new Vector2(offset, offset) };
+                case 4: return new[]
+                {
+                    new Vector2(-offset, -offset), new Vector2(-offset, offset),
+                    new Vector2(offset, -offset), new Vector2(offset, offset)
+                };
+                case 5: return new[]
+                {
+                    new Vector2(-offset, -offset), new Vector2(-offset, offset), Vector2.zero,
+                    new Vector2(offset, -offset), new Vector2(offset, offset)
+                };
+                case 6: return new[]
+                {
+                    new Vector2(-offset, -offset), new Vector2(-offset, 0), new Vector2(-offset, offset),
+                    new Vector2(offset, -offset), new Vector2(offset, 0), new Vector2(offset, offset)
+                };
+                default: return new[] { Vector2.zero };
             }
         }
 
@@ -343,9 +391,10 @@ namespace ShadeLink.Tutorial
             body.fontStyle = FontStyle.Bold;
             body.text = instructions;
 
-            var offset = new Vector3(-2.85f, 0, 4.30f);
+            var offset = BoardPosition;
             stand.localScale = Vector3.one * 1.18f;
-            stand.SetLocalPositionAndRotation(offset, Quaternion.LookRotation(offset));
+            Vector3 boardFacing = offset - new Vector3(PlayerStart.x, 0, PlayerStart.z);
+            stand.SetLocalPositionAndRotation(offset, Quaternion.LookRotation(boardFacing));
             return stand.gameObject;
         }
 
@@ -390,11 +439,11 @@ namespace ShadeLink.Tutorial
             die.Restore();
             RefreshLesson();
             Controller.enabled = false;
-            Controller.transform.position = new Vector3(0, .03f, 0);
+            Controller.transform.position = PlayerStart;
             Controller.enabled = true;
             motor.Reset();
             controls.Reset();
-            yaw = 0;
+            yaw = -.36f;
             pitch = -.23f;
             SyncView();
             messageUntil = 0;
