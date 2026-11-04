@@ -17,6 +17,7 @@ namespace ShadeLink
         const float JumpCooldown = .75f;
         const float TerminalSpeed = 20f;
         const float MantleDuration = .3f;
+        const float MantleHeight = 1.15f;
 
         Vector2 keyboardAxes;
         RaycastHit[] groundHits = new RaycastHit[32];
@@ -26,7 +27,7 @@ namespace ShadeLink
         float jumpCooldown;
         float holdRemaining;
         bool mantleAvailable;
-        float mantleElapsed;
+        float mantleElapsed, mantleDuration;
         Vector3 mantleStart, mantleTarget;
 
         public Vector3 Velocity { get { return velocity; } }
@@ -34,6 +35,7 @@ namespace ShadeLink
         public bool Mantling { get; private set; }
         public bool SmoothKeyboardInput { get; set; } = true;
         public System.Func<Collider, bool> GroundFilter { get; set; }
+        public System.Func<Collider, float> MantleReachFor { get; set; }
         public float VerticalVelocity
         {
             get { return verticalVelocity; }
@@ -217,11 +219,15 @@ namespace ShadeLink
             if (!Ray(controller, feet + Vector3.up * .2f, forward, .8f, mask, out var face)) return;
             if (Mathf.Abs(face.normal.y) > .4f) return;
             Vector3 overEdge = face.point + forward * (controller.radius + .15f);
-            if (!Ray(controller, new Vector3(overEdge.x, feet.y + 1.3f, overEdge.z), Vector3.down, 1.3f,
+            float reach = Mathf.Max(MantleHeight, MantleReachFor?.Invoke(face.collider) ?? 0f);
+            float probeHeight = reach + .15f;
+            if (!Ray(controller, new Vector3(overEdge.x, feet.y + probeHeight, overEdge.z), Vector3.down, probeHeight,
                 mask, out var top)) return;
             if (!AcceptGround(top.collider)) return;
             float rise = top.point.y - feet.y;
-            if (rise < .05f || rise > 1.15f || top.normal.y < Mathf.Cos(controller.slopeLimit * Mathf.Deg2Rad)) return;
+            if (rise < .05f || rise > reach || top.normal.y < Mathf.Cos(controller.slopeLimit * Mathf.Deg2Rad)) return;
+            if (rise > MantleHeight && (face.collider.attachedRigidbody != top.collider.attachedRigidbody ||
+                rise > (MantleReachFor?.Invoke(top.collider) ?? 0f))) return;
             Vector3 destination = new Vector3(overEdge.x, top.point.y + .025f, overEdge.z);
             if (!CapsuleClear(controller, destination, mask)) return;
             // First lift clear of the edge, then cross it. Both legs retain normal controller collision.
@@ -231,6 +237,7 @@ namespace ShadeLink
             mantleStart = feet;
             mantleTarget = destination;
             mantleElapsed = 0;
+            mantleDuration = MantleDuration + Mathf.Max(0f, rise - MantleHeight) * .14f;
             Mantling = true;
             mantleAvailable = false;
             jumpBuffer = -1;
@@ -242,7 +249,7 @@ namespace ShadeLink
         void AdvanceMantle(CharacterController controller, float dt, int mask)
         {
             mantleElapsed += dt;
-            float progress = Mathf.Clamp01(mantleElapsed / MantleDuration);
+            float progress = Mathf.Clamp01(mantleElapsed / mantleDuration);
             Vector3 lifted = new Vector3(mantleStart.x, mantleTarget.y + .04f, mantleStart.z);
             Vector3 waypoint = progress < .5f ? Vector3.Lerp(mantleStart, lifted, progress * 2) :
                 Vector3.Lerp(lifted, mantleTarget + Vector3.up * .04f, (progress - .5f) * 2);
