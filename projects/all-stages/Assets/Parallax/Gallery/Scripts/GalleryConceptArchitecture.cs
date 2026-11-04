@@ -257,7 +257,8 @@ namespace ShadeLink.Gallery
             WallFinish(root,new Vector3(0,0,.16f),Quaternion.Euler(0,180,0),15.6f,GalleryConceptWorld.Roof,p);
             WallFinish(root,new Vector3(0,0,55.84f),Quaternion.identity,15.6f,GalleryConceptWorld.Roof,p);
             foreach(var aperture in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(32,35),new Vector2(47,50)})
-                Skylight(root,new Vector3(0,GalleryConceptWorld.Roof,(aperture.x+aperture.y)/2),Quaternion.identity,new Vector2(15.65f,aperture.y-aperture.x),1.15f,p);
+                Skylight(root,new Vector3(0,GalleryConceptWorld.Roof,(aperture.x+aperture.y)/2),Quaternion.identity,
+                    new Vector2(aperture.x==32?GalleryConceptWorld.PortraitSkylightHalfWidth*2:15.65f,aperture.y-aperture.x),1.15f,p);
 
             // Tall, quiet wall-mounted works replace the previous billboard-like
             // blocks. A clear central axis leads through the first stone portal.

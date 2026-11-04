@@ -6,7 +6,7 @@ namespace ShadeLink.Gallery
 {
     public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
-        public const string Version="0.21.0";
+        public const string Version="0.21.1";
         public bool conceptLayout, exhibitionPreview;
         public bool conceptCapture;
         static readonly Vector3[] ConceptCheckpoints={new Vector3(0,0,3),new Vector3(0,0,16.8f),new Vector3(0,0,31),new Vector3(0,0,45)};
@@ -49,7 +49,7 @@ namespace ShadeLink.Gallery
         public bool InShadowCourse => conceptLayout&&player!=null&&player.feet.z<29;
         public string Objective => checkpoint==0?"청동 조형물을 키워 그늘로 빛 구간을 건너세요":checkpoint==1?
             (shadowCourse!=null&&shadowCourse.NikeUnlocked?"니케의 그늘을 따라 열린 문으로 이동하세요":"전시 조명을 옮겨 니케의 그림자를 문 앞까지 보내세요"):checkpoint==2?
-            (portraitGate!=null&&portraitGate.Opened?"열린 커튼 너머, 두 손 사이의 빛을 찾아보세요":"눈·코·입이 얼굴처럼 보이도록 놓아 보세요"):
+            (portraitGate!=null&&portraitGate.Opened?"양옆 그늘을 따라 열린 커튼 너머로 이동하세요":"눈·코·입이 얼굴처럼 보이도록 놓아 보세요"):
             (orcusExit!=null&&orcusExit.IsReadyForEntry?"계단을 올라 두 손 사이의 도서관으로 들어가세요":
              orcusExit!=null&&orcusExit.cathedralActivation!=null?orcusExit.cathedralActivation.Status:
                 "손 사이에 다른 공간이 보이는 조각을 확대해 내려놓으세요");

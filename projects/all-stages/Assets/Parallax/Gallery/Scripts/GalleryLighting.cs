@@ -16,7 +16,7 @@ namespace ShadeLink.Gallery
         };
         public GalleryCaster[] casters;
         public bool conceptLayout;
-        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-8.1f,8.1f,32,35),new Vector4(-8.1f,8.1f,47,50)};
+        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-GalleryConceptWorld.PortraitSkylightHalfWidth,GalleryConceptWorld.PortraitSkylightHalfWidth,32,35),new Vector4(-8.1f,8.1f,47,50)};
         public GalleryMirror mirror;
         readonly Matrix4x4[] inverse = new Matrix4x4[MaxCasters];
         readonly float[] mirrorCaster = new float[MaxCasters];
