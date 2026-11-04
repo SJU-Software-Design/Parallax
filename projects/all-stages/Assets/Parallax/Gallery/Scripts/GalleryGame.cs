@@ -6,6 +6,14 @@ namespace ShadeLink.Gallery
 {
     public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
+        public const string Version="0.20.0";
+        public bool conceptLayout, exhibitionPreview;
+        public bool conceptCapture;
+        static readonly Vector3[] ConceptCheckpoints={new Vector3(0,0,3),new Vector3(0,0,16.8f),new Vector3(0,0,31),new Vector3(0,0,45)};
+        public Vector3[] SpawnPoints => conceptLayout?ConceptCheckpoints:GalleryWorld.Checkpoints;
+        float WorldHalfWidth => conceptLayout?GalleryConceptWorld.Width/2:GalleryWorld.Width/2;
+        float WorldLength => conceptLayout?GalleryConceptWorld.Length:GalleryWorld.Length;
+        float WorldRoof => conceptLayout?GalleryConceptWorld.Roof:GalleryLighting.Roof;
         public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
@@ -31,6 +39,23 @@ namespace ShadeLink.Gallery
         public string notice, invalidReason;
         public float noticeUntil;
         public PlacementLesson lesson;
+        public GalleryOrcusExit orcusExit;
+        public GalleryStageTransition stageTransition;
+        public GalleryMuseumShadowCourse shadowCourse;
+        public GalleryPortraitGate portraitGate;
+        public string RoomTitle => conceptLayout?new[]{"01  명화 전시실","02  빛과 그림자","03  시점의 방","04  성당 · 두 손 사이의 문"}[checkpoint]:GalleryWorld.Titles[checkpoint];
+        public bool InShadowCourse => conceptLayout&&player!=null&&player.feet.z<29;
+        public string Objective => checkpoint==0?"복제작의 그림자로 채광 구간을 건너세요":checkpoint==1?"날개의 그늘과 전시 패널의 그림자를 이어 보세요":checkpoint==2?
+            (portraitGate!=null&&portraitGate.Opened?"열린 커튼 너머, 두 손 사이의 빛을 찾아보세요":"관람 지점에서 눈·코·입을 하나의 초상으로 맞추세요"):
+            (orcusExit!=null&&orcusExit.IsReadyForEntry?"계단을 올라 두 손 사이의 도서관으로 들어가세요":
+             orcusExit!=null&&orcusExit.cathedralActivation!=null&&orcusExit.cathedralActivation.OpeningBlocked?
+                "손이 열릴 수 있도록 주변이 넓은 바닥으로 조각을 옮겨 주세요":"손 사이에 다른 공간이 보이는 조각을 확대해 내려놓으세요");
+        public string RoomHint => checkpoint==0?
+            "이젤의 복제작을 잡고, 먼 표면을 향해 크기를 키워 보세요.\n햇빛 앞에 세운 뒤 내려놓아야 그늘이 고정됩니다.\n이젤 옆으로 돌아 그림자 안으로 들어가세요.":checkpoint==1?
+            "이동식 전시 패널 두 개를 키워 날개의 그늘과 이어 보세요.\n패널 옆을 돌아 뒤쪽 그림자로 이동합니다.\n한 가지 배치만 정답인 전시는 아닙니다.":checkpoint==2?
+            "눈·코·입을 옮기고 크기를 바꾸어 보세요.\n바닥의 둥근 관람 지점에서 하나의 얼굴로 보이면 됩니다.\n작품을 내려놓고 초상을 2초 동안 바라보세요.":
+            "두 손 사이에 작은 도서관이 보입니다.\n조각을 가까이에서 잡고, 먼 바닥을 향해 크기를 키워 내려놓으세요.\n빛이 비치는 틈이 몸보다 커지면 계단을 올라 안으로 들어가세요.";
+        public bool Transitioning => stageTransition!=null&&stageTransition.IsTransitioning;
         public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
         public Vector3 HeldDirection => Interaction.HeldDirection;
         public PerspectivePlacement.Result PlacementDiagnostic => Interaction.LastPlacement;
@@ -53,7 +78,12 @@ namespace ShadeLink.Gallery
             var arguments=Environment.GetCommandLineArgs();
             bool mirrorTest=Array.IndexOf(arguments,"-gallery-mirror-test")>=0;
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
-            automated=placementTest||mirrorTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
+            bool museumTest=Array.IndexOf(arguments,"-gallery-museum-test")>=0;
+            bool conceptInteractionTest=Array.IndexOf(arguments,"-gallery-concept-interaction-test")>=0;
+            bool mechanicsTest=Array.IndexOf(arguments,"-gallery-mechanics-test")>=0;
+            bool cathedralTest=Array.IndexOf(arguments,"-gallery-cathedral-test")>=0;
+            conceptCapture=Array.IndexOf(arguments,"-gallery-concept-capture")>=0;
+            automated=cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
             Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
@@ -66,13 +96,21 @@ namespace ShadeLink.Gallery
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
             foreach(var prop in props)prop.placement.ResetPlaced();
             lighting.Rebuild();SyncView();
+            orcusExit=GetComponentInChildren<GalleryOrcusExit>();
+            shadowCourse=GetComponentInChildren<GalleryMuseumShadowCourse>();portraitGate=GetComponentInChildren<GalleryPortraitGate>();
+            if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
             gameObject.AddComponent<GalleryHud>().game=this;
             gameObject.AddComponent<HeldPlacementDiagnosticsOverlay>().game=this;
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won,()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
-            if(placementTest)gameObject.AddComponent<PlacementValidation>();
+            if(cathedralTest)new GameObject("Cathedral portal validation").AddComponent<GalleryCathedralValidation>().game=this;
+            else if(mechanicsTest)new GameObject("Museum mechanics validation").AddComponent<GalleryMuseumMechanicsValidation>().game=this;
+            else if(conceptCapture)gameObject.AddComponent<GalleryConceptCapture>().game=this;
+            else if(conceptInteractionTest)gameObject.AddComponent<GalleryConceptInteractionValidation>().game=this;
+            else if(placementTest)gameObject.AddComponent<PlacementValidation>();
             else if(mirrorTest)gameObject.AddComponent<GalleryMirrorValidation>().game=this;
+            else if(museumTest)new GameObject("Museum runtime validation").AddComponent<GalleryMuseumValidation>().game=this;
             else if(automated)gameObject.AddComponent<GalleryPerspectiveValidation>().game=this;
         }
         void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
@@ -80,10 +118,11 @@ namespace ShadeLink.Gallery
         public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
         public void Resume()
         {
+            if(Transitioning)return;
             if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { if(Transitioning)return;ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
         void ClearControlInput()
         {
             motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
@@ -92,26 +131,59 @@ namespace ShadeLink.Gallery
         {
             motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
         }
-        void OnApplicationFocus(bool focused) { if(!focused&&!automated)Pause(); }
+        void OnApplicationFocus(bool focused) { if(!focused&&!automated&&!Transitioning)Pause(); }
         public void ResetAll()
         {
             if(held!=null)Cancel(true);foreach(var p in props)p.Restore();
             adjustingMirror=false;if(mirror!=null)mirror.Restore();if(lightGate!=null)lightGate.Restore();
             checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;lesson?.Restart();
-            PlacePlayer(GalleryWorld.Checkpoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
+            orcusExit?.ResetEntrance();
+            PlacePlayer(SpawnPoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
+            shadowCourse?.ResetProgress();portraitGate?.ResetGate();
         }
         public void ResetZone()
         {
             if(held!=null)Cancel(true);
             foreach(var p in props) if(p.zone==checkpoint)p.Restore();
+            if(checkpoint==3)orcusExit?.ResetEntrance();
             adjustingMirror=false;if(checkpoint==1){if(mirror!=null)mirror.Restore();if(lightGate!=null)lightGate.Restore();}
-            PlacePlayer(GalleryWorld.Checkpoints[checkpoint]);exposure=0;lighting.Synchronize();
+            PlacePlayer(SpawnPoints[checkpoint]);exposure=0;lighting.Synchronize();
+            shadowCourse?.ResetProgress(checkpoint);if(checkpoint==2)portraitGate?.ResetGate();
             Tell("현재 구역의 전시물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
         }
         public void StartMirrorDemo()
         {
-            ResetAll();checkpoint=1;PlacePlayer(GalleryWorld.Checkpoints[1]);Resume();
-            Tell("거울 전시실 체험 · 거울 클릭 후 Q/E로 회전 · H 힌트",7);
+            if(conceptLayout){StartConceptDemo(1);return;}
+            ResetAll();checkpoint=1;PlacePlayer(SpawnPoints[1]);Resume();
+            Tell(exhibitionPreview?"니케 전시실 · 실물 스캔과 채광을 둘러보세요.":"거울 전시실 체험 · 거울 클릭 후 Q/E로 회전 · H 힌트",7);
+        }
+        public void StartOrcusDemo()
+        {
+            if(conceptLayout){StartConceptDemo(3);return;}
+            if(exhibitionPreview){Tell("출구 조각은 실제 모델을 준비하고 있습니다.");return;}
+            ResetAll();checkpoint=3;visitedUpper=true;
+            PlacePlayer(GalleryWorld.OrcusDemoStart);yaw=0;pitch=-.08f;SyncView();Resume();
+            Tell("오르쿠스 전시 · 가까이에서 바람 소리를 듣고, 조각을 키워 입 안으로 들어가 보세요. H 힌트",9);
+        }
+        public void StartConceptDemo(int zone)
+        {
+            ResetAll();checkpoint=Mathf.Clamp(zone,0,3);
+            PlacePlayer(checkpoint==3?new Vector3(0,0,49.1f):checkpoint==2?new Vector3(0,0,30.2f):SpawnPoints[checkpoint]);
+            yaw=0;pitch=0;SyncView();Resume();Tell("구역 바로 체험 · H 힌트 · R 현재 구역 초기화 · Shift+R 처음부터",7);
+        }
+        public void BeginOrcusTransition(GalleryOrcusExit entrance)
+        {
+            if(Transitioning||!active||won)return;
+            if(held!=null)Cancel(true);
+            ClearControlInput();adjustingMirror=false;
+            var runner=new GameObject("Museum to library passage");
+            stageTransition=runner.AddComponent<GalleryStageTransition>();
+            if(!stageTransition.Begin(this,entrance))
+            {
+                entrance.ResetEntrance();Destroy(runner);
+                Tell("도서관 연결을 준비할 수 없습니다. 미술관 최신 실행본을 다시 빌드해 주세요.",8);return;
+            }
+            active=false;won=true;Time.timeScale=1;
         }
         public void PlacePlayer(Vector3 point)
         {
@@ -124,7 +196,7 @@ namespace ShadeLink.Gallery
         {
             if(held!=null)Cancel(true);
             adjustingMirror=false;
-            var spawn=GalleryWorld.Checkpoints[checkpoint];
+            var spawn=SpawnPoints[checkpoint];
             if(!CanStand(spawn))
             {
                 bool found=false;
@@ -151,6 +223,7 @@ namespace ShadeLink.Gallery
         }
         void Update()
         {
+            if(Transitioning)return;
             if(automated)return;
             if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
             if(!active||won)return;
@@ -222,7 +295,7 @@ namespace ShadeLink.Gallery
         {
             // Interior exhibit zones classify puzzles; they are not invisible walls.
             // Actual partitions, columns and floor still constrain every projected shape ray.
-            var minimum=new Vector3(-13.79f,.006f,.01f);var maximum=new Vector3(13.79f,9.74f,53.99f);
+            var minimum=new Vector3(-WorldHalfWidth+.21f,.006f,.01f);var maximum=new Vector3(WorldHalfWidth-.21f,WorldRoof-.26f,WorldLength-.01f);
             Interaction.ResolveDepth(minimum,maximum,out bool surface);
             HasPlacementSurface=surface;
         }
@@ -347,8 +420,8 @@ namespace ShadeLink.Gallery
         bool ValidatePlacement(GalleryProp prop,out string reason,bool preview)
         {
             var b=prop.WorldBounds;
-            float lo=0,hi=GalleryWorld.Length;
-            if(b.min.x< -13.8f||b.max.x>13.8f||b.min.z<lo||b.max.z>hi||b.min.y<-.012f||b.max.y>9.75f)
+            float lo=0,hi=WorldLength;
+            if(b.min.x< -WorldHalfWidth+.2f||b.max.x>WorldHalfWidth-.2f||b.min.z<lo||b.max.z>hi||b.min.y<-.012f||b.max.y>WorldRoof-.25f)
             {reason="벽·천장 또는 미술관 외곽을 벗어납니다.";return false;}
             foreach(var part in prop.parts)
             {
@@ -393,6 +466,9 @@ namespace ShadeLink.Gallery
         public void Cancel(bool force=false) { pendingDrop=false;Interaction.Cancel(force); }
         public bool FootSafe(Vector3 feet)
         {
+            // The first two exhibition rooms teach hazardous sun/shadow travel.
+            // The observation gallery and exit are safe working spaces.
+            if(conceptLayout&&feet.z>=29)return true;
             foreach(var offset in new[]{Vector3.zero,new Vector3(.12f,0,0),new Vector3(-.12f,0,0),new Vector3(0,0,.12f),new Vector3(0,0,-.12f)})
             {
                 Vector3 p=feet+offset;Vector3 normal=Vector3.up;
@@ -416,16 +492,24 @@ namespace ShadeLink.Gallery
             player.feet=controller.transform.position;player.grounded=motor.Grounded;
             SyncView();if(automated&&held!=null)AdvanceHeld(dt);
             UpdateExposure(dt);
+            shadowCourse?.Tick(dt);portraitGate?.Tick(dt);
             lesson.Tick(dt);
             if(player.feet.z>36&&player.feet.z<41&&player.feet.y>1.9f)visitedUpper=true;
-            int next=player.feet.z>42.6f&&visitedUpper?3:player.feet.z>28?2:player.feet.z>15?1:0;
+            int next=conceptLayout?(player.feet.z>44?3:player.feet.z>29?2:player.feet.z>14?1:0):player.feet.z>42.6f&&visitedUpper?3:player.feet.z>28?2:player.feet.z>15?1:0;
+            if(conceptLayout&&!exhibitionPreview)
+            {
+                if(checkpoint==0&&shadowCourse!=null&&!shadowCourse.TutorialCleared)next=0;
+                if(checkpoint==1&&shadowCourse!=null&&!shadowCourse.NikeCleared)next=Mathf.Min(next,1);
+                if(portraitGate!=null&&!portraitGate.Opened)next=Mathf.Min(next,2);
+            }
             if(next>checkpoint&&safe&&player.grounded){checkpoint=next;Tell("0"+(checkpoint+1)+" 구역 저장 · R로 이 구역만 다시 시작할 수 있습니다.",6);}
-            if(checkpoint==3&&visitedUpper&&player.feet.z>53.05f&&Mathf.Abs(player.feet.x)<1.4f&&player.feet.y>4.15f&&player.feet.y<4.35f&&player.grounded&&safe)
+            if(!conceptLayout&&orcusExit==null&&checkpoint==3&&visitedUpper&&player.feet.z>53.05f&&Mathf.Abs(player.feet.x)<1.4f&&player.feet.y>4.15f&&player.feet.y<4.35f&&player.grounded&&safe)
             {won=true;Pause();}
             SyncView();
         }
         void UpdateExposure(float dt)
         {
+            if(exhibitionPreview){safe=true;exposure=0;return;}
             lighting.Synchronize();safe=FootSafe(player.feet);
             exposure=Mathf.Clamp01(exposure+dt*(safe?-1.7f:2.2f));
             if(exposure>=1||player.feet.y< -3)Respawn();

@@ -1,0 +1,7 @@
+Potted Plant 02 — Rico Cilliers / Poly Haven.
+License: CC0 1.0, https://creativecommons.org/publicdomain/zero/1.0/
+Source: https://polyhaven.com/a/potted_plant_02
+Original FBX and textures downloaded from the official Poly Haven API.
+Leaf diffuse 1K PNG is RGBA (PNG color type 6) and can be used for Standard Cutout.
+2K JPG diffuse has no alpha; use the separately supplied 2K leaves alpha map when packing or shading it.
+Capture technique has not been confirmed; this is described as an external model.

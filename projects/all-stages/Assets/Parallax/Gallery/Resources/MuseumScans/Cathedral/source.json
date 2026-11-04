@@ -1,0 +1,37 @@
+{
+  "title": "La Cathédrale",
+  "artworkCreator": "Auguste Rodin",
+  "scanCreator": "Migg",
+  "scanDescription": "Captured with RealityScan at the Rodin Museum in Paris.",
+  "originalSource": "https://sketchfab.com/3d-models/la-cathedrale-d0ba1f143173484f87961fc50d46bdcf",
+  "downloadRecord": "https://zenodo.org/records/10364942",
+  "downloadURL": "https://zenodo.org/api/records/10364942/files/d0ba1f143173484f87961fc50d46bdcf.glb/content",
+  "archiveProvenance": "Objaverse 1.0 / Sketchfab, distributed through Zenodo 3DBigDataSpace",
+  "license": "CC BY 4.0",
+  "licenseURL": "https://creativecommons.org/licenses/by/4.0/",
+  "downloaded": "2026-11-04",
+  "file": "d0ba1f143173484f87961fc50d46bdcf.glb",
+  "bytes": 40940028,
+  "md5": "7e257aff8e43783d4b7aa7134a183716",
+  "sha256": "04ee8899c52c78ed509cecd4150f85916352758c1656c07a29b49d0b8234bdee",
+  "originalUnmodified": true,
+  "verifiedAlternateMirror": "https://huggingface.co/datasets/allenai/objaverse/resolve/main/glbs/000-095/d0ba1f143173484f87961fc50d46bdcf.glb",
+  "alternateMirrorByteIdentical": true,
+  "gameDerivative": {
+    "changes": [
+      "Removed photographed wooden furniture below Y31.60, retaining marble sculpture base.",
+      "Retained largest connected sculpture surface after positional seam welding for connectivity only.",
+      "Normalized sculpture height to2m,Yup; oriented60degrees and reflectedX for Unity handedness; recentred doorway.",
+      "Original texture extracted byte-for-byte; UV V flipped forUnity.",
+      "Added gentleOpenblendshape: palms partbymax0.08m each,marblebase/fingertipsanchored."
+    ],
+    "renderVertices": 531273,
+    "renderTriangles": 754102,
+    "normalizedHeight": 2,
+    "openCollisionVertices": 181425,
+    "openCollisionTriangles": 365448,
+    "collisionVoxel": 0.006,
+    "originalUnmodifiedOutsideAssets": true,
+    "attribution": "La Cathédrale — Auguste Rodin. RealityScan by Migg at the Rodin Museum, Paris. CC BY4.0. Cleaned, scaled and given an opening morph for Parallax."
+  }
+}

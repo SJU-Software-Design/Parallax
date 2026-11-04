@@ -12,89 +12,79 @@ namespace ShadeLink.Editor
 {
     public static class GalleryBuild
     {
-        const string Source="Assets/ThirdParty/ALLrounder18/";
         const string Generated="Assets/Parallax/Gallery/Generated/";
         const string ScenePath="Assets/Parallax/Gallery/Scenes/Gallery.unity";
-        static Material original;
-        static Mesh Piece(int index,Vector3 size,Quaternion turn,bool fixture=false)
+        public static void WriteCredits(string outputDirectory)
         {
-            var source=AssetDatabase.LoadAssetAtPath<GameObject>(Source+(fixture?"Mesh_":"Mesh_001_")+index+".obj");
-            if(source==null)throw new Exception("Missing ALLrounder18 extracted mesh "+index);
-            var f=source.GetComponentInChildren<MeshFilter>();
-            Mesh m=UnityEngine.Object.Instantiate(f.sharedMesh);m.name="ALLrounder18 part "+index;
-            Vector3[] vertices=m.vertices; var b=m.bounds;
-            for(int i=0;i<vertices.Length;i++)vertices[i]=turn*(vertices[i]-b.center);
-            m.vertices=vertices;m.RecalculateBounds();b=m.bounds;
-            for(int i=0;i<vertices.Length;i++)vertices[i]=Vector3.Scale(vertices[i],new Vector3(size.x/b.size.x,size.y/b.size.y,size.z/b.size.z));
-            m.vertices=vertices;m.RecalculateBounds();m.RecalculateNormals();
-            string path=Generated+(fixture?"fixture_":"part_")+index+"_"+size.x.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+"_"+size.y.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+".asset";
-            var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if(existing!=null){EditorUtility.CopySerialized(m,existing);UnityEngine.Object.DestroyImmediate(m);return existing;}
-            AssetDatabase.CreateAsset(m,path);return m;
-        }
-        static GameObject Art(string name,int index,Vector3 at,Vector3 size,Quaternion rotation,Transform parent)
-        {
-            var go=new GameObject(name);go.transform.SetParent(parent,false);go.transform.localPosition=at;go.transform.localRotation=rotation;
-            go.AddComponent<MeshFilter>().sharedMesh=Piece(index,size,Quaternion.identity);
-            var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=original;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;
-            return go;
+            Directory.CreateDirectory(outputDirectory);
+            File.WriteAllText(Path.Combine(outputDirectory,"Museum-Credits.txt"),
+                "PARALLAX MUSEUM - THIRD-PARTY ART\n\n"+
+                "Winged Victory of Samothrace - 3D scan by Cosmo Wenman, Skulpturhalle Basel plaster cast. CC BY 3.0. Converted, shaded and scaled for Parallax.\n"+
+                "Source: https://www.thingiverse.com/thing:196038\n"+
+                "Creator: https://cosmowenman.com/2013/12/28/winged-victory-published-update-12282013/\n"+
+                "License: https://creativecommons.org/licenses/by/3.0/\n\n"+
+                "La Cathedrale (The Cathedral), Auguste Rodin - 3D scan by Migg, Rodin Museum, Paris. CC BY 4.0.\n"+
+                "Source: https://sketchfab.com/3d-models/la-cathedrale-d0ba1f143173484f87961fc50d46bdcf\n"+
+                "Archive: https://zenodo.org/records/10364942\n"+
+                "License: https://creativecommons.org/licenses/by/4.0/\n"+
+                "Changes: removed scanned display support and detached artifacts; reoriented, scaled, shaded and adapted for the traversable portal in Parallax.\n\n"+
+                "Medieval Library Kit - Rinku Choudhary. The portal reuses furniture and books from the destination Library stage.\n"+
+                "Source: https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604\n"+
+                "License: Free Standard (NoAI), as recorded for the existing Library assets. This asset is not CC BY.\n\n"+
+                "Marble Bust 01 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/marble_bust_01\n\n"+
+                "Potted Plant 02 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/potted_plant_02\n\n"+
+                "Surface textures: Poly Haven, CC0. https://polyhaven.com/license\n"+
+                "Paintings: Public-domain sources from Wikimedia Commons.\n\n");
+            foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md"})
+            {
+                string source=Path.Combine("Documentation/Gallery",name);
+                if(File.Exists(source))File.Copy(source,Path.Combine(outputDirectory,name),true);
+            }
         }
         static void Integrate(GalleryGame game)
         {
-            original=new Material(Shader.Find("Parallax/GallerySurface")){name="ALLrounder18 original atlas",color=Color.white};
-            original.mainTexture=AssetDatabase.LoadAssetAtPath<Texture2D>(Source+"Art room01_Art_Room1_BaseColor.png");
-            if(original.mainTexture==null)throw new Exception("Missing original atlas");GalleryWorld.Materials.Add(original);
-            int[] ids={8,14,17,20};int painting=0;
-            foreach(var p in game.props)
+            GalleryConceptScans.Install(game);
+            GalleryConceptBusts.Install(game);
+            GalleryConceptPlants.Install(game);
+            GalleryConceptStage.Install(game);
+            GalleryConceptAtmosphere.Install(game);
+            game.shadowCourse=GalleryMuseumShadowCourse.Install(game);
+            game.portraitGate=GalleryPortraitGate.Install(game);
+            game.orcusExit=GalleryConceptExit.Install(game);
+            GalleryConceptLighting.Configure(game);
+        }
+        static void SaveMuseumMeshes(GalleryGame game)
+        {
+            // Scene references to temporary procedural meshes would disappear in
+            // a player build. Persist every generated mesh before saving the scene.
+            int index=0;
+            AssetDatabase.StartAssetEditing();
+            try
             {
-                if(p.title.Contains("그림"))
-                {
-                    foreach(var r in p.renderers)if(!r.name.Contains("seal"))r.enabled=false;
-                    Art("ALLrounder18 · original framed painting",ids[painting++],Vector3.zero,new Vector3(2.4f,2.8f,.2f),Quaternion.identity,p.transform);
-                    p.Remember();
-                }
-                else if(p.platform)
-                {
-                    var r=p.transform.Find("Solid exhibit pedestal").GetComponent<Renderer>();r.enabled=false;
-                    Art("ALLrounder18 · original exhibit plinth",22,Vector3.zero,p.parts[0].size*p.parts[0].transform.localScale.x,Quaternion.identity,p.transform);
-                    // The prototype dimensions are intentionally nonuniform.
-                    var model=p.transform.Find("ALLrounder18 · original exhibit plinth");
-                    model.localScale=new Vector3(1,p.parts[0].transform.localScale.y/p.parts[0].transform.localScale.x,p.parts[0].transform.localScale.z/p.parts[0].transform.localScale.x);
-                    p.Remember();
-                }
-            }
-            // Original art in the side galleries; the central route remains readable.
-            foreach(var r in game.GetComponentsInChildren<Renderer>().Where(r=>r.name=="Permanent gallery frame"||r.name=="Permanent print").ToArray())UnityEngine.Object.DestroyImmediate(r.gameObject);
-            for(int z=0;z<4;z++)for(int j=0;j<4;j++)
+            foreach(var group in game.GetComponentsInChildren<MeshFilter>(true).Where(f=>f.sharedMesh!=null&&!AssetDatabase.Contains(f.sharedMesh)).GroupBy(f=>f.sharedMesh).ToArray())
             {
-                float along=new[]{4.5f,17.2f,29.8f,42.1f}[z]+(j-1.5f)*1.85f;
-                Art("ALLrounder18 · wall collection",new[]{5,11,12,13,15,17,19,20}[(z*4+j)%8],new Vector3(13.94f,2.55f,along),new Vector3(1.05f,1.45f,.11f),Quaternion.Euler(0,-90,0),game.transform);
+                Mesh mesh=group.Key;string name="MuseumMesh_"+(index++).ToString("D3")+"_"+mesh.name;
+                foreach(char c in Path.GetInvalidFileNameChars())name=name.Replace(c,'_');
+                string path=Generated+name+".asset";
+                var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
+                if(existing==null){AssetDatabase.CreateAsset(mesh,path);existing=mesh;}
+                else EditorUtility.CopySerialized(mesh,existing);
+                foreach(var filter in group)filter.sharedMesh=existing;
+                foreach(var collider in game.GetComponentsInChildren<MeshCollider>(true))if(collider.sharedMesh==mesh)collider.sharedMesh=existing;
             }
-            for(int z=0;z<3;z++)
-            {
-                var panel=Art("ALLrounder18 · exhibition partition",4,new Vector3(-9,2.168f,new[]{4.5f,17,29.2f}[z]),new Vector3(4,4.336f,.4f),Quaternion.Euler(0,28,0),game.transform);
-                var box=panel.AddComponent<BoxCollider>();box.size=new Vector3(4,4.336f,.4f);panel.AddComponent<GalleryCaster>().shape=box;
-                Art("ALLrounder18 · partition painting",8,new Vector3(-9,2.2f,new[]{4.5f,17,29.2f}[z]+.34f),new Vector3(2.2f,2.8f,.13f),Quaternion.Euler(0,28,0),game.transform);
             }
-            for(int z=0;z<4;z++)for(int side=-1;side<=1;side+=2)
-            {
-                var fixture=new GameObject("ALLrounder18 · ceiling fixture");fixture.transform.SetParent(game.transform,false);
-                fixture.transform.localPosition=new Vector3(side*9.7f,9.86f,new[]{.8f,12f,24f,35f}[z]);
-                fixture.AddComponent<MeshFilter>().sharedMesh=Piece(0,new Vector3(.9f,.14f,.9f),Quaternion.identity,true);
-                fixture.AddComponent<MeshRenderer>().sharedMaterial=original;
-            }
+            finally { AssetDatabase.StopAssetEditing(); }
         }
         [MenuItem("Parallax/미술관 씬 준비")]
         public static void Prepare()
         {
+            GalleryCathedralImport.Ensure();
+            GalleryPortalLibraryAssets.Prepare();
             Directory.CreateDirectory(Generated);Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
-            foreach(string path in Directory.GetFiles(Source,"*.obj"))
-            {
-                var importer=AssetImporter.GetAtPath(path) as ModelImporter;
-                if(importer!=null&&!importer.isReadable){importer.isReadable=true;importer.SaveAndReimport();}
-            }
             Scene scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-            GalleryGame game=GalleryWorld.Build();Integrate(game);
+            GalleryScanCollision.Ensure();
+            GalleryGame game=GalleryConceptWorld.Build();Integrate(game);
+            SaveMuseumMeshes(game);
             foreach(var m in GalleryWorld.Materials)
             {
                 string path=Generated+m.name.Replace('/','_')+".mat";var existing=AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -102,35 +92,55 @@ namespace ShadeLink.Editor
                 else
                 {
                     EditorUtility.CopySerialized(m,existing);
-                    foreach(var r in game.GetComponentsInChildren<Renderer>())if(r.sharedMaterial==m)r.sharedMaterial=existing;
+                    foreach(var r in game.GetComponentsInChildren<Renderer>())
+                    {
+                        var slots=r.sharedMaterials;bool changed=false;
+                        for(int i=0;i<slots.Length;i++)if(slots[i]==m){slots[i]=existing;changed=true;}
+                        if(changed)r.sharedMaterials=slots;
+                    }
+                    if(RenderSettings.skybox==m)RenderSettings.skybox=existing;
                     UnityEngine.Object.DestroyImmediate(m);
                 }
             }
             game.lighting.Rebuild();
-            if(game.props.Length!=10||game.mirror==null||game.lightGate==null)throw new Exception("Gallery mirror puzzle missing");
+            if(game.props.Length!=9||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null)throw new Exception("Playable museum exhibit missing");
+            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal"})
+            {
+                var asset=Shader.Find(shader);
+                if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);
+            }
             EditorSceneManager.SaveScene(scene,ScenePath);
-            PlayerSettings.productName="Parallax - Mirror Gallery v0.12.0";PlayerSettings.bundleVersion="0.12.0";
+            PlayerSettings.productName="Parallax - Museum Gallery v"+GalleryGame.Version;PlayerSettings.bundleVersion=GalleryGame.Version;
             PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
-            EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true)};
+            EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true),new EditorBuildSettingsScene(LibraryBuild.ScenePath,true)};
             AssetDatabase.SaveAssets();Debug.Log("GALLERY_PREPARE_OK casters="+game.lighting.Count);
         }
         [MenuItem("Parallax/미술관 Windows 빌드")]
         public static void Build()
         {
+            LibraryBuild.Prepare();
             Prepare();
-            foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/GalleryMirror","Parallax/GalleryGlass"})
+            foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/MuseumSurface","Parallax/GalleryMirror","Parallax/GalleryGlass","Parallax/GalleryOrcusPortal"})
                 if(ShaderUtil.ShaderHasError(Shader.Find(shader)))
                 {
                     foreach(var message in ShaderUtil.GetShaderMessages(Shader.Find(shader)))
                         Debug.LogError(shader+" line "+message.line+": "+message.message);
                     throw new Exception(shader+" has compilation errors; build stopped.");
                 }
-            string output=Parallax.Editor.BuildPaths.Output("Parallax_Unity_v0.12.0_MirrorGallery/Parallax.exe");Directory.CreateDirectory(Path.GetDirectoryName(output));
-            var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
+            string output=Parallax.Editor.BuildPaths.Output("Parallax_Unity_v"+GalleryGame.Version+"_MuseumGallery/Parallax.exe");Directory.CreateDirectory(Path.GetDirectoryName(output));
+            var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath,LibraryBuild.ScenePath},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
             Directory.CreateDirectory("Validation/Gallery");
             File.WriteAllText("Validation/Gallery/build-result.txt","Result: "+report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nWarnings: "+report.summary.totalWarnings+"\nOutput: "+output+"\nUnity: "+Application.unityVersion);
             if(report.summary.result!=BuildResult.Succeeded)throw new Exception("Gallery build failed");
+            WriteCredits(Path.GetDirectoryName(output));
             Debug.Log("GALLERY_BUILD_OK "+output);
+        }
+        public static void BuildVerified()
+        {
+            GalleryMuseumBuildChecks.Run();
+            GalleryCathedralPlacementChecks.Run();
+            Build();
+            GalleryReviewManifest.Save();
         }
     }
 }

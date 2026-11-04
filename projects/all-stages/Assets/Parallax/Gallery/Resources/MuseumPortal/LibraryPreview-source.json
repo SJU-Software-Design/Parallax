@@ -1,0 +1,8 @@
+{
+  "sourceScene": "Assets/Parallax/Library/Scenes/Library.unity",
+  "sourceKit": "Medieval library kit by Rinku Choudhary",
+  "sourceUrl": "https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604",
+  "description": "Render-only reading alcove assembled from the actual destination's carved shelf, separate books, table, chair and oak texture. Geometry has been combined for one-camera rendering. No LibraryGame, player, colliders, AudioListener or lighting globals are included.",
+  "meshGroups": 12,
+  "triangles": 16952
+}

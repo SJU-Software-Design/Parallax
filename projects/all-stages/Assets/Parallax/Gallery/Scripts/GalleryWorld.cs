@@ -7,21 +7,25 @@ namespace ShadeLink.Gallery
     public static class GalleryWorld
     {
         public const float Width = 28, Length = 54;
+        public static readonly Vector3 OrcusHome = new Vector3(0,4.2f,51.4f);
+        public static readonly Vector3 OrcusDemoStart = new Vector3(0,4.2f,49.0f);
         public static readonly Vector3[] Checkpoints = { new Vector3(0,0,4.2f), new Vector3(0,0,16.5f), new Vector3(0,0,29), new Vector3(0,0,43.1f) };
-        public static readonly string[] Titles = { "01  빛을 가리는 그림", "02  빛을 꺾는 거울", "03  발판 위의 그림자", "04  높은 출구로 가는 길" };
+        public static readonly string[] Titles = { "01  명화가 만드는 그늘", "02  빛을 꺾는 거울", "03  시점과 그림자의 전시", "04  오르쿠스의 입 안으로" };
         public static readonly string[] Hints = {
             "입구 벽의 그림을 떼어 키워 보세요.\n햇빛 앞에 세우고, 그림 뒤로 돌아 그늘을 따라 건넙니다.",
             "거울을 클릭하고 Q/E로 회전해 센서를 초록색으로 만드세요.\n차광판을 들고 옮겨 반사광 아래에 그늘을 만듭니다.\n센서는 계속 빛나야 문이 열립니다. 유리는 빛을 통과시킵니다.",
             "낮은 전시대를 키워 2m 높이의 통로로 올라갑니다.\n큰 그림은 발판과 통로의 윗면까지 가려야 합니다.",
-            "전시대 세 개를 계단처럼 키워 배치하세요.\n첫 그림의 그늘로 세 번째 발판 앞쪽까지 올라간 뒤,\n높은 벽의 그림을 가져와 남은 길과 출구를 가리세요."
+            "전시대를 키워 높은 전시실에 올라가세요.\n바람이 들리는 작은 오르쿠스를 확대해 내려놓습니다.\n입이 몸보다 커지고 안착하면 일렁이는 입 안으로 들어갑니다."
         };
         static Transform root;
         static Material ivory, stone, navy, bronze, teal, amber, dark, ink, art;
         public static readonly List<Material> Materials = new List<Material>();
         static Material Mat(string name, Color c, bool flat = false, bool tiles = false)
         {
-            var m = new Material(Shader.Find(flat ? "ShadeLink/Flat" : "Parallax/GallerySurface")) { name = name, color = c };
-            if (tiles) m.SetFloat("_Grid",1); Materials.Add(m); return m;
+            var m = new Material(Shader.Find(flat ? "ShadeLink/Flat" : "Parallax/MuseumSurface")) { name = name, color = c };
+            if (tiles) { m.SetFloat("_Grid",1);m.SetFloat("_Stone",1);m.SetFloat("_Sheen",.16f); }
+            else if(!flat) m.SetFloat("_Stone",.5f);
+            Materials.Add(m); return m;
         }
         public static GameObject Box(string name, Vector3 at, Vector3 size, Material material, Transform parent = null, bool caster = true, bool solid = true)
         {
@@ -105,7 +109,6 @@ namespace ShadeLink.Gallery
             gate.sensor=sensor.transform;gate.sensorFace=sensor.GetComponent<Renderer>();
             Box("Receiver bronze post",new Vector3(1.4f,.18f,26.1f),new Vector3(.08f,.36f,.08f),bronze,caster:false);
             Label("LIGHT → OPEN",new Vector3(1.5f,1.05f,26.65f),.25f,new Color(.4f,1,.87f),Quaternion.identity);
-            Label("02  /  BEND THE LIGHT",new Vector3(0,4.3f,26.65f),.38f,new Color(.93f,.84f,.63f),Quaternion.identity);
             var shield=Prop("02 · 반사광 차광판",1,new Vector3(4.8f,1.4f,18),Quaternion.identity,false,2.05f);
             Box("Shield panel",Vector3.zero,new Vector3(2.4f,2.6f,.14f),ink,shield.transform);
             Box("Shield base",new Vector3(0,-1.32f,0),new Vector3(1.45f,.16f,.85f),stone,shield.transform);
@@ -118,7 +121,7 @@ namespace ShadeLink.Gallery
             root = new GameObject("PARALLAX / Gallery — 28 × 54 m").transform;
             ivory=Mat("Gallery plaster",new Color(.91f,.87f,.78f));
             stone=Mat("Travertine exhibits",new Color(.81f,.75f,.62f));
-            navy=Mat("Deep blue partitions",new Color(.28f,.43f,.48f));
+            navy=Mat("Deep blue partitions",new Color(.30f,.40f,.39f));
             bronze=Mat("Bronze frames",new Color(.62f,.38f,.17f));
             dark=Mat("Charcoal",new Color(.18f,.23f,.25f));
             art=Mat("Canvas print",new Color(.85f,.50f,.29f));
@@ -134,7 +137,7 @@ namespace ShadeLink.Gallery
             for(int s=-1;s<=1;s+=2)
                 Box("Side wall",new Vector3(s*14.18f,5,27),new Vector3(.36f,10,54),ivory);
             for(int s=-1;s<=1;s+=2)
-                Box("First exhibition corridor",new Vector3(s*5,2.25f,10.35f),new Vector3(.22f,4.5f,7.3f),ivory);
+                Box("First exhibition corridor",new Vector3(s*5,2.25f,11.3f),new Vector3(.22f,4.5f,5.4f),ivory);
             // Physical skylight openings coincide with the analytic aperture masks.
             float cursor=0;
             foreach(var aperture in GalleryLighting.Windows)
@@ -154,14 +157,16 @@ namespace ShadeLink.Gallery
             Box("Raised threshold — climb required",new Vector3(0,1,40),new Vector3(4.8f,2,.38f),stone);
             Box("Upper gallery walkway",new Vector3(0,1.86f,38.4f),new Vector3(4,.28f,4.8f),stone);
             for(int i=0;i<3;i++)Box("Return stairs",new Vector3(0,(1.5f-i*.5f)/2,41.2f+i*.55f),new Vector3(3,1.5f-i*.5f,.55f),stone);
-            Box("High exit balcony",new Vector3(0,4.05f,52.55f),new Vector3(7.5f,.3f,2.9f),stone);
+            Box("High exit balcony",new Vector3(0,4.05f,51.3f),new Vector3(14,.3f,5.4f),stone);
+            // A permanent covered display gives room to discover, resize and
+            // settle the sculpture without replacing the preceding shade puzzle.
+            Box("Orcus exhibit fixed shade",new Vector3(0,7.25f,47.5f),new Vector3(14,.18f,3.8f),ivory);
             for(int s=-1;s<=1;s+=2)
             {
-                Box("Balcony support",new Vector3(s*3.45f,1.95f,53),new Vector3(.28f,3.9f,1.7f),navy);
-                Box("Exit jamb",new Vector3(s*1.55f,5.45f,53.82f),new Vector3(.09f,2.5f,.08f),teal,caster:false,solid:false);
+                Box("Balcony support",new Vector3(s*6.7f,1.95f,52),new Vector3(.28f,3.9f,3.6f),navy);
+                Box("Orcus display brass edge",new Vector3(s*6.8f,4.24f,51.3f),new Vector3(.055f,.08f,5.3f),bronze,caster:false,solid:false);
             }
-            Box("Exit door",new Vector3(0,5.45f,53.99f),new Vector3(3,2.5f,.045f),dark,caster:false);
-            Label("EXIT  /  4.2 m",new Vector3(0,6.9f,53.85f),.72f,new Color(.36f,1,.84f),Quaternion.identity);
+            Label("ORCUS  /  바람이 머무는 조각",new Vector3(0,8.75f,53.85f),.52f,new Color(.85f,.77f,.54f),Quaternion.identity);
             var props=new List<GalleryProp>();
             props.Add(Painting("01 · 이동하는 그림",0,new Vector3(0,2.3f,.27f),Quaternion.identity));
             var sculpture=Prop("02 · 열린 조각",1,new Vector3(3,1.5f,17.8f),Quaternion.Euler(0,90,0),false,2.8f);
@@ -180,12 +185,13 @@ namespace ShadeLink.Gallery
             Box("High display wall",new Vector3(9.35f,4.3f,49.1f),new Vector3(.3f,8.6f,5.5f),navy);
             props.Add(Painting("04 · 마지막 차광 그림",3,new Vector3(9.07f,6.2f,49.1f),Quaternion.Euler(0,90,0)));
             props.Add(MirrorRoom(game));
+            var orcus=GalleryOrcusBuilder.Create(game,root,OrcusHome,Quaternion.identity);
+            orcus.transform.localScale=Vector3.one*.60f;orcus.Remember();props.Add(orcus);
             game.props=props.ToArray();
             for(int i=0;i<4;i++)
             {
                 float z=new[]{3.8f,16.5f,29f,42.7f}[i];
                 Box("Checkpoint brass inlay",new Vector3(0,.006f,z),new Vector3(3,.012f,.035f),teal,caster:false,solid:false);
-                Label(Titles[i],new Vector3(i==0?0:-7,3.8f,new[]{.23f,13.77f,26.77f,39.77f}[i]),.45f,new Color(.87f,.89f,.82f),Quaternion.Euler(0,i==0?180:0,0));
                 Label("0"+(i+1),new Vector3(-2,.013f,z),.52f,new Color(.22f,.87f,.75f),Quaternion.Euler(90,0,0));
             }
             // Side exhibits stay in roofed areas, preserving a readable puzzle route.

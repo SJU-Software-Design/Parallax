@@ -1,0 +1,38 @@
+{
+  "title": "Marble Bust 01",
+  "author": "Rico Cilliers",
+  "source": "https://polyhaven.com/a/marble_bust_01",
+  "license": "CC0 1.0",
+  "license_url": "https://polyhaven.com/license",
+  "note": "제작자 공개 조각 모델. 특정 역사 작품명 또는 실물 스캔 방식은 원작자 페이지에 명시되어 있지 않으므로 이를 단정하지 않음.",
+  "files": [
+    {
+      "file": "marble_bust_01_2k.fbx",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/2k/marble_bust_01/marble_bust_01_2k.fbx",
+      "bytes": 561052,
+      "md5": "b48459d7268816e135a9aa071763280b",
+      "sha256": "76646cba3de3492b8626651add3edd5571f0a239913c01c739e5d7b5dd83ee4d"
+    },
+    {
+      "file": "textures/marble_bust_01_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/marble_bust_01/marble_bust_01_diff_2k.jpg",
+      "bytes": 524864,
+      "md5": "2aa08c108bd20d958c8ef5abc62cc42d",
+      "sha256": "06b3a65f41942399f78a38a69dc4448c1c84b59f97390ace1fa4711baaef62df"
+    },
+    {
+      "file": "textures/marble_bust_01_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/marble_bust_01/marble_bust_01_nor_gl_2k.jpg",
+      "bytes": 426860,
+      "md5": "f04a441103615ba1139f4a1b5fca379a",
+      "sha256": "ab9b989193741d8c2c4de66db3a148c8e88325dedc0158c9ecf3e39a9d636aa9"
+    },
+    {
+      "file": "textures/marble_bust_01_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/marble_bust_01/marble_bust_01_rough_2k.jpg",
+      "bytes": 652231,
+      "md5": "d749fc0de68bbd7b399bb190f9161159",
+      "sha256": "c9280a999c340b82baf06ab3064e3b71786bb328515106595433c63f02703780"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ namespace ShadeLink.Gallery
         readonly List<string> checks = new List<string>(), errors = new List<string>();
         SimulationMode previousSimulation;
         int samples, mismatches, movementFrames;
-        float heldWalkDistance, heldJumpHeight;
+        float heldWalkDistance, unheldWalkDistance, heldJumpHeight;
         Vector3 solutionPosition;
         Quaternion solutionRotation;
         float solutionScale;
@@ -25,7 +25,7 @@ namespace ShadeLink.Gallery
             public bool inputPuzzlePassed, cancelOverlapPassed;
             public string scope, failure, unity, gpu;
             public int shadowSamples, shadowMismatches, heldMovementFrames;
-            public float heldWalkDistance, heldJumpHeight, solutionScale;
+            public float heldWalkDistance, unheldWalkDistance, heldJumpHeight, solutionScale;
             public Vector3 solutionPosition;
             public Quaternion solutionRotation;
             public string[] checks, errors;
@@ -48,7 +48,7 @@ namespace ShadeLink.Gallery
                 scope="Mirror room entered through the public demo action. Real camera grab, held walking/jumping, safe cancellation and release. Separate optical fixtures check incident occlusion and search a valid shadow pose. Final mirror-room play uses only camera aim, held rotation, CharacterController movement and physical drop, with no object pose/scale writes. This does not claim a full four-room playthrough.",
                 failure=failure,unity=Application.unityVersion,gpu=SystemInfo.graphicsDeviceName,
                 shadowSamples=samples,shadowMismatches=mismatches,heldMovementFrames=movementFrames,
-                heldWalkDistance=heldWalkDistance,heldJumpHeight=heldJumpHeight,
+                heldWalkDistance=heldWalkDistance,unheldWalkDistance=unheldWalkDistance,heldJumpHeight=heldJumpHeight,
                 solutionPosition=solutionPosition,solutionRotation=solutionRotation,solutionScale=solutionScale,
                 inputPuzzlePassed=inputPuzzlePassed,cancelOverlapPassed=cancelOverlapPassed,
                 checks=checks.ToArray(),errors=errors.ToArray()};
@@ -96,7 +96,11 @@ namespace ShadeLink.Gallery
                 if(delta.magnitude<.045f)yield break;
                 AimSmooth(carryLow?new Vector3(game.player.feet.x,1.05f,game.player.feet.z+1.2f):look);
                 if(turnShield&&game.held!=null)game.RotateHeld(Mathf.Clamp(Mathf.DeltaAngle(game.heldRotation.eulerAngles.y,40.6f),-75*Dt,75*Dt),0);
-                Step(delta.normalized*Mathf.Min(1,delta.magnitude/(GalleryGame.Speed*Dt)));
+                // The current shared motor ramps keyboard input rather than
+                // stopping instantly. Brake before a waypoint so the automated
+                // player does not coast past its intended shield-placement view.
+                float approach=Mathf.Sqrt(Mathf.Clamp01(delta.magnitude/1.2f));
+                Step(delta.normalized*approach);
                 if(i%15==0)yield return null;
             }
             Require(false,"Walking to "+target+" is blocked at "+game.player.feet+" with held pose "+(game.held==null?"none":game.held.transform.position.ToString()));
@@ -105,10 +109,19 @@ namespace ShadeLink.Gallery
         {
             yield return null;yield return null;game.ResetAll();game.Resume();
             for(int i=0;i<6;i++)Step(Vector2.zero);
+            // Compare the same current motor/acceleration policy with empty hands.
+            // A fixed legacy distance incorrectly treats deliberate input smoothing
+            // as a carrying regression.
+            Vector3 emptyStart=game.player.feet;
+            for(int i=0;i<48;i++){Step(Vector2.right);if(i%12==0)yield return null;}
+            unheldWalkDistance=Vector3.Distance(emptyStart,game.player.feet);
+            Require(unheldWalkDistance>1,"Unheld movement baseline is blocked");
+            game.ResetAll();game.Resume();for(int i=0;i<6;i++)Step(Vector2.zero);
             var painting=game.props[0];Grab(painting);Vector3 start=game.player.feet;
             for(int i=0;i<48;i++){Step(Vector2.right);if(i%12==0)yield return null;}
             heldWalkDistance=Vector3.Distance(start,game.player.feet);
-            Require(heldWalkDistance>1.4f&&game.held==painting,"Holding still prevents walking");
+            Require(Mathf.Abs(heldWalkDistance-unheldWalkDistance)<.05f&&game.held==painting,
+                "Carrying changes normal walk distance: held="+heldWalkDistance+" unheld="+unheldWalkDistance);
             float baseY=game.player.feet.y;
             for(int i=0;i<105;i++){Step(Vector2.zero,i==0);heldJumpHeight=Mathf.Max(heldJumpHeight,game.player.feet.y-baseY);if(i%15==0)yield return null;}
             Require(heldJumpHeight>.65f&&game.held==painting,"Holding prevents jumping / gravity");
@@ -143,7 +156,8 @@ namespace ShadeLink.Gallery
             Require(!game.lightGate.illuminated,"Blocked incoming light still powers receiver");
             DestroyImmediate(cover);game.lighting.Rebuild();Check("Blocking sunlight before mirror removes reflected illumination and disables receiver");
 
-            var shield=game.props[game.props.Length-1];bool found=false;
+            var shield=Array.Find(game.props,p=>p.title=="02 · 반사광 차광판");
+            Require(shield!=null,"The reflected-light room is missing its movable shield");bool found=false;
             for(float scale=.85f;scale<=1.75f&&!found;scale+=.1f)
             for(float x=-4.1f;x<=-1.5f&&!found;x+=.2f)
             for(float z=20.2f;z<=23.2f&&!found;z+=.2f)

@@ -15,20 +15,32 @@ namespace ShadeLink.Gallery
             new Vector4(-14.1f, 14.1f, 36.5f, 47f)
         };
         public GalleryCaster[] casters;
+        public bool conceptLayout;
+        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-8.1f,8.1f,32,35),new Vector4(-8.1f,8.1f,47,50)};
         public GalleryMirror mirror;
         readonly Matrix4x4[] inverse = new Matrix4x4[MaxCasters];
         readonly float[] mirrorCaster = new float[MaxCasters];
         readonly float[] previewCaster = new float[MaxCasters];
+        readonly RaycastHit[] sunHits=new RaycastHit[128];
+        GalleryGame owner;
         public int Count { get; private set; }
         public void Rebuild()
         {
             casters = FindObjectsByType<GalleryCaster>(FindObjectsSortMode.None);
+            owner=GetComponent<GalleryGame>();
             mirror = FindFirstObjectByType<GalleryMirror>();
             if (casters.Length > MaxCasters) throw new InvalidOperationException("Gallery shadow caster budget exceeded: " + casters.Length);
             Synchronize();
         }
         public void Synchronize()
         {
+            if(conceptLayout&&Application.isPlaying&&owner!=null&&owner.props!=null)
+                foreach(var prop in owner.props)if(prop!=null&&prop.renderers!=null)
+                {
+                    bool placed=prop.placement==null||prop.placement.Ready;
+                    foreach(var renderer in prop.renderers)if(renderer!=null)
+                        renderer.shadowCastingMode=placed?UnityEngine.Rendering.ShadowCastingMode.TwoSided:UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
             Count = 0;
             if (casters != null) foreach (var c in casters)
                 if (c != null && c.gameObject.activeInHierarchy && c.shape != null && c.shape.enabled)
@@ -43,8 +55,8 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalFloatArray("_GalleryCasterMirror", mirrorCaster);
             Shader.SetGlobalFloatArray("_GalleryCasterPreview",previewCaster);
             Shader.SetGlobalVector("_GalleryToSun", ToSun);
-            Shader.SetGlobalFloat("_GalleryRoof", Roof);
-            Shader.SetGlobalVectorArray("_GalleryWindows", Windows);
+            Shader.SetGlobalFloat("_GalleryRoof", conceptLayout?GalleryConceptWorld.Roof:Roof);
+            Shader.SetGlobalVectorArray("_GalleryWindows", conceptLayout?ConceptWindows:Windows);
             bool enabled = mirror != null && mirror.isActiveAndEnabled;
             Shader.SetGlobalFloat("_GalleryMirrorActive", enabled ? 1 : 0);
             if (!enabled) return;
@@ -74,9 +86,31 @@ namespace ShadeLink.Gallery
         }
         public bool IsDirectLit(Vector3 surface, Vector3 normal)
         {
-            if (!WindowLit(surface)) return false;
+            if(conceptLayout)
+            {
+                Vector3 aperture=surface+ToSun*((GalleryConceptWorld.Roof-surface.y)/ToSun.y);bool lit=false;
+                foreach(var w in ConceptWindows)if(aperture.x>=w.x&&aperture.x<=w.y&&aperture.z>=w.z&&aperture.z<=w.w){lit=true;break;}
+                if(!lit)return false;
+            }
+            else if (!WindowLit(surface)) return false;
             Vector3 origin = surface + normal * SurfaceBias;
             for (int i = 0; i < Count; i++) if (previewCaster[i]<.5f&&Intersects(inverse[i], origin, ToSun)) return false;
+            if(conceptLayout)
+            {
+                // Include the scan-derived Nike collider and detailed physical
+                // exhibits, whose visible mesh shadows are absent from box-only
+                // masks. Held/settling objects remain previews, never shelters.
+                float distance=Mathf.Max(.05f,(GalleryConceptWorld.Roof-origin.y)/ToSun.y+2);
+                int hits=Physics.RaycastNonAlloc(origin,ToSun,sunHits,distance,~0,QueryTriggerInteraction.Ignore);
+                for(int i=0;i<hits;i++)
+                {
+                    var collider=sunHits[i].collider;
+                    if(collider==null||collider is CharacterController||collider.GetComponentInParent<GalleryLightGlass>()!=null)continue;
+                    var prop=collider.GetComponentInParent<GalleryProp>();
+                    if(prop!=null&&prop.placement!=null&&!prop.placement.Ready)continue;
+                    return false;
+                }
+            }
             return true;
         }
         public bool MirrorReceivesSun(Vector3 point)
