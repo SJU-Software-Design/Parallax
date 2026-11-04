@@ -86,6 +86,8 @@ namespace ShadeLink.Gallery
         }
         public bool IsDirectLit(Vector3 surface, Vector3 normal)
         {
+            if(conceptLayout&&surface.z>=14&&surface.z<29&&owner!=null&&owner.nikeLight!=null&&owner.nikeLight.isActiveAndEnabled)
+                return owner.nikeLight.IsIlluminated(surface,normal);
             if(conceptLayout)
             {
                 Vector3 aperture=surface+ToSun*((GalleryConceptWorld.Roof-surface.y)/ToSun.y);bool lit=false;

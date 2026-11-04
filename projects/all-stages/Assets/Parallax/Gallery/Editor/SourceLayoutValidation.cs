@@ -38,9 +38,9 @@ namespace Parallax.Editor
             }
             EditorSceneManager.OpenScene(galleryPath, OpenSceneMode.Single);
             var game = UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
-            if (game == null || game.props == null || game.props.Length != 9 || game.lighting == null)
+            if (game == null || game.props == null || game.props.Length != 6 || game.lighting == null || game.nikeLight == null)
                 throw new Exception("Gallery scene references are incomplete.");
-            if (EditorBuildSettings.scenes.Length != 1 || !EditorBuildSettings.scenes[0].enabled ||
+            if (EditorBuildSettings.scenes.Length != 2 || !EditorBuildSettings.scenes[0].enabled ||
                 EditorBuildSettings.scenes[0].path != galleryPath)
                 throw new Exception("The default build scene must be Gallery.");
             foreach (string name in new[] { "Parallax/GallerySurface", "ShadeLink/Flat", "ShadeLink/WorldText", "ShadeLink/Finish" })
@@ -51,8 +51,8 @@ namespace Parallax.Editor
             Directory.CreateDirectory("Validation/SourceLayout");
             File.WriteAllText("Validation/SourceLayout/result.txt",
                 "PASS\nUnity: " + Application.unityVersion + "\nScenes: Gallery, Indoor, Courtyard\n" +
-                "Missing scripts/references: 0\nGallery props: 9\nShader checks: 4\n" +
-                "Build output: " + BuildPaths.Output("Parallax_Unity_v0.8.2_Gallery/Parallax.exe") + "\n");
+                "Missing scripts/references: 0\nGallery props: 6\nShader checks: 4\n" +
+                "Build output: " + BuildPaths.Output("Parallax_Unity_v" + GalleryGame.Version + "_MuseumGallery/Parallax.exe") + "\n");
             Debug.Log("SOURCE_LAYOUT_VALIDATION_PASS");
         }
     }

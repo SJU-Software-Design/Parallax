@@ -12,6 +12,7 @@ namespace ShadeLink.Gallery
         public float FallDistance { get; private set; }
         public bool DestinationReady { get; private set; }
         float fade;
+        bool automatedHandoff;
         GameObject shaft;
         Material stone, timber, paper, gold;
 
@@ -22,7 +23,20 @@ namespace ShadeLink.Gallery
             if(IsTransitioning||game==null||entrance==null||
                 !Application.CanStreamedLevelBeLoaded("Library"))return false;
             IsTransitioning=true;
+            automatedHandoff=game.automated;
+            if(automatedHandoff)SceneManager.sceneLoaded+=KeepAutomatedHandoffRunning;
             StartCoroutine(Passage(game,entrance));return true;
+        }
+
+        void KeepAutomatedHandoffRunning(Scene scene,LoadSceneMode mode)
+        {
+            if(!automatedHandoff||scene.name!="Library")return;
+            // Library Awake establishes its normal menu/focus policy. Restore
+            // inherited automation in this same frame, before a hidden player
+            // can pause and prevent the async passage from ever resuming.
+            var library=Object.FindFirstObjectByType<LibraryGame>();
+            if(library!=null)library.automated=true;
+            Application.runInBackground=true;
         }
 
         IEnumerator Passage(GalleryGame game,GalleryOrcusExit entrance)
@@ -55,6 +69,7 @@ namespace ShadeLink.Gallery
             fade=1;
             AsyncOperation load=SceneManager.LoadSceneAsync("Library",LoadSceneMode.Single);
             while(!load.isDone)yield return null;
+            SceneManager.sceneLoaded-=KeepAutomatedHandoffRunning;
             // Awake has established the next stage's controller and placement state.
             yield return null;
             var library=Object.FindFirstObjectByType<LibraryGame>();
@@ -129,6 +144,7 @@ namespace ShadeLink.Gallery
         }
         void OnDestroy()
         {
+            SceneManager.sceneLoaded-=KeepAutomatedHandoffRunning;
             if(shaft!=null)Destroy(shaft);
             foreach(var material in new[]{stone,timber,paper,gold})if(material!=null)Destroy(material);
         }

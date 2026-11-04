@@ -20,8 +20,10 @@ namespace ShadeLink.Editor
                 Require(!game.exhibitionPreview,"The playable museum must enable the shadow course");
                 Require(Resources.Load<Mesh>("MuseumScans/NikeMesh")!=null,"Actual Nike scan is missing");
                 Require(game.GetComponentInChildren<GalleryConceptPerspective>()!=null,"Perspective exhibit missing");
-                Require(game.props.Length==9,"Interactive museum exhibits changed unexpectedly");
-                Require(game.shadowCourse!=null&&game.shadowCourse.panels.Length==2,"Shadow screens missing");
+                Require(game.props.Length==6,"Expected bronze, lamp, three portrait parts and Cathedral");
+                Require(game.shadowCourse!=null&&game.shadowCourse.bronze!=null&&game.shadowCourse.lamp!=null,"Shadow interaction exhibits missing");
+                Require(game.nikeLight!=null&&game.nikeLight.lamp==game.shadowCourse.lamp&&game.nikeLight.emitter!=null&&game.nikeLight.nikeRoot!=null,"Nike light references missing");
+                Require(!game.shadowCourse.NikeUnlocked&&!game.shadowCourse.NikeGateOpen&&game.shadowCourse.NikeGateColliders.Length>0,"Nike gate must begin closed");
                 Require(game.portraitGate!=null&&!game.portraitGate.Opened&&game.portraitGate.barrier.enabled,"Portrait gate must begin closed");
                 Require(game.orcusExit!=null&&game.orcusExit.prop.homeScale.x<game.orcusExit.RequiredScale,"Exit must begin smaller than a player");
                 Require(game.orcusExit.customOpening&&!game.orcusExit.windEnabled,"Cathedral must use its measured opening and remain silent");

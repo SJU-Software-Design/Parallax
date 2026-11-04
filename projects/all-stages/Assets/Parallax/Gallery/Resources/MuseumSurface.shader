@@ -71,6 +71,17 @@ Shader "Parallax/MuseumSurface"
             float4 _GalleryWindows[4];
             float3 _GalleryToSun;
             float _GalleryRoof;
+            // The movable Nike lamp preserves the existing PBR/material properties
+            // and uses a real lamp-camera depth map for the scanned silhouette.
+            float _NikeLightEnabled;
+
+            float4 _NikeLightPositionRange, _NikeLightDirectionCone;
+            float4 _NikeLightColorIntensity;
+            // x = far clip metres; y = bias metres; z = PCF texel radius; w = UV Y flip.
+            float4 _NikeShadowParams;
+            float4x4 _NikeWorldToShadowClip;
+            sampler2D _NikeShadowMap;
+            float4 _NikeShadowMap_TexelSize;
             struct appdata { float4 vertex: POSITION; float3 normal: NORMAL; float2 uv: TEXCOORD0; };
             struct v2f { float4 pos: SV_POSITION; float3 world: TEXCOORD0; float3 normal: TEXCOORD1; float2 uv: TEXCOORD2; SHADOW_COORDS(3) };
             v2f vert(appdata v) {
@@ -203,16 +214,49 @@ Shader "Parallax/MuseumSurface"
                 }
                 return max(environment,0);
             }
+            float nikeShadow(float3 position,float3 geometric) {
+                position+=geometric*.012;
+                float3 offset=position-_NikeLightPositionRange.xyz;
+                if(length(offset)>=_NikeLightPositionRange.w || dot(geometric,-normalize(offset))<=0)return 0;
+                float3 forward=normalize(_NikeLightDirectionCone.xyz);
+                float forwardMetres=dot(offset,forward);
+                float farMetres=max(_NikeShadowParams.x,.01);
+                float4 clip=mul(_NikeWorldToShadowClip,float4(position,1));
+                if(clip.w<=0 || forwardMetres<=0 || forwardMetres>=farMetres)return 0;
+                if(dot(normalize(offset),forward)<_NikeLightDirectionCone.w)return 0;
+                float2 uv=clip.xy/clip.w*.5+.5;
+                // This is raw GPU clip space from GetGPUProjectionMatrix(...,
+                // true), not a Unity screen UV or an already biased matrix.
+                if(_NikeShadowParams.w>.5)uv.y=1-uv.y;
+                if(any(uv<0) || any(uv>1))return 0;
+                float receiver=forwardMetres/farMetres;
+                float bias=max(_NikeShadowParams.y,0)/farMetres;
+                float2 texel=_NikeShadowMap_TexelSize.xy*max(_NikeShadowParams.z,0);
+                float visibility=0;
+                [unroll] for(int y=-1;y<=1;y++) {
+                    [unroll] for(int x=-1;x<=1;x++) {
+                        float nearest=tex2D(_NikeShadowMap,uv+float2(x,y)*texel).r;
+                        visibility+=(receiver-bias<=nearest)?1:0;
+                    }
+                }
+                return visibility/9;
+            }
             float4 frag(v2f i,float facing:VFACE): SV_Target {
                 // The visible sun mask uses exactly the geometric normal and
                 // ray bias used by the CPU gameplay rules. PBR normal maps never
                 // alter whether a foot position is safe.
+                // The roofed Nike room uses its movable lamp. Other rooms keep
+                // their original sunlight, mirror and material lighting.
+                bool nikeRoom=_NikeLightEnabled>.5 && i.world.z>=14 && i.world.z<29;
                 float3 geometric=normalize(i.normal);
-                float sunlight=directLit(i.world,geometric),reflection=reflectedLit(i.world,geometric);float lit=max(sunlight,reflection);
-                if(_Diagnostic>.5) return float4(lit,lit,lit,1);
+                float sunlight=nikeRoom?0:directLit(i.world,geometric),reflection=nikeRoom?0:reflectedLit(i.world,geometric);float lit=max(sunlight,reflection);
+                if(_Diagnostic>.5) {
+                    float diagnostic=nikeRoom?nikeShadow(i.world,geometric):lit;
+                    return float4(diagnostic,diagnostic,diagnostic,1);
+                }
                 if(facing<0) {
                     geometric=-geometric;
-                    sunlight=directLit(i.world,geometric);reflection=reflectedLit(i.world,geometric);lit=max(sunlight,reflection);
+                    sunlight=nikeRoom?0:directLit(i.world,geometric);reflection=nikeRoom?0:reflectedLit(i.world,geometric);lit=max(sunlight,reflection);
                 }
                 // Native mesh shadows supply the detailed scan/column/lantern
                 // silhouette. This visual multiplier never changes Diagnostic
@@ -243,6 +287,19 @@ Shader "Parallax/MuseumSurface"
                 float3 sunColor=reflection>.5&&sunlight<.5?float3(1,.76,.46):float3(1,.88,.70);
                 float sunIntensity=_MuseumSunIntensity>.001?_MuseumSunIntensity:2.8;
                 col+=brdf(n,view,normalize(toLight),albedo,roughness,_Metallic)*sunColor*sunIntensity*visibleLit;
+                if(nikeRoom) {
+                    float3 delta=_NikeLightPositionRange.xyz-i.world;
+                    float distance=length(delta);
+                    float3 direction=delta/max(distance,.001);
+                    float attenuation=pow(saturate(1-distance/max(_NikeLightPositionRange.w,.01)),2);
+                    float cosine=dot(-direction,normalize(_NikeLightDirectionCone.xyz));
+                    float outer=_NikeLightDirectionCone.w;
+                    attenuation*=smoothstep(outer,min(.999,outer+.08),cosine);
+                    float visibility=nikeShadow(i.world,geometric);
+                    col+=brdf(n,view,direction,albedo,roughness,_Metallic)*
+                        _NikeLightColorIntensity.rgb*_NikeLightColorIntensity.w*attenuation*visibility;
+                    visibleLit=visibility*step(.001,attenuation);
+                }
                 [loop] for(int source=0;source<min(_MuseumLightCount,8);source++) {
                     float4 lamp=_MuseumLightPositionRange[source];
                     float3 delta=lamp.xyz-i.world;float distance=length(delta);
@@ -251,7 +308,7 @@ Shader "Parallax/MuseumSurface"
                     float4 cone=_MuseumLightDirectionCone[source];
                     if(cone.w>=0)attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
                     float4 radiance=_MuseumLightColorIntensity[source];
-                    col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation;
+                    col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*(nikeRoom?.5:1);
                 }
                 float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
                 float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);

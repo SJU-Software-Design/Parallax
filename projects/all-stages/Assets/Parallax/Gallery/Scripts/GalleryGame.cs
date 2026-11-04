@@ -6,7 +6,7 @@ namespace ShadeLink.Gallery
 {
     public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
-        public const string Version="0.20.1";
+        public const string Version="0.21.0";
         public bool conceptLayout, exhibitionPreview;
         public bool conceptCapture;
         static readonly Vector3[] ConceptCheckpoints={new Vector3(0,0,3),new Vector3(0,0,16.8f),new Vector3(0,0,31),new Vector3(0,0,45)};
@@ -43,16 +43,19 @@ namespace ShadeLink.Gallery
         public GalleryStageTransition stageTransition;
         public GalleryMuseumShadowCourse shadowCourse;
         public GalleryPortraitGate portraitGate;
+        public GalleryNikeLight nikeLight;
+        float sunExposureTime;
         public string RoomTitle => conceptLayout?new[]{"01  명화 전시실","02  빛과 그림자","03  시점의 방","04  성당 · 두 손 사이의 문"}[checkpoint]:GalleryWorld.Titles[checkpoint];
         public bool InShadowCourse => conceptLayout&&player!=null&&player.feet.z<29;
-        public string Objective => checkpoint==0?"복제작의 그림자로 채광 구간을 건너세요":checkpoint==1?"날개의 그늘과 전시 패널의 그림자를 이어 보세요":checkpoint==2?
+        public string Objective => checkpoint==0?"청동 조형물을 키워 그늘로 빛 구간을 건너세요":checkpoint==1?
+            (shadowCourse!=null&&shadowCourse.NikeUnlocked?"니케의 그늘을 따라 열린 문으로 이동하세요":"전시 조명을 옮겨 니케의 그림자를 문 앞까지 보내세요"):checkpoint==2?
             (portraitGate!=null&&portraitGate.Opened?"열린 커튼 너머, 두 손 사이의 빛을 찾아보세요":"눈·코·입이 얼굴처럼 보이도록 놓아 보세요"):
             (orcusExit!=null&&orcusExit.IsReadyForEntry?"계단을 올라 두 손 사이의 도서관으로 들어가세요":
              orcusExit!=null&&orcusExit.cathedralActivation!=null?orcusExit.cathedralActivation.Status:
                 "손 사이에 다른 공간이 보이는 조각을 확대해 내려놓으세요");
         public string RoomHint => checkpoint==0?
-            "이젤의 복제작을 잡고, 먼 표면을 향해 크기를 키워 보세요.\n햇빛 앞에 세운 뒤 내려놓아야 그늘이 고정됩니다.\n이젤 옆으로 돌아 그림자 안으로 들어가세요.":checkpoint==1?
-            "이동식 전시 패널 두 개를 키워 날개의 그늘과 이어 보세요.\n패널 옆을 돌아 뒤쪽 그림자로 이동합니다.\n한 가지 배치만 정답인 전시는 아닙니다.":checkpoint==2?
+            "접힌 청동판을 잡고, 먼 바닥을 향해 크기를 키워 보세요.\n빛 구간 앞에 내려놓고 넓어진 그늘로 건넙니다.\n낮은 받침의 옆으로 돌아 그늘에 들어가세요.":checkpoint==1?
+            "이번에는 전시 조명을 잡아 위치와 크기를 바꿉니다.\n조명은 통로를 향하고, 니케가 만드는 그림자가 달라집니다.\n앞쪽 전원 구역에 내려놓고 문 앞 표시가 그늘에 들어오는지 보세요.\n문이 열리면 니케 옆 그늘을 따라 이동하세요.":checkpoint==2?
             "눈은 위에, 코는 가운데, 입은 아래에 놓아 보세요.\n크기와 위치는 조금 달라도 괜찮습니다. 둥근 표시는 보기 좋은 위치의 힌트예요.\n작품을 내려놓고 얼굴을 잠깐 바라보면 커튼이 열립니다.":
             "두 손 사이에 작은 도서관이 보입니다.\n조각을 키워 '충분히 커졌어요' 안내가 나오면 내려놓으세요.\n마지막 크기와 약간의 기울기는 자동으로 맞춰 줍니다. 손이 열리면 계단을 올라 들어가세요.";
         public bool Transitioning => stageTransition!=null&&stageTransition.IsTransitioning;
@@ -83,8 +86,9 @@ namespace ShadeLink.Gallery
             bool mechanicsTest=Array.IndexOf(arguments,"-gallery-mechanics-test")>=0;
             bool cathedralTest=Array.IndexOf(arguments,"-gallery-cathedral-test")>=0;
             bool comfortTest=Array.IndexOf(arguments,"-gallery-comfort-test")>=0;
+            bool shadowGameplayTest=Array.IndexOf(arguments,"-gallery-shadow-gameplay-test")>=0;
             conceptCapture=Array.IndexOf(arguments,"-gallery-concept-capture")>=0;
-            automated=comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
+            automated=shadowGameplayTest||comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
             Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
@@ -96,16 +100,17 @@ namespace ShadeLink.Gallery
             player.feet=controller.transform.position;
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
             foreach(var prop in props)prop.placement.ResetPlaced();
-            lighting.Rebuild();SyncView();
+            nikeLight=GetComponent<GalleryNikeLight>();lighting.Rebuild();SyncView();
             orcusExit=GetComponentInChildren<GalleryOrcusExit>();
             shadowCourse=GetComponentInChildren<GalleryMuseumShadowCourse>();portraitGate=GetComponentInChildren<GalleryPortraitGate>();
             if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
             gameObject.AddComponent<GalleryHud>().game=this;
             gameObject.AddComponent<HeldPlacementDiagnosticsOverlay>().game=this;
-            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint<2),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
+            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint==0),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
-            if(comfortTest)new GameObject("Museum comfort validation").AddComponent<GalleryComfortValidation>().game=this;
+            if(shadowGameplayTest)new GameObject("Museum shadow gameplay validation").AddComponent<GalleryShadowGameplayValidation>().game=this;
+            else if(comfortTest)new GameObject("Museum comfort validation").AddComponent<GalleryComfortValidation>().game=this;
             else if(cathedralTest)new GameObject("Cathedral portal validation").AddComponent<GalleryCathedralValidation>().game=this;
             else if(mechanicsTest)new GameObject("Museum mechanics validation").AddComponent<GalleryMuseumMechanicsValidation>().game=this;
             else if(conceptCapture)gameObject.AddComponent<GalleryConceptCapture>().game=this;
@@ -138,10 +143,10 @@ namespace ShadeLink.Gallery
         {
             if(held!=null)Cancel(true);foreach(var p in props)p.Restore();
             adjustingMirror=false;if(mirror!=null)mirror.Restore();if(lightGate!=null)lightGate.Restore();
-            checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;lesson?.Restart();
+            checkpoint=respawns=grabs=drops=0;elapsed=exposure=sunExposureTime=0;won=visitedUpper=false;lesson?.Restart();
             orcusExit?.ResetEntrance();
             PlacePlayer(SpawnPoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
-            shadowCourse?.ResetProgress();portraitGate?.ResetGate();
+            shadowCourse?.ResetProgress();portraitGate?.ResetGate();nikeLight?.ResetLight();
         }
         public void ResetZone()
         {
@@ -149,7 +154,7 @@ namespace ShadeLink.Gallery
             foreach(var p in props) if(p.zone==checkpoint)p.Restore();
             if(checkpoint==3)orcusExit?.ResetEntrance();
             adjustingMirror=false;if(checkpoint==1){if(mirror!=null)mirror.Restore();if(lightGate!=null)lightGate.Restore();}
-            PlacePlayer(SpawnPoints[checkpoint]);exposure=0;lighting.Synchronize();
+            PlacePlayer(SpawnPoints[checkpoint]);exposure=sunExposureTime=0;lighting.Synchronize();nikeLight?.ResetLight();
             shadowCourse?.ResetProgress(checkpoint);if(checkpoint==2)portraitGate?.ResetGate();
             Tell("현재 구역의 전시물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
         }
@@ -209,7 +214,7 @@ namespace ShadeLink.Gallery
                 }
                 if(!found)foreach(var p in props)if(p.zone==checkpoint)p.Restore();
             }
-            PlacePlayer(spawn);exposure=0;respawns++;Tell("햇빛에 노출되어 현재 구역의 쉼터로 돌아왔습니다.");
+            PlacePlayer(spawn);exposure=sunExposureTime=0;respawns++;Tell("빛에 노출되어 현재 구역의 쉼터로 돌아왔습니다.");
         }
         public bool CanStand(Vector3 feet)
         {
@@ -426,6 +431,7 @@ namespace ShadeLink.Gallery
         public bool ValidPlacement(GalleryProp prop,out string reason) => ValidatePlacement(prop,out reason,false);
         bool ValidatePlacement(GalleryProp prop,out string reason,bool preview)
         {
+            if(nikeLight!=null&&prop==nikeLight.lamp&&!nikeLight.CanPlace(out reason))return false;
             var b=prop.WorldBounds;
             float lo=0,hi=WorldLength;
             if(b.min.x< -WorldHalfWidth+.2f||b.max.x>WorldHalfWidth-.2f||b.min.z<lo||b.max.z>hi||b.min.y<-.012f||b.max.y>WorldRoof-.25f)
@@ -499,7 +505,7 @@ namespace ShadeLink.Gallery
             movementAudio?.Tick(motor.Velocity,motor.Grounded,move.sqrMagnitude>.0001f,dt);
             player.feet=controller.transform.position;player.grounded=motor.Grounded;
             SyncView();if(automated&&held!=null)AdvanceHeld(dt);
-            UpdateExposure(dt);
+            nikeLight?.SyncPose();UpdateExposure(dt);
             shadowCourse?.Tick(dt);portraitGate?.Tick(dt);
             lesson.Tick(dt);
             if(player.feet.z>36&&player.feet.z<41&&player.feet.y>1.9f)visitedUpper=true;
@@ -517,9 +523,16 @@ namespace ShadeLink.Gallery
         }
         void UpdateExposure(float dt)
         {
-            if(exhibitionPreview){safe=true;exposure=0;return;}
+            if(exhibitionPreview){safe=true;exposure=sunExposureTime=0;return;}
             lighting.Synchronize();safe=FootSafe(player.feet);
-            exposure=Mathf.Clamp01(exposure+dt*(safe?-1.7f:2.2f));
+            if(safe){sunExposureTime=0;exposure=Mathf.Max(0,exposure-dt*1.7f);}
+            else
+            {
+                sunExposureTime+=dt;
+                // Small seams at a shade boundary do not immediately punish a
+                // correct arrangement; crossing the whole lit band still hurts.
+                if(!conceptLayout||checkpoint>=2||sunExposureTime>.12f)exposure=Mathf.Clamp01(exposure+dt*2.2f);
+            }
             if(exposure>=1||player.feet.y< -3)Respawn();
         }
         ObjectInteraction<GalleryProp> interaction;

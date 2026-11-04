@@ -59,37 +59,6 @@ namespace ShadeLink.Gallery
                 proxy.AddComponent<GalleryCaster>().shape=shape;
             }
         }
-        static GalleryProp Prop(string title,int zone,Vector3 at,float scale)
-        {
-            var go=new GameObject(title);go.transform.SetParent(root,false);go.transform.localPosition=at;go.transform.localScale=Vector3.one*scale;
-            var prop=go.AddComponent<GalleryProp>();prop.title=title;prop.zone=zone;prop.minScale=.35f;return prop;
-        }
-        static void MovablePainting(List<GalleryProp> props,string key,string title,Vector3 at,float rotation)
-        {
-            var prop=Prop("01 · 복제작품 · "+title,0,at,1);prop.transform.localRotation=Quaternion.Euler(0,rotation,0);
-            var texture=Resources.Load<Texture2D>("MuseumArt/"+key);float ratio=(float)texture.width/texture.height;
-            float h=Mathf.Min(2.1f,1.6f/ratio),w=h*ratio;
-            GalleryConceptArchitecture.FramedArtwork(prop.transform,key,title,"만져서 크기를 바꿀 수 있는 복제작품",new Vector3(0,1.5f,0),Quaternion.identity,w,h,palette);
-            var collision=new GameObject("Framed reproduction collision");collision.transform.SetParent(prop.transform,false);collision.transform.localPosition=new Vector3(0,1.5f,0);
-            var canvas=collision.AddComponent<BoxCollider>();canvas.size=new Vector3(w+.45f,h+.45f,.22f);collision.AddComponent<GalleryCaster>().shape=canvas;
-            Box("Walnut easel foot",new Vector3(0,.07f,.15f),new Vector3(1.15f,.14f,.85f),palette.wood,prop.transform);
-            Box("Bronze easel mast",new Vector3(0,1.15f,.16f),new Vector3(.09f,2.15f,.10f),palette.bronze,prop.transform);
-            prop.Remember();props.Add(prop);
-        }
-        static void AbstractSculpture(List<GalleryProp> props)
-        {
-            var prop=Prop("02 · 빛의 조각 · 겹쳐진 면",1,new Vector3(3.3f,0,23.3f),.85f);
-            Box("Sculpture walnut foot",new Vector3(0,.08f,0),new Vector3(1.4f,.16f,1.1f),palette.wood,prop.transform);
-            Box("Sculpture bronze stem",new Vector3(0,1.0f,.18f),new Vector3(.11f,1.9f,.11f),palette.bronze,prop.transform);
-            for(int i=0;i<3;i++)
-            {
-                var panel=new GameObject("Sculpted bronze plane "+i).transform;panel.SetParent(prop.transform,false);
-                panel.localPosition=new Vector3((i-1)*.38f,.70f+i*.60f,0);panel.localRotation=Quaternion.Euler(0,(i-1)*24,15-i*12);
-                Box("Polished planar sculpture",Vector3.zero,new Vector3(1.12f,.72f,.07f),palette.bronze,panel);
-            }
-            prop.Remember();props.Add(prop);
-            Label("겹쳐진 면\n사물의 크기와 방향이 그림자를 바꿉니다",new Vector3(4.85f,.82f,22.15f),.08f,new Color(.22f,.19f,.14f),Quaternion.identity);
-        }
         static void AttachArchitecturalCollisions(Transform architectural)
         {
             foreach(var child in architectural.GetComponentsInChildren<Transform>())
@@ -125,16 +94,13 @@ namespace ShadeLink.Gallery
             Box("Museum final end wall",new Vector3(0,Roof/2,56.16f),new Vector3(16,Roof,.32f),palette.plaster);
             foreach(float z in new[]{14f,29f,44f})Divider(z);
             float cursor=0;
-            foreach(var opening in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(32,35),new Vector2(47,50)})
+            foreach(var opening in new[]{new Vector2(3,6.2f),new Vector2(32,35),new Vector2(47,50)})
             {
                 if(opening.x>cursor)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+opening.x)/2),new Vector3(16,.24f,opening.x-cursor),palette.plaster,caster:false);
                 cursor=opening.y;
             }
             if(cursor<Length)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+Length)/2),new Vector3(16,.24f,Length-cursor),palette.plaster,caster:false);
             var props=new List<GalleryProp>();
-            MovablePainting(props,"Scream","절규",new Vector3(-5.2f,0,4.5f),18);
-            MovablePainting(props,"WaterLilyBridge","수련 연못 위의 다리",new Vector3(5.2f,0,4.5f),-18);
-            AbstractSculpture(props);
             GalleryConceptPerspective.Create(game,root,props,palette);
             game.props=props.ToArray();
             GalleryConceptArchitecture.Install(game,palette);

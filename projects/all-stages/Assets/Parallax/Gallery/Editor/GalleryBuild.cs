@@ -103,8 +103,8 @@ namespace ShadeLink.Editor
                 }
             }
             game.lighting.Rebuild();
-            if(game.props.Length!=9||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null)throw new Exception("Playable museum exhibit missing");
-            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal"})
+            if(game.props.Length!=6||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null)throw new Exception("Playable museum exhibit missing");
+            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth"})
             {
                 var asset=Shader.Find(shader);
                 if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);
@@ -118,7 +118,10 @@ namespace ShadeLink.Editor
         [MenuItem("Parallax/미술관 Windows 빌드")]
         public static void Build()
         {
-            LibraryBuild.Prepare();
+            // This museum update ships the already-authored Library scene.
+            // Regenerating another stage here would overwrite its saved work.
+            if(AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath)==null)
+                throw new FileNotFoundException("The existing destination Library scene is missing.",LibraryBuild.ScenePath);
             Prepare();
             foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/MuseumSurface","Parallax/GalleryMirror","Parallax/GalleryGlass","Parallax/GalleryOrcusPortal"})
                 if(ShaderUtil.ShaderHasError(Shader.Find(shader)))

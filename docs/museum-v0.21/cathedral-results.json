@@ -1,0 +1,151 @@
+{
+    "passed": true,
+    "realScan": true,
+    "livePreview": true,
+    "nonFlat": true,
+    "warmColors": true,
+    "parallax": true,
+    "noWind": true,
+    "backgroundOccluded": true,
+    "runtimeCleanup": true,
+    "runtimeReenabled": true,
+    "version": "0.21.0",
+    "scene": "Gallery",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "failure": "",
+    "scope": "Explicit small/home and enlarged/scaled exhibit and camera pose fixtures. Actual 1600x900 player-camera rendering includes the existing post-processing stack. RenderTexture statistics and left/right eye movement verify a live, non-flat view-dependent library. A temporary magenta witness behind the aperture is visible when the portal surface is disabled and hidden when enabled; it is removed before final screenshots. This is visual/integration QA, not a claim of player-driven puzzle solving or traversal.",
+    "meanRed": 0.13201582431793214,
+    "meanGreen": 0.048138055950403216,
+    "meanBlue": 0.010572964325547219,
+    "luminanceDeviation": 0.08765168488025665,
+    "parallaxMeanDifference": 0.05802645906805992,
+    "parallaxChangedFraction": 0.4584118127822876,
+    "backgroundControlMagenta": 1.0,
+    "backgroundWithPortalMagenta": 0.0,
+    "previewRenderers": 12,
+    "renderCount": 63,
+    "shots": [
+        {
+            "file": "01-cathedral-small-hero.png",
+            "cameraPosition": {
+                "x": 0.0,
+                "y": 1.600000023841858,
+                "z": 48.45000076293945
+            },
+            "lookTarget": {
+                "x": -9.313225746154786e-10,
+                "y": 0.5159999132156372,
+                "z": 52.150001525878909
+            },
+            "destinationEye": {
+                "x": 256.0445251464844,
+                "y": -249.888916015625,
+                "z": 239.97998046875
+            },
+            "renderCount": 3,
+            "projectionOffsetX": -0.1071205884218216
+        },
+        {
+            "file": "02-cathedral-small-close.png",
+            "cameraPosition": {
+                "x": -0.3499999940395355,
+                "y": 1.350000023841858,
+                "z": 49.650001525878909
+            },
+            "lookTarget": {
+                "x": -9.313225746154786e-10,
+                "y": 0.5459998846054077,
+                "z": 52.150001525878909
+            },
+            "destinationEye": {
+                "x": 254.52911376953126,
+                "y": -250.9713592529297,
+                "z": 245.1756591796875
+            },
+            "renderCount": 4,
+            "projectionOffsetX": 3.5387234687805177
+        },
+        {
+            "file": "03-cathedral-enlarged-hero.png",
+            "cameraPosition": {
+                "x": 0.0,
+                "y": 1.75,
+                "z": 45.400001525878909
+            },
+            "lookTarget": {
+                "x": 0.0,
+                "y": 2.8499999046325685,
+                "z": 53.0
+            },
+            "destinationEye": {
+                "x": 256.0445251464844,
+                "y": -255.28030395507813,
+                "z": 249.41880798339845
+            },
+            "renderCount": 57,
+            "projectionOffsetX": -0.061211757361888888
+        },
+        {
+            "file": "04-cathedral-window-front.png",
+            "cameraPosition": {
+                "x": -0.05142857879400253,
+                "y": 2.9552857875823976,
+                "z": 49.20000076293945
+            },
+            "lookTarget": {
+                "x": -0.05142857879400253,
+                "y": 3.055285692214966,
+                "z": 53.0
+            },
+            "destinationEye": {
+                "x": 255.99998474121095,
+                "y": -254.23658752441407,
+                "z": 252.7093963623047
+            },
+            "renderCount": 58,
+            "projectionOffsetX": 0.00002097203650919255
+        },
+        {
+            "file": "05-cathedral-window-left.png",
+            "cameraPosition": {
+                "x": -0.7014285326004028,
+                "y": 2.9552857875823976,
+                "z": 49.900001525878909
+            },
+            "lookTarget": {
+                "x": -0.05142857879400253,
+                "y": 3.055285692214966,
+                "z": 53.0
+            },
+            "destinationEye": {
+                "x": 255.43711853027345,
+                "y": -254.23658752441407,
+                "z": 253.31556701660157
+            },
+            "renderCount": 59,
+            "projectionOffsetX": 0.7738315463066101
+        },
+        {
+            "file": "06-cathedral-window-right.png",
+            "cameraPosition": {
+                "x": 0.5985714197158814,
+                "y": 2.9552857875823976,
+                "z": 49.900001525878909
+            },
+            "lookTarget": {
+                "x": -0.05142857879400253,
+                "y": 3.055285692214966,
+                "z": 53.0
+            },
+            "destinationEye": {
+                "x": 256.5628662109375,
+                "y": -254.23658752441407,
+                "z": 253.31556701660157
+            },
+            "renderCount": 60,
+            "projectionOffsetX": -0.7738104462623596
+        }
+    ],
+    "errors": []
+}
