@@ -11,7 +11,12 @@ namespace ShadeLink.Tutorial
         const float DoorHeight = 3f;
         const float PassageDepth = 2.6f;
         const float DoorCenter = 4.5f;
-        const float MintTargetSize = 12.5f;
+        const float OrangeTargetSize = 4.65f;
+        const float MintTargetSize = 10f;
+        const float OrangeMinimumSize = 3.7f;
+        const float ShrinkMaximumSize = .56f;
+        const float MintMinimumSize = 8.5f;
+        const float MintMaximumSize = 10.35f;
         const float RoomHeight = 16f;
         const float TableTargetSize = .70f;
         public const float TableHeight = .82f;
@@ -21,6 +26,7 @@ namespace ShadeLink.Tutorial
         static readonly Color TableAccent = new Color(.97f, .83f, .32f);
         static readonly Color Mint = new Color(.42f, .96f, .73f);
         static readonly Color Reference = new Color(.48f, .92f, 1f);
+        static readonly Color ReadyAccent = new Color(.6f, 1f, .35f);
         static readonly Bounds Room = new Bounds(new Vector3(0, RoomHeight * .5f, 14.6f), new Vector3(32, RoomHeight, 34.8f));
 
         [SerializeField] Shader surfaceShader;
@@ -33,7 +39,6 @@ namespace ShadeLink.Tutorial
         GalleryProp die;
         Material surface, white, dark, orange, cyan;
         Transform primaryTarget, tabletopTarget, secondaryTarget;
-        Collider originalTable;
         GameObject firstSign, secondSign, shrinkSign;
         Material signInk;
         Transform door;
@@ -41,7 +46,7 @@ namespace ShadeLink.Tutorial
         Material unlockedLamp;
         bool exitUnlocked;
         Font font;
-        Vector2 referenceViewportSize, firstReferenceViewportSize;
+        Vector2 referenceViewportSize;
         float yaw, pitch, messageUntil, firstSize;
         int step;
         bool paused;
@@ -56,8 +61,12 @@ namespace ShadeLink.Tutorial
         public bool CanInteract => !paused;
 
         Vector3 GoalCenter => step == 1 ? TableHome : step == 0
-            ? new Vector3(0, 2.32f, Room.max.z)
+            ? new Vector3(0, OrangeTargetSize * .5f, Room.max.z)
             : new Vector3(0, MintTargetSize * .5f, Room.max.z);
+
+        // Aim for the die's center just in front of the wall, where the placement ray stops.
+        Vector3 AimPoint => step == 1 ? GoalCenter :
+            GoalCenter + new Vector3(0, .10f, -(step == 0 ? OrangeTargetSize : MintTargetSize) * .5f - .32f);
 
         void Start()
         {
@@ -82,7 +91,7 @@ namespace ShadeLink.Tutorial
             FirstPersonMotor.Configure(Controller, Camera);
             PlayerControls.ConfigureCamera(Camera);
 
-            originalTable = BuildTable().GetComponentInChildren<Collider>();
+            BuildTable();
             die = Box("Practice die", TableHome, Vector3.one * StartSize, white).AddComponent<GalleryProp>();
             AddPips(die.transform);
             die.Remember();
@@ -90,7 +99,7 @@ namespace ShadeLink.Tutorial
             die.placement.PreviewUntilSettled = false;
             Props = new[] { die };
             interaction = new ObjectInteraction<GalleryProp>(this);
-            primaryTarget = WallTarget("First wall target", orange, new Vector3(0, 2.32f, Room.max.z), 4.65f);
+            primaryTarget = WallTarget("First wall target", orange, new Vector3(0, OrangeTargetSize * .5f, Room.max.z), OrangeTargetSize);
             tabletopTarget = Outline("Tabletop target", new Material(guideShader) { color = TableAccent });
             tabletopTarget.position = TablePosition + Vector3.up * TableHeight;
             tabletopTarget.localScale = new Vector3(TableTargetSize, 1, TableTargetSize);
@@ -251,12 +260,11 @@ namespace ShadeLink.Tutorial
             return root;
         }
 
-        GameObject BuildTable()
+        void BuildTable()
         {
             var prefab = Resources.Load<GameObject>("Tutorial/WoodenPracticeTable");
             var table = Instantiate(prefab, transform);
             table.transform.localPosition = TablePosition;
-            return table;
         }
 
         Transform WallTarget(string name, Material material, Vector3 center, float size)
@@ -302,18 +310,18 @@ namespace ShadeLink.Tutorial
                 "집을 때 화면에 보인 크기가 기준이에요.\n" +
                 "멀리서도 그만큼 크게 보이려면\n" +
                 "실제 주사위가 더 커져야 해요.\n\n" +
-                "주황색 윤곽에 맞춰 내려놓으세요.", enamel, ink, clay);
+                "주황색 윤곽을 참고해 크기를 맞춰요.", enamel, ink, clay);
             shrinkSign = BuildPlacard("02   원근 훈련", "탁자에 돌려놓아 줄이기",
-                "먼 벽에 놓인 주사위를 여기서 다시 집어요.\n" +
+                "키워 놓은 주사위를 멀리서 다시 집어요.\n" +
                 "그 크기로 보이던 모습을 유지한 채\n" +
                 "가까운 곳으로 가져오면 실제로 작아져요.\n\n" +
-                "같은 탁자의 노란 윤곽에 맞춰 놓으세요.", enamel, ink, clay);
+                "가까운 탁자 위에 놓아 작게 만들어 봐요.", enamel, ink, clay);
             secondSign = BuildPlacard("03   원근 훈련", "가까이서 집어 더 키우기",
                 "탁자에 가까이 다가가 주사위를 집어요.\n" +
                 "같은 주사위라도 가까우면 크게 보이죠.\n" +
                 "그 모습이 기준이 돼 멀리 놓으면\n" +
                 "첫 번째보다 더 크게 만들 수 있어요.\n\n" +
-                "든 채 앞뒤로 움직여 민트색 윤곽에 맞춰요.", enamel, ink, teal);
+                "민트색 윤곽을 참고해 크기를 맞춰요.", enamel, ink, teal);
         }
 
         GameObject BuildPlacard(string station, string title, string instructions,
@@ -514,43 +522,23 @@ namespace ShadeLink.Tutorial
         {
             if (!released || exitUnlocked || step >= LessonCount) return;
 
-            Bounds bounds = die.WorldBounds;
             float size = die.transform.localScale.x;
-            if (step == 1)
+            string feedback = SizeFeedback(size);
+            if (feedback != null)
             {
-                float half = TableTargetSize * .5f;
-                bool fitsTable = Mathf.Abs(bounds.center.x - TablePosition.x) + bounds.extents.x <= half &&
-                    Mathf.Abs(bounds.center.z - TablePosition.z) + bounds.extents.z <= half;
-                var down = new Ray(new Vector3(bounds.center.x, bounds.min.y + .06f, bounds.center.z), Vector3.down);
-                bool onTable = originalTable.Raycast(down, out var hit, .18f) &&
-                    Mathf.Abs(bounds.min.y - hit.point.y) <= .12f;
-                if (!fitsTable || !onTable || size > .56f)
-                {
-                    Tell("탁자 근처에서 먼 주사위를 집어 탁자의 노란 윤곽 안에 놓아 보세요.");
-                    return;
-                }
-                AdvanceLesson("탁자 가까이서 집고, 든 채 움직여 민트색 윤곽에 크기를 맞춰 보세요.", hit.point.y);
+                Tell(feedback);
                 return;
             }
 
-            float halfGoal = step == 0 ? 4.65f * .5f : MintTargetSize * .5f + .23f;
-            float wallGap = Room.max.z - bounds.max.z;
-            bool fitsOutline = Mathf.Abs(bounds.center.x - GoalCenter.x) + bounds.extents.x <= halfGoal &&
-                Mathf.Abs(bounds.center.y - GoalCenter.y) + bounds.extents.y <= halfGoal;
-            bool sizeMatches = step == 0 ? size >= 3.7f && size <= 4.45f :
-                size >= MintTargetSize * .72f && size <= MintTargetSize + .35f;
-            if (wallGap < -.01f || wallGap > (step == 0 ? .43f : 1.25f))
-                Tell("주사위가 목표 벽에 거의 닿도록 조준하세요.");
-            else if (!fitsOutline)
-                Tell("주사위 전체가 벽 윤곽 안에 들어와야 해요.");
-            else if (!sizeMatches)
-                Tell(step == 0 ? "벽 윤곽에 맞게 크기를 조절해 보세요." :
-                    "탁자에 더 가까이 다가가 주사위를 집어 보세요.");
-            else if (step == 0)
+            if (step == 0)
             {
                 firstSize = size;
-                firstReferenceViewportSize = referenceViewportSize;
-                AdvanceLesson("먼 벽의 주사위를 여기서 다시 집어 노란 윤곽이 있는 탁자에 놓아 보세요.", 0);
+                var wallCheckpoint = new Vector3(0, size * .5f, Room.max.z - size * .5f - .32f);
+                AdvanceLesson(wallCheckpoint, size, "키운 주사위를 멀리서 다시 집어 가까운 탁자에 놓아 보세요.");
+            }
+            else if (step == 1)
+            {
+                AdvanceLesson(TableHome, StartSize, "주사위를 가까이서 집고 먼 벽에 더 크게 놓아 보세요.");
             }
             else
             {
@@ -560,11 +548,24 @@ namespace ShadeLink.Tutorial
             }
         }
 
-        void AdvanceLesson(string instruction, float supportHeight)
+        string SizeFeedback(float size)
         {
-            die.homePosition = die.transform.position + Vector3.up * (supportHeight - die.WorldBounds.min.y);
-            die.homeScale = die.transform.localScale;
-            die.homeRotation = die.transform.rotation;
+            if (step == 1)
+                return size > ShrinkMaximumSize ? "주사위를 더 가까운 곳에 놓아 작게 만들어 보세요." : null;
+            if (size > (step == 0 ? OrangeTargetSize : MintMaximumSize))
+                return "주사위가 커요. 든 채 벽 쪽으로 조금 다가가 보세요.";
+            if (size < (step == 0 ? OrangeMinimumSize : MintMinimumSize))
+                return "주사위가 작아요. 더 가까이서 집거나, 든 채 벽에서 조금 물러나 보세요.";
+
+            return null;
+        }
+
+        void AdvanceLesson(Vector3 checkpoint, float checkpointSize, string instruction)
+        {
+            // A retry starts from the intended practice layout, even after an off-target drop.
+            die.homePosition = checkpoint;
+            die.homeScale = Vector3.one * checkpointSize;
+            die.homeRotation = Quaternion.identity;
             step++;
             RefreshLesson();
             Tell(instruction, 8);
@@ -586,15 +587,18 @@ namespace ShadeLink.Tutorial
             float width = Screen.width;
             float height = Screen.height;
             var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = 20, wordWrap = true, alignment = TextAnchor.MiddleCenter };
+            bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
+                interaction.ProjectionApplied && interaction.ReleaseRestriction == null &&
+                SizeFeedback(die.transform.localScale.x) == null;
             if (step < LessonCount && !exitUnlocked)
             {
-                Vector3 aim = Camera.WorldToScreenPoint(GoalCenter);
+                Vector3 aim = Camera.WorldToScreenPoint(AimPoint);
                 if (aim.z > 0)
                 {
                     var marker = new Rect(aim.x - 16, height - aim.y - 16, 32, 32);
                     Color previous = GUI.color;
-                    GUI.color = step == 1 ? TableAccent : step == 2 ? Mint : Accent;
-                    GUI.Label(marker, "◇", style);
+                    GUI.color = sizeReady ? ReadyAccent : step == 1 ? TableAccent : step == 2 ? Mint : Accent;
+                    GUI.Label(marker, sizeReady ? "◆" : "◇", style);
                     GUI.color = previous;
                 }
             }
@@ -603,24 +607,12 @@ namespace ShadeLink.Tutorial
             {
                 Vector2 size = Vector2.Scale(referenceViewportSize, new Vector2(width, height));
                 var rect = new Rect((width - size.x) / 2, (height - size.y) / 2, size.x, size.y);
-                if (step == 2)
-                {
-                    Vector2 first = Vector2.Scale(firstReferenceViewportSize, new Vector2(width, height));
-                    var firstRect = new Rect((width - first.x) / 2, (height - first.y) / 2, first.x, first.y);
-                    DrawReference(firstRect, Accent);
-                }
                 DrawReference(rect, Reference);
-                float labelY = Mathf.Min(height - 132, rect.yMax + 6);
-                string referenceLabel = step == 2 ? "주황  첫 단계에서 잡은 크기   ·   하늘색  이번에 잡은 크기" :
-                    "점선은 잡을 때 화면 크기";
-                GUI.Label(new Rect(0, labelY, width, 30), referenceLabel, style);
-                GUI.Label(new Rect(0, labelY + 28, width, 34),
-                    $"실제 한 변 {interaction.ReferenceScale:0.00} → {die.transform.localScale.x:0.00} m", style);
             }
             PlayerControls.DrawCursor(new Vector2(width / 2, height / 2), Aimed != null, Held != null, false, Accent, Color.white);
             string notice = Time.time < messageUntil ? message :
                 step == LessonCount ? "튜토리얼 완료  ·  계속 연습하거나 R로 다시 시작" :
-                exitUnlocked && step == 2 ? $"같은 벽에서 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 벽의 문으로 이동하세요." :
+                exitUnlocked && step == 2 ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 벽의 문으로 이동하세요." :
                 exitUnlocked ? "오른쪽 벽에 초록불이 켜진 문이 열렸어요." : null;
             if (notice != null)
             {
