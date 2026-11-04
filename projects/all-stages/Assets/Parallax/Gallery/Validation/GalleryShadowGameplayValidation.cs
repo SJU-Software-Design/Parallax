@@ -25,12 +25,22 @@ namespace ShadeLink.Gallery
         int ticks;
         SimulationMode previousSimulation;
         bool ownsSimulation, subscribed;
+        bool recordOffCentreCrossing;
+        Vector3 fixedSourcePosition;
+        Quaternion fixedSourceRotation;
+        enum ToolKind { Bronze, Nike, Painting }
 
         [Serializable] sealed class CarryReport
         {
             public string tool;
             public Vector3 pickupFixture, observerFixture, originalPosition, releasedPosition, settledPosition;
             public float originalScale, requestedScale, maximumInputScale, releasedScale, settledScale, actualCarryMetres;
+            public float referenceDistance, referenceScale, lastDepth, lastSurfaceDepth, lastBoundaryDepth;
+            public string lastObstacle, lastInvalidReason, lastLimiter, lastSource, lastPlacementState;
+            public Quaternion heldRotation;
+            public Vector3 lastPlayerFeet, lastHeldPosition, lastDiagnosticPoint;
+            public bool lastPlacementBlocked, lastProjectionApplied;
+            public List<string> placementDiagnostics = new List<string>();
             public int carryTicks, settleTicks;
         }
         [Serializable] sealed class RouteReport
@@ -47,14 +57,22 @@ namespace ShadeLink.Gallery
         }
         [Serializable] sealed class Report
         {
-            public bool passed, initialSixTools, wrongLampRejected, closedDoorSolid, heldLampRejected, unsettledLampRejected;
+            public bool passed, initialSevenTools, wrongNikeRejected, closedDoorSolid, heldNikeRejected, unsettledNikeRejected;
             public bool bronzeInputReleased, bronzePhysicallySettled, bronzeCourseWalk;
-            public bool lampInputReleased, lampPhysicallySettled, heldLightStillIlluminates, goalNikeShade, actualScanShadowProbes, physicalDoorOpened, nikeCourseWalk;
+            public bool nikeInputReleased, nikePhysicallySettled, paintingInputReleased, paintingPhysicallySettled;
+            public bool partialBrushReveal, completedPainting, actualScanShadowProbes, physicalDoorOpened, nikeCourseWalk, fixedSourceUntouched;
+            public bool unprotectedGateRespawn, paintingCreatesGoalShade;
+            public bool offCentreDoorCrossing;
             public bool physicsRestored;
             public string phase, failure, unity, gpu;
-            public string scope = "Actual production museum with one original bronze and one original movable spotlight. Player-only angular-size pickup and observer fixtures are disclosed. Positive tools are moved and resized only through camera Interact, actual CharacterController carry, the common perspective resolver, public Drop and PhysX; their transforms, scales, rigidbody poses and placement readiness are never forced. Shadow routes are selected from actual floor, capsule and FootSafe queries, then walked by the actual CharacterController without player warps during a crossing. The closed-door negative uses an explicitly positioned player while the original lamp remains at its wrong home pose. Held and freshly dropped lamp negatives are sampled during the same actual input sequence. CPU shadow/goal probes and screenshots are reported separately from carrying and walking. This is focused integration QA, not an autonomous unassisted puzzle solution or a GPU/CPU pixel-parity claim.";
-            public int simulatedTicks, initialPropCount, respawns, checkpoint, goalShadowSamples, goalSampleCount;
-            public float simulatedSeconds, shadeReadiness;
+            public string negativeScope = "The unprotected gate walk deliberately respawns once after canvas completion while Monet remains mounted. This labelled negative has its own counter; every positive carry and shadow crossing rejects any additional respawn.";
+            public string offCentreScope = "After input-placing Monet, the actual controller walks to the route waypoint (1.25,27.75), then continuously passes the physical glass plane z=28.72 near x=1.25 with grounded safe feet, a completed canvas and the fully opened door. This edge approach adds no player warp or prop pose writes. The reported crossing coordinates are sampled from actual controller motion, outside the retired hidden 0.95m centre limit.";
+            public string independentScanProbeScope = "A temporary static PhysX MeshCollider uses the original unchanged complete Nike render mesh and the actual render transform. Direct collider.Raycast results are collected, then this QA collider is immediately destroyed before querying production illumination or advancing/rendering/walking. No gameplay prop or mesh is changed.";
+            public string scope = "Actual production museum with the original bronze, movable full Nike scan and movable wall-mounted Monet; the spotlight stays fixed and is never an interaction prop. Player-only angular-size pickup and observer fixtures are disclosed. Positive tools are moved and resized only through camera Interact, actual CharacterController carry, the common perspective resolver, public Drop and PhysX; their transforms, scales, rigidbody poses and placement readiness are never forced. The true Nike shadow is matched to its vertical canvas; timed matching and the diagonal brush reveal must finish before the glass door opens. The Monet is removed from its original wall by the same public interaction and physically placed as a floor shadow tool. Shadow routes are selected from real floor, capsule and FootSafe queries, then walked by the actual CharacterController without player warps during a crossing. The closed-door negative uses a player-only fixture while the original Nike remains incorrect. Held and freshly dropped Nike negatives are sampled during actual input. Independent physical scan rays and actual rendered screenshots are separate evidence; this is focused integration QA, not an autonomous unassisted solve or GPU/CPU pixel parity.";
+            public int simulatedTicks, initialPropCount, respawns, checkpoint, canvasShadowSamples, canvasSampleCount;
+            public int unprotectedGateNegativeRespawns, goalSafeBeforePainting, goalSafeAfterPainting, independentQueryMeshTriangles;
+            public float simulatedSeconds, finalAlignment, partialRevealProgress, finalRevealProgress;
+            public float nikeCrossingX, nikeCrossingZ, doorwayWalkableHalfWidth;
             public CarryReport[] carries;
             public RouteReport[] routes;
             public string[] checks, errors;
@@ -97,11 +115,13 @@ namespace ShadeLink.Gallery
             report.carries = carries.ToArray(); report.routes = routes.ToArray();
             report.checks = checks.ToArray(); report.errors = errors.ToArray();
             if (game != null) { report.respawns = game.respawns; report.checkpoint = game.checkpoint; }
-            report.passed = report.failure == null && errors.Count == 0 && report.initialSixTools &&
-                report.wrongLampRejected && report.closedDoorSolid && report.heldLampRejected && report.unsettledLampRejected &&
+            report.passed = report.failure == null && errors.Count == 0 && report.initialSevenTools &&
+                report.wrongNikeRejected && report.closedDoorSolid && report.heldNikeRejected && report.unsettledNikeRejected &&
                 report.bronzeInputReleased && report.bronzePhysicallySettled && report.bronzeCourseWalk &&
-                report.lampInputReleased && report.lampPhysicallySettled && report.heldLightStillIlluminates && report.goalNikeShade && report.actualScanShadowProbes &&
-                report.physicalDoorOpened && report.nikeCourseWalk && report.physicsRestored;
+                report.nikeInputReleased && report.nikePhysicallySettled && report.paintingInputReleased && report.paintingPhysicallySettled &&
+                report.partialBrushReveal && report.completedPainting && report.actualScanShadowProbes &&
+                report.physicalDoorOpened && report.unprotectedGateRespawn && report.paintingCreatesGoalShade &&
+                report.nikeCourseWalk && report.offCentreDoorCrossing && report.fixedSourceUntouched && report.physicsRestored;
             try
             {
                 if (output != null)
@@ -126,28 +146,33 @@ namespace ShadeLink.Gallery
             Require(game != null && game.automated && game.conceptLayout && !game.exhibitionPreview,
                 "Actual automated playable concept museum is required");
             course = game.shadowCourse;
-            Require(course != null && course.bronze != null && course.lamp != null && game.nikeLight != null,
-                "Production bronze, spotlight and live Nike light are required");
+            Require(course != null && course.bronze != null && course.nike != null && course.painting != null &&
+                game.nikeLight != null && game.nikeCanvas != null && game.nikeLight.sourceRoot != null,
+                "Production bronze, movable Nike, movable Monet, fixed source and canvas are required");
             Require(game.controller != null && game.view != null && game.player != null, "Actual first-person rig is required");
             Physics.simulationMode = SimulationMode.Script; ownsSimulation = true;
             yield return null;
             game.ResetAll(); game.Resume();
             for (int i = 0; i < 90; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
             report.initialPropCount = game.props.Length;
-            Require(game.props.Length == 6 && Array.FindAll(game.props, p => p != null && p.zone == 0).Length == 1 &&
-                Array.FindAll(game.props, p => p != null && p.zone == 1).Length == 1,
-                "Fresh layout must have six tools: bronze, spotlight, portrait three and exit sculpture");
-            Require(Vector3.Distance(course.bronze.transform.position, course.bronze.homePosition) < .02f &&
-                Vector3.Distance(course.lamp.transform.position, course.lamp.homePosition) < .02f,
-                "Input-positive tools did not begin at their original home poses");
-            report.initialSixTools = true;
-            Check("Fresh playable museum contains one original bronze and one original spotlight, six tools total");
+            Require(game.props.Length == 7 && Array.FindAll(game.props, p => p != null && p.zone == 0).Length == 1 &&
+                Array.FindAll(game.props, p => p != null && p.zone == 1).Length == 2,
+                "Fresh layout must have seven tools: bronze, full Nike, wall Monet, portrait three and exit sculpture");
+            foreach (var prop in new[]{course.bronze,course.nike,course.painting})
+                Require(Vector3.Distance(prop.transform.position, prop.homePosition) < .02f,
+                    "Input-positive tool did not begin at its original home pose: " + prop.title);
+            Require(game.nikeLight.sourceRoot.GetComponent<GalleryProp>() == null,
+                "The fixed spotlight is incorrectly registered as an interaction prop");
+            fixedSourcePosition = game.nikeLight.sourceRoot.position;
+            fixedSourceRotation = game.nikeLight.sourceRoot.rotation;
+            report.initialSevenTools = true;
+            Check("Fresh museum has seven tools including the original movable full Nike and mounted Monet; the source stays fixed");
 
-            report.phase = "original wrong lamp and actual closed-glass controller collision";
-            game.nikeLight.ResetLight();
-            Require(!game.nikeLight.SolutionReady && !course.NikeUnlocked && !course.NikeGateOpen,
-                "Original front-right lamp already unlocks the Nike exit");
-            report.wrongLampRejected = true;
+            report.phase = "original wrong Nike and actual closed-glass controller collision";
+            game.nikeCanvas.ResetPuzzle();
+            Require(!game.nikeCanvas.Completed && game.nikeCanvas.Progress == 0 && !course.NikeUnlocked && !course.NikeGateOpen,
+                "Original incorrect Nike already completes the canvas or unlocks its door");
+            report.wrongNikeRejected = true;
             Vector3 gate = course.NikeGatePosition;
             game.checkpoint = 1;
             game.PlacePlayer(new Vector3(gate.x, 0, gate.z - .8f));
@@ -161,14 +186,14 @@ namespace ShadeLink.Gallery
                 game.player.feet.z < gate.z - .12f && game.respawns == beforeRespawns,
                 "Actual controller bypassed the closed glass door or the collision sample respawned");
             report.closedDoorSolid = true;
-            Check("Original wrong spotlight does not unlock; actual CharacterController movement is stopped by the closed physical glass door");
+            Check("Original incorrect Nike does not complete the canvas; actual CharacterController movement is stopped by the closed glass door");
 
             // End the isolated negative, restoring only original authored poses.
             // Positive sequences below contain no prop transform/scale writes.
             game.ResetAll(); game.Resume();
             for (int i = 0; i < 30; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
             report.phase = "bronze actual pickup/carry/perspective enlargement/Drop/PhysX";
-            var bronzeInput = CarryOriginal(course.bronze, new Vector3(0, .006f, 7.15f), 2.1f, new Vector3(0, 0, 2.8f), false);
+            var bronzeInput = CarryOriginal(course.bronze, new Vector3(0, .006f, 7.15f), 2.1f, new Vector3(0, 0, 2.8f), ToolKind.Bronze);
             while (bronzeInput.MoveNext()) yield return bronzeInput.Current;
             CaptureView("shadow-gameplay-01-bronze-input", new Vector3(5.9f, 4.4f, 12), new Vector3(0, 1.6f, 8.3f));
             var firstWalk = PlanAndWalk(new Vector2(0, 14.8f), "bronze room");
@@ -177,49 +202,149 @@ namespace ShadeLink.Gallery
             report.bronzeCourseWalk = true;
             Check("Original bronze is enlarged and released through actual input, settles in PhysX, and its real shade supports a controller crossing without respawn");
 
-            report.phase = "spotlight actual pickup/carry/perspective placement/Drop/PhysX";
-            var lampInput = CarryOriginal(course.lamp, new Vector3(-3.6f, .006f, 21.6f), 1f, new Vector3(-3.6f, 0, 17f), true);
-            while (lampInput.MoveNext()) yield return lampInput.Current;
-            game.nikeLight.SyncPose();
-            report.shadeReadiness = game.nikeLight.ShadeReadiness;
-            var scannedColliders = game.nikeLight.nikeRoot.GetComponentsInChildren<MeshCollider>();
-            Require(scannedColliders.Length > 0, "Fixed Nike has no actual scan mesh collider for independent shadow-ray checks");
-            for (int z = 0; z < 5; z++) for (int x = 0; x < 5; x++)
+            report.phase = "full Nike actual pickup/carry/perspective placement/Drop/PhysX";
+            yield return null; // Let canvas/shadow materials publish this exact state.
+            CaptureCanvas("shadow-gameplay-02-nike-outline");
+            var nikeInput = CarryOriginal(course.nike, game.nikeCanvas.CanonicalPosition + Vector3.up * .006f,
+                game.nikeCanvas.CanonicalScale, new Vector3(-4.8f, 0, 19), ToolKind.Nike);
+            while (nikeInput.MoveNext()) yield return nikeInput.Current;
+            game.nikeCanvas.RefreshAlignment();
+            report.finalAlignment = game.nikeCanvas.Alignment;
+            int revealTicks = 0;
+            while (game.nikeCanvas.Progress < .28f && !game.nikeCanvas.Completed && revealTicks++ < 900)
             {
-                Vector3 point = new Vector3(Mathf.Lerp(-.65f, .65f, x / 4f), .025f, Mathf.Lerp(27.65f, 28.4f, z / 4f));
-                report.goalSampleCount++;
-                if (game.nikeLight.IsNikeShadow(point))
-                {
-                    report.goalShadowSamples++;
-                    Vector3 offset = point + Vector3.up * GalleryLighting.SurfaceBias - game.nikeLight.emitter.position;
-                    var ray = new Ray(game.nikeLight.emitter.position, offset.normalized);
-                    bool intersectsActualScan = false;
-                    foreach (var collider in scannedColliders)
-                        if (collider.enabled && collider.Raycast(ray, out _, offset.magnitude - .015f)) intersectsActualScan = true;
-                    Require(intersectsActualScan, "A reported Nike goal shadow does not intersect the actual scanned Nike mesh from the physical lamp lens");
-                }
+                Step(Vector2.zero);
+                Require(game.respawns == beforeRespawns, "Canvas matching/reveal wait respawned");
+                if (revealTicks % 8 == 0) yield return null;
             }
-            Require(report.goalShadowSamples >= 17 && game.nikeLight.ShadeReadiness >= .65f && game.nikeLight.SolutionReady,
-                "Input-placed spotlight does not shade the broadened goal with the actual fixed Nike: samples=" +
-                report.goalShadowSamples + "/25 readiness=" + game.nikeLight.ShadeReadiness + " " + game.nikeLight.Status);
-            report.goalNikeShade = true;
-            report.actualScanShadowProbes = true;
-            Check("Input-placed settled spotlight shades at least 17 of 25 goal probes; independent lens-to-goal rays hit the actual scan mesh, and held/freshly dropped states did not unlock");
+            report.partialRevealProgress = game.nikeCanvas.Progress;
+            Require(game.nikeCanvas.Revealing && game.nikeCanvas.Progress >= .28f && game.nikeCanvas.Progress < .95f &&
+                !game.nikeCanvas.Completed && !course.NikeUnlocked,
+                "The matched real Nike must produce an observable partial brush reveal before completion: alignment=" +
+                game.nikeCanvas.Alignment + " progress=" + game.nikeCanvas.Progress + " " + game.nikeCanvas.Status);
+            report.partialBrushReveal = true;
+            yield return null; // No simulated Tick: preserve the measured brush fraction.
+            CaptureCanvas("shadow-gameplay-03-brush-progress");
+            float previousProgress = game.nikeCanvas.Progress;
+            while (!game.nikeCanvas.Completed && revealTicks++ < 1200)
+            {
+                Step(Vector2.zero);
+                Require(game.nikeCanvas.Progress + .0001f >= previousProgress, "Active canvas brush reveal moved backwards");
+                previousProgress = game.nikeCanvas.Progress;
+                if (revealTicks % 8 == 0) yield return null;
+            }
+            Require(game.nikeCanvas.Completed && game.nikeCanvas.Progress >= .999f,
+                "Actual settled Nike did not finish the timed canvas painting: " + game.nikeCanvas.Status);
+            report.completedPainting = true; report.finalRevealProgress = game.nikeCanvas.Progress;
+            ProbeActualCanvasScan();
+            Check("The input-placed full original Nike matches its real projected contour, waits while settled and reveals a visible intermediate painting before completing");
             for (int i = 0; i < 240 && !course.NikeGateOpen; i++) { Step(Vector2.zero); if (i % 8 == 0) yield return null; }
-            Require(course.NikeUnlocked && course.NikeGateOpen, "Ready Nike shade did not open the actual glass door");
+            Require(course.NikeUnlocked && course.NikeGateOpen, "Completed canvas did not open the physical glass door");
             report.physicalDoorOpened = true;
-            CaptureView("shadow-gameplay-02-nike-light-input", new Vector3(5.9f, 1.65f, 18.2f), new Vector3(0, .9f, 26));
-            CaptureView("shadow-gameplay-03-nike-shadow", new Vector3(5.9f, 5.6f, 28.6f), new Vector3(-.5f, 0, 25.5f));
-            Check("A settled sufficiently shaded goal opens the visible physical glass door before the real walking crossing");
-            var secondWalk = PlanAndWalk(new Vector2(0, 29.5f), "Nike spotlight room");
+            yield return null; // Completed art and open glass both reach LateUpdate before capture.
+            CaptureCanvas("shadow-gameplay-04-completed-canvas");
+            Check("Only completion of the timed Nike canvas opens the visible physical glass door");
+
+            report.phase = "negative actual grounded gate walking without the Monet shade";
+            report.goalSafeBeforePainting = GoalSafeSamples();
+            Require(report.goalSafeBeforePainting <= 8, "Original mounted Monet already shelters most of the goal; its floor placement is unnecessary");
+            game.PlacePlayer(new Vector3(0, 0, 26));
+            Require(game.CanStand(game.player.feet), "Unprotected gate-walk player fixture is obstructed");
+            int negativeRespawns = game.respawns;
+            bool exposedWhileGrounded = false;
+            game.yaw = game.pitch = 0; game.SyncView();
+            for (int i = 0; i < 150 && game.respawns == negativeRespawns; i++)
+            {
+                Step(Vector2.up);
+                if (game.exposure > .2f && game.player.grounded) exposedWhileGrounded = true;
+                if (i % 8 == 0) yield return null;
+            }
+            report.unprotectedGateNegativeRespawns = game.respawns - negativeRespawns;
+            Require(exposedWhileGrounded && report.unprotectedGateNegativeRespawns == 1 && !course.NikeCleared,
+                "Unprotected actual grounded gate walking bypassed the unshaded task or failed to respawn once");
+            report.unprotectedGateRespawn = true;
+            Check("With the completed canvas but Monet still mounted, the exposed goal fails foot probes and actual grounded walking respawns once; this labelled negative is separate from zero-respawn positive crossings");
+
+            report.phase = "mounted Monet actual pickup/carry/perspective enlargement/Drop/PhysX";
+            var paintingInput = CarryOriginal(course.painting, new Vector3(-1.7f, 2.51f, 23), 1.5f,
+                new Vector3(-1.7f, 0, 18.5f), ToolKind.Painting, new Vector3(4.9f, 0, 25.4f));
+            while (paintingInput.MoveNext()) yield return paintingInput.Current;
+            report.goalSafeAfterPainting = GoalSafeSamples();
+            Require(report.goalSafeAfterPainting >= 17, "Input-placed Monet did not create a broad safe goal footprint: " + report.goalSafeAfterPainting + "/25");
+            report.paintingCreatesGoalShade = true;
+            CaptureView("shadow-gameplay-05-monet-input", new Vector3(5.9f, 1.65f, 18.2f), new Vector3(-2, 2.1f, 24));
+            Check("Original mounted Monet is selected by the real camera, detached, carried, resized, dropped and physically settled as a shadow tool");
+            report.doorwayWalkableHalfWidth = course.NikeWalkableHalfWidth;
+            Require(course.NikeWalkableHalfWidth > 1.25f, "Actual open doorway has no clearance for the disclosed off-centre crossing");
+            var doorApproach = PlanAndWalk(new Vector2(1.25f, 27.75f), "Nike canvas room approach");
+            while (doorApproach.MoveNext()) yield return doorApproach.Current;
+            Require(!course.NikeCleared, "Doorway approach already completed the course before the disclosed off-centre crossing");
+            Require(game.nikeCanvas.Completed && course.NikeGateOpen, "Off-centre physical passage requires completed art and the fully open door");
+            recordOffCentreCrossing = true;
+            var secondWalk = PlanAndWalk(new Vector2(1.25f, 29.5f), "Nike off-centre doorway");
             while (secondWalk.MoveNext()) yield return secondWalk.Current;
-            Require(course.NikeCleared && game.checkpoint == 2 && game.player.feet.z > 29.3f,
-                "Actual controller did not cross the input-created Nike shade and opened door into the portrait room");
+            recordOffCentreCrossing = false;
+            Require(report.offCentreDoorCrossing && course.NikeCleared && game.checkpoint == 2 && game.player.feet.z > 29.3f,
+                "Actual safe grounded off-centre controller passage did not advance the course/portrait checkpoint: crossingX=" + report.nikeCrossingX);
             report.nikeCourseWalk = true;
-            Check("Actual controller follows the input-created Nike shadow through the opened glass door to the portrait checkpoint without respawn");
+            report.fixedSourceUntouched = Vector3.Distance(fixedSourcePosition, game.nikeLight.sourceRoot.position) < .0001f &&
+                Quaternion.Angle(fixedSourceRotation, game.nikeLight.sourceRoot.rotation) < .01f;
+            Require(report.fixedSourceUntouched, "The fixed light source moved during object interaction");
+            Check("Actual controller follows the input-created shadows through the open door at a measured safe grounded off-centre crossing near x=1.25, reaches the portrait checkpoint without another respawn and leaves the fixed source unchanged");
         }
 
-        IEnumerator CarryOriginal(GalleryProp prop, Vector3 goalBase, float goalScale, Vector3 observer, bool lamp)
+        void CaptureCanvas(string name)
+        { CaptureView(name, new Vector3(1, 3.1f, 19.7f), game.nikeCanvas.TargetCenter); }
+
+        int GoalSafeSamples()
+        {
+            int safe = 0;
+            for (int z = 0; z < 5; z++) for (int x = 0; x < 5; x++)
+                if (game.FootSafe(new Vector3(Mathf.Lerp(-.65f, .65f, x / 4f), .025f, Mathf.Lerp(27.65f, 28.4f, z / 4f)))) safe++;
+            return safe;
+        }
+
+        void ProbeActualCanvasScan()
+        {
+            var geometry = course.nike.GetComponent<GalleryNikeGeometry>();
+            var filter = geometry == null ? null : geometry.ScanFilter;
+            Require(filter != null && filter.sharedMesh != null, "Movable Nike has no original full scan mesh for independent projection checks");
+            report.independentQueryMeshTriangles = filter.sharedMesh.triangles.Length / 3;
+            Require(report.independentQueryMeshTriangles > 10000, "Independent scan query unexpectedly uses a coarse carry mesh");
+            Vector3 normal = game.nikeCanvas.TargetNormal;
+            var physicallyBlocked = new List<Vector3>();
+            var query = new GameObject("QA only · independent PhysX query of the full unmodified Nike scan") { hideFlags = HideFlags.DontSave };
+            try
+            {
+                query.transform.SetPositionAndRotation(filter.transform.position, filter.transform.rotation);
+                query.transform.localScale = filter.transform.lossyScale;
+                var collider = query.AddComponent<MeshCollider>();
+                collider.cookingOptions &= ~MeshColliderCookingOptions.UseFastMidphase;
+                collider.sharedMesh = filter.sharedMesh;
+                Physics.SyncTransforms();
+                for (int y = 0; y < 19; y++) for (int x = 0; x < 17; x++)
+                {
+                    report.canvasSampleCount++;
+                    Vector3 point = game.nikeCanvas.CanvasPoint(x / 16f, y / 18f);
+                    Vector3 offset = point + normal * GalleryLighting.SurfaceBias - game.nikeLight.emitter.position;
+                    if (collider.Raycast(new Ray(game.nikeLight.emitter.position, offset.normalized), out _, offset.magnitude - .015f))
+                        physicallyBlocked.Add(point);
+                }
+            }
+            finally
+            {
+                // It is never present for gameplay Tick, shadow classification,
+                // rendering or walking: only the independent collider.Raycast.
+                DestroyImmediate(query); Physics.SyncTransforms();
+            }
+            report.canvasShadowSamples = physicallyBlocked.Count;
+            foreach (var point in physicallyBlocked)
+                Require(!game.nikeLight.IsIlluminated(point, normal), "An actual Nike scan hit is incorrectly treated as illuminated on the canvas");
+            Require(report.canvasShadowSamples >= 10, "Canvas rays did not encounter the actual original Nike scan contour");
+            report.actualScanShadowProbes = true;
+        }
+
+        IEnumerator CarryOriginal(GalleryProp prop, Vector3 goalBase, float goalScale, Vector3 observer, ToolKind kind, Vector3? pickupOverride = null)
         {
             Require(game.held == null && prop.placement.Ready, "Original input tool must begin released and ready: " + prop.title);
             var observation = new CarryReport { tool = prop.title, originalPosition = prop.transform.position,
@@ -235,6 +360,7 @@ namespace ShadeLink.Gallery
             float radicand = reference * reference - vertical * vertical;
             Require(radicand > .20f, "Requested angular size has no reachable floor pickup fixture: " + prop.title);
             Vector3 pickup = new Vector3(prop.transform.position.x, observer.y, prop.transform.position.z - Mathf.Sqrt(radicand));
+            if (pickupOverride.HasValue) pickup = pickupOverride.Value;
             observation.pickupFixture = pickup;
             Require(game.CanStand(pickup) && game.CanStand(observer), "Player-only pickup/observer fixture is obstructed: " + prop.title + " " + pickup);
             game.PlacePlayer(pickup);
@@ -243,6 +369,7 @@ namespace ShadeLink.Gallery
             Require(Vector3.Distance(prop.transform.position, observation.originalPosition) < .02f, "Original tool moved before camera pickup");
             Grab(prop);
             Require(Mathf.Abs(game.referenceScale - observation.originalScale) < .001f, "Public pickup did not freeze original angular scale");
+            observation.referenceDistance = game.referenceDistance; observation.referenceScale = game.referenceScale;
             Debug.Log("SHADOW_INPUT_PICKUP tool=" + prop.title + " playerFixture=" + pickup.ToString("F4") +
                 " observerFixture=" + observer.ToString("F4") + " reference=" + game.referenceDistance + " targetBase=" + goalBase);
             int startTicks = ticks;
@@ -254,13 +381,14 @@ namespace ShadeLink.Gallery
                 Look(goalBase); Step(delta.normalized * Mathf.Sqrt(Mathf.Clamp01(delta.magnitude / 1.2f)));
                 observation.actualCarryMetres += Vector3.Distance(previousFeet, game.player.feet); previousFeet = game.player.feet;
                 observation.maximumInputScale = Mathf.Max(observation.maximumInputScale, prop.transform.localScale.x);
+                ObservePlacement(prop, observation);
                 Require(game.held == prop && prop.body.isKinematic && game.respawns == respawns,
                     "Actual carry lost its tool or respawned: " + prop.title);
-                if (lamp)
+                if (kind == ToolKind.Nike)
                 {
-                    Require(!game.nikeLight.Ready && !game.nikeLight.SolutionReady && !course.NikeUnlocked,
-                        "Carried live spotlight counted as a settled goal solution");
-                    report.heldLampRejected = true;
+                    Require(!game.nikeCanvas.Completed && game.nikeCanvas.MatchProgress == 0 && !course.NikeUnlocked,
+                        "Held Nike counted toward the timed settled canvas solution");
+                    report.heldNikeRejected = true;
                 }
                 Require(ticks - startTicks < 1500, "Input carry did not reach its observer position: " + prop.title);
                 if (ticks % 8 == 0) yield return null;
@@ -269,33 +397,34 @@ namespace ShadeLink.Gallery
             {
                 Look(goalBase); Step(Vector2.zero);
                 observation.maximumInputScale = Mathf.Max(observation.maximumInputScale, prop.transform.localScale.x);
+                ObservePlacement(prop, observation);
                 Require(game.held == prop && game.respawns == respawns, "Braking lost the original tool");
                 if (ticks % 8 == 0) yield return null;
             }
             observation.carryTicks = ticks - startTicks;
             Require(observation.actualCarryMetres > .5f, "Positive carry did not include real CharacterController movement");
-            if (lamp)
-            {
-                for (int z = 23; z <= 28; z++) for (int x = -3; x <= 3; x++)
-                    if (game.nikeLight.IsIlluminated(new Vector3(x, .025f, z), Vector3.up)) report.heldLightStillIlluminates = true;
-                Require(report.heldLightStillIlluminates && !game.nikeLight.SolutionReady,
-                    "Held spotlight must still illuminate the live scene without unlocking the door");
-            }
+            ObservePlacement(prop, observation);
             Require(game.Drop() && game.held == null, "Public Drop refused input tool: " + prop.title + " " + game.invalidReason + " " + game.PlacementObstacle);
             observation.releasedPosition = prop.transform.position; observation.releasedScale = prop.transform.localScale.x;
             Require(!prop.placement.Ready, "Freshly dropped input prop was incorrectly treated as already settled");
-            if (lamp)
+            if (kind == ToolKind.Nike)
             {
-                report.lampInputReleased = true; game.nikeLight.SyncPose();
-                Require(!game.nikeLight.Ready && !game.nikeLight.SolutionReady && !course.NikeUnlocked,
-                    "Freshly dropped unsettled spotlight opened the Nike door");
-                report.unsettledLampRejected = true;
+                report.nikeInputReleased = true; game.nikeCanvas.RefreshAlignment();
+                Require(!game.nikeCanvas.Completed && game.nikeCanvas.MatchProgress == 0 && !course.NikeUnlocked,
+                    "Freshly dropped unsettled Nike counted toward the timed canvas solution");
+                report.unsettledNikeRejected = true;
             }
-            else
+            else if (kind == ToolKind.Bronze)
             {
                 report.bronzeInputReleased = true;
                 Require(observation.releasedScale > observation.originalScale * 1.5f,
                     "Bronze did not actually enlarge through the shared perspective input resolver");
+            }
+            else
+            {
+                report.paintingInputReleased = true;
+                Require(observation.releasedScale > observation.originalScale * 1.2f,
+                    "Mounted Monet did not actually enlarge through the shared perspective input resolver");
             }
             for (int i = 0; i < 600 && !prop.placement.Ready; i++)
             {
@@ -306,9 +435,48 @@ namespace ShadeLink.Gallery
             Require(prop.placement.Ready && game.ValidPlacement(prop, out _),
                 "Input-released tool did not physically settle: " + prop.title + " " + prop.placement.Status);
             observation.settledPosition = prop.transform.position; observation.settledScale = prop.transform.localScale.x;
-            if (lamp) report.lampPhysicallySettled = true; else report.bronzePhysicallySettled = true;
+            if (kind == ToolKind.Nike) report.nikePhysicallySettled = true;
+            else if (kind == ToolKind.Painting) report.paintingPhysicallySettled = true;
+            else report.bronzePhysicallySettled = true;
             Debug.Log("SHADOW_INPUT_SETTLED tool=" + prop.title + " position=" + prop.transform.position.ToString("F4") +
                 " scale=" + prop.transform.localScale.x + " carryMetres=" + observation.actualCarryMetres + " status=" + prop.placement.Status);
+        }
+
+        void ObservePlacement(GalleryProp prop, CarryReport observation)
+        {
+            var diagnostic = game.PlacementDiagnostic;
+            observation.lastObstacle = game.PlacementObstacle ?? "";
+            observation.lastInvalidReason = game.invalidReason ?? "";
+            observation.lastLimiter = diagnostic.Limiter.ToString();
+            observation.lastSource = ColliderPath(diagnostic.Source);
+            observation.lastDepth = diagnostic.Depth;
+            observation.lastSurfaceDepth = diagnostic.SurfaceDepth;
+            observation.lastBoundaryDepth = diagnostic.BoundaryDepth;
+            observation.heldRotation = game.heldRotation;
+            observation.lastPlayerFeet = game.player.feet;
+            observation.lastHeldPosition = prop.transform.position;
+            observation.lastDiagnosticPoint = diagnostic.Point;
+            observation.lastPlacementBlocked = game.PlacementBlocked;
+            observation.lastProjectionApplied = game.ProjectionApplied;
+            string state = observation.lastLimiter + " | " + observation.lastSource + " | blocked=" + game.PlacementBlocked +
+                " | " + observation.lastObstacle + " | " + observation.lastInvalidReason;
+            if (state == observation.lastPlacementState) return;
+            observation.lastPlacementState = state;
+            string message = "tick=" + ticks + " state=" + state + " feet=" + game.player.feet.ToString("F4") +
+                " position=" + prop.transform.position.ToString("F4") + " scale=" + prop.transform.localScale.x.ToString("F5", CultureInfo.InvariantCulture) +
+                " depth=" + diagnostic.Depth.ToString("F4", CultureInfo.InvariantCulture) + " point=" + diagnostic.Point.ToString("F4") +
+                " rotation=" + game.heldRotation.eulerAngles.ToString("F2");
+            if (observation.placementDiagnostics.Count < 60) observation.placementDiagnostics.Add(message);
+            Debug.Log("SHADOW_INPUT_PLACEMENT tool=" + prop.title + " " + message);
+        }
+
+        string ColliderPath(Collider collider)
+        {
+            if (collider == null) return "";
+            string path = collider.name;
+            for (Transform parent = collider.transform.parent; parent != null && parent != game.transform; parent = parent.parent)
+                path = parent.name + "/" + path;
+            return path;
         }
 
         IEnumerator PlanAndWalk(Vector2 goal, string room)
@@ -596,8 +764,16 @@ namespace ShadeLink.Gallery
         }
         void Step(Vector2 movement)
         {
-            Guard(); game.Tick(Dt, movement, false); Physics.Simulate(Dt); Physics.SyncTransforms();
+            Guard(); Vector3 previousFeet = game.player.feet;
+            game.Tick(Dt, movement, false); Physics.Simulate(Dt); Physics.SyncTransforms();
             game.nikeLight.SyncPose(); game.lighting.Synchronize(); ticks++;
+            if (recordOffCentreCrossing && previousFeet.z < course.NikeGatePosition.z && game.player.feet.z >= course.NikeGatePosition.z)
+            {
+                report.nikeCrossingX = game.player.feet.x;
+                report.nikeCrossingZ = game.player.feet.z;
+                report.offCentreDoorCrossing = Mathf.Abs(report.nikeCrossingX) > 1.1f && Mathf.Abs(report.nikeCrossingX) <= course.NikeWalkableHalfWidth &&
+                    game.safe && game.player.grounded && game.held == null && game.nikeCanvas.Completed && course.NikeGateOpen;
+            }
         }
         void Guard()
         {

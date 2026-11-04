@@ -1,0 +1,663 @@
+{
+    "passed": true,
+    "exposureRespawn": true,
+    "firstCourseWalk": true,
+    "nikeCourseWalk": true,
+    "wrongViewRejected": true,
+    "partialPortraitRejected": true,
+    "heldPortraitRejected": true,
+    "inputOnlyPortrait": true,
+    "portraitOpened": true,
+    "curtainWalk": true,
+    "smallExitRejected": true,
+    "heldExitRejected": true,
+    "unsettledExitRejected": true,
+    "reverseExitRejected": true,
+    "sideExitRejected": true,
+    "inputOnlyOrcusEnlarged": true,
+    "inputOnlyOrcusReleased": true,
+    "inputOnlyOrcusSettled": true,
+    "physicalMouthCrossing": true,
+    "libraryLoaded": true,
+    "libraryActive": true,
+    "simulationRestored": true,
+    "phase": "sculpture portal: negative eligibility, input-only enlargement and physical handoff",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "orcusLastRestriction": "Surface: ",
+    "scope": "Explicit enlarged bronze, full Nike and standing Monet fixtures are checked with actual placement geometry, timed canvas completion, capsule queries and FootSafe, then traversed by the actual CharacterController and exposure rules. The source stays fixed. The separate GalleryShadowGameplayValidation covers camera pickup/carry/perspective resize/Drop from all three original tools without positive-case prop pose writes. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.",
+    "simulatedTicks": 3977,
+    "exposureRespawns": 1,
+    "totalRespawns": 0,
+    "finalCheckpoint": 3,
+    "enlargementUpdates": 135,
+    "mouthWalkFrames": 181,
+    "librarySceneLoads": 1,
+    "simulatedSeconds": 44.18888854980469,
+    "maximumNegativeExposure": 0.9777779579162598,
+    "orcusRequiredScale": 2.700000047683716,
+    "orcusMaximumScale": 2.4387450218200685,
+    "orcusReleasedScale": 2.4387450218200685,
+    "fallDistance": 13.985245704650879,
+    "entryLateralOffset": 0.03999999910593033,
+    "entryLateralOffsetMetres": 0.10823999345302582,
+    "orcusReleasedPosition": {
+        "x": 0.014422357082366944,
+        "y": 0.01692056655883789,
+        "z": 54.40971374511719
+    },
+    "routes": [
+        {
+            "room": "bronze room",
+            "candidate": 4,
+            "gridNodes": 2350,
+            "routeNodes": 49,
+            "walkTicks": 365,
+            "length": 13.582671165466309,
+            "longestUnshadedRun": 0.0,
+            "totalUnshadedLength": 0.0,
+            "maximumExposure": 0.0,
+            "minimumWalkFeetY": 0.02500000037252903,
+            "maximumWalkFeetY": 0.1439327895641327,
+            "plannedPath": [
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 5.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 5.25
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 5.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 5.75
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 6.0
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 6.25
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 6.5
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 6.75
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 7.0
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 7.25
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 7.5
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.11900000274181366,
+                    "z": 7.75
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.11900000274181366,
+                    "z": 7.75
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.11900000274181366,
+                    "z": 8.0
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 8.25
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 8.5
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 8.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.0
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 9.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 9.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 9.75
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 10.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 10.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 10.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 10.75
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 11.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 11.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 11.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 11.75
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 12.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 12.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 12.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 12.75
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 13.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 13.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 13.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 13.75
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 14.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 14.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 14.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.75
+                }
+            ],
+            "fixturePositions": [
+                {
+                    "x": 0.4000000059604645,
+                    "y": 0.006000000052154064,
+                    "z": 7.199999809265137
+                }
+            ],
+            "fixtureScales": [
+                2.200000047683716
+            ]
+        },
+        {
+            "room": "Nike canvas room",
+            "candidate": 0,
+            "gridNodes": 2914,
+            "routeNodes": 60,
+            "walkTicks": 406,
+            "length": 15.371320724487305,
+            "longestUnshadedRun": 0.0,
+            "totalUnshadedLength": 0.0,
+            "maximumExposure": 0.0,
+            "minimumWalkFeetY": 0.04999992251396179,
+            "maximumWalkFeetY": 0.04999998211860657,
+            "plannedPath": [
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 15.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 15.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 15.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 15.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 16.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 16.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 16.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 16.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 17.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 17.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 17.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 17.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 18.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 18.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 18.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 18.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 19.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 19.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 19.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 19.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 20.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 20.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 20.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 20.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 21.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 21.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 21.5
+                },
+                {
+                    "x": 0.25,
+                    "y": 0.02500000037252903,
+                    "z": 21.75
+                },
+                {
+                    "x": 0.5,
+                    "y": 0.02500000037252903,
+                    "z": 22.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 22.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 22.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 22.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 26.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 26.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 26.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 26.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 27.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 27.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 27.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 27.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 28.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 28.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 28.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 28.75
+                },
+                {
+                    "x": 0.5,
+                    "y": 0.02500000037252903,
+                    "z": 29.0
+                },
+                {
+                    "x": 0.25,
+                    "y": 0.02500000037252903,
+                    "z": 29.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 29.5
+                }
+            ],
+            "fixturePositions": [
+                {
+                    "x": -4.800000190734863,
+                    "y": 0.006000000052154064,
+                    "z": 23.899999618530275
+                },
+                {
+                    "x": -1.7000000476837159,
+                    "y": 2.509999990463257,
+                    "z": 23.0
+                }
+            ],
+            "fixtureScales": [
+                1.0,
+                1.5
+            ]
+        }
+    ],
+    "checks": [
+        "Negative: actual unprotected CharacterController walk accumulates sunlight exposure and returns to the checkpoint",
+        "Explicit bronze fixture passes real placement checks; a physical camera-controller walk crosses its shade without respawn and reaches checkpoint 1",
+        "Explicit full-Nike and Monet fixtures complete the real timed canvas; actual walking follows their shadows through the opened physical glass door to checkpoint 2 without respawn",
+        "The recognizable portrait is assembled through actual pickup/carry/Drop and brief observation opens the real barrier; held or clearly separated pieces remain unfinished",
+        "Actual CharacterController walks beside the aligned sculptures and through the opened curtain into room 4",
+        "Actual camera/carried movement/Drop reaches the helpful near-size threshold, the sculpture completes its size and settles, then permits physical entry",
+        "Real ground approach with a labelled off-centre offset climbs the sculpture staircase, crosses the aperture and triggers a descent longer than ten metres and one Library scene load with active controls and normal physics"
+    ],
+    "errors": []
+}

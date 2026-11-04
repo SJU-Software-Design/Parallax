@@ -34,7 +34,9 @@ namespace ShadeLink.Editor
                 "Marble Bust 01 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/marble_bust_01\n\n"+
                 "Potted Plant 02 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/potted_plant_02\n\n"+
                 "Surface textures: Poly Haven, CC0. https://polyhaven.com/license\n"+
-                "Paintings: Public-domain sources from Wikimedia Commons.\n\n");
+                "Paintings: Public-domain sources from Wikimedia Commons.\n"+
+                "Vitoria de Samotracia - Eliseu Visconti, 1919, Museu Nacional de Belas Artes. Public-domain reproduction from Wikimedia Commons, preserved unmodified in the gallery collection.\n"+
+                "Interactive Nike canvas: exact projection, outline and painterly rendering derived from the same Cosmo Wenman CC BY 3.0 scan above; diagonal brush reveal added for Parallax.\n\n");
             foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md"})
             {
                 string source=Path.Combine("Documentation/Gallery",name);
@@ -103,8 +105,8 @@ namespace ShadeLink.Editor
                 }
             }
             game.lighting.Rebuild();
-            if(game.props.Length!=6||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null)throw new Exception("Playable museum exhibit missing");
-            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth"})
+            if(game.props.Length!=7||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null||game.nikeCanvas==null)throw new Exception("Playable museum exhibit missing");
+            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth","Parallax/MuseumNikeCanvas"})
             {
                 var asset=Shader.Find(shader);
                 if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);

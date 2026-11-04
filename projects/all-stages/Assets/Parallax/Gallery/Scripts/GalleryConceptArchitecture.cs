@@ -90,7 +90,7 @@ namespace ShadeLink.Gallery
             var label=go.AddComponent<GalleryLabel>();label.caption=words;label.size=size;label.color=color;
         }
         public static Transform FramedArtwork(Transform parent,string key,string title,string credit,Vector3 at,Quaternion turn,
-            float maximumWidth,float maximumHeight,Palette p)
+            float maximumWidth,float maximumHeight,Palette p,bool catalogueLabel=true)
         {
             Texture2D texture=Resources.Load<Texture2D>("MuseumArt/"+key);
             if(texture==null)throw new InvalidOperationException("Concept museum painting missing: "+key);
@@ -103,6 +103,7 @@ namespace ShadeLink.Gallery
             var vertices=new List<Vector3>{new Vector3(-w/2,-h/2,-.043f),new Vector3(w/2,-h/2,-.043f),new Vector3(w/2,h/2,-.043f),new Vector3(-w/2,h/2,-.043f)};
             Geometry("Original artwork reproduction",root,Finish("Canvas · "+key,vertices,new List<int>{0,2,1,0,3,2},new List<Vector2>{Vector2.zero,Vector2.right,Vector2.one,Vector2.up}),material,Vector3.zero);
             PictureFrame(root,new Vector2(w+.035f,h+.035f),p);
+            if(!catalogueLabel)return root;
             float plateWidth=Mathf.Min(2.0f,Mathf.Max(1.3f,w*.65f));
             Block(root,"Museum catalogue plaque",new Vector3(w/2-plateWidth/2,-h/2-.43f,.015f),new Vector3(plateWidth,.29f,.035f),p.paper,.008f);
             Label(root,title,new Vector3(w/2-plateWidth/2,-h/2-.38f,-.012f),.065f,new Color(.15f,.13f,.10f));
@@ -246,7 +247,7 @@ namespace ShadeLink.Gallery
             {
                 WallFinish(root,new Vector3(side*7.88f,0,28),Quaternion.Euler(0,side*90,0),55.6f,GalleryConceptWorld.Roof,p);
                 foreach(float z in new[]{.62f,13.34f,14.65f,28.35f,29.65f,43.35f,44.65f,55.38f})
-                    ClassicalColumn(root,new Vector3(side*7.48f,0,z),6.15f,.31f,p);
+                    if(!(side>0&&z==28.35f))ClassicalColumn(root,new Vector3(side*7.48f,0,z),6.15f,.31f,p);
             }
             foreach(float z in new[]{14f,29f,44f})
             {
@@ -282,9 +283,8 @@ namespace ShadeLink.Gallery
             }
             // The sculpture remains the focus of room two, with generous empty
             // floor, a seated viewing position and a recessed shadow-art wall.
-            Bench(root,new Vector3(-5.5f,0,24.5f),Quaternion.Euler(0,-35,0),2.8f,p);
+            Bench(root,new Vector3(-6.8f,0,21.5f),Quaternion.Euler(0,90,0),2.8f,p);
             FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(-7.78f,2.85f,23.1f),Quaternion.Euler(0,-90,0),3.5f,3.0f,p);
-            FramedArtwork(root,"GirlWithPearlEarring","진주 귀걸이를 한 소녀","요하네스 페르메이르 · 약 1665",new Vector3(4.95f,2.8f,28.74f),Quaternion.identity,2.3f,2.75f,p);
             Track(root,new Vector3(0,6.1f,27.5f),12,p);
             FramedArtwork(root,"Scream","절규","에드바르 뭉크 · 1893",new Vector3(-7.78f,2.75f,48.4f),Quaternion.Euler(0,-90,0),2.2f,2.9f,p);
         }

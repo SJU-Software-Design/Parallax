@@ -20,9 +20,13 @@ namespace ShadeLink.Editor
                 Require(!game.exhibitionPreview,"The playable museum must enable the shadow course");
                 Require(Resources.Load<Mesh>("MuseumScans/NikeMesh")!=null,"Actual Nike scan is missing");
                 Require(game.GetComponentInChildren<GalleryConceptPerspective>()!=null,"Perspective exhibit missing");
-                Require(game.props.Length==6,"Expected bronze, lamp, three portrait parts and Cathedral");
-                Require(game.shadowCourse!=null&&game.shadowCourse.bronze!=null&&game.shadowCourse.lamp!=null,"Shadow interaction exhibits missing");
-                Require(game.nikeLight!=null&&game.nikeLight.lamp==game.shadowCourse.lamp&&game.nikeLight.emitter!=null&&game.nikeLight.nikeRoot!=null,"Nike light references missing");
+                Require(game.props.Length==7,"Expected bronze, Nike, painting, three portrait parts and Cathedral");
+                Require(game.shadowCourse!=null&&game.shadowCourse.bronze!=null&&game.shadowCourse.nike!=null&&game.shadowCourse.painting!=null,"Shadow interaction exhibits missing");
+                Require(game.nikeLight!=null&&game.nikeLight.emitter!=null&&game.nikeLight.nikeRoot!=null,"Fixed Nike light references missing");
+                Require(game.nikeCanvas!=null&&!game.nikeCanvas.Completed,"Nike canvas must begin unfinished");
+                Require(game.nikeLight.emitter.GetComponentInParent<GalleryProp>()==null,"The Nike spotlight must remain fixed");
+                Require(game.shadowCourse.nike.GetComponent<GalleryNikeGeometry>()!=null,"Exact original scan ray geometry is missing");
+                Require(Resources.Load<Texture2D>("MuseumArt/NikeVisconti1919")!=null,"Nike collection oil painting is missing");
                 Require(!game.shadowCourse.NikeUnlocked&&!game.shadowCourse.NikeGateOpen&&game.shadowCourse.NikeGateColliders.Length>0,"Nike gate must begin closed");
                 Require(game.portraitGate!=null&&!game.portraitGate.Opened&&game.portraitGate.barrier.enabled,"Portrait gate must begin closed");
                 Require(game.orcusExit!=null&&game.orcusExit.prop.homeScale.x<game.orcusExit.RequiredScale,"Exit must begin smaller than a player");

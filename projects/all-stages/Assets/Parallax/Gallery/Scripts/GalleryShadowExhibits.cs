@@ -87,6 +87,60 @@ namespace ShadeLink.Gallery
             prop.Remember();return prop;
         }
 
+        public static Transform CreateFixedLamp(Transform parent,Vector3 source,Vector3 target,out Transform head,out Transform emitter)
+        {
+            var root=Group(parent,"Collection · fixed Nike projection lamp",new Vector3(source.x,0,source.z));
+            Material bronze=Material("fixed projector · satin bronze","Bronze",new Color(.54f,.36f,.16f));
+            Material wood=Material("fixed projector · walnut inset","Wood",new Color(.47f,.31f,.18f));
+            Material black=Material("fixed projector · charcoal enamel","Ink",new Color(.045f,.052f,.049f));
+            black.SetFloat("_Roughness",.38f);black.SetFloat("_Metallic",.18f);
+            Material lens=Material("fixed projector · warm glass lens","Paper",new Color(1,.80f,.51f));
+            lens.SetColor("_EmissionColor",new Color(.38f,.19f,.055f));
+            Block(root,"Fixed projector bronze foot",new Vector3(0,.035f,0),new Vector3(.75f,.07f,.58f),bronze,true,.015f);
+            Block(root,"Fixed projector walnut inset",new Vector3(0,.080f,0),new Vector3(.60f,.020f,.43f),wood,false,.008f);
+            float postTop=source.y-.13f;
+            Block(root,"Fixed projector bronze upright",new Vector3(0,(.09f+postTop)*.5f,0),new Vector3(.055f,postTop-.09f,.055f),bronze,true,.010f);
+            Vector3 forward=(target-source).normalized;
+            head=Group(root,"Spotlight head",Vector3.up*source.y-forward*.090f);
+            AimHead(head,parent==null?target:parent.TransformPoint(target),root.up,root.forward);
+            Block(head,"Fixed projector bronze neck",new Vector3(0,-.13f,-.02f),new Vector3(.20f,.05f,.09f),bronze,true,.010f);
+            Quaternion turn=Quaternion.Euler(90,0,0);
+            Cylinder(head,"Fixed projector black cylindrical housing",new Vector3(0,0,-.11f),turn,.115f,.34f,black);
+            Cylinder(head,"Fixed projector bronze lens rim",new Vector3(0,0,.061f),turn,.122f,.026f,bronze);
+            Cylinder(head,"Fixed projector warm lens",new Vector3(0,0,.069f),turn,.101f,.006f,lens);
+            emitter=Group(head,"Emitter",new Vector3(0,0,.090f));return root;
+        }
+
+        public static GalleryProp CreateCollectionPainting(Transform parent)
+        {
+            var palette=GalleryConceptArchitecture.MuseumPalette(GalleryWorld.Materials);
+            GalleryConceptArchitecture.FramedArtwork(parent,"Scream","절규","에드바르 뭉크 · 1893",
+                new Vector3(2.6f,2.7f,28.4f),Quaternion.identity,.90f,1.45f,palette);
+            GalleryConceptArchitecture.FramedArtwork(parent,"NikeVisconti1919","사모트라케의 니케","엘리제우 비스콘티 · 1919",
+                new Vector3(7.15f,2.7f,28.4f),Quaternion.identity,1.15f,2.1f,palette);
+            var root=Group(parent,"Collection · Claude Monet · Water Lily Bridge",new Vector3(4.9f,2.7f,28.4f));
+            var prop=root.gameObject.AddComponent<GalleryProp>();
+            prop.title="02 · 수련 연못 위의 다리";prop.zone=1;prop.minScale=.45f;prop.mountedAtHome=true;
+            var texture=Resources.Load<Texture2D>("MuseumArt/WaterLilyBridge");
+            if(texture==null)throw new InvalidOperationException("The displayed Monet reproduction is missing.");
+            float width=2.35f,height=width*texture.height/texture.width;
+            GalleryConceptArchitecture.FramedArtwork(root,"WaterLilyBridge","수련 연못 위의 다리","클로드 모네 · 1899",
+                Vector3.zero,Quaternion.identity,width,height,palette,false);
+            var box=root.gameObject.AddComponent<BoxCollider>();box.center=new Vector3(0,0,-.04f);
+            box.size=new Vector3(width+.445f,height+.445f,.18f);
+            root.gameObject.AddComponent<GalleryCaster>().shape=box;
+            // The catalogue belongs to the wall display, so it stays behind
+            // when the same framed work is carried into the light.
+            Block(parent,"Monet museum catalogue plaque",new Vector3(4.9f,2.7f-height*.5f-.43f,28.415f),
+                new Vector3(1.7f,.29f,.035f),palette.paper,false,.008f);
+            var label=Group(parent,"Catalogue · Monet collection work",new Vector3(4.9f,2.7f-height*.5f-.43f,28.37f));
+            var caption=label.gameObject.AddComponent<GalleryLabel>();
+            caption.caption="수련 연못 위의 다리\n클로드 모네 · 1899";caption.size=.065f;caption.color=new Color(.22f,.19f,.14f);
+            prop.Remember();prop.InitializePhysics();
+            prop.body.constraints=RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
+            return prop;
+        }
+
         static void AimHead(Transform head,Vector3 target,Vector3 up,Vector3 fallback)
         {
             Vector3 direction=target-head.position;if(direction.sqrMagnitude<.000001f)direction=fallback;

@@ -1,5 +1,15 @@
 # Museum artwork image credits
 
+## Vitória de Samotrácia — Eliseu Visconti, 1919
+
+- Local texture: `Assets/Parallax/Gallery/Resources/MuseumArt/NikeVisconti1919.jpg`
+- Unity Resources key: `MuseumArt/NikeVisconti1919`
+- Collection: Museu Nacional de Belas Artes, Rio de Janeiro.
+- Source and public-domain statement: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg).
+- [Original 2454 × 3968 image](https://upload.wikimedia.org/wikipedia/commons/d/df/Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg), used without repainting or cropping; aspect ratio preserved. Commons identifies the reproduction as PD-Art and the work as public domain.
+- This real oil painting appears in the Nike room's curated collection. Its historical view differs from the game's statue projection, so it is not used as the silhouette-matching answer.
+- The interactive canvas instead uses the same full Cosmo Wenman Nike scan for its exact outline, projected shadow and finished painterly rendering. Its CC BY 3.0 source remains credited in `MuseumScan-Credits.md`.
+
 These are real artwork reproductions used as museum display textures. Images were downloaded without cropping, repainting, or other image edits. The game preserves their aspect ratios when fitting them into frames.
 
 Source license verified through Wikimedia Commons imageinfo metadata on 2026-11-04: every selected file is marked Public domain, with attributionRequired=false. The underlying paintings and their faithful two-dimensional reproductions are listed under PD-Art / Public Domain Mark. Institution names identify the collections; these downloads were obtained from the linked Wikimedia files, not represented as institutional endorsement or a direct institutional image license.

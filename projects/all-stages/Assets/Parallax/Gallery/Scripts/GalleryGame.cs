@@ -6,7 +6,7 @@ namespace ShadeLink.Gallery
 {
     public sealed class GalleryGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
-        public const string Version="0.21.1";
+        public const string Version="0.22.0";
         public bool conceptLayout, exhibitionPreview;
         public bool conceptCapture;
         static readonly Vector3[] ConceptCheckpoints={new Vector3(0,0,3),new Vector3(0,0,16.8f),new Vector3(0,0,31),new Vector3(0,0,45)};
@@ -44,18 +44,22 @@ namespace ShadeLink.Gallery
         public GalleryMuseumShadowCourse shadowCourse;
         public GalleryPortraitGate portraitGate;
         public GalleryNikeLight nikeLight;
+        public GalleryNikeCanvas nikeCanvas;
         float sunExposureTime;
         public string RoomTitle => conceptLayout?new[]{"01  명화 전시실","02  빛과 그림자","03  시점의 방","04  성당 · 두 손 사이의 문"}[checkpoint]:GalleryWorld.Titles[checkpoint];
         public bool InShadowCourse => conceptLayout&&player!=null&&player.feet.z<29;
         public string Objective => checkpoint==0?"청동 조형물을 키워 그늘로 빛 구간을 건너세요":checkpoint==1?
-            (shadowCourse!=null&&shadowCourse.NikeUnlocked?"니케의 그늘을 따라 열린 문으로 이동하세요":"전시 조명을 옮겨 니케의 그림자를 문 앞까지 보내세요"):checkpoint==2?
+            (nikeCanvas!=null&&nikeCanvas.Completed?"전시된 그림으로 그늘을 만들고 열린 문으로 이동하세요":
+                nikeCanvas!=null&&nikeCanvas.Revealing?"그림자가 캔버스의 작품으로 완성되고 있어요":"니케를 옮겨 캔버스의 윤곽에 그림자를 맞추세요"):checkpoint==2?
             (portraitGate!=null&&portraitGate.Opened?"양옆 그늘을 따라 열린 커튼 너머로 이동하세요":"눈·코·입이 얼굴처럼 보이도록 놓아 보세요"):
             (orcusExit!=null&&orcusExit.IsReadyForEntry?"계단을 올라 두 손 사이의 도서관으로 들어가세요":
              orcusExit!=null&&orcusExit.cathedralActivation!=null?orcusExit.cathedralActivation.Status:
                 "손 사이에 다른 공간이 보이는 조각을 확대해 내려놓으세요");
         public string RoomHint => checkpoint==0?
             "접힌 청동판을 잡고, 먼 바닥을 향해 크기를 키워 보세요.\n빛 구간 앞에 내려놓고 넓어진 그늘로 건넙니다.\n낮은 받침의 옆으로 돌아 그늘에 들어가세요.":checkpoint==1?
-            "이번에는 전시 조명을 잡아 위치와 크기를 바꿉니다.\n조명은 통로를 향하고, 니케가 만드는 그림자가 달라집니다.\n앞쪽 전원 구역에 내려놓고 문 앞 표시가 그늘에 들어오는지 보세요.\n문이 열리면 니케 옆 그늘을 따라 이동하세요.":checkpoint==2?
+            (nikeCanvas!=null&&nikeCanvas.Completed?
+                "캔버스의 그림이 완성됐습니다.\n다른 작품들과 함께 전시된 그림도 살펴보세요.\n옮길 수 있는 작품을 키워 밝은 통로를 가리고, 그늘로 건너세요.":
+                "조명은 고정되어 있습니다. 니케 조각상을 잡아 위치와 크기를 바꿔 보세요.\n날개와 몸의 그림자를 빈 캔버스의 윤곽에 맞추고 내려놓습니다.\n그림자가 맞으면 붓질을 따라 작품이 완성되고 문이 열립니다."):checkpoint==2?
             "눈은 위에, 코는 가운데, 입은 아래에 놓아 보세요.\n크기와 위치는 조금 달라도 괜찮습니다. 둥근 표시는 보기 좋은 위치의 힌트예요.\n작품을 내려놓고 얼굴을 잠깐 바라보면 커튼이 열립니다.":
             "두 손 사이에 작은 도서관이 보입니다.\n조각을 키워 '충분히 커졌어요' 안내가 나오면 내려놓으세요.\n마지막 크기와 약간의 기울기는 자동으로 맞춰 줍니다. 손이 열리면 계단을 올라 들어가세요.";
         public bool Transitioning => stageTransition!=null&&stageTransition.IsTransitioning;
@@ -100,7 +104,7 @@ namespace ShadeLink.Gallery
             player.feet=controller.transform.position;
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
             foreach(var prop in props)prop.placement.ResetPlaced();
-            nikeLight=GetComponent<GalleryNikeLight>();lighting.Rebuild();SyncView();
+            nikeLight=GetComponent<GalleryNikeLight>();nikeCanvas=GetComponentInChildren<GalleryNikeCanvas>(true);lighting.Rebuild();SyncView();
             orcusExit=GetComponentInChildren<GalleryOrcusExit>();
             shadowCourse=GetComponentInChildren<GalleryMuseumShadowCourse>();portraitGate=GetComponentInChildren<GalleryPortraitGate>();
             if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
@@ -431,7 +435,6 @@ namespace ShadeLink.Gallery
         public bool ValidPlacement(GalleryProp prop,out string reason) => ValidatePlacement(prop,out reason,false);
         bool ValidatePlacement(GalleryProp prop,out string reason,bool preview)
         {
-            if(nikeLight!=null&&prop==nikeLight.lamp&&!nikeLight.CanPlace(out reason))return false;
             var b=prop.WorldBounds;
             float lo=0,hi=WorldLength;
             if(b.min.x< -WorldHalfWidth+.2f||b.max.x>WorldHalfWidth-.2f||b.min.z<lo||b.max.z>hi||b.min.y<-.012f||b.max.y>WorldRoof-.25f)

@@ -1,0 +1,970 @@
+{
+    "passed": true,
+    "initialSevenTools": true,
+    "wrongNikeRejected": true,
+    "closedDoorSolid": true,
+    "heldNikeRejected": true,
+    "unsettledNikeRejected": true,
+    "bronzeInputReleased": true,
+    "bronzePhysicallySettled": true,
+    "bronzeCourseWalk": true,
+    "nikeInputReleased": true,
+    "nikePhysicallySettled": true,
+    "paintingInputReleased": true,
+    "paintingPhysicallySettled": true,
+    "partialBrushReveal": true,
+    "completedPainting": true,
+    "actualScanShadowProbes": true,
+    "physicalDoorOpened": true,
+    "nikeCourseWalk": true,
+    "fixedSourceUntouched": true,
+    "unprotectedGateRespawn": true,
+    "paintingCreatesGoalShade": true,
+    "offCentreDoorCrossing": true,
+    "physicsRestored": true,
+    "phase": "Nike off-centre doorway real shadow route planning and CharacterController walking",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "negativeScope": "The unprotected gate walk deliberately respawns once after canvas completion while Monet remains mounted. This labelled negative has its own counter; every positive carry and shadow crossing rejects any additional respawn.",
+    "offCentreScope": "After input-placing Monet, the actual controller walks to the route waypoint (1.25,27.75), then continuously passes the physical glass plane z=28.72 near x=1.25 with grounded safe feet, a completed canvas and the fully opened door. This edge approach adds no player warp or prop pose writes. The reported crossing coordinates are sampled from actual controller motion, outside the retired hidden 0.95m centre limit.",
+    "independentScanProbeScope": "A temporary static PhysX MeshCollider uses the original unchanged complete Nike render mesh and the actual render transform. Direct collider.Raycast results are collected, then this QA collider is immediately destroyed before querying production illumination or advancing/rendering/walking. No gameplay prop or mesh is changed.",
+    "scope": "Actual production museum with the original bronze, movable full Nike scan and movable wall-mounted Monet; the spotlight stays fixed and is never an interaction prop. Player-only angular-size pickup and observer fixtures are disclosed. Positive tools are moved and resized only through camera Interact, actual CharacterController carry, the common perspective resolver, public Drop and PhysX; their transforms, scales, rigidbody poses and placement readiness are never forced. The true Nike shadow is matched to its vertical canvas; timed matching and the diagonal brush reveal must finish before the glass door opens. The Monet is removed from its original wall by the same public interaction and physically placed as a floor shadow tool. Shadow routes are selected from real floor, capsule and FootSafe queries, then walked by the actual CharacterController without player warps during a crossing. The closed-door negative uses a player-only fixture while the original Nike remains incorrect. Held and freshly dropped Nike negatives are sampled during actual input. Independent physical scan rays and actual rendered screenshots are separate evidence; this is focused integration QA, not an autonomous unassisted solve or GPU/CPU pixel parity.",
+    "simulatedTicks": 2245,
+    "initialPropCount": 7,
+    "respawns": 1,
+    "checkpoint": 2,
+    "canvasShadowSamples": 78,
+    "canvasSampleCount": 323,
+    "unprotectedGateNegativeRespawns": 1,
+    "goalSafeBeforePainting": 0,
+    "goalSafeAfterPainting": 25,
+    "independentQueryMeshTriangles": 980690,
+    "simulatedSeconds": 24.94444465637207,
+    "finalAlignment": 1.0,
+    "partialRevealProgress": 0.28205153346061709,
+    "finalRevealProgress": 1.0,
+    "nikeCrossingX": 1.2446166276931763,
+    "nikeCrossingZ": 28.72891616821289,
+    "doorwayWalkableHalfWidth": 1.4999998807907105,
+    "carries": [
+        {
+            "tool": "01 · 접힌 청동 · 그림자를 만드는 조각",
+            "pickupFixture": {
+                "x": -3.5,
+                "y": 0.0,
+                "z": 4.210848331451416
+            },
+            "observerFixture": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 2.799999952316284
+            },
+            "originalPosition": {
+                "x": -3.5,
+                "y": 0.0,
+                "z": 5.0
+            },
+            "releasedPosition": {
+                "x": -0.0003180503845214844,
+                "y": 0.01673877239227295,
+                "z": 7.120833396911621
+            },
+            "settledPosition": {
+                "x": -0.00031815655529499054,
+                "y": 2.384185791015625e-7,
+                "z": 7.120834827423096
+            },
+            "originalScale": 0.800000011920929,
+            "requestedScale": 2.0999999046325685,
+            "maximumInputScale": 2.0810186862945558,
+            "releasedScale": 2.0810182094573976,
+            "settledScale": 2.0810182094573976,
+            "actualCarryMetres": 3.7519421577453615,
+            "referenceDistance": 1.7616426944732667,
+            "referenceScale": 0.800000011920929,
+            "lastDepth": 4.582513332366943,
+            "lastSurfaceDepth": 4.582513332366943,
+            "lastBoundaryDepth": 4.613595008850098,
+            "lastObstacle": "",
+            "lastInvalidReason": "",
+            "lastLimiter": "Surface",
+            "lastSource": "Museum limestone floor",
+            "lastPlacementState": "Surface | Museum limestone floor | blocked=False |  | ",
+            "heldRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "lastPlayerFeet": {
+                "x": -0.04721866175532341,
+                "y": 0.04999997466802597,
+                "z": 2.8207736015319826
+            },
+            "lastHeldPosition": {
+                "x": -0.0003180503845214844,
+                "y": 0.01673877239227295,
+                "z": 7.120833396911621
+            },
+            "lastDiagnosticPoint": {
+                "x": -1.8498567342758179,
+                "y": 0.0,
+                "z": 6.807857513427734
+            },
+            "lastPlacementBlocked": false,
+            "lastProjectionApplied": true,
+            "placementDiagnostics": [
+                "tick=175 state=Surface | Museum limestone floor | blocked=False |  |  feet=(-3.4999, 0.0500, 4.2108) position=(-2.3102, 0.0179, 4.6857) scale=0.92443 depth=2.0357 point=(-3.1195, 0.0000, 4.5331) rotation=(0.00, 0.00, 0.00)"
+            ],
+            "carryTicks": 204,
+            "settleTicks": 37
+        },
+        {
+            "tool": "02 · 사모트라케의 니케",
+            "pickupFixture": {
+                "x": -2.799999952316284,
+                "y": 0.0,
+                "z": 18.69719886779785
+            },
+            "observerFixture": {
+                "x": -4.800000190734863,
+                "y": 0.0,
+                "z": 19.0
+            },
+            "originalPosition": {
+                "x": -2.799999952316284,
+                "y": 0.0,
+                "z": 22.5
+            },
+            "releasedPosition": {
+                "x": -4.7996673583984379,
+                "y": 0.016718506813049318,
+                "z": 23.867008209228517
+            },
+            "settledPosition": {
+                "x": -4.799666404724121,
+                "y": -0.0000021457672119140627,
+                "z": 23.867008209228517
+            },
+            "originalScale": 0.800000011920929,
+            "requestedScale": 1.0,
+            "maximumInputScale": 1.0559974908828736,
+            "releasedScale": 0.9959169030189514,
+            "settledScale": 0.9959169030189514,
+            "actualCarryMetres": 2.0018177032470705,
+            "referenceDistance": 4.116056442260742,
+            "referenceScale": 0.800000011920929,
+            "lastDepth": 5.124062538146973,
+            "lastSurfaceDepth": 5.124062538146973,
+            "lastBoundaryDepth": 5.158751487731934,
+            "lastObstacle": "",
+            "lastInvalidReason": "",
+            "lastLimiter": "Surface",
+            "lastSource": "Museum limestone floor",
+            "lastPlacementState": "Surface | Museum limestone floor | blocked=False |  | ",
+            "heldRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "lastPlayerFeet": {
+                "x": -4.7506208419799809,
+                "y": 0.04999997466802597,
+                "z": 18.99393653869629
+            },
+            "lastHeldPosition": {
+                "x": -4.7996673583984379,
+                "y": 0.016718506813049318,
+                "z": 23.867008209228517
+            },
+            "lastDiagnosticPoint": {
+                "x": -4.7848711013793949,
+                "y": 0.0,
+                "z": 22.767627716064454
+            },
+            "lastPlacementBlocked": false,
+            "lastProjectionApplied": true,
+            "placementDiagnostics": [
+                "tick=804 state=Surface | Museum limestone floor | blocked=False |  |  feet=(-2.8001, 0.0500, 18.6972) position=(-4.1856, 0.0167, 23.7063) scale=1.05595 depth=5.4329 point=(-4.2826, 0.0000, 22.4366) rotation=(0.00, 0.00, 0.00)"
+            ],
+            "carryTicks": 165,
+            "settleTicks": 37
+        },
+        {
+            "tool": "02 · 수련 연못 위의 다리",
+            "pickupFixture": {
+                "x": 4.900000095367432,
+                "y": 0.0,
+                "z": 25.399999618530275
+            },
+            "observerFixture": {
+                "x": -1.7000000476837159,
+                "y": 0.0,
+                "z": 18.5
+            },
+            "originalPosition": {
+                "x": 4.900000095367432,
+                "y": 2.700000047683716,
+                "z": 28.399999618530275
+            },
+            "releasedPosition": {
+                "x": -1.7028945684432984,
+                "y": 2.583869457244873,
+                "z": 23.362308502197267
+            },
+            "settledPosition": {
+                "x": -1.7028945684432984,
+                "y": 2.5672435760498049,
+                "z": 23.362308502197267
+            },
+            "originalScale": 1.0,
+            "requestedScale": 1.5,
+            "maximumInputScale": 1.5406769514083863,
+            "releasedScale": 1.5371458530426026,
+            "settledScale": 1.5371458530426026,
+            "actualCarryMetres": 9.52800464630127,
+            "referenceDistance": 3.2040014266967775,
+            "referenceScale": 1.0,
+            "lastDepth": 4.925017356872559,
+            "lastSurfaceDepth": 4.925017356872559,
+            "lastBoundaryDepth": 4.958069324493408,
+            "lastObstacle": "",
+            "lastInvalidReason": "",
+            "lastLimiter": "Surface",
+            "lastSource": "Museum limestone floor",
+            "lastPlacementState": "Surface | Museum limestone floor | blocked=False |  | ",
+            "heldRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "lastPlayerFeet": {
+                "x": -1.664342999458313,
+                "y": 0.04999997466802597,
+                "z": 18.536718368530275
+            },
+            "lastHeldPosition": {
+                "x": -1.7028945684432984,
+                "y": 2.583869457244873,
+                "z": 23.362308502197267
+            },
+            "lastDiagnosticPoint": {
+                "x": -1.7485408782958985,
+                "y": 0.0,
+                "z": 23.470592498779298
+            },
+            "lastPlacementBlocked": false,
+            "lastProjectionApplied": true,
+            "placementDiagnostics": [
+                "tick=1476 state=Surface | Museum limestone floor | blocked=False |  |  feet=(4.9000, 0.0500, 25.3999) position=(1.1511, 2.1136, 24.0367) scale=1.25529 depth=4.0220 point=(2.8239, 0.0000, 24.0785) rotation=(0.00, 0.00, 0.00)",
+                "tick=1556 state=Surface | Collection · Winged Victory · Cosmo Wenman scan/Nike carry volume · band 4 | blocked=False |  |  feet=(2.9283, 0.0500, 23.2676) position=(-1.7360, 2.5110, 22.9678) scale=1.48623 depth=4.7619 point=(-3.8830, 2.9456, 22.9704) rotation=(0.00, 0.00, 0.00)",
+                "tick=1753 state=Surface | Museum limestone floor | blocked=False |  |  feet=(-1.6497, 0.0500, 18.5518) position=(-1.7065, 2.5897, 23.3874) scale=1.54065 depth=4.9362 point=(-1.7499, 0.0000, 23.4899) rotation=(0.00, 0.00, 0.00)"
+            ],
+            "carryTicks": 334,
+            "settleTicks": 37
+        }
+    ],
+    "routes": [
+        {
+            "room": "bronze room",
+            "path": [
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 2.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 4.75
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 5.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 5.25
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 5.5
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 5.75
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 6.0
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 6.25
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 6.5
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 6.75
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.0
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.25
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.5
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 7.75
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 8.0
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 8.25
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 8.5
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 8.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 14.0
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 14.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 14.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.800000190734864
+                }
+            ],
+            "plannedFootSafe": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "gridNodes": 2491,
+            "walkTicks": 364,
+            "length": 13.863960266113282,
+            "longestUnshadedRun": 0.0,
+            "maximumExposure": 0.0,
+            "longestUnsafeStart": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "longestUnsafeEnd": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestStartSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestGoalSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "safeComponents": 1,
+            "startSafeComponent": 0,
+            "goalSafeComponent": 0,
+            "safeComponentGap": 0.0,
+            "gridDiagnosticsFile": "shadow-route-bronze.csv"
+        },
+        {
+            "room": "Nike canvas room approach",
+            "path": [
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 18.5
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 18.75
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 19.0
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 19.25
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 19.5
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 19.75
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 20.0
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 20.25
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 20.5
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 20.75
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 21.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 21.25
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 21.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 21.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 22.0
+                },
+                {
+                    "x": 0.25,
+                    "y": 0.02500000037252903,
+                    "z": 22.25
+                },
+                {
+                    "x": 0.5,
+                    "y": 0.02500000037252903,
+                    "z": 22.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 22.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 23.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.0
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.25
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.5
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": 0.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.0
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 25.25
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 25.5
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 25.75
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 26.0
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 26.25
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 26.5
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 26.75
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 27.0
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 27.25
+                },
+                {
+                    "x": 1.0,
+                    "y": 0.02500000037252903,
+                    "z": 27.5
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 27.75
+                }
+            ],
+            "plannedFootSafe": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "gridNodes": 1927,
+            "walkTicks": 293,
+            "length": 10.492639541625977,
+            "longestUnshadedRun": 0.0,
+            "maximumExposure": 0.0,
+            "longestUnsafeStart": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "longestUnsafeEnd": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestStartSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestGoalSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "safeComponents": 2,
+            "startSafeComponent": 0,
+            "goalSafeComponent": 0,
+            "safeComponentGap": 0.0,
+            "gridDiagnosticsFile": "shadow-route-nike.csv"
+        },
+        {
+            "room": "Nike off-centre doorway",
+            "path": [
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 27.75
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 28.0
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 28.25
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 28.5
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 28.75
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 29.0
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 29.25
+                },
+                {
+                    "x": 1.25,
+                    "y": 0.02500000037252903,
+                    "z": 29.5
+                }
+            ],
+            "plannedFootSafe": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "gridNodes": 564,
+            "walkTicks": 106,
+            "length": 1.75,
+            "longestUnshadedRun": 0.0,
+            "maximumExposure": 0.0,
+            "longestUnsafeStart": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "longestUnsafeEnd": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestStartSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestGoalSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "safeComponents": 2,
+            "startSafeComponent": 1,
+            "goalSafeComponent": 1,
+            "safeComponentGap": 0.0,
+            "gridDiagnosticsFile": "shadow-route-nike.csv"
+        }
+    ],
+    "checks": [
+        "Fresh museum has seven tools including the original movable full Nike and mounted Monet; the source stays fixed",
+        "Original incorrect Nike does not complete the canvas; actual CharacterController movement is stopped by the closed glass door",
+        "Original bronze is enlarged and released through actual input, settles in PhysX, and its real shade supports a controller crossing without respawn",
+        "The input-placed full original Nike matches its real projected contour, waits while settled and reveals a visible intermediate painting before completing",
+        "Only completion of the timed Nike canvas opens the visible physical glass door",
+        "With the completed canvas but Monet still mounted, the exposed goal fails foot probes and actual grounded walking respawns once; this labelled negative is separate from zero-respawn positive crossings",
+        "Original mounted Monet is selected by the real camera, detached, carried, resized, dropped and physically settled as a shadow tool",
+        "Actual controller follows the input-created shadows through the open door at a measured safe grounded off-centre crossing near x=1.25, reaches the portrait checkpoint without another respawn and leaves the fixed source unchanged"
+    ],
+    "errors": []
+}

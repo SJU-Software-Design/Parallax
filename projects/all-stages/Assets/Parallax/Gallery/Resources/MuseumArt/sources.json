@@ -108,5 +108,25 @@
     "bytes": 594446,
     "sha256": "fc7aa0b6dcae15e41f1b9b64ba8e89db6fd5e6cbbd9ca74d61eefe8d135fa6f7",
     "accessed": "2026-11-04"
+  },
+  {
+    "file": "NikeVisconti1919.jpg",
+    "resourcesKey": "MuseumArt/NikeVisconti1919",
+    "title": "Vitória de Samotrácia",
+    "artist": "Eliseu Visconti",
+    "year": "1919",
+    "collection": "Museu Nacional de Belas Artes, Rio de Janeiro",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "license": "Public domain / PD-Art as stated on Wikimedia Commons",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attributionRequired": false,
+    "downloadedSourceDerivative": "Original Wikimedia file, unmodified",
+    "width": 2454,
+    "height": 3968,
+    "bytes": 3719505,
+    "sha256": "1a359c5df62a59849c6e955e5ca3f78e9010dc75a91b5d2a2a0c75bcd9202c45",
+    "accessed": "2026-11-05"
   }
 ]

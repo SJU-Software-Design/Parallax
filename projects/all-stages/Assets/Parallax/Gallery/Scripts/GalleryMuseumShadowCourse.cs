@@ -10,9 +10,13 @@ namespace ShadeLink.Gallery
     public sealed class GalleryMuseumShadowCourse : MonoBehaviour
     {
         public const float TutorialFinish = 12.2f, NikeFinish = 28.2f;
+        const float NikeDoorwayHalfWidth = 1.81f, NikeGatePlane = 28.72f;
         public GalleryGame game;
-        public GalleryProp bronze,lamp;
+        public GalleryProp bronze,nike,painting,lamp;
         public GalleryNikeLight nikeLight;
+        public GalleryNikeGeometry nikeGeometry;
+        public GalleryNikeCanvas canvas;
+        public Transform fixedLampRoot,head,emitter;
         public GalleryProp[] panels=Array.Empty<GalleryProp>();
         public Transform[] nikeGateLeaves;
         public BoxCollider[] nikeGateColliders;
@@ -20,8 +24,9 @@ namespace ShadeLink.Gallery
         public bool NikeCleared { get; private set; }
         public bool NikeUnlocked { get; private set; }
         public bool NikeGateOpen => gateOpening>=.995f;
+        public float NikeWalkableHalfWidth => Mathf.Max(0,NikeDoorwayHalfWidth-(game!=null&&game.controller!=null?game.controller.radius:.3f)-.01f);
         public float NikeGateOpening => gateOpening;
-        public Vector3 NikeGatePosition => transform.TransformPoint(new Vector3(0,0,28.72f));
+        public Vector3 NikeGatePosition => transform.TransformPoint(new Vector3(0,0,NikeGatePlane));
         public BoxCollider[] NikeGateColliders => nikeGateColliders;
         public Transform[] NikeGateLeaves => nikeGateLeaves;
 
@@ -35,37 +40,48 @@ namespace ShadeLink.Gallery
             if(owner==null)throw new ArgumentNullException(nameof(owner));
             var existing=owner.GetComponentInChildren<GalleryMuseumShadowCourse>(true);
             if(existing!=null)return existing;
-            var collection=new GameObject("Museum shadow course · bronze and movable light");
+            var collection=new GameObject("Museum shadow course · bronze and Nike canvas");
             collection.transform.SetParent(owner.transform,false);
             var course=collection.AddComponent<GalleryMuseumShadowCourse>();course.game=owner;
+            // Preserve the real bust exhibit while keeping the new projector's
+            // sculpture-to-canvas sightline clear of unrelated silhouettes.
+            var busts=owner.transform.Find("Concept museum · marble bust collection");
+            var westBust=busts==null?null:busts.Find("대리석 흉상 · 서쪽 전시");
+            if(westBust!=null)westBust.localPosition=new Vector3(-6.6f,0,18.4f);
             Material bronze=Material("Shadow course · satin bronze fittings","Bronze",new Color(.51f,.34f,.15f));
             bronze.SetFloat("_Metallic",.90f);bronze.SetFloat("_Roughness",.34f);
             course.bronze=GalleryShadowExhibits.CreateBronze(collection.transform,new Vector3(-3.5f,0,5));
-            course.lamp=GalleryShadowExhibits.CreateLamp(collection.transform,new Vector3(1.5f,0,20.2f),
-                new Vector3(0,.025f,NikeFinish),out Transform head,out Transform emitter);
+            var nikeRoot=owner.transform.Find("Collection · Winged Victory · Cosmo Wenman scan");
+            if(nikeRoot==null)throw new InvalidOperationException("Install the authentic Nike scan before its shadow canvas.");
+            course.nike=nikeRoot.GetComponent<GalleryProp>();course.nikeGeometry=nikeRoot.GetComponent<GalleryNikeGeometry>();
+            course.painting=GalleryShadowExhibits.CreateCollectionPainting(collection.transform);
+            course.fixedLampRoot=GalleryShadowExhibits.CreateFixedLamp(collection.transform,new Vector3(-4.8f,1.1f,16.5f),
+                new Vector3(-4.8f,2.9f,28.6f),out course.head,out course.emitter);
             course.nikeLight=owner.gameObject.AddComponent<GalleryNikeLight>();
-            course.nikeLight.game=owner;course.nikeLight.lamp=course.lamp;course.nikeLight.head=head;course.nikeLight.emitter=emitter;
-            course.nikeLight.nikeRoot=owner.transform.Find("Collection · Winged Victory · Cosmo Wenman scan");
-            if(course.nikeLight.nikeRoot==null)throw new InvalidOperationException("Install the fixed Nike scan before its shadow course.");
-            course.nikeLight.AimPoint=new Vector3(0,.025f,NikeFinish);course.nikeLight.autoAim=true;
+            course.nikeLight.game=owner;course.nikeLight.sourceRoot=course.fixedLampRoot;
+            course.nikeLight.head=course.head;course.nikeLight.emitter=course.emitter;
+            course.nikeLight.nike=course.nike;course.nikeLight.nikeRoot=nikeRoot;course.nikeLight.geometry=course.nikeGeometry;
+            course.nikeLight.AimPoint=new Vector3(-4.8f,2.9f,28.6f);course.nikeLight.autoAim=true;course.nikeLight.fieldOfView=60;
             owner.nikeLight=course.nikeLight;
             var props=new List<GalleryProp>(owner.props??Array.Empty<GalleryProp>());
-            props.Add(course.bronze);props.Add(course.lamp);owner.props=props.ToArray();
-            course.PowerZone(bronze);course.GlassRoute(bronze);course.GoalFrame(bronze);
-            foreach(float z in new[]{7.25f,TutorialFinish,22.1f,NikeFinish})course.Inlay(z,bronze);
+            props.Add(course.bronze);props.Add(course.painting);owner.props=props.ToArray();
+            course.canvas=GalleryNikeCanvas.Install(owner,course.nikeLight,course.nike,course.nikeGeometry);
+            owner.nikeCanvas=course.canvas;
+            course.GlassRoute(bronze);
+            foreach(float z in new[]{7.25f,TutorialFinish,NikeFinish})course.Inlay(z,bronze);
             course.FloorLabel("청동 조각을 키워 빛을 가려 보세요",new Vector3(0,.015f,6.60f),.12f);
-            course.FloorLabel("조명을 옮겨 날개의 그림자를 문까지 이어 보세요",new Vector3(0,.015f,21.4f),.105f);
-            course.ResetProgress();
+            course.FloorLabel("니케의 그림자를 맞추고 전시된 그림으로 그늘을 이으세요",new Vector3(0,.015f,20.8f),.095f);
             Physics.SyncTransforms();
-            foreach(var prop in new[]{course.bronze,course.lamp})
+            foreach(var prop in new[]{course.bronze,course.nike,course.painting})
             {
                 prop.InitializePhysics();
                 if(owner.controller!=null)prop.placement.SetPlayer(owner.controller);
                 prop.placement.ResetPlaced();
             }
+            Physics.SyncTransforms();course.ResetProgress();
             course.nikeLight.SyncPose();
             if(owner.lighting!=null)owner.lighting.Rebuild();
-            Debug.Log("MUSEUM_SHADOW_COURSE_OK bronze=1 lamp=1 panels=0 totalProps="+owner.props.Length);
+            Debug.Log("MUSEUM_SHADOW_COURSE_OK bronze=1 nike=1 painting=1 fixedLight=1 totalProps="+owner.props.Length);
             return course;
         }
 
@@ -96,29 +112,6 @@ namespace ShadeLink.Gallery
             return renderer;
         }
 
-        void PowerZone(Material bronze)
-        {
-            const float left=-5.3f,right=4.8f,front=16f,back=22.2f;
-            foreach(float x in new[]{left,right})
-                FloorInlay("Lamp floor power area · side",new Vector3(x,.010f,(front+back)*.5f),new Vector3(.020f,.008f,back-front),bronze);
-            foreach(float z in new[]{front,back})
-                FloorInlay("Lamp floor power area · end",new Vector3((left+right)*.5f,.010f,z),new Vector3(right-left,.008f,.020f),bronze);
-            FloorLabel("조명을 놓을 수 있는 전시 바닥",new Vector3(-.25f,.018f,16.5f),.10f);
-        }
-
-        void FloorInlay(string name,Vector3 at,Vector3 size,Material bronze)
-        {Block(transform,name,at,size,bronze).shadowCastingMode=ShadowCastingMode.Off;}
-
-        void GoalFrame(Material bronze)
-        {
-            // Flush visual border of the same rectangle sampled by NikeLight.
-            // No collider, caster or painted shade alters its actual lighting.
-            const float left=-.65f,right=.65f,front=27.65f,back=28.4f;
-            foreach(float x in new[]{left,right})
-                FloorInlay("Nike goal · bronze side border",new Vector3(x,.009f,(front+back)*.5f),new Vector3(.018f,.006f,back-front),bronze);
-            foreach(float z in new[]{front,back})
-                FloorInlay("Nike goal · bronze end border",new Vector3(0,.009f,z),new Vector3(right-left+.018f,.006f,.018f),bronze);
-        }
 
         Renderer Glass(Transform parent,string name,Vector3 at,Vector3 size,Material glass)
         {
@@ -157,19 +150,15 @@ namespace ShadeLink.Gallery
             GalleryWorld.Materials.Add(glass);
             foreach(int side in new[]{-1,1})
             {
-                float x=side<0?-4.5f:2.5f;
-                Guide(new Vector3(x,0,23.2f),new Vector3(x,0,25),glass,bronze);
-                Guide(new Vector3(x,0,25),new Vector3(side*.95f,0,28.1f),glass,bronze);
-                Guide(new Vector3(side*.95f,0,28.1f),new Vector3(side*.95f,0,28.65f),glass,bronze);
                 // Rear glass closes the sidewall detour; the only route through
                 // this screen is the visible, sliding door in the real arch.
-                Guide(new Vector3(side*1.81f,0,28.72f),new Vector3(side*7.87f,0,28.72f),glass,bronze);
+                Guide(new Vector3(side*NikeDoorwayHalfWidth,0,NikeGatePlane),new Vector3(side*7.87f,0,NikeGatePlane),glass,bronze);
             }
             nikeGateLeaves=new Transform[2];nikeGateColliders=new BoxCollider[2];
             for(int i=0;i<2;i++)
             {
                 int side=i==0?-1:1;
-                var leaf=Group(transform,"Nike glass sliding door · "+(side<0?"left":"right"),new Vector3(side*.90f,0,28.72f),Quaternion.identity);
+                var leaf=Group(transform,"Nike glass sliding door · "+(side<0?"left":"right"),new Vector3(side*.90f,0,NikeGatePlane),Quaternion.identity);
                 nikeGateLeaves[i]=leaf;
                 var panel=Glass(leaf,"Light-transmitting sliding glass",Vector3.up*1.57f,new Vector3(1.78f,3.10f,.035f),glass);
                 nikeGateColliders[i]=panel.GetComponent<BoxCollider>();
@@ -179,7 +168,7 @@ namespace ShadeLink.Gallery
                     Hardware(leaf,"Door bronze horizontal stile",new Vector3(0,1.57f+edge*1.55f,0),new Vector3(1.78f,.028f,.050f),bronze);
                 }
             }
-            Hardware(transform,"Bronze sliding door overhead track",new Vector3(0,3.19f,28.72f),new Vector3(7.4f,.070f,.10f),bronze);
+            Hardware(transform,"Bronze sliding door overhead track",new Vector3(0,3.19f,NikeGatePlane),new Vector3(7.4f,.070f,.10f),bronze);
         }
 
         void Inlay(float z,Material bronze)
@@ -206,7 +195,7 @@ namespace ShadeLink.Gallery
             if(zone<0||zone==1)
             {
                 NikeCleared=false;nikeCrossed=false;NikeUnlocked=false;
-                nikeLight?.ResetLight();
+                canvas?.ResetPuzzle();nikeLight?.ResetLight();
                 // Normal R resets the visitor to the room entrance first. If
                 // called elsewhere, keep the panes away until the visitor exits.
                 if(CanCloseGate())gateOpening=0;
@@ -220,7 +209,7 @@ namespace ShadeLink.Gallery
         {
             if(game==null||game.player==null)return true;
             Vector3 feet=transform.InverseTransformPoint(game.player.feet);
-            return !(Mathf.Abs(feet.x)<2.40f&&Mathf.Abs(feet.z-28.72f)<.65f&&feet.y<3.2f&&feet.y>-1.7f);
+            return !(Mathf.Abs(feet.x)<2.40f&&Mathf.Abs(feet.z-NikeGatePlane)<.65f&&feet.y<3.2f&&feet.y>-1.7f);
         }
 
         void ApplyGatePose()
@@ -228,16 +217,16 @@ namespace ShadeLink.Gallery
             if(nikeGateLeaves==null)return;
             float slide=1.95f*Mathf.SmoothStep(0,1,gateOpening);
             for(int i=0;i<nikeGateLeaves.Length;i++)if(nikeGateLeaves[i]!=null)
-                nikeGateLeaves[i].localPosition=new Vector3((i==0?-1:1)*(.90f+slide),0,28.72f);
+                nikeGateLeaves[i].localPosition=new Vector3((i==0?-1:1)*(.90f+slide),0,NikeGatePlane);
             Physics.SyncTransforms();
         }
 
         void TickGate(float dt)
         {
-            if(!NikeUnlocked&&nikeLight!=null&&nikeLight.SolutionReady)
+            if(!NikeUnlocked&&canvas!=null&&canvas.Completed)
             {
                 NikeUnlocked=true;
-                game.Tell("날개의 그림자가 문에 닿았습니다. 열린 유리문으로 이동하세요.",5);
+                game.Tell("니케의 그림이 완성됐습니다. 전시된 그림으로 그늘을 이어 열린 문까지 가세요.",6);
             }
             float next=gateOpening;
             if(NikeUnlocked)next=Mathf.MoveTowards(next,1,Mathf.Max(0,dt)/.8f);
@@ -248,26 +237,33 @@ namespace ShadeLink.Gallery
         public void Tick(float dt)
         {
             if(game==null||game.player==null)return;
+            canvas?.Tick(dt);
             TickGate(dt);
             Vector3 feet=game.player.feet;
+            Vector3 localFeet=transform.InverseTransformPoint(feet),previousLocalFeet=transform.InverseTransformPoint(previousFeet);
             if(!havePreviousFeet){previousFeet=feet;havePreviousFeet=true;return;}
             bool forward=feet.z>previousFeet.z;
             // A checkpoint warp is not walking a course. Ordinary motor motion
             // stays below this generous bound even at the largest gameplay dt.
             bool continuous=Vector3.Distance(feet,previousFeet)<=GalleryGame.Speed*Mathf.Clamp(dt,0,.05f)+.5f;
             if(feet.z<TutorialFinish)tutorialCrossed=false;
-            if(feet.z<NikeFinish)nikeCrossed=false;
+            if(localFeet.z<NikeGatePlane)nikeCrossed=false;
             if(game.active&&!game.won&&forward&&continuous)
             {
                 if(previousFeet.z<TutorialFinish&&feet.z>=TutorialFinish)tutorialCrossed=true;
-                if(previousFeet.z<NikeFinish&&feet.z>=NikeFinish&&NikeUnlocked&&game.safe&&game.player.grounded&&Mathf.Abs(feet.x)<.95f)
+                // Completion follows the actual glass opening, including the
+                // visitor capsule, so a safe off-centre passage also counts.
+                // Remember physical motion through an opening pane gap; award
+                // progress only once the door has finished opening.
+                if(previousLocalFeet.z<NikeGatePlane&&localFeet.z>=NikeGatePlane&&NikeUnlocked&&canvas!=null&&canvas.Completed&&game.safe&&game.player.grounded&&
+                    Mathf.Abs(localFeet.x)<=NikeWalkableHalfWidth)
                     nikeCrossed=true;
             }
             if(game.active&&!game.won&&game.safe&&game.player.grounded)
             {
                 if(game.checkpoint==0&&!TutorialCleared&&tutorialCrossed&&feet.z>=TutorialFinish)
                 {TutorialCleared=true;game.Tell("청동 조각의 그림자 통로를 건넜습니다. 다음 전시실로 이동하세요.",5);}
-                if(game.checkpoint==1&&!NikeCleared&&NikeUnlocked&&nikeCrossed&&feet.z>=NikeFinish)
+                if(game.checkpoint==1&&!NikeCleared&&NikeUnlocked&&NikeGateOpen&&canvas!=null&&canvas.Completed&&nikeCrossed&&localFeet.z>=NikeGatePlane)
                 {NikeCleared=true;game.Tell("니케의 그림자를 따라 건넜습니다. 다음 전시실로 이동하세요.",5);}
             }
             previousFeet=feet;
