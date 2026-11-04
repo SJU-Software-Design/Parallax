@@ -3,12 +3,13 @@ using ShadeLink.Gallery;
 
 namespace ShadeLink.Tutorial
 {
-    public sealed class TutorialGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
+    public sealed partial class TutorialGame : MonoBehaviour, IObjectInteractionHost<GalleryProp>
     {
         const float StartSize = .36f;
         const int LessonCount = 3;
         const float DoorWidth = 2.4f;
         const float DoorHeight = 3f;
+        const float DoorWallThickness = .4f;
         const float PassageDepth = 2.6f;
         const float DoorCenter = 4.5f;
         const float OrangeTargetSize = 4.65f;
@@ -17,6 +18,7 @@ namespace ShadeLink.Tutorial
         const float ShrinkMaximumSize = .56f;
         const float MintMinimumSize = 8.5f;
         const float MintMaximumSize = 10.35f;
+        const float RoomWidth = 32f;
         const float RoomHeight = 16f;
         const float TableTargetSize = .70f;
         public const float TableHeight = .82f;
@@ -30,7 +32,7 @@ namespace ShadeLink.Tutorial
         static readonly Color Mint = new Color(.42f, .96f, .73f);
         static readonly Color Reference = new Color(.48f, .92f, 1f);
         static readonly Color ReadyAccent = new Color(.6f, 1f, .35f);
-        static readonly Bounds Room = new Bounds(new Vector3(0, RoomHeight * .5f, 14.6f), new Vector3(32, RoomHeight, 34.8f));
+        static readonly Bounds Room = new Bounds(new Vector3(0, RoomHeight * .5f, 14.6f), new Vector3(RoomWidth, RoomHeight, 34.8f));
 
         [SerializeField] Shader surfaceShader;
         [SerializeField] Shader guideShader;
@@ -39,8 +41,10 @@ namespace ShadeLink.Tutorial
         readonly FirstPersonMotor motor = new FirstPersonMotor();
         readonly PlayerControls controls = new PlayerControls();
         ObjectInteraction<GalleryProp> interaction;
+        TutorialLandingShake landingShake;
         GalleryProp die;
-        Material surface, white, dark, orange, cyan;
+        Material wallSeam, steel, paleSteel, frame, floorPlate, paleFloorPlate;
+        Material white, dark, orange, cyan;
         Transform primaryTarget, tabletopTarget, secondaryTarget;
         GameObject firstSign, secondSign, shrinkSign;
         Material signInk;
@@ -73,10 +77,11 @@ namespace ShadeLink.Tutorial
 
         void Start()
         {
-            var shader = surfaceShader;
-            surface = new Material(concreteShader) { color = new Color(.69f, .67f, .63f) };
-            white = new Material(shader) { color = new Color(.95f, .92f, .84f) };
-            dark = new Material(shader) { color = new Color(.13f, .16f, .19f) };
+            BuildFinishes();
+            white = new Material(surfaceShader) { color = new Color(.96f, .95f, .91f) };
+            white.SetFloat("_Glossiness", .64f);
+            dark = new Material(surfaceShader) { color = new Color(.13f, .16f, .19f) };
+            dark.SetFloat("_Glossiness", .38f);
             orange = new Material(guideShader) { color = Accent };
             cyan = new Material(guideShader) { color = Mint };
             unlockedLamp = new Material(guideShader) { color = new Color(.32f, .95f, .56f) };
@@ -90,16 +95,17 @@ namespace ShadeLink.Tutorial
             Camera.transform.SetParent(player.transform, false);
             Camera.gameObject.AddComponent<AudioListener>();
             Camera.clearFlags = CameraClearFlags.SolidColor;
-            Camera.backgroundColor = surface.color;
+            Camera.backgroundColor = steel.color;
             FirstPersonMotor.Configure(Controller, Camera);
             PlayerControls.ConfigureCamera(Camera);
+            landingShake = new TutorialLandingShake(Camera);
 
             BuildTable();
-            die = Box("Practice die", TableHome, Vector3.one * StartSize, white).AddComponent<GalleryProp>();
-            AddPips(die.transform);
+            die = BuildDie("Practice die", TableHome, StartSize);
             die.Remember();
             die.InitializePhysics();
             die.placement.PreviewUntilSettled = false;
+            AttachLandingFeedback(die);
             Props = new[] { die };
             interaction = new ObjectInteraction<GalleryProp>(this);
             primaryTarget = WallTarget("First wall target", orange, new Vector3(0, OrangeTargetSize * .5f, Room.max.z), OrangeTargetSize);
@@ -112,6 +118,7 @@ namespace ShadeLink.Tutorial
             font = Font.CreateDynamicFontFromOSFont(new[] { "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans CJK KR", "Arial" }, 28);
             BuildSigns();
             BuildDistanceMarks();
+            BuildClimbRoom();
             ResetStep();
             SetPaused(false);
         }
@@ -121,7 +128,7 @@ namespace ShadeLink.Tutorial
             Vector3 min = Room.min;
             Vector3 max = Room.max;
             float length = Room.size.z;
-            Box("Concrete floor", new Vector3(0, -.25f, Room.center.z), new Vector3(Room.size.x, .5f, length), surface);
+            BuildFloor(Room, "Training room floor");
             foreach (float x in new[] { min.x, max.x })
             {
                 float outward = Mathf.Sign(x);
@@ -136,49 +143,26 @@ namespace ShadeLink.Tutorial
                 }
                 Box("Safety stripe", new Vector3(x - outward * .5f, .009f, Room.center.z),
                     new Vector3(.075f, .012f, length - .5f), orange, false);
-                for (float z = 2; z < max.z; z += 4)
-                {
-                    if (outward > 0 && Mathf.Abs(z - DoorCenter) < DoorWidth * .5f) continue;
-                    Box("Wall formwork joint", new Vector3(x - outward * .004f, Room.center.y, z),
-                        new Vector3(.006f, RoomHeight - .02f, .026f), dark, false);
-                }
             }
             foreach (float z in new[] { min.z, max.z })
             {
                 float outward = Mathf.Sign(z - Room.center.z);
-                Box("Concrete target wall", new Vector3(0, Room.center.y, z + outward * .2f), new Vector3(Room.size.x, RoomHeight, .4f), surface);
-                for (int x = -12; x <= 12; x += 4)
-                    Box("Wall formwork joint", new Vector3(x, Room.center.y, z - outward * .004f),
-                        new Vector3(.024f, RoomHeight - .02f, .006f), dark, false);
+                Box("Training end wall", new Vector3(0, Room.center.y, z + outward * .2f),
+                    new Vector3(Room.size.x, RoomHeight, .4f), wallSeam);
+                BuildWallPanels(new Vector3(0, 0, z), -outward * Vector3.forward, Room.size.x, RoomHeight);
             }
-            Box("Ceiling", new Vector3(0, RoomHeight + .2f, Room.center.z), new Vector3(Room.size.x, .4f, length), surface);
-            for (int z = 0; z < max.z; z += 4)
-                Box("Floor expansion joint", new Vector3(0, .002f, z), new Vector3(Room.size.x - .1f, .004f, .021f), dark, false);
-            for (int x = -12; x <= 12; x += 4)
-                Box("Longitudinal floor joint", new Vector3(x, .002f, Room.center.z), new Vector3(.02f, .004f, length - .03f), dark, false);
-
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(.86f, .86f, .86f);
-
-            var diffuser = new Material(guideShader) { color = new Color(.68f, .69f, .67f) };
-            var fixture = Box("Central ceiling light", new Vector3(0, RoomHeight - .10f, Room.center.z),
-                new Vector3(8f, .14f, 2.2f), diffuser, false);
-            var fill = new GameObject("Diffuse room light").AddComponent<Light>();
-            fill.transform.SetParent(fixture.transform, false);
-            fill.transform.localRotation = Quaternion.Euler(90, 0, 0);
-            fill.type = LightType.Directional;
-            fill.intensity = .46f;
-            fill.shadows = LightShadows.None;
+            Box("Training room ceiling", new Vector3(0, RoomHeight + .2f, Room.center.z),
+                new Vector3(Room.size.x, .4f, length), frame);
+            BuildRoomLights(Room, Vector3.forward);
         }
 
         void SideWallSection(float x, float from, float to)
         {
             float outward = Mathf.Sign(x);
             float z = (from + to) * .5f;
-            Box("Concrete side wall", new Vector3(x + outward * .2f, Room.center.y, z),
-                new Vector3(.4f, RoomHeight, to - from), surface);
-            Box("Recessed base trim", new Vector3(x - outward * .018f, .18f, z),
-                new Vector3(.034f, .36f, to - from), dark, false);
+            Box("Training side wall", new Vector3(x + outward * DoorWallThickness * .5f, Room.center.y, z),
+                new Vector3(DoorWallThickness, RoomHeight, to - from), wallSeam);
+            BuildWallPanels(new Vector3(x, 0, z), -outward * Vector3.right, to - from, RoomHeight);
         }
 
         void BuildPassage()
@@ -186,39 +170,48 @@ namespace ShadeLink.Tutorial
             float x = Room.max.x;
             float z = DoorCenter;
             float halfWidth = DoorWidth * .5f;
-            Box("Door lintel", new Vector3(x + .2f, (Room.max.y + DoorHeight) * .5f, z),
-                new Vector3(.4f, Room.max.y - DoorHeight, DoorWidth), surface);
-            Box("Threshold", new Vector3(x + PassageDepth * .5f, -.25f, z),
-                new Vector3(PassageDepth, .5f, DoorWidth), surface);
+            float center = x + PassageDepth * .5f;
+            // The two wall openings already form the ends of the passage.
+            float liningDepth = PassageDepth - 2f * DoorWallThickness;
+            Box("Door lintel", new Vector3(x + DoorWallThickness * .5f, (Room.max.y + DoorHeight) * .5f, z),
+                new Vector3(DoorWallThickness, Room.max.y - DoorHeight, DoorWidth), steel);
+            Box("Threshold", new Vector3(center, -.25f, z),
+                new Vector3(PassageDepth, .5f, DoorWidth), floorPlate);
             foreach (float side in new[] { -1f, 1f })
             {
-                Box("Passage side", new Vector3(x + PassageDepth * .5f, DoorHeight * .5f, z + side * (halfWidth + .1f)),
-                    new Vector3(PassageDepth, DoorHeight, .2f), surface);
+                Box("Passage side", new Vector3(center, DoorHeight * .5f, z + side * (halfWidth + .1f)),
+                    new Vector3(liningDepth, DoorHeight, .2f), steel);
                 Box("Door frame", new Vector3(x - .08f, DoorHeight * .5f, z + side * halfWidth),
-                    new Vector3(.14f, DoorHeight, .12f), dark, false);
+                    new Vector3(.14f, DoorHeight, .12f), frame, false);
             }
-            Box("Passage ceiling", new Vector3(x + PassageDepth * .5f, DoorHeight + .1f, z),
-                new Vector3(PassageDepth, .2f, DoorWidth + .4f), surface);
-            Box("Passage end", new Vector3(x + PassageDepth + .1f, DoorHeight * .5f, z),
-                new Vector3(.2f, DoorHeight, DoorWidth + .4f), surface);
+            Box("Passage ceiling", new Vector3(center, DoorHeight + .1f, z),
+                new Vector3(liningDepth, .2f, DoorWidth + .4f), frame);
             door = Box("Sliding exit door", new Vector3(x + .1f, DoorHeight * .5f, z),
-                new Vector3(.18f, DoorHeight, DoorWidth), dark).transform;
+                new Vector3(.18f, DoorHeight, DoorWidth), frame).transform;
             doorLamp = Box("Door status lamp", new Vector3(x - .08f, DoorHeight + .21f, z),
                 new Vector3(.13f, .12f, .78f), orange, false).GetComponent<Renderer>();
         }
 
         void UpdateExit(float dt)
         {
-            if (!exitUnlocked || step >= LessonCount) return;
+            Vector3 feet = Controller.transform.position;
+            if (inClimbRoom)
+            {
+                if (feet.x > ClimbRoom.max.x + .65f && feet.y >= ClimbDoorHeight - .05f &&
+                    Mathf.Abs(feet.z - DoorCenter) < DoorWidth * .5f)
+                    climbComplete = true;
+                return;
+            }
+            if (!exitUnlocked) return;
 
             Vector3 position = door.position;
             position.y = Mathf.MoveTowards(position.y, DoorHeight * 1.5f + .12f, dt * 3.3f);
             door.position = position;
 
-            Vector3 feet = Controller.transform.position;
-            if (feet.x < Room.max.x + .8f || Mathf.Abs(feet.z - DoorCenter) >= DoorWidth * .5f) return;
+            if (feet.x < ClimbEntryX + .55f) return;
 
             step = LessonCount;
+            EnterClimbRoom();
         }
 
         GameObject Box(string name, Vector3 position, Vector3 size, Material material, bool solid = true)
@@ -231,6 +224,21 @@ namespace ShadeLink.Tutorial
             box.GetComponent<Renderer>().sharedMaterial = material;
             box.GetComponent<Collider>().enabled = solid;
             return box;
+        }
+
+        GalleryProp BuildDie(string name, Vector3 position, float side)
+        {
+            var root = new GameObject(name);
+            var cube = root.transform;
+            cube.SetParent(transform, false);
+            cube.localPosition = position;
+            cube.localScale = Vector3.one * side;
+            root.AddComponent<BoxCollider>();
+            var shell = GalleryConceptArchitecture.Block(cube, "Polished die shell", Vector3.zero, Vector3.one, white, .036f);
+            shell.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            shell.receiveShadows = true;
+            AddPips(cube);
+            return root.AddComponent<GalleryProp>();
         }
 
         void AddPips(Transform cube)
@@ -318,7 +326,7 @@ namespace ShadeLink.Tutorial
         Transform WallTarget(string name, Material material, Vector3 center, float size)
         {
             Transform outline = Outline(name, material);
-            outline.position = center - Vector3.forward * .028f;
+            outline.position = center - Vector3.forward * .082f;
             outline.rotation = Quaternion.Euler(-90, 0, 0);
             outline.localScale = new Vector3(size, 1, size);
             return outline;
@@ -430,7 +438,10 @@ namespace ShadeLink.Tutorial
         {
             Font.textureRebuilt -= RefreshSignFont;
             if (signInk != null) Destroy(signInk);
+            landingShake?.Dispose();
         }
+
+        void OnDisable() => ClearLandingFeedback();
 
         void RefreshLesson()
         {
@@ -443,6 +454,7 @@ namespace ShadeLink.Tutorial
 
         void ResetStep()
         {
+            ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
             die.Restore();
             RefreshLesson();
@@ -465,6 +477,7 @@ namespace ShadeLink.Tutorial
         void SetPaused(bool value)
         {
             paused = value;
+            if (paused) landingShake?.Clear();
             motor.ClearInput();
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = value;
@@ -472,13 +485,10 @@ namespace ShadeLink.Tutorial
 
         void RestartLesson()
         {
-            if (step == LessonCount)
+            if (inClimbRoom)
             {
-                step = 0;
-                firstSize = 0;
-                die.homePosition = TableHome;
-                die.homeScale = Vector3.one * StartSize;
-                die.homeRotation = Quaternion.identity;
+                ResetClimbRoom();
+                return;
             }
             ResetStep();
         }
@@ -514,20 +524,53 @@ namespace ShadeLink.Tutorial
             }
             else interaction.UpdateAim();
 
-            if (frame.GrabPressed) interaction.Interact();
+            if (frame.GrabPressed) InteractWithLandingFeedback();
+        }
+
+        void InteractWithLandingFeedback()
+        {
+            var prop = Held;
+            if (prop == null)
+            {
+                interaction.Interact();
+                return;
+            }
+
+            bool placed = interaction.Drop();
+            prop.GetComponent<TutorialLandingFeedback>().RecordPlacementResult(placed, prop.transform.localScale.x);
+        }
+
+        void AttachLandingFeedback(GalleryProp prop)
+        {
+            prop.gameObject.AddComponent<TutorialLandingFeedback>().Configure(PlayLandingShake);
+        }
+
+        void PlayLandingShake(float pitch)
+        {
+            if (!paused && isActiveAndEnabled) landingShake.Play(pitch, Time.unscaledTime);
+        }
+
+        void ClearLandingFeedback()
+        {
+            landingShake?.Clear();
+            if (Props == null) return;
+            foreach (var prop in Props)
+                if (prop != null) prop.GetComponent<TutorialLandingFeedback>()?.ClearPending();
         }
 
         void UpdateProjection()
         {
             Physics.SyncTransforms();
-            interaction.ResolvePlacement(Room.min + Vector3.one * .005f, Room.max - Vector3.one * .005f);
+            Bounds bounds = inClimbRoom ? ClimbRoom : Room;
+            interaction.ResolvePlacement(bounds.min + Vector3.one * .005f, bounds.max - Vector3.one * .005f);
             interaction.TryApplyPlacement();
         }
 
         public void StartPlacement()
         {
-            referenceViewportSize = ProjectedSize(die.WorldBounds);
-            die.BeginHold();
+            Held.GetComponent<TutorialLandingFeedback>().ClearPending();
+            referenceViewportSize = ProjectedSize(Held.WorldBounds);
+            Held.BeginHold();
         }
 
         Vector2 ProjectedSize(Bounds bounds)
@@ -556,7 +599,7 @@ namespace ShadeLink.Tutorial
 
         public bool ValidateRelease(out string reason)
         {
-            bool overlaps = IntersectsPlayer(die.parts[0]);
+            bool overlaps = Held != null && IntersectsPlayer(Held.parts[0]);
             reason = overlaps ? "몸에서 조금 떨어진 곳에 놓으세요." : null;
             return !overlaps;
         }
@@ -659,10 +702,10 @@ namespace ShadeLink.Tutorial
                 DrawReference(rect, Reference);
             }
             PlayerControls.DrawCursor(new Vector2(width / 2, height / 2), Aimed != null, Held != null, false, Accent, Color.white);
-            string notice = Time.time < messageUntil ? message :
-                step == LessonCount ? "튜토리얼 완료  ·  계속 연습하거나 R로 다시 시작" :
-                exitUnlocked && step == 2 ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 벽의 문으로 이동하세요." :
-                exitUnlocked ? "오른쪽 벽에 초록불이 켜진 문이 열렸어요." : null;
+            string notice = climbComplete ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
+                Time.time < messageUntil ? message :
+                exitUnlocked && !inClimbRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
+                null;
             if (notice != null)
             {
                 float bannerWidth = Mathf.Min(width - 36, 1040);
