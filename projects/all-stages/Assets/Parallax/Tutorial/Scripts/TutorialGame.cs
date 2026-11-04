@@ -115,7 +115,14 @@ namespace ShadeLink.Tutorial
             secondaryTarget = WallTarget("Mint wall target", cyan, new Vector3(0, MintTargetSize * .5f, Room.max.z), MintTargetSize);
             // Keep the shared lower edge behind the orange outline so it does not flicker.
             secondaryTarget.position += Vector3.forward * .01f;
-            font = Font.CreateDynamicFontFromOSFont(new[] { "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans CJK KR", "Arial" }, 28);
+            var installedFonts = Font.GetOSInstalledFontNames();
+            var availableFonts = new System.Collections.Generic.List<string>();
+            foreach (string preferred in new[] { "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Arial" })
+                if (System.Array.Exists(installedFonts, name => string.Equals(name, preferred, System.StringComparison.OrdinalIgnoreCase)))
+                    availableFonts.Add(preferred);
+            font = availableFonts.Count > 0
+                ? Font.CreateDynamicFontFromOSFont(availableFonts.ToArray(), 28)
+                : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             BuildSigns();
             BuildDistanceMarks();
             BuildClimbRoom();
@@ -679,6 +686,7 @@ namespace ShadeLink.Tutorial
             float width = Screen.width;
             float height = Screen.height;
             var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = 20, wordWrap = true, alignment = TextAnchor.MiddleCenter };
+            style.normal.textColor = Color.white;
             bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
                 interaction.ProjectionApplied && interaction.ReleaseRestriction == null &&
                 SizeFeedback(die.transform.localScale.x) == null;
