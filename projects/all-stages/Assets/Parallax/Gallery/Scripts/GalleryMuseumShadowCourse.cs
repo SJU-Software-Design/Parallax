@@ -5,55 +5,67 @@ using UnityEngine.Rendering;
 
 namespace ShadeLink.Gallery
 {
-    // Adds usable museum screens and observes real crossings. The game owns
-    // exposure, checkpoints, doors and the shared object interaction controller.
+    // Museum shadow tools and the Nike room's physical route. The game retains
+    // exposure, checkpoints and the shared object interaction controller.
     public sealed class GalleryMuseumShadowCourse : MonoBehaviour
     {
         public const float TutorialFinish = 12.2f, NikeFinish = 28.2f;
         public GalleryGame game;
-        public GalleryProp[] panels;
+        public GalleryProp bronze,lamp;
+        public GalleryNikeLight nikeLight;
+        public GalleryProp[] panels=Array.Empty<GalleryProp>();
+        public Transform[] nikeGateLeaves;
+        public BoxCollider[] nikeGateColliders;
         public bool TutorialCleared { get; private set; }
         public bool NikeCleared { get; private set; }
+        public bool NikeUnlocked { get; private set; }
+        public bool NikeGateOpen => gateOpening>=.995f;
+        public float NikeGateOpening => gateOpening;
+        public Vector3 NikeGatePosition => transform.TransformPoint(new Vector3(0,0,28.72f));
+        public BoxCollider[] NikeGateColliders => nikeGateColliders;
+        public Transform[] NikeGateLeaves => nikeGateLeaves;
 
         Vector3 previousFeet;
         bool havePreviousFeet;
         bool tutorialCrossed,nikeCrossed;
+        float gateOpening;
 
         public static GalleryMuseumShadowCourse Install(GalleryGame owner)
         {
             if(owner==null)throw new ArgumentNullException(nameof(owner));
             var existing=owner.GetComponentInChildren<GalleryMuseumShadowCourse>(true);
             if(existing!=null)return existing;
-            var collection=new GameObject("Museum shadow course · folding exhibition screens");
+            var collection=new GameObject("Museum shadow course · bronze and movable light");
             collection.transform.SetParent(owner.transform,false);
             var course=collection.AddComponent<GalleryMuseumShadowCourse>();course.game=owner;
-
-            Material wood=Material("Shadow course · oak screen backing","Wood",new Color(.73f,.60f,.43f));
             Material bronze=Material("Shadow course · satin bronze fittings","Bronze",new Color(.51f,.34f,.15f));
             bronze.SetFloat("_Metallic",.90f);bronze.SetFloat("_Roughness",.34f);
-            Material fabric=Material("Shadow course · charcoal exhibition linen","Ink",new Color(.075f,.105f,.10f));
-            fabric.SetFloat("_Roughness",.94f);fabric.SetFloat("_ReflectionStrength",.07f);
-
-            course.panels=new[]{
-                course.Panel("02 · 이동식 전시 패널 A",new Vector3(-4.5f,0,18),12,wood,bronze,fabric),
-                course.Panel("02 · 이동식 전시 패널 B",new Vector3(4.5f,0,18),-12,wood,bronze,fabric)
-            };
+            course.bronze=GalleryShadowExhibits.CreateBronze(collection.transform,new Vector3(-3.5f,0,5));
+            course.lamp=GalleryShadowExhibits.CreateLamp(collection.transform,new Vector3(1.5f,0,20.2f),
+                new Vector3(0,.025f,NikeFinish),out Transform head,out Transform emitter);
+            course.nikeLight=owner.gameObject.AddComponent<GalleryNikeLight>();
+            course.nikeLight.game=owner;course.nikeLight.lamp=course.lamp;course.nikeLight.head=head;course.nikeLight.emitter=emitter;
+            course.nikeLight.nikeRoot=owner.transform.Find("Collection · Winged Victory · Cosmo Wenman scan");
+            if(course.nikeLight.nikeRoot==null)throw new InvalidOperationException("Install the fixed Nike scan before its shadow course.");
+            course.nikeLight.AimPoint=new Vector3(0,.025f,NikeFinish);course.nikeLight.autoAim=true;
+            owner.nikeLight=course.nikeLight;
             var props=new List<GalleryProp>(owner.props??Array.Empty<GalleryProp>());
-            props.AddRange(course.panels);owner.props=props.ToArray();
-
+            props.Add(course.bronze);props.Add(course.lamp);owner.props=props.ToArray();
+            course.PowerZone(bronze);course.GlassRoute(bronze);course.GoalFrame(bronze);
             foreach(float z in new[]{7.25f,TutorialFinish,22.1f,NikeFinish})course.Inlay(z,bronze);
-            course.FloorLabel("복제작을 크게 세워 그늘을 이어 보세요",new Vector3(0,.015f,6.60f),.12f);
-            course.FloorLabel("날개의 그늘과 전시 패널의 그림자를 연결하세요",new Vector3(0,.015f,21.4f),.115f);
+            course.FloorLabel("청동 조각을 키워 빛을 가려 보세요",new Vector3(0,.015f,6.60f),.12f);
+            course.FloorLabel("조명을 옮겨 날개의 그림자를 문까지 이어 보세요",new Vector3(0,.015f,21.4f),.105f);
             course.ResetProgress();
             Physics.SyncTransforms();
-            foreach(var prop in course.panels)
+            foreach(var prop in new[]{course.bronze,course.lamp})
             {
                 prop.InitializePhysics();
                 if(owner.controller!=null)prop.placement.SetPlayer(owner.controller);
                 prop.placement.ResetPlaced();
             }
+            course.nikeLight.SyncPose();
             if(owner.lighting!=null)owner.lighting.Rebuild();
-            Debug.Log("MUSEUM_SHADOW_COURSE_OK panels=2 additionalCasters=6 totalProps="+owner.props.Length);
+            Debug.Log("MUSEUM_SHADOW_COURSE_OK bronze=1 lamp=1 panels=0 totalProps="+owner.props.Length);
             return course;
         }
 
@@ -84,37 +96,90 @@ namespace ShadeLink.Gallery
             return renderer;
         }
 
-        GalleryProp Panel(string title,Vector3 at,float yaw,Material wood,Material bronze,Material fabric)
+        void PowerZone(Material bronze)
         {
-            var root=Group(transform,title,at,Quaternion.Euler(0,yaw,0));
-            root.localScale=Vector3.one*.7f;
-            var prop=root.gameObject.AddComponent<GalleryProp>();
-            prop.title=title;prop.zone=1;prop.minScale=.35f;prop.platform=false;
-            // A shallow V keeps the two leaves visibly connected. Each physical
-            // leaf is also its actual analytic shadow box; there is no broad
-            // invisible blocker spanning the folded space behind the screen.
-            for(int side=-1;side<=1;side+=2)
+            const float left=-5.3f,right=4.8f,front=16f,back=22.2f;
+            foreach(float x in new[]{left,right})
+                FloorInlay("Lamp floor power area · side",new Vector3(x,.010f,(front+back)*.5f),new Vector3(.020f,.008f,back-front),bronze);
+            foreach(float z in new[]{front,back})
+                FloorInlay("Lamp floor power area · end",new Vector3((left+right)*.5f,.010f,z),new Vector3(right-left,.008f,.020f),bronze);
+            FloorLabel("조명을 놓을 수 있는 전시 바닥",new Vector3(-.25f,.018f,16.5f),.10f);
+        }
+
+        void FloorInlay(string name,Vector3 at,Vector3 size,Material bronze)
+        {Block(transform,name,at,size,bronze).shadowCastingMode=ShadowCastingMode.Off;}
+
+        void GoalFrame(Material bronze)
+        {
+            // Flush visual border of the same rectangle sampled by NikeLight.
+            // No collider, caster or painted shade alters its actual lighting.
+            const float left=-.65f,right=.65f,front=27.65f,back=28.4f;
+            foreach(float x in new[]{left,right})
+                FloorInlay("Nike goal · bronze side border",new Vector3(x,.009f,(front+back)*.5f),new Vector3(.018f,.006f,back-front),bronze);
+            foreach(float z in new[]{front,back})
+                FloorInlay("Nike goal · bronze end border",new Vector3(0,.009f,z),new Vector3(right-left+.018f,.006f,.018f),bronze);
+        }
+
+        Renderer Glass(Transform parent,string name,Vector3 at,Vector3 size,Material glass)
+        {
+            var renderer=GalleryConceptArchitecture.Block(parent,name,at,size,glass,.004f);
+            renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
+            var box=renderer.gameObject.AddComponent<BoxCollider>();box.size=size;
+            renderer.gameObject.AddComponent<GalleryLightGlass>();return renderer;
+        }
+
+        void Hardware(Transform parent,string name,Vector3 at,Vector3 size,Material bronze)
+        {
+            var renderer=Block(parent,name,at,size,bronze);
+            // Real metal remains an opaque physical blocker for the lamp's
+            // light rays; only the transparent panes carry GalleryLightGlass.
+            renderer.gameObject.AddComponent<BoxCollider>().size=size;
+        }
+
+        void Guide(Vector3 a,Vector3 b,Material glass,Material bronze)
+        {
+            Vector3 delta=b-a,mid=(a+b)*.5f;
+            var panel=Group(transform,"Light-transmitting protective glass guide",mid,
+                Quaternion.Euler(0,-Mathf.Atan2(delta.z,delta.x)*Mathf.Rad2Deg,0));
+            const float height=1.65f;
+            Glass(panel,"Clear protective glass",new Vector3(0,height*.5f+.04f,0),new Vector3(delta.magnitude,height,.025f),glass);
+            Hardware(panel,"Low bronze glass channel",new Vector3(0,.025f,0),new Vector3(delta.magnitude,.050f,.065f),bronze);
+            foreach(int side in new[]{-1,1})
+                Hardware(panel,"Fine bronze glass edge post",new Vector3(side*(delta.magnitude*.5f-.016f),height*.5f+.04f,0),
+                    new Vector3(.025f,height,.038f),bronze);
+        }
+
+        void GlassRoute(Material bronze)
+        {
+            var shader=Shader.Find("Parallax/GalleryGlass");
+            if(shader==null)throw new InvalidOperationException("Nike guides require Parallax/GalleryGlass.");
+            var glass=new Material(shader){name="Nike course · clear light-transmitting protective glass",color=new Color(.56f,.77f,.77f,.065f)};
+            GalleryWorld.Materials.Add(glass);
+            foreach(int side in new[]{-1,1})
             {
-                var hinge=Group(root,side<0?"Left hinged exhibition leaf":"Right hinged exhibition leaf",
-                    new Vector3(0,1.26f,0),Quaternion.Euler(0,-side*8,0));
-                float x=side*.45f;
-                Block(hinge,"Oak plywood screen leaf",new Vector3(x,0,0),new Vector3(.9f,2.28f,.12f),wood,true);
-                foreach(int face in new[]{-1,1})
+                float x=side<0?-4.5f:2.5f;
+                Guide(new Vector3(x,0,23.2f),new Vector3(x,0,25),glass,bronze);
+                Guide(new Vector3(x,0,25),new Vector3(side*.95f,0,28.1f),glass,bronze);
+                Guide(new Vector3(side*.95f,0,28.1f),new Vector3(side*.95f,0,28.65f),glass,bronze);
+                // Rear glass closes the sidewall detour; the only route through
+                // this screen is the visible, sliding door in the real arch.
+                Guide(new Vector3(side*1.81f,0,28.72f),new Vector3(side*7.87f,0,28.72f),glass,bronze);
+            }
+            nikeGateLeaves=new Transform[2];nikeGateColliders=new BoxCollider[2];
+            for(int i=0;i<2;i++)
+            {
+                int side=i==0?-1:1;
+                var leaf=Group(transform,"Nike glass sliding door · "+(side<0?"left":"right"),new Vector3(side*.90f,0,28.72f),Quaternion.identity);
+                nikeGateLeaves[i]=leaf;
+                var panel=Glass(leaf,"Light-transmitting sliding glass",Vector3.up*1.57f,new Vector3(1.78f,3.10f,.035f),glass);
+                nikeGateColliders[i]=panel.GetComponent<BoxCollider>();
+                foreach(int edge in new[]{-1,1})
                 {
-                    Block(hinge,"Inset charcoal linen exhibition face",new Vector3(x,0,face*.064f),
-                        new Vector3(.77f,2.12f,.008f),fabric);
-                    foreach(int edge in new[]{-1,1})
-                        Block(hinge,"Satin bronze horizontal edge",new Vector3(x,edge*1.111f,face*.067f),
-                            new Vector3(.84f,.021f,.014f),bronze);
+                    Hardware(leaf,"Door bronze vertical stile",new Vector3(edge*.875f,1.57f,0),new Vector3(.028f,3.12f,.050f),bronze);
+                    Hardware(leaf,"Door bronze horizontal stile",new Vector3(0,1.57f+edge*1.55f,0),new Vector3(1.78f,.028f,.050f),bronze);
                 }
             }
-            Block(root,"Continuous bronze folding hinge",new Vector3(0,1.26f,-.005f),new Vector3(.036f,2.28f,.037f),bronze);
-            // Even at solution scale 2.3 this 16 cm foot remains below the
-            // shared character controller's 20 cm step height.
-            Block(root,"Low oak exhibition screen foot",new Vector3(0,.035f,.10f),new Vector3(1.90f,.07f,.68f),wood,true);
-            foreach(int side in new[]{-1,1})
-                Block(root,"Bronze foot end cap",new Vector3(side*.90f,.071f,.10f),new Vector3(.06f,.01f,.58f),bronze);
-            prop.Remember();return prop;
+            Hardware(transform,"Bronze sliding door overhead track",new Vector3(0,3.19f,28.72f),new Vector3(7.4f,.070f,.10f),bronze);
         }
 
         void Inlay(float z,Material bronze)
@@ -138,14 +203,52 @@ namespace ShadeLink.Gallery
         public void ResetProgress(int zone=-1)
         {
             if(zone<0||zone==0){TutorialCleared=false;tutorialCrossed=false;}
-            if(zone<0||zone==1){NikeCleared=false;nikeCrossed=false;}
+            if(zone<0||zone==1)
+            {
+                NikeCleared=false;nikeCrossed=false;NikeUnlocked=false;
+                nikeLight?.ResetLight();
+                // Normal R resets the visitor to the room entrance first. If
+                // called elsewhere, keep the panes away until the visitor exits.
+                if(CanCloseGate())gateOpening=0;
+                ApplyGatePose();
+            }
             havePreviousFeet=game!=null&&game.player!=null;
             if(havePreviousFeet)previousFeet=game.player.feet;
+        }
+
+        bool CanCloseGate()
+        {
+            if(game==null||game.player==null)return true;
+            Vector3 feet=transform.InverseTransformPoint(game.player.feet);
+            return !(Mathf.Abs(feet.x)<2.40f&&Mathf.Abs(feet.z-28.72f)<.65f&&feet.y<3.2f&&feet.y>-1.7f);
+        }
+
+        void ApplyGatePose()
+        {
+            if(nikeGateLeaves==null)return;
+            float slide=1.95f*Mathf.SmoothStep(0,1,gateOpening);
+            for(int i=0;i<nikeGateLeaves.Length;i++)if(nikeGateLeaves[i]!=null)
+                nikeGateLeaves[i].localPosition=new Vector3((i==0?-1:1)*(.90f+slide),0,28.72f);
+            Physics.SyncTransforms();
+        }
+
+        void TickGate(float dt)
+        {
+            if(!NikeUnlocked&&nikeLight!=null&&nikeLight.SolutionReady)
+            {
+                NikeUnlocked=true;
+                game.Tell("날개의 그림자가 문에 닿았습니다. 열린 유리문으로 이동하세요.",5);
+            }
+            float next=gateOpening;
+            if(NikeUnlocked)next=Mathf.MoveTowards(next,1,Mathf.Max(0,dt)/.8f);
+            else if(CanCloseGate())next=Mathf.MoveTowards(next,0,Mathf.Max(0,dt)/.8f);
+            if(!Mathf.Approximately(next,gateOpening)){gateOpening=next;ApplyGatePose();}
         }
 
         public void Tick(float dt)
         {
             if(game==null||game.player==null)return;
+            TickGate(dt);
             Vector3 feet=game.player.feet;
             if(!havePreviousFeet){previousFeet=feet;havePreviousFeet=true;return;}
             bool forward=feet.z>previousFeet.z;
@@ -157,14 +260,15 @@ namespace ShadeLink.Gallery
             if(game.active&&!game.won&&forward&&continuous)
             {
                 if(previousFeet.z<TutorialFinish&&feet.z>=TutorialFinish)tutorialCrossed=true;
-                if(previousFeet.z<NikeFinish&&feet.z>=NikeFinish)nikeCrossed=true;
+                if(previousFeet.z<NikeFinish&&feet.z>=NikeFinish&&NikeUnlocked&&game.safe&&game.player.grounded&&Mathf.Abs(feet.x)<.95f)
+                    nikeCrossed=true;
             }
             if(game.active&&!game.won&&game.safe&&game.player.grounded)
             {
                 if(game.checkpoint==0&&!TutorialCleared&&tutorialCrossed&&feet.z>=TutorialFinish)
-                {TutorialCleared=true;game.Tell("복제작의 그림자 통로를 건넜습니다. 다음 전시실로 이동하세요.",5);}
-                if(game.checkpoint==1&&!NikeCleared&&nikeCrossed&&feet.z>=NikeFinish)
-                {NikeCleared=true;game.Tell("니케 전시실의 그림자를 연결했습니다. 다음 전시실로 이동하세요.",5);}
+                {TutorialCleared=true;game.Tell("청동 조각의 그림자 통로를 건넜습니다. 다음 전시실로 이동하세요.",5);}
+                if(game.checkpoint==1&&!NikeCleared&&NikeUnlocked&&nikeCrossed&&feet.z>=NikeFinish)
+                {NikeCleared=true;game.Tell("니케의 그림자를 따라 건넜습니다. 다음 전시실로 이동하세요.",5);}
             }
             previousFeet=feet;
         }

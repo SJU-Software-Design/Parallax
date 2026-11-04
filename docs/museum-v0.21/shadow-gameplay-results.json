@@ -1,0 +1,821 @@
+{
+    "passed": true,
+    "initialSixTools": true,
+    "wrongLampRejected": true,
+    "closedDoorSolid": true,
+    "heldLampRejected": true,
+    "unsettledLampRejected": true,
+    "bronzeInputReleased": true,
+    "bronzePhysicallySettled": true,
+    "bronzeCourseWalk": true,
+    "lampInputReleased": true,
+    "lampPhysicallySettled": true,
+    "heldLightStillIlluminates": true,
+    "goalNikeShade": true,
+    "actualScanShadowProbes": true,
+    "physicalDoorOpened": true,
+    "nikeCourseWalk": true,
+    "physicsRestored": true,
+    "phase": "Nike spotlight room real shadow route planning and CharacterController walking",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "scope": "Actual production museum with one original bronze and one original movable spotlight. Player-only angular-size pickup and observer fixtures are disclosed. Positive tools are moved and resized only through camera Interact, actual CharacterController carry, the common perspective resolver, public Drop and PhysX; their transforms, scales, rigidbody poses and placement readiness are never forced. Shadow routes are selected from actual floor, capsule and FootSafe queries, then walked by the actual CharacterController without player warps during a crossing. The closed-door negative uses an explicitly positioned player while the original lamp remains at its wrong home pose. Held and freshly dropped lamp negatives are sampled during the same actual input sequence. CPU shadow/goal probes and screenshots are reported separately from carrying and walking. This is focused integration QA, not an autonomous unassisted puzzle solution or a GPU/CPU pixel-parity claim.",
+    "simulatedTicks": 1534,
+    "initialPropCount": 6,
+    "respawns": 0,
+    "checkpoint": 2,
+    "goalShadowSamples": 25,
+    "goalSampleCount": 25,
+    "simulatedSeconds": 17.044445037841798,
+    "shadeReadiness": 1.0,
+    "carries": [
+        {
+            "tool": "01 · 접힌 청동 · 그림자를 만드는 조각",
+            "pickupFixture": {
+                "x": -3.5,
+                "y": 0.0,
+                "z": 4.210848331451416
+            },
+            "observerFixture": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 2.799999952316284
+            },
+            "originalPosition": {
+                "x": -3.5,
+                "y": 0.0,
+                "z": 5.0
+            },
+            "releasedPosition": {
+                "x": -0.0003180503845214844,
+                "y": 0.01673877239227295,
+                "z": 7.120833396911621
+            },
+            "settledPosition": {
+                "x": -0.00031821709126234055,
+                "y": 2.384185791015625e-7,
+                "z": 7.120834827423096
+            },
+            "originalScale": 0.800000011920929,
+            "requestedScale": 2.0999999046325685,
+            "maximumInputScale": 2.0810186862945558,
+            "releasedScale": 2.0810182094573976,
+            "settledScale": 2.0810182094573976,
+            "actualCarryMetres": 3.7519421577453615,
+            "carryTicks": 204,
+            "settleTicks": 37
+        },
+        {
+            "tool": "02 · 움직이는 전시 조명",
+            "pickupFixture": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": 15.60205078125
+            },
+            "observerFixture": {
+                "x": -3.5999999046325685,
+                "y": 0.0,
+                "z": 17.0
+            },
+            "originalPosition": {
+                "x": 1.5,
+                "y": 0.0,
+                "z": 20.200000762939454
+            },
+            "releasedPosition": {
+                "x": -3.5996668338775636,
+                "y": 0.01666998863220215,
+                "z": 21.569089889526368
+            },
+            "settledPosition": {
+                "x": -3.5996663570404054,
+                "y": 0.000008344650268554688,
+                "z": 21.5690860748291
+            },
+            "originalScale": 1.0,
+            "requestedScale": 1.0,
+            "maximumInputScale": 1.6096441745758057,
+            "releasedScale": 0.9978863000869751,
+            "settledScale": 0.9978863000869751,
+            "actualCarryMetres": 5.261913299560547,
+            "carryTicks": 236,
+            "settleTicks": 37
+        }
+    ],
+    "routes": [
+        {
+            "room": "bronze room",
+            "path": [
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 2.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 3.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.0
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 4.5
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 4.75
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 5.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 5.25
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 5.5
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 5.75
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 6.0
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 6.25
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 6.5
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 6.75
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.0
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.25
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 7.5
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 7.75
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 8.0
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 8.25
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 8.5
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 8.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 9.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 10.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 11.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 12.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.0
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.5
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 13.75
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 14.0
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 14.25
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 14.5
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.75
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 14.800000190734864
+                }
+            ],
+            "plannedFootSafe": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "gridNodes": 2491,
+            "walkTicks": 364,
+            "length": 13.863960266113282,
+            "longestUnshadedRun": 0.0,
+            "maximumExposure": 0.0,
+            "longestUnsafeStart": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "longestUnsafeEnd": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestStartSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestGoalSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "safeComponents": 1,
+            "startSafeComponent": 0,
+            "goalSafeComponent": 0,
+            "safeComponentGap": 0.0,
+            "gridDiagnosticsFile": "shadow-route-bronze.csv"
+        },
+        {
+            "room": "Nike spotlight room",
+            "path": [
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 17.0
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 17.25
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 17.5
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 17.75
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 18.0
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 18.25
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 18.5
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 18.75
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 19.0
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 19.25
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 19.5
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 19.75
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 20.0
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 20.25
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 20.5
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 20.75
+                },
+                {
+                    "x": -3.75,
+                    "y": 0.02500000037252903,
+                    "z": 21.0
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.09983981400728226,
+                    "z": 21.25
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.09984635561704636,
+                    "z": 21.5
+                },
+                {
+                    "x": -4.25,
+                    "y": 0.02500000037252903,
+                    "z": 21.75
+                },
+                {
+                    "x": -4.25,
+                    "y": 0.02500000037252903,
+                    "z": 22.0
+                },
+                {
+                    "x": -4.25,
+                    "y": 0.02500000037252903,
+                    "z": 22.25
+                },
+                {
+                    "x": -4.25,
+                    "y": 0.02500000037252903,
+                    "z": 22.5
+                },
+                {
+                    "x": -4.25,
+                    "y": 0.02500000037252903,
+                    "z": 22.75
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 23.0
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 23.25
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 23.5
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 23.75
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 24.0
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 24.25
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 24.5
+                },
+                {
+                    "x": -4.0,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": -3.75,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": -3.5,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": -3.25,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": -3.0,
+                    "y": 0.02500000037252903,
+                    "z": 24.75
+                },
+                {
+                    "x": -2.75,
+                    "y": 0.02500000037252903,
+                    "z": 25.0
+                },
+                {
+                    "x": -2.5,
+                    "y": 0.02500000037252903,
+                    "z": 25.25
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 25.5
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 25.75
+                },
+                {
+                    "x": -2.25,
+                    "y": 0.02500000037252903,
+                    "z": 26.0
+                },
+                {
+                    "x": -2.0,
+                    "y": 0.02500000037252903,
+                    "z": 26.25
+                },
+                {
+                    "x": -1.75,
+                    "y": 0.02500000037252903,
+                    "z": 26.5
+                },
+                {
+                    "x": -1.5,
+                    "y": 0.02500000037252903,
+                    "z": 26.75
+                },
+                {
+                    "x": -1.25,
+                    "y": 0.02500000037252903,
+                    "z": 27.0
+                },
+                {
+                    "x": -1.0,
+                    "y": 0.02500000037252903,
+                    "z": 27.25
+                },
+                {
+                    "x": -0.75,
+                    "y": 0.02500000037252903,
+                    "z": 27.5
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 27.75
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 28.0
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 28.25
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 28.5
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 28.75
+                },
+                {
+                    "x": -0.5,
+                    "y": 0.02500000037252903,
+                    "z": 29.0
+                },
+                {
+                    "x": -0.25,
+                    "y": 0.02500000037252903,
+                    "z": 29.25
+                },
+                {
+                    "x": 0.0,
+                    "y": 0.02500000037252903,
+                    "z": 29.5
+                }
+            ],
+            "plannedFootSafe": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "gridNodes": 2585,
+            "walkTicks": 387,
+            "length": 15.172529220581055,
+            "longestUnshadedRun": 0.0,
+            "maximumExposure": 0.0,
+            "longestUnsafeStart": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "longestUnsafeEnd": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestStartSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "closestGoalSafePoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "safeComponents": 4,
+            "startSafeComponent": 0,
+            "goalSafeComponent": 0,
+            "safeComponentGap": 0.0,
+            "gridDiagnosticsFile": "shadow-route-nike.csv"
+        }
+    ],
+    "checks": [
+        "Fresh playable museum contains one original bronze and one original spotlight, six tools total",
+        "Original wrong spotlight does not unlock; actual CharacterController movement is stopped by the closed physical glass door",
+        "Original bronze is enlarged and released through actual input, settles in PhysX, and its real shade supports a controller crossing without respawn",
+        "Input-placed settled spotlight shades at least 17 of 25 goal probes; independent lens-to-goal rays hit the actual scan mesh, and held/freshly dropped states did not unlock",
+        "A settled sufficiently shaded goal opens the visible physical glass door before the real walking crossing",
+        "Actual controller follows the input-created Nike shadow through the opened glass door to the portrait checkpoint without respawn"
+    ],
+    "errors": []
+}

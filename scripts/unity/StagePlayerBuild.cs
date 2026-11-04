@@ -49,7 +49,6 @@ namespace Parallax.StageLauncher.Editor
                     // stage so the mouth passage works inside the same executable.
                     if(stage=="Gallery")
                     {
-                        ShadeLink.Editor.LibraryBuild.Prepare();
                         ShadeLink.Editor.GalleryBuild.Prepare();
                     }
                     string[] scenes=stage=="Gallery"

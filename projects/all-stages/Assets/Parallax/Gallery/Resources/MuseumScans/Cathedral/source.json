@@ -23,11 +23,20 @@
       "Retained largest connected sculpture surface after positional seam welding for connectivity only.",
       "Normalized sculpture height to2m,Yup; oriented60degrees and reflectedX for Unity handedness; recentred doorway.",
       "Original texture extracted byte-for-byte; UV V flipped forUnity.",
-      "Added gentleOpenblendshape: palms partbymax0.08m each,marblebase/fingertipsanchored."
+      "Added an Open blendshape authored at 100 percent: palms part by at most 0.08m each, with the marble base and fingertips anchored.",
+      "Runtime activation uses 150 percent of the authored Open frame (at most 0.12m per palm); collider centres and the portal bounds follow the same enlargement."
     ],
     "renderVertices": 531273,
     "renderTriangles": 754102,
     "normalizedHeight": 2,
+    "runtimeOpening": {
+      "authoredFrameWeight": 100,
+      "authoredMaximumPalmShiftMetres": 0.08,
+      "fullRuntimeWeight": 150,
+      "runtimeMaximumPalmShiftMetres": 0.12,
+      "restPosePreserved": true,
+      "collisionAndPortalFollowRuntimeWeight": true
+    },
     "openCollisionVertices": 181425,
     "openCollisionTriangles": 365448,
     "collisionVoxel": 0.006,

@@ -4,26 +4,28 @@ using UnityEngine.Rendering;
 
 namespace ShadeLink.Gallery
 {
-    // Explicitly ticked by GalleryGame. The portrait is a continuous two-second
-    // observation test; once released, the curtain stays open until reset.
+    // Explicitly ticked by GalleryGame. A readable face and a short look release
+    // the curtain; small observation jitter is not a reason to start again.
     public sealed class GalleryPortraitGate : MonoBehaviour
     {
-        public const float HoldSeconds=2;
+        public const float HoldSeconds=1;
+        public const float ObservationGraceSeconds=.35f;
         public GalleryGame game;
         public GalleryConceptPerspective portrait;
         public Transform leftCurtain,rightCurtain;
         public BoxCollider barrier;
         public bool Opened;
         public float Progress;
-        float opening;
+        float opening,missedTime;
         bool wasAtPoint,wasMatching;
 
-        public bool CanUnlock=>game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.AtViewingPoint&&
-            Vector3.Dot(game.view.transform.forward,portrait.ViewingDirection)>.93f;
+        public bool CanUnlock=>game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.CanObserve;
+        public string Status=>Opened?"커튼이 열렸어요. 다음 전시실로 이동하세요.":
+            portrait==null?"눈·코·입을 하나의 얼굴로 이어 보세요.":portrait.Status;
 
         public void ResetGate()
         {
-            Opened=false;Progress=opening=0;wasAtPoint=wasMatching=false;
+            Opened=false;Progress=opening=missedTime=0;wasAtPoint=wasMatching=false;
             if(barrier!=null)barrier.enabled=true;
             portrait?.ResetEvaluation();PositionCurtains();Physics.SyncTransforms();
         }
@@ -36,11 +38,12 @@ namespace ShadeLink.Gallery
                 Progress=1;opening=Mathf.MoveTowards(opening,1,dt/1.35f);PositionCurtains();return;
             }
             bool matching=CanUnlock;
-            if(portrait.AtViewingPoint&&!wasAtPoint&&game.active)
-                game.Tell("눈·코·입을 하나의 얼굴로 맞추고, 작품을 내려놓은 뒤 2초 동안 바라보세요.",7);
+            if(portrait.AtViewingPoint&&!wasAtPoint&&game.active&&game.checkpoint==2)
+                game.Tell("눈·코·입이 얼굴로 보이면, 작품을 내려놓고 잠깐 바라봐 주세요.",7);
             if(matching)
             {
-                if(!wasMatching&&game.active)game.Tell("초상이 이어집니다. 시선을 2초 동안 유지하세요.",3);
+                missedTime=0;
+                if(!wasMatching&&game.active&&Progress<=.001f)game.Tell("얼굴이 이어졌어요. 잠깐 바라봐 주세요.",3);
                 Progress=Mathf.Clamp01(Progress+dt/HoldSeconds);
                 if(Progress>=1)
                 {
@@ -49,7 +52,15 @@ namespace ShadeLink.Gallery
                     if(game.active)game.Tell("하나의 초상이 완성되었습니다. 열린 커튼 너머로 이동하세요.",7);
                 }
             }
-            else Progress=0;
+            else if(portrait.AnyPieceHeld)
+            {
+                Progress=0;missedTime=0;
+            }
+            else
+            {
+                missedTime+=dt;
+                if(missedTime>ObservationGraceSeconds)Progress=Mathf.MoveTowards(Progress,0,dt/.7f);
+            }
             wasAtPoint=portrait.AtViewingPoint;wasMatching=matching;
         }
         void PositionCurtains()

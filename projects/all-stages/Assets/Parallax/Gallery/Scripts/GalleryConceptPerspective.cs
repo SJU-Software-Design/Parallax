@@ -17,46 +17,124 @@ namespace ShadeLink.Gallery
         public int AlignedPieces {get;private set;}
         public bool Complete {get;private set;}
         public bool AtViewingPoint {get;private set;}
+        public bool LookingAtFace {get;private set;}
+        public bool CanObserve=>AtViewingPoint&&LookingAtFace;
+        public bool AnyPieceHeld {get;private set;}
+        public float Alignment01=>AlignedPieces/3f;
+        public string Status {get;private set;}="눈·코·입을 하나의 얼굴로 이어 보세요.";
+        public bool[] PieceMatched {get;}=new bool[3];
+        public string[] PieceStatus {get;}=new string[3];
+        public Vector3 FaceCenter {get;private set;}
         public Vector3 ViewingDirection=>transform.TransformDirection(Vector3.forward).normalized;
+        readonly Vector2[] projected=new Vector2[3];
+        readonly float[] apparent=new float[3],depths=new float[3];
+        readonly bool[] visible=new bool[3];
+        static readonly string[] PieceNames={"눈","코","입"};
         MaterialPropertyBlock block;
         public void ResetEvaluation()
         {
-            AlignedPieces=0;Complete=false;AtViewingPoint=false;UpdateFeedback();
+            AlignedPieces=0;Complete=false;AtViewingPoint=LookingAtFace=AnyPieceHeld=false;
+            Status="눈·코·입을 하나의 얼굴로 이어 보세요.";
+            for(int i=0;i<3;i++){PieceMatched[i]=false;PieceStatus[i]=PieceNames[i]+"을 배치해 보세요.";}
+            UpdateFeedback();
         }
         public void Evaluate()
         {
-            AlignedPieces=0;Complete=false;AtViewingPoint=false;
+            AlignedPieces=0;Complete=false;AtViewingPoint=LookingAtFace=AnyPieceHeld=false;
+            for(int i=0;i<3;i++){PieceMatched[i]=visible[i]=false;PieceStatus[i]=PieceNames[i]+"을 배치해 보세요.";}
             if(game==null||game.player==null||game.view==null||viewingPoint==null||pieces==null||pieces.Length!=3||
                 solutionPositions==null||solutionScales==null||markerLocalPositions==null||
                 solutionPositions.Length!=pieces.Length||solutionScales.Length!=pieces.Length||markerLocalPositions.Length!=pieces.Length)
             {UpdateFeedback();return;}
             Vector3 referenceEye=viewingPoint.position+Vector3.up*1.55f,eye=game.view.transform.position;
             Vector3 forward=ViewingDirection,right=Vector3.Cross(Vector3.up,forward).normalized,up=Vector3.Cross(forward,right);
+            FaceCenter=Vector3.zero;
             for(int i=0;i<pieces.Length;i++)
             {
-                var p=pieces[i];if(p==null||p==game.held||p.placement==null||p.placement.Held||!p.placement.Ready)continue;
-                if(p.body!=null&&!p.body.isKinematic&&(p.body.linearVelocity.sqrMagnitude>.04f||p.body.angularVelocity.sqrMagnitude>.09f))continue;
-                Vector3 actual=p.transform.TransformPoint(markerLocalPositions[i])-eye;
+                var p=pieces[i];if(p==null)continue;
+                bool held=p==game.held||(p.placement!=null&&p.placement.Held);AnyPieceHeld|=held;
+                Vector3 marker=p.transform.TransformPoint(markerLocalPositions[i]);FaceCenter+=marker/3;
+                Vector3 actual=marker-eye;
                 Vector3 desired=transform.TransformPoint(solutionPositions[i]+markerLocalPositions[i]*solutionScales[i])-referenceEye;
                 Vector3 a=new Vector3(Vector3.Dot(actual,right),Vector3.Dot(actual,up),Vector3.Dot(actual,forward));
                 Vector3 b=new Vector3(Vector3.Dot(desired,right),Vector3.Dot(desired,up),Vector3.Dot(desired,forward));
-                if(a.z<1||b.z<1)continue;
+                if(a.z<1||b.z<1){PieceStatus[i]=PieceNames[i]+"이 앞쪽에 보이도록 배치해 주세요.";continue;}
                 float referenceScale=solutionScales[i]*Mathf.Abs(transform.lossyScale.x);
-                float apparentScale=(Mathf.Abs(p.transform.lossyScale.x)/a.z)/(referenceScale/b.z);
-                if(Vector2.Distance(new Vector2(a.x,a.y)/a.z,new Vector2(b.x,b.y)/b.z)<.06f&&Mathf.Abs(apparentScale-1)<.23f&&
-                    Vector3.Dot(p.transform.forward,forward)>.90f&&Vector3.Dot(p.transform.up,Vector3.up)>.90f)AlignedPieces++;
+                projected[i]=new Vector2(a.x,a.y)/a.z;depths[i]=a.z;
+                apparent[i]=(Mathf.Abs(p.transform.lossyScale.x)/a.z)/(referenceScale/b.z);visible[i]=true;
+                if(held){PieceStatus[i]=PieceNames[i]+"을 내려놓아 주세요.";continue;}
+                if(p.placement==null||!p.placement.Ready||
+                    (p.body!=null&&!p.body.isKinematic&&(p.body.linearVelocity.sqrMagnitude>.04f||p.body.angularVelocity.sqrMagnitude>.09f)))
+                {PieceStatus[i]=PieceNames[i]+"이 바닥에 안착하기를 잠깐 기다려 주세요.";continue;}
+                if(Vector3.Dot(p.transform.forward,forward)<.72f||Vector3.Dot(p.transform.up,Vector3.up)<.72f)
+                {PieceStatus[i]=PieceNames[i]+"을 얼굴 쪽으로 세워 주세요.";continue;}
+                PieceMatched[i]=true;
             }
-            AtViewingPoint=Vector2.Distance(new Vector2(game.player.feet.x,game.player.feet.z),new Vector2(viewingPoint.position.x,viewingPoint.position.z))<1.05f&&
-                Mathf.Abs(game.player.feet.y-viewingPoint.position.y)<.35f;
+            // Read the assembled face from the player's actual viewpoint. Its
+            // shared screen position and overall size are not hidden answers.
+            // Recognizable order, a common vertical axis and broadly compatible
+            // feature sizes matter; no object is teleported or scaled.
+            bool projectedFace=visible[0]&&visible[1]&&visible[2];
+            if(projectedFace)
+            {
+                float commonSize=Median(apparent[0],apparent[1],apparent[2]);
+                float centerX=Median(projected[0].x,projected[1].x,projected[2].x);
+                float height=projected[0].y-projected[2].y;
+                float gap=Mathf.Max(.006f,height*.075f);
+                float eyeWidth=3.3f*Mathf.Abs(pieces[0].transform.lossyScale.x)/depths[0];
+                float horizontalAllowance=Mathf.Clamp(eyeWidth*.40f,.045f,.14f);
+                bool frameReadable=height>.075f&&height<1.25f&&commonSize>.001f;
+                for(int i=0;i<3;i++)
+                {
+                    if(!PieceMatched[i])continue;
+                    if(!frameReadable){PieceMatched[i]=false;PieceStatus[i]="얼굴 전체가 보이는 거리에서 확인해 주세요.";continue;}
+                    bool ordered=i==0?projected[0].y>projected[1].y+gap:
+                        i==2?projected[2].y<projected[1].y-gap:
+                        projected[1].y<projected[0].y-gap&&projected[1].y>projected[2].y+gap;
+                    if(i==1)
+                    {
+                        float middle=(projected[1].y-projected[2].y)/height;
+                        ordered&=middle>.12f&&middle<.88f;
+                    }
+                    if(!ordered){PieceMatched[i]=false;PieceStatus[i]=i==0?"눈이 코보다 위에 오도록 배치해 주세요.":i==1?"코를 눈과 입 사이에 놓아 주세요.":"입이 코 아래에 오도록 배치해 주세요.";continue;}
+                    if(Mathf.Abs(projected[i].x-centerX)>horizontalAllowance)
+                    {PieceMatched[i]=false;PieceStatus[i]=PieceNames[i]+"을 얼굴의 가운데 쪽으로 옮겨 보세요.";continue;}
+                    float relativeSize=apparent[i]/Mathf.Max(.001f,commonSize);
+                    if(relativeSize<.42f||relativeSize>2.3f)
+                    {PieceMatched[i]=false;PieceStatus[i]=PieceNames[i]+"의 크기를 다른 부분과 비슷하게 맞춰 보세요.";continue;}
+                    PieceStatus[i]=PieceNames[i]+"이 얼굴로 이어졌어요.";
+                }
+            }
+            else for(int i=0;i<3;i++)PieceMatched[i]=false;
+            for(int i=0;i<3;i++)if(PieceMatched[i])AlignedPieces++;
+            Vector3 floorOffset=game.player.feet-viewingPoint.position;
+            float alongGallery=Vector3.Dot(floorOffset,forward),acrossGallery=Mathf.Abs(Vector3.Dot(floorOffset,right));
+            // The inlaid disc suggests a view; it is not an invisible switch.
+            // A face visible from the gallery floor can be recognized there.
+            AtViewingPoint=alongGallery> -4.5f&&alongGallery<12.5f&&acrossGallery<GalleryConceptWorld.Width*.5f-.65f&&
+                Mathf.Abs(game.player.feet.y-viewingPoint.position.y)<.45f;
+            Vector3 toFace=FaceCenter-eye,viewport=game.view.WorldToViewportPoint(FaceCenter);
+            LookingAtFace=projectedFace&&toFace.sqrMagnitude>.01f&&Vector3.Dot(game.view.transform.forward,toFace.normalized)>.80f&&
+                viewport.z>0&&viewport.x>.025f&&viewport.x<.975f&&viewport.y>.025f&&viewport.y<.975f;
             Complete=AlignedPieces==pieces.Length;
+            if(AnyPieceHeld)Status="작품을 내려놓으면 얼굴을 확인할 수 있어요.";
+            else if(!AtViewingPoint)Status="얼굴이 보이는 전시실 앞쪽에서 바라봐 주세요.";
+            else if(!LookingAtFace)Status="맞춘 얼굴 쪽으로 시선을 돌려 주세요.";
+            else if(Complete)Status="얼굴이 이어졌어요. 잠깐 바라봐 주세요.";
+            else
+            {
+                Status="눈·코·입을 하나의 얼굴로 이어 보세요.";
+                for(int i=0;i<3;i++)if(!PieceMatched[i]){Status=PieceStatus[i];break;}
+            }
             UpdateFeedback();
         }
+        static float Median(float a,float b,float c)=>Mathf.Max(Mathf.Min(a,b),Mathf.Min(Mathf.Max(a,b),c));
         void UpdateFeedback()
         {
             if(feedback!=null)
             {
                 if(block==null)block=new MaterialPropertyBlock();
-                block.SetColor("_Selection",Complete?new Color(.25f,.14f,.025f):Color.black);feedback.SetPropertyBlock(block);
+                block.SetColor("_Selection",Complete?new Color(.25f,.14f,.025f):new Color(.045f,.027f,.006f)*Alignment01);feedback.SetPropertyBlock(block);
             }
         }
 
@@ -153,7 +231,7 @@ namespace ShadeLink.Gallery
             var marker=new GameObject("Portrait observation point").transform;marker.SetParent(root,false);marker.localPosition=new Vector3(0,0,30.2f);
             var disc=GameObject.CreatePrimitive(PrimitiveType.Cylinder);disc.name="Inlaid bronze observation disc";disc.transform.SetParent(root,false);disc.transform.localPosition=new Vector3(0,.006f,30.2f);disc.transform.localScale=new Vector3(.95f,.005f,.95f);
             Object.DestroyImmediate(disc.GetComponent<Collider>());disc.GetComponent<Renderer>().sharedMaterial=palette.bronze;
-            Label(root,"시점의 초상",new Vector3(-4.8f,2.35f,30.4f),.13f);Label(root,"작품의 크기와 위치를 바꾸고\n관람 지점에서 얼굴을 찾아보세요",new Vector3(-4.8f,1.88f,30.4f),.075f);
+            Label(root,"시점의 초상",new Vector3(-4.8f,2.35f,30.4f),.13f);Label(root,"눈·코·입을 얼굴처럼 이어 놓고\n보이는 자리에서 잠깐 바라보세요",new Vector3(-4.8f,1.88f,30.4f),.075f);
             var feedback=Part(root,"Completed portrait bronze frieze",new Vector3(0,5.5f,43.73f),new Vector3(6,.065f,.07f),palette.bronze,false);
             var exhibit=root.gameObject.AddComponent<GalleryConceptPerspective>();exhibit.game=game;exhibit.pieces=new[]{eyes,nose,lips};exhibit.viewingPoint=marker;exhibit.feedback=feedback;
             exhibit.solutionPositions=new[]{new Vector3(0,0,40.8f),new Vector3(0,0,38.5f),new Vector3(0,0,37.0f)};

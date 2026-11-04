@@ -1,0 +1,65 @@
+{
+    "passed": true,
+    "scatteredStaysClosed": true,
+    "smallerFaceAccepted": true,
+    "screenshotLikeFaceAccepted": true,
+    "observationJitterForgiven": true,
+    "heldPiecePausesUnlock": true,
+    "nearSizeAssisted": true,
+    "uprightCorrected": true,
+    "tinyStaysUnchanged": true,
+    "heldSculptureStaysUnchanged": true,
+    "obstructionRejected": true,
+    "probePreservesPose": true,
+    "portraitApronSafe": true,
+    "shadowCourseHazardPreserved": true,
+    "simulationRestored": true,
+    "version": "0.20.1",
+    "unity": "6000.3.24f1",
+    "failure": "",
+    "scope": "Explicit scene/camera/prop and held-state fixtures verify perceptual portrait acceptance, observation grace and collision-safe near-size assistance. The portrait faces deliberately differ from canonical size and viewer position. The Cathedral fixture uses real placement support, Rigidbody simulation, opening morph and the actual safety probe. This is focused integration QA, not autonomous puzzle solving or input-only carrying; GalleryMuseumMechanicsValidation separately checks real interaction, controller stairs and the Library handoff.",
+    "ticks": 1020,
+    "viewerDistanceFromMarker": 1.7000007629394532,
+    "jitterProgressBefore": 0.4000000059604645,
+    "jitterProgressDuring": 0.4000000059604645,
+    "assistedStartScale": 2.4840002059936525,
+    "assistedFinalScale": 2.7060000896453859,
+    "tiltBeforeDegrees": 5.999988555908203,
+    "tiltAfterDegrees": 0.0,
+    "approximateFaceScales": {
+        "x": 0.800000011920929,
+        "y": 0.6499999761581421,
+        "z": 0.4018000364303589
+    },
+    "assistedStartPosition": {
+        "x": 0.0,
+        "y": 0.006000000052154064,
+        "z": 53.0
+    },
+    "assistedFinalPosition": {
+        "x": -9.499490261077881e-8,
+        "y": 0.005993932485580444,
+        "z": 53.0
+    },
+    "blockedPosition": {
+        "x": -6.60430383682251,
+        "y": 0.006000000052154064,
+        "z": 52.150001525878909
+    },
+    "portraitApronProbe": {
+        "x": -6.5,
+        "y": 0.02500000037252903,
+        "z": 25.799999237060548
+    },
+    "portraitStatus": "얼굴이 이어졌어요. 잠깐 바라봐 주세요.",
+    "checks": [
+        "The actual sunlit 25.8m observation apron is safe after checkpoint 2 and retains its normal hazard at checkpoint 1",
+        "The original separated exhibits remain a puzzle; no accidental initial completion",
+        "A smaller translated face with mild piece offsets/rotations opens from 1.7m behind the old viewing mark",
+        "Recognisable unequal face proportions are accepted; a brief look jitter is forgiven, and releasing a held part resumes completion",
+        "A settled 92%-sized statue is completed to the actual traversable size and opens without moving its anchor",
+        "A gently tilted near-solution is made upright, then physical gravity settles it before entry is enabled",
+        "A valid near-wall placement remains unchanged when the final doorway would overlap the wall; safety queries restore all authored collider centres"
+    ],
+    "errors": []
+}

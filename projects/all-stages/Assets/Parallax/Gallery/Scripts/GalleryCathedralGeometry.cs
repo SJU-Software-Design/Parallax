@@ -7,6 +7,10 @@ namespace ShadeLink.Gallery
     public static class GalleryCathedralGeometry
     {
         public const float EntryFeetY=.62f, RequiredScale=2.7f, PortalPlaneZ=0;
+        // Keep the captured rest pose, but part the palms a little farther at
+        // runtime so traversal does not require the controller's exact centre.
+        // Native Open is authored at 100% / .08m per palm; 150% gives .12m.
+        public const float ComfortableOpeningMultiplier=1.5f;
         public struct BoxDescriptor
         {
             public Vector3 closedCenter,openedCenter,size;
@@ -16,6 +20,9 @@ namespace ShadeLink.Gallery
         }
         public static readonly Bounds ClosedOpening=new Bounds(new Vector3(-0.01714286f, 1.01642857f, 0.00000000f), new Vector3(0.32000000f, 1.05857143f, 0.01600000f));
         public static readonly Bounds OpenedOpening=new Bounds(new Vector3(-0.01714286f, 1.01642857f, 0.00000000f), new Vector3(0.48000000f, 1.05857143f, 0.01600000f));
+        public static Bounds ComfortableOpenedOpening=>new Bounds(
+            Vector3.LerpUnclamped(ClosedOpening.center,OpenedOpening.center,ComfortableOpeningMultiplier),
+            Vector3.LerpUnclamped(ClosedOpening.size,OpenedOpening.size,ComfortableOpeningMultiplier));
         public static readonly BoxDescriptor[] CollisionBoxes={
             new BoxDescriptor(new Vector3(0.04461792f, 0.30000000f, -0.08954566f), new Vector3(0.04461792f, 0.30000000f, -0.08954566f), new Vector3(1.02848324f, 0.60000000f, 1.13839550f)),
             new BoxDescriptor(new Vector3(-0.31221878f, 0.64000000f, -0.08954566f), new Vector3(-0.39221878f, 0.64000000f, -0.08954566f), new Vector3(0.31815185f, 0.08000000f, 1.13839550f)),

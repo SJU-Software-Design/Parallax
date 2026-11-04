@@ -16,7 +16,7 @@ namespace ShadeLink.Gallery
         };
         public GalleryCaster[] casters;
         public bool conceptLayout;
-        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-8.1f,8.1f,32,35),new Vector4(-8.1f,8.1f,47,50)};
+        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-GalleryConceptWorld.PortraitSkylightHalfWidth,GalleryConceptWorld.PortraitSkylightHalfWidth,32,35),new Vector4(-8.1f,8.1f,47,50)};
         public GalleryMirror mirror;
         readonly Matrix4x4[] inverse = new Matrix4x4[MaxCasters];
         readonly float[] mirrorCaster = new float[MaxCasters];
@@ -86,6 +86,8 @@ namespace ShadeLink.Gallery
         }
         public bool IsDirectLit(Vector3 surface, Vector3 normal)
         {
+            if(conceptLayout&&surface.z>=14&&surface.z<29&&owner!=null&&owner.nikeLight!=null&&owner.nikeLight.isActiveAndEnabled)
+                return owner.nikeLight.IsIlluminated(surface,normal);
             if(conceptLayout)
             {
                 Vector3 aperture=surface+ToSun*((GalleryConceptWorld.Roof-surface.y)/ToSun.y);bool lit=false;
