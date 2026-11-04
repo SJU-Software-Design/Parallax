@@ -13,6 +13,7 @@ namespace Parallax.StageLauncher.Editor
         private sealed class Result
         {
             public string stage, scene, result, buildId, unityVersion, output;
+            public string[] scenes;
             public int errors, warnings;
         }
 
@@ -34,6 +35,7 @@ namespace Parallax.StageLauncher.Editor
             string outputRoot = Path.GetFullPath(Argument("-parallaxOutput"));
             string buildId = Argument("-parallaxBuildId");
             string oldProductName = PlayerSettings.productName;
+            string oldVersion = PlayerSettings.bundleVersion;
             try
             {
                 foreach (string stage in Argument("-parallaxStages").Split(','))
@@ -43,16 +45,27 @@ namespace Parallax.StageLauncher.Editor
                         throw new ArgumentException("Unknown stage: " + stage);
 
                     string scene = "Assets/Parallax/" + stage + "/Scenes/" + stage + ".unity";
+                    // Generate the museum from current source and include its next
+                    // stage so the mouth passage works inside the same executable.
+                    if(stage=="Gallery")
+                    {
+                        ShadeLink.Editor.LibraryBuild.Prepare();
+                        ShadeLink.Editor.GalleryBuild.Prepare();
+                    }
+                    string[] scenes=stage=="Gallery"
+                        ?new[]{scene,"Assets/Parallax/Library/Scenes/Library.unity"}
+                        :new[]{scene};
                     if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scene) == null)
                         throw new FileNotFoundException("Saved stage scene is missing", scene);
                     string outputDir = Path.Combine(outputRoot, stage);
                     Directory.CreateDirectory(outputDir);
                     string outputExe = Path.Combine(outputDir, "Parallax.exe");
-                    PlayerSettings.productName = "Parallax - " + stage;
+                    PlayerSettings.productName = stage=="Gallery"?"Parallax - Museum "+ShadeLink.Gallery.GalleryGame.Version:"Parallax - " + stage;
+                    if(stage=="Gallery")PlayerSettings.bundleVersion=ShadeLink.Gallery.GalleryGame.Version;
                     Debug.Log("STAGE_BUILD_START " + stage + " scene=" + scene);
                     var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
                     {
-                        scenes = new[] { scene },
+                        scenes = scenes,
                         locationPathName = outputExe,
                         target = BuildTarget.StandaloneWindows64,
                         subtarget = (int)StandaloneBuildSubtarget.Player,
@@ -60,17 +73,18 @@ namespace Parallax.StageLauncher.Editor
                     });
                     var result = new Result
                     {
-                        stage = stage, scene = scene, result = report.summary.result.ToString(),
+                        stage = stage, scene = scene, scenes=scenes, result = report.summary.result.ToString(),
                         buildId = buildId, unityVersion = Application.unityVersion, output = outputExe,
                         errors = (int)report.summary.totalErrors, warnings = (int)report.summary.totalWarnings
                     };
                     File.WriteAllText(Path.Combine(outputDir, "build-result.json"), JsonUtility.ToJson(result, true));
                     if (report.summary.result != BuildResult.Succeeded)
                         throw new InvalidOperationException(stage + " build failed: " + report.summary.result);
+                    if(stage=="Gallery")ShadeLink.Editor.GalleryBuild.WriteCredits(outputDir);
                     Debug.Log("STAGE_BUILD_OK " + stage + " output=" + outputExe);
                 }
             }
-            finally { PlayerSettings.productName = oldProductName; }
+            finally { PlayerSettings.productName = oldProductName;PlayerSettings.bundleVersion=oldVersion; }
         }
     }
 }

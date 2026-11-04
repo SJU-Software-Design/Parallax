@@ -1,0 +1,8 @@
+La Cathedrale - 3D scan by Migg at Musee Rodin, Paris.
+Creative Commons Attribution 4.0 International (CC BY 4.0).
+License: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode.en
+Copying, redistribution and modification are permitted, including commercial use, provided attribution and license notice are retained and changes are indicated.
+The downloaded original GLB is preserved unmodified. See source.json and zenodo-record.json for provenance and checksums.
+
+Game derivative changes: see source.json.

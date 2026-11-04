@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Parallax/Starship/Scenes/Starship.unity
-    guid: 37f6c0bed036a1f4698be4fb406a72e9
+    path: Assets/Parallax/Gallery/Scenes/Gallery.unity
+    guid: 774882fea5996c24fb378977048db17e
+  - enabled: 1
+    path: Assets/Parallax/Library/Scenes/Library.unity
+    guid: aebdc6feb567c734b8141ba520cda23a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

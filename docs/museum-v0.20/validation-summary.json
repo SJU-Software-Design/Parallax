@@ -1,0 +1,54 @@
+{
+  "version": "0.20.0",
+  "unity": "6000.3.24f1",
+  "build": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "sharedControlChecks": 105,
+  "initialExhibits": 9,
+  "analyticShadowCasters": 118,
+  "openedEnvelopeWallChecksPassed": true,
+  "visual": {
+    "passed": true,
+    "actualScan": true,
+    "liveLibrary": true,
+    "parallax": true,
+    "galleryBackgroundOccluded": true,
+    "noWind": true,
+    "runtimeCleanup": true,
+    "runtimeReenabled": true
+  },
+  "integration": {
+    "passed": true,
+    "simulatedTicks": 3644,
+    "sunExposureAndRespawn": true,
+    "firstShadowCrossing": true,
+    "nikeShadowCrossing": true,
+    "portraitThroughActualInput": true,
+    "curtainCrossing": true,
+    "sculptureEnlargementAndSettlingThroughActualInput": true,
+    "actualControllerStairsAndPortal": true,
+    "actualLibraryActive": true,
+    "librarySceneLoads": 1,
+    "fallDistanceMetres": 13.93795108795166
+  },
+  "scope": "Shadow-course object arrangements are explicit validated solution fixtures followed by actual controller walks. Portrait and sculpture enlargement use the real interaction system with labelled player pickup/approach fixtures. Visual images use explicit camera/exhibit poses. This is integration and visual QA, not an unassisted autonomous full puzzle solution.",
+  "freshCheckout": {
+    "unityCacheInitiallyAbsent": true,
+    "buildPassed": true,
+    "buildErrors": 0,
+    "buildWarnings": 0,
+    "visualPassed": true,
+    "fourRoomIntegrationPassed": true,
+    "simulatedTicks": 3644
+  },
+  "latestMainCompatibility": {
+    "mainCommit": "a2ddfcd453425310ef000a7b1b68b2badb1c2a5c",
+    "buildPassed": true,
+    "visualPassed": true,
+    "fourRoomIntegrationPassed": true,
+    "tutorialSupportPreserved": true
+  }
+}
