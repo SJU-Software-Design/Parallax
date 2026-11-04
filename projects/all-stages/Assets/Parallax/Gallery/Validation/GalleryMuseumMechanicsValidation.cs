@@ -42,9 +42,9 @@ namespace ShadeLink.Gallery
             public bool inputOnlyOrcusEnlarged, inputOnlyOrcusReleased, inputOnlyOrcusSettled, physicalMouthCrossing;
             public bool libraryLoaded, libraryActive, simulationRestored;
             public string phase, failure, unity, gpu, orcusLastRestriction;
-            public string scope = "Explicit enlarged painting/panel solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual two-second observation. Orcus enlargement also uses public input only. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.";
+            public string scope = "Explicit enlarged painting/panel solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.";
             public int simulatedTicks, exposureRespawns, totalRespawns, finalCheckpoint, enlargementUpdates, mouthWalkFrames, librarySceneLoads;
-            public float simulatedSeconds, maximumNegativeExposure, orcusRequiredScale, orcusMaximumScale, orcusReleasedScale, fallDistance;
+            public float simulatedSeconds, maximumNegativeExposure, orcusRequiredScale, orcusMaximumScale, orcusReleasedScale, fallDistance, entryLateralOffset, entryLateralOffsetMetres;
             public Vector3 orcusReleasedPosition;
             public RouteReport[] routes;
             public string[] checks, errors;
@@ -495,15 +495,14 @@ namespace ShadeLink.Gallery
             portrait.Evaluate();
             Require(portrait.Complete && portrait.AtViewingPoint && game.held == null, "Input-only portrait solver did not leave three placed aligned pieces");
             report.inputOnlyPortrait = true;
-            Require(!gate.Opened, "Curtain opened before the dedicated two-second positive observation");
             game.yaw = 0; game.pitch = 0; game.SyncView();
-            Capture(game.view, "mechanics-03-portrait-before-opening");
+            Capture(game.view, gate.Opened ? "mechanics-03-portrait-recognized" : "mechanics-03-portrait-before-opening");
             for (int i = 0; i < 195 && !gate.Opened; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
-            Require(gate.Opened && gate.barrier != null && !gate.barrier.enabled, "Actual two-second observation did not open the physical curtain barrier");
+            Require(gate.Opened && gate.barrier != null && !gate.barrier.enabled, "Recognizing the placed face did not open the physical curtain barrier");
             for (int i = 0; i < 130; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
             report.portraitOpened = true;
             Capture(game.view, "mechanics-04-portrait-after-opening");
-            Check("Labelled negative fixtures reject wrong view, partial alignment and held pieces; original props are then solved through actual input only and two seconds of observation opens the real barrier");
+            Check("The recognizable portrait is assembled through actual pickup/carry/Drop and brief observation opens the real barrier; held or clearly separated pieces remain unfinished");
             var path = new List<Vector3> { new Vector3(3.3f, 0, 33), new Vector3(3.3f, 0, 42), new Vector3(0, 0, 42.8f), new Vector3(0, 0, 45) };
             var walk = WalkRoute(path);
             while (walk.MoveNext()) yield return walk.Current;
@@ -532,7 +531,8 @@ namespace ShadeLink.Gallery
                 float scale = Mathf.Min(prop.transform.lossyScale.x, prop.transform.lossyScale.y, prop.transform.lossyScale.z);
                 report.orcusMaximumScale = Mathf.Max(report.orcusMaximumScale, scale);
                 report.orcusLastRestriction = game.PlacementDiagnostic.Limiter + ": " + game.invalidReason;
-                if (scale >= exit.RequiredScale && game.ValidPlacement(prop, out _))
+                float releaseScale = exit.cathedralActivation != null ? exit.cathedralActivation.MinimumAssistedScale : exit.RequiredScale;
+                if (scale >= releaseScale && game.ValidPlacement(prop, out _))
                 {
                     Require(!exit.IsReadyForEntry && !exit.CanEnterFrom(MouthFeet(exit, 0, -.12f), MouthFeet(exit, 0, .12f)), "Held enlarged sculpture accepted entry");
                     report.heldExitRejected = true; report.inputOnlyOrcusEnlarged = true;
@@ -557,13 +557,18 @@ namespace ShadeLink.Gallery
             Require(!exit.CanEnterFrom(MouthFeet(exit, .95f, -.12f), MouthFeet(exit, .95f, .12f)), "Side approach outside mouth accepted"); report.sideExitRejected = true;
             Require(!exit.CanEnterFrom(before - exit.transform.forward * 3, after), "A discontinuous teleport accepted as a walking entry");
             Require(exit.CanEnterFrom(before, after), "Settled upright mouth rejects a geometrically valid front crossing");
-            Check("Original sculpture is enlarged, released and settled through camera aim/carried movement/Drop; small, held, unsettled, reverse, side and teleport negatives are rejected");
+            float lateralOffset = exit.customOpening ? .04f : 0;
+            Require(exit.CanEnterFrom(MouthFeet(exit, lateralOffset, -.12f), MouthFeet(exit, lateralOffset, .12f)),
+                "The transition rejects an off-centre crossing that must be governed by the physical hand colliders");
+            report.entryLateralOffset = lateralOffset;
+            report.entryLateralOffsetMetres = exit.transform.TransformVector(Vector3.right * lateralOffset).magnitude;
+            Check("Actual camera/carried movement/Drop reaches the helpful near-size threshold, the sculpture completes its size and settles, then permits physical entry");
             CaptureView("mechanics-05-cathedral-ready", game.player.feet + Vector3.up * 1.55f, exit.MouthPosition);
 
             // Explicit entry fixture: start on clear floor before the first
             // tread, then let the actual controller climb the low sculpture steps.
             // The enlarged prop itself receives no pose/scale writes here.
-            Vector3 approach = exit.transform.TransformPoint(new Vector3(exit.EntryCenterX, 0, exit.approachStart));
+            Vector3 approach = exit.transform.TransformPoint(new Vector3(exit.EntryCenterX + lateralOffset, 0, exit.approachStart));
             game.PlacePlayer(approach + Vector3.up * .006f);
             Require(game.CanStand(game.player.feet), "Ground approach before the first mouth tread is obstructed");
             game.yaw = Mathf.Atan2(exit.transform.forward.x, exit.transform.forward.z); game.pitch = -.02f; game.SyncView();
@@ -608,7 +613,7 @@ namespace ShadeLink.Gallery
                 yield return null;
             }
             Require(report.libraryActive && report.fallDistance > 10, "Actual Library handoff/descent did not complete");
-            Check("Real ground approach climbs the sculpture staircase, crosses the aperture and triggers a descent longer than ten metres and one Library scene load with active controls and normal physics");
+            Check("Real ground approach with a labelled off-centre offset climbs the sculpture staircase, crosses the aperture and triggers a descent longer than ten metres and one Library scene load with active controls and normal physics");
         }
 
         Vector3 MouthFeet(GalleryOrcusExit exit, float x, float z)

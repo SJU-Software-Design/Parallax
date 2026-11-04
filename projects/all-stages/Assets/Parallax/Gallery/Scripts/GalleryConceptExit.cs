@@ -94,7 +94,9 @@ namespace ShadeLink.Gallery
                 var go = new GameObject("Scanned hands · physical section " + i.ToString("D2"));
                 go.transform.SetParent(root.transform, false);
                 var box = go.AddComponent<BoxCollider>(); box.center = boxes[i].closedCenter; box.size = boxes[i].size;
-                parts[i] = box; closed[i] = boxes[i].closedCenter; opened[i] = boxes[i].openedCenter;
+                parts[i] = box; closed[i] = boxes[i].closedCenter;
+                opened[i] = Vector3.LerpUnclamped(boxes[i].closedCenter, boxes[i].openedCenter,
+                    GalleryCathedralGeometry.ComfortableOpeningMultiplier);
             }
             BuildApproach(root.transform, stepStone, bronze);
 
@@ -104,7 +106,10 @@ namespace ShadeLink.Gallery
             membrane.shadowCastingMode = ShadowCastingMode.Off; membrane.receiveShadows = false;
             var exit = root.AddComponent<GalleryOrcusExit>();
             exit.game = game; exit.prop = prop; exit.portal = membrane; exit.windEnabled = false;
-            exit.customOpening = true; exit.openingCenterX = 0; exit.openingHalfWidth = .13f;
+            // The real hand colliders determine what can physically pass.
+            // This transition window must not demand pixel-perfect centring
+            // after the controller has already negotiated the actual opening.
+            exit.customOpening = true; exit.openingCenterX = 0; exit.openingHalfWidth = .24f;
             exit.openingBottom = GalleryCathedralGeometry.EntryFeetY;
             exit.openingTop = GalleryCathedralGeometry.EntryFeetY + 1.6f / GalleryCathedralGeometry.RequiredScale + .04f;
             exit.openingPlane = GalleryCathedralGeometry.PortalPlaneZ;
@@ -115,10 +120,11 @@ namespace ShadeLink.Gallery
             portal.handRenderers = new Renderer[] { hands };
             var activation = root.AddComponent<GalleryCathedralActivation>();
             activation.entrance = exit; activation.portal = portal;
+            activation.openedMorphWeight = 100 * GalleryCathedralGeometry.ComfortableOpeningMultiplier;
             activation.morphTargets = new[] { hands, membrane };
             activation.movingParts = parts; activation.closedCenters = closed; activation.openedCenters = opened;
             activation.closedOpening = GalleryCathedralGeometry.ClosedOpening;
-            activation.openedOpening = GalleryCathedralGeometry.OpenedOpening;
+            activation.openedOpening = GalleryCathedralGeometry.ComfortableOpenedOpening;
             exit.cathedralActivation = activation;
             prop.Remember();
             return prop;

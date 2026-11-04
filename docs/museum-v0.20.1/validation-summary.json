@@ -1,0 +1,101 @@
+{
+  "version": "0.20.1",
+  "unity": "6000.3.24f1",
+  "build": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 0
+  },
+  "mainCommit": "00fd4f849700f38a7cf0740f77fbcb1e0a4f566e",
+  "sharedControlChecks": 105,
+  "initialExhibits": 9,
+  "openedEnvelopeWallChecksPassed": true,
+  "comfort": {
+    "passed": true,
+    "scatteredStaysClosed": true,
+    "smallerFaceAccepted": true,
+    "screenshotLikeFaceAccepted": true,
+    "observationJitterForgiven": true,
+    "heldPiecePausesUnlock": true,
+    "nearSizeAssisted": true,
+    "uprightCorrected": true,
+    "tinyStaysUnchanged": true,
+    "heldSculptureStaysUnchanged": true,
+    "obstructionRejected": true,
+    "probePreservesPose": true,
+    "portraitApronSafe": true,
+    "shadowCourseHazardPreserved": true,
+    "simulationRestored": true,
+    "version": "0.20.1",
+    "unity": "6000.3.24f1",
+    "failure": "",
+    "scope": "Explicit scene/camera/prop and held-state fixtures verify perceptual portrait acceptance, observation grace and collision-safe near-size assistance. The portrait faces deliberately differ from canonical size and viewer position. The Cathedral fixture uses real placement support, Rigidbody simulation, opening morph and the actual safety probe. This is focused integration QA, not autonomous puzzle solving or input-only carrying; GalleryMuseumMechanicsValidation separately checks real interaction, controller stairs and the Library handoff.",
+    "ticks": 1020,
+    "viewerDistanceFromMarker": 1.7000007629394531,
+    "jitterProgressBefore": 0.4000000059604645,
+    "jitterProgressDuring": 0.4000000059604645,
+    "assistedStartScale": 2.4840002059936523,
+    "assistedFinalScale": 2.7060000896453857,
+    "tiltBeforeDegrees": 5.999988555908203,
+    "tiltAfterDegrees": 0.0,
+    "approximateFaceScales": {
+      "x": 0.800000011920929,
+      "y": 0.6499999761581421,
+      "z": 0.4018000364303589
+    },
+    "assistedStartPosition": {
+      "x": 0.0,
+      "y": 0.006000000052154064,
+      "z": 53.0
+    },
+    "assistedFinalPosition": {
+      "x": -9.499490261077881E-08,
+      "y": 0.005993932485580444,
+      "z": 53.0
+    },
+    "blockedPosition": {
+      "x": -6.60430383682251,
+      "y": 0.006000000052154064,
+      "z": 52.150001525878906
+    },
+    "portraitApronProbe": {
+      "x": -6.5,
+      "y": 0.02500000037252903,
+      "z": 25.799999237060547
+    },
+    "portraitStatus": "얼굴이 이어졌어요. 잠깐 바라봐 주세요.",
+    "checks": [
+      "The actual sunlit 25.8m observation apron is safe after checkpoint 2 and retains its normal hazard at checkpoint 1",
+      "The original separated exhibits remain a puzzle; no accidental initial completion",
+      "A smaller translated face with mild piece offsets/rotations opens from 1.7m behind the old viewing mark",
+      "Recognisable unequal face proportions are accepted; a brief look jitter is forgiven, and releasing a held part resumes completion",
+      "A settled 92%-sized statue is completed to the actual traversable size and opens without moving its anchor",
+      "A gently tilted near-solution is made upright, then physical gravity settles it before entry is enabled",
+      "A valid near-wall placement remains unchanged when the final doorway would overlap the wall; safety queries restore all authored collider centres"
+    ],
+    "errors": []
+  },
+  "integration": {
+    "entryLateralOffsetMetres": 0.10823999345302582,
+    "requiredScale": 2.700000047683716,
+    "fallDistanceMetres": 13.880183219909668,
+    "simulatedTicks": 3613,
+    "scope": "Explicit enlarged painting/panel solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.",
+    "passed": true,
+    "physicalMouthCrossing": true,
+    "librarySceneLoads": 1,
+    "libraryActive": true,
+    "libraryLoaded": true,
+    "releasedScale": 2.4387450218200684
+  },
+  "visual": {
+    "runtimeCleanup": true,
+    "backgroundOccluded": true,
+    "livePreview": true,
+    "parallax": true,
+    "passed": true,
+    "runtimeReenabled": true,
+    "scope": "Explicit small/home and enlarged/scaled exhibit and camera pose fixtures. Actual 1600x900 player-camera rendering includes the existing post-processing stack. RenderTexture statistics and left/right eye movement verify a live, non-flat view-dependent library. A temporary magenta witness behind the aperture is visible when the portal surface is disabled and hidden when enabled; it is removed before final screenshots. This is visual/integration QA, not a claim of player-driven puzzle solving or traversal.",
+    "noWind": true
+  }
+}

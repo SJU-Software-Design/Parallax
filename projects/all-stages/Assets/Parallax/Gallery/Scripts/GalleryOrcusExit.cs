@@ -34,7 +34,7 @@ namespace ShadeLink.Gallery
             prop.placement.Ready && !prop.placement.Held && game.held != prop &&
             Vector3.Dot(transform.up, Vector3.up) > .97f &&
             Mathf.Min(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z) >= RequiredScale;
-        public bool IsReadyForEntry => ScaleAndPlacementReady && (cathedralActivation == null || cathedralActivation.Opened);
+        public bool IsReadyForEntry => ScaleAndPlacementReady && (cathedralActivation == null || !cathedralActivation.Assisting && cathedralActivation.Opened);
 
         AudioSource wind;
         static AudioClip windClip;

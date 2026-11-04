@@ -1,6 +1,6 @@
 # Parallax
 
-미술관 최신 소스는 **v0.20**입니다. 명화·실물 조각으로 구성한 네 전시실, 그림자 길과 시점의 초상 퍼즐, 로댕 〈성당〉의 두 손 사이로 이어지는 도서관 출구를 포함합니다. Windows에서는 **`미술관_실행.cmd`**, Unity에서는 `projects/all-stages`의 Gallery 씬을 사용합니다. [미술관 실행·검토 안내](docs/museum-v0.20-review.md).
+미술관 최신 소스는 **v0.20.1**입니다. 명화·실물 조각으로 구성한 네 전시실, 그림자 길과 시점의 초상 퍼즐, 로댕 〈성당〉의 두 손 사이로 이어지는 도서관 출구를 포함합니다. 얼굴처럼 맞춘 배치를 넉넉하게 인정하고, 출구는 거의 충분히 키웠을 때 크기·작은 기울기를 보정합니다. Windows에서는 **`미술관_실행.cmd`**, Unity에서는 `projects/all-stages`의 Gallery 씬을 사용합니다. [미술관 실행·검토 안내](docs/museum-v0.20-review.md).
 
 해변맵 최신 소스는 **v0.16.1**입니다. 모래성 목표가 보이는 열린 해변, 태양광 센서, 그림자 조립 보드와 직접 운반하는 그늘 배, 두 성벽 조각과 파라솔로 오르는 마지막 퍼즐을 포함합니다. Unity에서 `projects/all-stages/Assets/Parallax/Beach/Scenes/Beach.unity`를 열거나 Windows에서 `해변_실행.cmd`를 실행하세요. 첫 실행은 설치된 Unity 6000.3.24f1로 저장된 씬을 빌드합니다. [해변 플레이·검증 안내](projects/all-stages/README.md#해변-v0161).
 
