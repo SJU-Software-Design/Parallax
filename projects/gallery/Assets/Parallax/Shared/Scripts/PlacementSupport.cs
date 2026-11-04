@@ -14,6 +14,7 @@ namespace ShadeLink
         public bool Supported {get;private set;}
         public float Progress=>Mathf.Clamp01(stableTime/SettleSeconds);
         public Func<bool> WaterSupport;
+        public bool PreviewUntilSettled { get; set; } = true;
         public string Status=>Held?"운반 중 · 빗금은 예상 그늘 / 안전하지 않음":Ready?"설치 완료 · 실제 그늘과 발판 활성":Supported?"안착 확인 중 · "+Mathf.RoundToInt(Progress*100)+"%":"지지가 필요합니다 · 아직 안전한 그늘이 아님";
         public Renderer[] Visuals {get;private set;}
         Rigidbody body;Collider[] shapes;CharacterController player;
@@ -49,7 +50,7 @@ namespace ShadeLink
         public bool OriginalCastsShadow(Renderer r){int i=Array.IndexOf(Visuals,r);return i>=0&&shadowModes[i]!=ShadowCastingMode.Off;}
         public Material OriginalMaterial(Renderer r,int index){int i=Array.IndexOf(Visuals,r);return i>=0?originals[i][index]:r.sharedMaterials[index];}
         public void ReplaceOriginalMaterial(Renderer r,int index,Material material)
-        {int i=Array.IndexOf(Visuals,r);if(i<0)return;originals[i][index]=material;if(Ready)r.sharedMaterials=originals[i];}
+        {int i=Array.IndexOf(Visuals,r);if(i<0)return;originals[i][index]=material;if(visualReady)r.sharedMaterials=originals[i];}
         public Snapshot Capture()=>new Snapshot{stableTime=stableTime,attached=attached};
         public void BeginHold(){Held=true;attached=false;Supported=false;stableTime=0;SetReady(false);}
         public void Released(){Held=false;attached=false;Supported=false;stableTime=0;SetReady(false);RememberPose();}
@@ -101,11 +102,12 @@ namespace ShadeLink
         void SetReady(bool ready)
         {
             Ready=ready;
-            if(visualReady!=ready)
+            bool showOriginal = ready || (!Held && !PreviewUntilSettled);
+            if(visualReady!=showOriginal)
             {
                 for(int i=0;i<Visuals.Length;i++)if(Visuals[i]!=null)
-                {Visuals[i].sharedMaterials=ready?originals[i]:ghosts[i];Visuals[i].shadowCastingMode=ready?shadowModes[i]:ShadowCastingMode.Off;}
-                visualReady=ready;
+                {Visuals[i].sharedMaterials=showOriginal?originals[i]:ghosts[i];Visuals[i].shadowCastingMode=showOriginal?shadowModes[i]:ShadowCastingMode.Off;}
+                visualReady=showOriginal;
             }
             UpdatePlayerCollision();
         }
