@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-06",
+  "unity": "6000.3.24f1",
+  "platform": "macOS / Metal",
+  "checks": {
+    "sunlightSmoke": {
+      "passed": true,
+      "marker": "TUTORIAL_SUNLIGHT_SMOKE_OK shelters, exposed gaps, three-die route, checkpoints, preserved poses and natural handoff"
+    },
+    "landingFeedback": {
+      "passed": true,
+      "marker": "TUTORIAL_LANDING_FEEDBACK_OK contact, first landing, release/reset, intensity, overlap and render restoration"
+    },
+    "landingPhysics": {
+      "passed": true,
+      "marker": "TUTORIAL_LANDING_PHYSICS_OK wall scrape, floor impacts, quiet support, bounce and pause"
+    },
+    "macOSBuild": {
+      "passed": true,
+      "marker": "TUTORIAL_SUNLIGHT_BUILD Succeeded errors=0"
+    }
+  },
+  "scope": "Actual Tutorial scene in Play Mode. Shade and collision queries are sampled along explicitly arranged example-dice fixtures; this is not an input-only puzzle playthrough. Checkpoints, preservation of placed props, the natural stage 2 exit, stage resets and actual landing physics are exercised.",
+  "exampleDice": {
+    "coordinates": "local to SunlightOrigin",
+    "centres": [
+      [
+        12.5,
+        2.508,
+        4.8
+      ],
+      [
+        23.5,
+        2.808,
+        4.4
+      ],
+      [
+        33,
+        4.008,
+        14
+      ]
+    ],
+    "sideMetres": [
+      5,
+      5.6,
+      8
+    ]
+  },
+  "captures": [
+    {
+      "file": "01-stage3-entry.png",
+      "width": 1600,
+      "height": 900,
+      "source": "Actual Tutorial camera in Play Mode; no image generation, compositing or retouching",
+      "exampleFixture": false
+    },
+    {
+      "file": "02-grown-dice-shadow-route.png",
+      "width": 1600,
+      "height": 900,
+      "source": "Actual Tutorial camera in Play Mode; no image generation, compositing or retouching",
+      "exampleFixture": true
+    },
+    {
+      "file": "03-corner-to-exit.png",
+      "width": 1600,
+      "height": 900,
+      "source": "Actual Tutorial camera in Play Mode; no image generation, compositing or retouching",
+      "exampleFixture": true
+    }
+  ],
+  "limitations": [
+    "Windows build and runtime not tested in this run.",
+    "Screenshots of the shadow route use declared example placements, not a complete mouse-and-keyboard solution.",
+    "ESC labels and stage-transition functions were checked; clicking every menu button was not fully verified.",
+    "The box collider includes the dice bevel, leaving a small forgiving edge in the draft."
+  ]
+}

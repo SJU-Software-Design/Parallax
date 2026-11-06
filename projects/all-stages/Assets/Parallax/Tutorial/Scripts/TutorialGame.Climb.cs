@@ -18,6 +18,9 @@ namespace ShadeLink.Tutorial
         GalleryProp[] climbDice;
         Collider climbDoorFace, climbDoorLanding;
         bool inClimbRoom, climbComplete;
+        bool climbArrivalPlaying;
+        int nextClimbDrop;
+        float climbDropDelay;
 
         void BuildClimbRoom()
         {
@@ -67,16 +70,18 @@ namespace ShadeLink.Tutorial
             climbDice = new GalleryProp[2];
             for (int i = 0; i < climbDice.Length; i++)
             {
-                const float dieSize = .42f;
-                // From the entrance, the nearer die already has a larger apparent size.
-                var spawn = new Vector3(22.2f + i * 2.05f, dieSize * .5f + .005f, DoorCenter + (i - .5f) * 2.3f);
+                float dieSize = i == 0 ? 1.8f : 3.6f;
+                var spawn = new Vector3(ClimbRoom.center.x - (i == 0 ? 5.8f : 2f), dieSize * .5f + .005f,
+                    DoorCenter + (i == 0 ? 3.3f : -3.7f));
                 var prop = BuildDie("Climb die " + (i + 1), spawn, dieSize);
+                prop.transform.rotation = Quaternion.Euler(0, i == 0 ? 22f : -28f, 0);
                 prop.Remember();
                 prop.InitializePhysics();
                 prop.placement.PreviewUntilSettled = false;
                 prop.placement.SetPlayer(Controller);
                 AttachLandingFeedback(prop);
                 climbDice[i] = prop;
+                SuspendClimbDie(prop);
             }
         }
 
@@ -100,9 +105,6 @@ namespace ShadeLink.Tutorial
             }
             Box("High doorway ceiling", new Vector3(centerX, ClimbDoorHeight + DoorHeight + .1f, DoorCenter),
                 new Vector3(liningDepth, .2f, DoorWidth + .4f), frame);
-            Box("High doorway back wall", new Vector3(ClimbWallX + ClimbLandingDepth + .1f,
-                    ClimbDoorHeight + DoorHeight * .5f, DoorCenter),
-                new Vector3(.2f, DoorHeight, DoorWidth + .4f), frame);
             Box("High doorway steel header", new Vector3(frameX, ClimbDoorHeight + DoorHeight + .13f, DoorCenter),
                 new Vector3(frameDepth, .26f, DoorWidth + .44f), frame, false);
             Box("High doorway sill marker", new Vector3(ClimbWallX - .025f, ClimbDoorHeight - .05f, DoorCenter),
@@ -121,10 +123,58 @@ namespace ShadeLink.Tutorial
             Props = climbDice;
             motor.MantleReachFor = ClimbMantleReach;
             door.position = new Vector3(Room.max.x + .1f, DoorHeight * .5f, DoorCenter);
-            TellClimbHint();
+            BeginClimbArrival();
         }
 
         void TellClimbHint() => Tell("큰 주사위는 문 아래에, 낮은 주사위는 그 앞에 놓아 보세요. 모서리를 향해 앞으로 뛰면 잡고 올라가요.", 9f);
+
+        void BeginClimbArrival()
+        {
+            foreach (var prop in climbDice)
+                SuspendClimbDie(prop);
+            nextClimbDrop = 0;
+            climbDropDelay = .35f;
+            climbArrivalPlaying = true;
+            Tell("왼쪽, 오른쪽 주사위가 차례로 떨어져요. 착지할 때 소리와 진동을 비교해 보세요.", 7f);
+        }
+
+        void SuspendClimbDie(GalleryProp prop)
+        {
+            prop.Restore();
+            prop.transform.rotation = prop.homeRotation * Quaternion.Euler(7f, 0, -5f);
+            float topOffset = prop.WorldBounds.max.y - prop.transform.position.y;
+            var position = prop.homePosition;
+            position.y = ClimbRoom.max.y - topOffset - .12f;
+            prop.transform.position = position;
+            prop.body.position = position;
+            prop.body.rotation = prop.transform.rotation;
+            Physics.SyncTransforms();
+            prop.placement.ResetPlaced();
+        }
+
+        void TickClimbArrival(float dt)
+        {
+            if (!climbArrivalPlaying || paused) return;
+            if (nextClimbDrop == 1 && climbDice[0].GetComponent<TutorialLandingFeedback>().AwaitingLanding) return;
+            if (nextClimbDrop == climbDice.Length && !climbDice[nextClimbDrop - 1].placement.Ready) return;
+            climbDropDelay -= dt;
+            if (climbDropDelay > 0f) return;
+            if (nextClimbDrop == climbDice.Length)
+            {
+                climbArrivalPlaying = false;
+                TellClimbHint();
+                return;
+            }
+
+            var prop = climbDice[nextClimbDrop++];
+            prop.Release();
+            prop.GetComponent<TutorialLandingFeedback>().RecordPlacementResult(true, prop.transform.localScale.x);
+            // Keep the shared size-dependent contact sound audible from the entrance.
+            var audio = prop.GetComponent<AudioSource>();
+            audio.minDistance = nextClimbDrop == 1 ? 6f : 8f;
+            audio.maxDistance = 45f;
+            climbDropDelay = .2f;
+        }
 
         float ClimbMantleReach(Collider shape)
         {
@@ -138,7 +188,6 @@ namespace ShadeLink.Tutorial
         {
             ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
-            foreach (var prop in climbDice) prop.Restore();
             if (Aimed != null) Aimed.Highlight(false, false);
             Aimed = null;
             climbComplete = false;
@@ -147,16 +196,21 @@ namespace ShadeLink.Tutorial
             Controller.enabled = true;
             motor.Reset();
             controls.Reset();
-            yaw = Mathf.PI * .5f;
-            pitch = 0f;
-            SyncView();
-            TellClimbHint();
+            BeginClimbArrival();
         }
 
         void FixedUpdate()
         {
+            if (inSunlightRoom)
+            {
+                foreach (var prop in sunlightDice)
+                    prop.placement.Tick(Time.fixedDeltaTime);
+                return;
+            }
             if (!inClimbRoom) return;
-            foreach (var prop in climbDice) prop.placement.Tick(Time.fixedDeltaTime);
+            foreach (var prop in climbDice)
+                if (prop.gameObject.activeSelf) prop.placement.Tick(Time.fixedDeltaTime);
+            TickClimbArrival(Time.fixedDeltaTime);
         }
     }
 }
