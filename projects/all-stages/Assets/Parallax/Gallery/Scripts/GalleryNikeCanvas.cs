@@ -41,7 +41,7 @@ namespace ShadeLink.Gallery
 
             Frame(root, Size, gold, walnut);
             var guideMaterial = new Material(Shader.Find("Parallax/MuseumSurface")) { name = "Nike canvas · silhouette", color = Color.white };
-            guideMaterial.SetFloat("_ExhibitLight", .53f);
+            guideMaterial.SetFloat("_ExhibitLight", .18f);
             guideMaterial.SetFloat("_ReflectionStrength", .03f);
             GalleryWorld.Materials.Add(guideMaterial);
             var paintingTexture = Resources.Load<Texture2D>("MuseumArt/NikeShadowStudy");
@@ -143,14 +143,11 @@ namespace ShadeLink.Gallery
             for (int x = 0; x < width; x++)
             {
                 int i = y * width + x;
-                int dx = Mathf.Min(x, width - 1 - x), dy = Mathf.Min(y, height - 1 - y);
-                bool border = dx >= 2 && dy >= 2 && (allowed[i] != allowed[i - 2] || allowed[i] != allowed[i + 2] ||
-                    allowed[i] != allowed[i - width * 2] || allowed[i] != allowed[i + width * 2]);
                 int grain = ((x * 131 + y * 97 + (x ^ y) * 53) & 7) - 3;
-                pixels[i] = border ? new Color32(245, 190, 82, 255) : mask[i] ?
-                    new Color32((byte)(142 + grain), (byte)(105 + grain), (byte)(68 + grain), 255) : allowed[i] ?
-                    new Color32((byte)(188 + grain), (byte)(149 + grain), (byte)(96 + grain), 255) :
-                    new Color32((byte)(211 + grain), (byte)(178 + grain), (byte)(125 + grain), 255);
+                // Scoring retains its margin; the linen shows one clear silhouette.
+                pixels[i] = mask[i] ?
+                    new Color32((byte)(110 + grain), (byte)(90 + grain), (byte)(70 + grain), 255) :
+                    new Color32((byte)(214 + grain), (byte)(207 + grain), (byte)(194 + grain), 255);
             }
             var texture = new Texture2D(width, height, TextureFormat.RGBA32, true)
             { name = "Nike shadow alignment guide", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear };

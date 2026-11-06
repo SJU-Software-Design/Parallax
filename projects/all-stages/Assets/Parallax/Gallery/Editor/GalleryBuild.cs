@@ -134,6 +134,7 @@ namespace ShadeLink.Editor
             if(AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath)==null)
                 throw new FileNotFoundException("The existing destination Library scene is missing.",LibraryBuild.ScenePath);
             Prepare();
+            GalleryBakedLightingBuild.Bake();
             foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/MuseumSurface","Parallax/GalleryMirror","Parallax/GalleryGlass","Parallax/GalleryOrcusPortal"})
                 if(ShaderUtil.ShaderHasError(Shader.Find(shader)))
                 {

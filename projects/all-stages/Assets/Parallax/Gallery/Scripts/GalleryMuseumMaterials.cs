@@ -15,6 +15,7 @@ namespace ShadeLink.Gallery
             if(textures.TryGetValue(key,out var texture)&&texture!=null)return texture;
             texture=Resources.Load<Texture2D>("MuseumMaterials/"+key);
             if(texture==null)throw new InvalidOperationException("Museum material texture is missing: "+key);
+            texture.filterMode=FilterMode.Trilinear;texture.anisoLevel=8;
             textures[key]=texture;return texture;
         }
 
@@ -47,6 +48,8 @@ namespace ShadeLink.Gallery
             material.SetFloat("_ContactAO",0);
             material.SetFloat("_ContactDistance",.65f);
             material.SetFloat("_ExhibitLight",0);
+            material.SetFloat("_AlbedoSaturation",1);
+            material.SetFloat("_SurfaceVariation",1);
             material.SetColor("_EmissionColor",Color.black);
 
             switch(kind)
@@ -56,11 +59,17 @@ namespace ShadeLink.Gallery
                 case "limestone":
                 case "travertine":
                 case "floor":
-                    Surface(material,"Stone",1f/3f,.42f,.65f);
-                    material.SetFloat("_ReflectionStrength",.55f);break;
+                    Surface(material,"Stone",1f/3f,.25f,.48f);
+                    material.SetVector("_SurfaceAlbedoMean",new Vector4(.4448f,.3393f,.1954f,1));
+                    material.SetFloat("_SurfaceVariation",.55f);
+                    material.SetFloat("_AlbedoSaturation",.10f);
+                    material.SetFloat("_ReflectionStrength",.50f);break;
                 case "plaster":
                 case "wall":
-                    Surface(material,"Plaster",1f/3,.35f,.95f);
+                    Surface(material,"Plaster",1f/3,.16f,.95f);
+                    material.SetVector("_SurfaceAlbedoMean",new Vector4(.3405f,.2623f,.1879f,1));
+                    material.SetFloat("_SurfaceVariation",.20f);
+                    material.SetFloat("_AlbedoSaturation",.12f);
                     material.SetFloat("_ReflectionStrength",.10f);break;
                 case "wood":
                 case "walnut":
@@ -75,7 +84,7 @@ namespace ShadeLink.Gallery
                 case "artwork":
                 case "painting":
                 case "print":
-                    material.SetFloat("_ExhibitLight",.75f);
+                    material.SetFloat("_ExhibitLight",.32f);
                     material.SetFloat("_Roughness",.91f);
                     material.SetFloat("_ContactAO",0);
                     material.SetFloat("_ReflectionStrength",.02f);break;

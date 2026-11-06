@@ -11,7 +11,7 @@ namespace ShadeLink.Gallery
     {
         public sealed class Palette
         {
-            public Material plaster, stone, bronze, gold, wood, paper, ink;
+            public Material plaster, wall, ceiling, stone, floor, bronze, gold, wood, paper, ink;
             public IList<Material> assets;
         }
 
@@ -200,13 +200,18 @@ namespace ShadeLink.Gallery
         static Material Material(Palette p,string category,string name,Color color)
         {
             var material=new Material(Shader.Find("Parallax/MuseumSurface")){name=name,color=color};
-            GalleryMuseumMaterials.Apply(material,category);p.assets?.Add(material);return material;
+            GalleryMuseumMaterials.Apply(material,category);material.color=color;p.assets?.Add(material);return material;
         }
         public static Palette MuseumPalette(IList<Material> registry)
         {
             var p=new Palette{assets=registry};
-            p.plaster=Material(p,"Plaster","Concept museum · ivory plaster",new Color(.94f,.91f,.84f));
-            p.stone=Material(p,"Stone","Concept museum · warm limestone",new Color(.86f,.83f,.75f));
+            p.plaster=Material(p,"Plaster","Concept museum · ivory plaster",new Color(.90f,.85f,.82f));
+            p.wall=Material(p,"Plaster","Concept museum · warm grey gallery walls",new Color(1.04f,1.07f,1.04f));
+            p.wall.SetFloat("_AmbientStrength",1.12f);
+            p.ceiling=Material(p,"Plaster","Concept museum · softly lit ceiling",new Color(.88f,.87f,.82f));
+            p.stone=Material(p,"Stone","Concept museum · warm limestone",new Color(1,.99f,1));
+            p.floor=new Material(p.stone){name="Concept museum · polished limestone floor"};
+            p.floor.SetFloat("_AmbientStrength",.40f);registry?.Add(p.floor);
             p.bronze=Material(p,"Bronze","Concept museum · patinated bronze",new Color(.56f,.36f,.14f));
             p.gold=Material(p,"Bronze","Concept museum · frame gold",new Color(1,.85f,.57f));
             p.gold.SetFloat("_Metallic",.98f);p.gold.SetFloat("_Roughness",.28f);p.gold.SetFloat("_ReflectionStrength",1);p.gold.SetFloat("_AmbientStrength",1);

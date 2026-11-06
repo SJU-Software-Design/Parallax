@@ -9,6 +9,7 @@ Shader "Parallax/GalleryConceptPostFX"
         sampler2D _MainTex,_CameraDepthNormalsTexture,_AmbientBloom;
         float4 _MainTex_TexelSize,_AmbientBloom_TexelSize;
         float4 _CameraProjection,_Occlusion,_Tone;
+        float3 _WhiteBalance;
         float _BloomThreshold,_DebugOcclusion;
         struct appdata { float4 vertex:POSITION;float2 uv:TEXCOORD0; };
         struct v2f { float4 vertex:SV_POSITION;float2 uv:TEXCOORD0;float2 depthUV:TEXCOORD1; };
@@ -112,7 +113,7 @@ Shader "Parallax/GalleryConceptPostFX"
                 color=GammaToLinearSpace(color);
                 #endif
                 color=color*lerp(1,treatment.a,.88)+treatment.rgb*_Tone.w;
-                color*=max(.01,_Tone.x);
+                color*=max(.01,_Tone.x)*_WhiteBalance;
                 color=lerp(color,filmCurve(color),_Tone.y);
                 float luminance=dot(color,float3(.2126,.7152,.0722));
                 color=lerp(luminance.xxx,color,_Tone.z);

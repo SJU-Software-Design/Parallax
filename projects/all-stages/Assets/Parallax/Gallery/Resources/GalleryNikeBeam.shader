@@ -29,7 +29,7 @@ Shader "Parallax/GalleryNikeBeam"
                 float view = abs(dot(normalize(_WorldSpaceCameraPos - i.world), normalize(i.normal)));
                 float edge = smoothstep(.03, .68, view);
                 float falloff = smoothstep(0, .06, i.depth) * (1 - smoothstep(.15, 1, i.depth));
-                return float4(1, .72, .35, .085 * edge * falloff);
+                return float4(1, .72, .35, .025 * edge * falloff);
             }
             ENDCG
         }
