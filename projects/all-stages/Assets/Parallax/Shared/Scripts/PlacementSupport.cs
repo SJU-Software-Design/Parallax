@@ -15,6 +15,7 @@ namespace ShadeLink
         public float Progress=>Mathf.Clamp01(stableTime/SettleSeconds);
         public Func<bool> WaterSupport;
         public bool PreviewUntilSettled { get; set; } = true;
+        public bool PreviewWhileHeld { get; set; } = true;
         public string Status=>Held?"운반 중 · 빗금은 예상 그늘 / 안전하지 않음":Ready?"설치 완료 · 실제 그늘과 발판 활성":Supported?"안착 확인 중 · "+Mathf.RoundToInt(Progress*100)+"%":"지지가 필요합니다 · 아직 안전한 그늘이 아님";
         public Renderer[] Visuals {get;private set;}
         Rigidbody body;Collider[] shapes;CharacterController player;
@@ -102,7 +103,7 @@ namespace ShadeLink
         void SetReady(bool ready)
         {
             Ready=ready;
-            bool showOriginal = ready || (!Held && !PreviewUntilSettled);
+            bool showOriginal = ready || (Held ? !PreviewWhileHeld : !PreviewUntilSettled);
             if(visualReady!=showOriginal)
             {
                 for(int i=0;i<Visuals.Length;i++)if(Visuals[i]!=null)

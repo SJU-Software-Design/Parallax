@@ -34,7 +34,7 @@ namespace ShadeLink.Editor
                 "Marble Bust 01 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/marble_bust_01\n\n"+
                 "Potted Plant 02 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/potted_plant_02\n\n"+
                 "Surface textures: Poly Haven, CC0. https://polyhaven.com/license\n"+
-                "Paintings: Public-domain sources from Wikimedia Commons.\n\n");
+                "Paintings: Public-domain sources from Wikimedia Commons. The completed Nike canvas is a generated painting based on the supplied concept reference.\n\n");
             foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md"})
             {
                 string source=Path.Combine("Documentation/Gallery",name);
@@ -43,12 +43,19 @@ namespace ShadeLink.Editor
         }
         static void Integrate(GalleryGame game)
         {
-            GalleryConceptScans.Install(game);
+            var nike=GalleryConceptScans.Install(game);
             GalleryConceptBusts.Install(game);
             GalleryConceptPlants.Install(game);
             GalleryConceptStage.Install(game);
             GalleryConceptAtmosphere.Install(game);
-            game.shadowCourse=GalleryMuseumShadowCourse.Install(game);
+            game.shadowCourse=GalleryMuseumShadowCourse.Install(game,nike);
+            var canvas=game.shadowCourse.nikeLight.canvas;
+            const string guidePath=Generated+"Nike shadow alignment guide.asset";
+            var guide=canvas.BakeGuide();
+            var storedGuide=AssetDatabase.LoadAssetAtPath<Texture2D>(guidePath);
+            if(storedGuide==null){AssetDatabase.CreateAsset(guide,guidePath);storedGuide=guide;}
+            else{EditorUtility.CopySerialized(guide,storedGuide);UnityEngine.Object.DestroyImmediate(guide);}
+            canvas.guide.sharedMaterial.mainTexture=storedGuide;
             game.portraitGate=GalleryPortraitGate.Install(game);
             game.orcusExit=GalleryConceptExit.Install(game);
             GalleryConceptLighting.Configure(game);
@@ -92,7 +99,7 @@ namespace ShadeLink.Editor
                 else
                 {
                     EditorUtility.CopySerialized(m,existing);
-                    foreach(var r in game.GetComponentsInChildren<Renderer>())
+                    foreach(var r in game.GetComponentsInChildren<Renderer>(true))
                     {
                         var slots=r.sharedMaterials;bool changed=false;
                         for(int i=0;i<slots.Length;i++)if(slots[i]==m){slots[i]=existing;changed=true;}
@@ -104,7 +111,7 @@ namespace ShadeLink.Editor
             }
             game.lighting.Rebuild();
             if(game.props.Length!=6||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null)throw new Exception("Playable museum exhibit missing");
-            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth"})
+            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth","Parallax/GalleryNikeBeam","Parallax/GalleryNikeFusion"})
             {
                 var asset=Shader.Find(shader);
                 if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);

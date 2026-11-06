@@ -46,12 +46,9 @@ namespace ShadeLink.Gallery
             prop.Remember();return prop;
         }
 
-        public static GalleryProp CreateLamp(Transform parent,Vector3 at,Vector3 target,out Transform head,out Transform emitter)
+        public static Transform CreateLamp(Transform parent,Vector3 at,Vector3 target,out Transform head,out Transform emitter)
         {
-            const float height=3.6f;
-            var root=Group(parent,"02 · 움직이는 전시 조명",at);
-            var prop=root.gameObject.AddComponent<GalleryProp>();
-            prop.title=root.name;prop.zone=1;prop.minScale=.40f;prop.platform=false;
+            var root=Group(parent,"02 · 고정 전시 조명",at);
             Material bronze=Material("satin bronze lamp fittings","Bronze",new Color(.54f,.36f,.16f));
             bronze.SetFloat("_Roughness",.35f);
             Material wood=Material("walnut lamp base inset","Wood",new Color(.47f,.31f,.18f));
@@ -62,29 +59,49 @@ namespace ShadeLink.Gallery
             lens.SetColor("_EmissionColor",new Color(.38f,.19f,.055f));
             Block(root,"Low stable bronze lamp foot",new Vector3(0,.0375f,0),new Vector3(.80f,.075f,.66f),bronze,true,.018f);
             Block(root,"Inset walnut base pad",new Vector3(0,.089f,0),new Vector3(.64f,.028f,.50f),wood,false,.010f);
-            float shaftBottom=.103f,shaftTop=height-.46f;
-            Block(root,"Slender bronze upright",Vector3.up*((shaftBottom+shaftTop)*.5f),
-                new Vector3(.055f,shaftTop-shaftBottom,.055f),bronze,true,.012f);
-            Cylinder(root,"Bronze arm adjustment pivot",new Vector3(0,shaftTop,0),Quaternion.Euler(90,0,0),.063f,.105f,bronze);
-            Vector3 headAt=new Vector3(.38f,height-.14f,0),neckAt=headAt+new Vector3(0,-.14f,-.10f);
-            Vector3 armStart=Vector3.up*shaftTop,armDelta=neckAt-armStart;
-            var arm=Block(root,"Angled articulated bronze arm",(armStart+neckAt)*.5f,
-                new Vector3(.052f,armDelta.magnitude,.052f),bronze,true,.010f);
-            arm.transform.localRotation=Quaternion.FromToRotation(Vector3.up,armDelta);
-            Block(root,"Fixed bronze spotlight support yoke",neckAt,new Vector3(.28f,.060f,.080f),bronze,true,.012f);
-            // All rotating head meshes stay inside this one fixed, non-casting
-            // collision envelope. Auto-aim never changes the carried compound.
+            Cylinder(root,"Floor spotlight swivel pedestal",new Vector3(0,.20f,0),Quaternion.identity,.16f,.22f,bronze);
+            foreach(int side in new[]{-1,1})
+                Block(root,"Bronze yoke arm",new Vector3(side*.23f,.34f,0),new Vector3(.065f,.27f,.12f),bronze,true,.012f);
+            Vector3 headAt=new Vector3(0,.55f,0);
             var envelope=Group(root,"Fixed spotlight head collision envelope",headAt);
-            envelope.gameObject.AddComponent<BoxCollider>().size=Vector3.one*.68f;
+            envelope.gameObject.AddComponent<BoxCollider>().size=new Vector3(.43f,.40f,.47f);
             head=Group(root,"Spotlight head",headAt);
             Vector3 worldTarget=parent==null?target:parent.TransformPoint(target);
             AimHead(head,worldTarget,root.up,root.forward);
             Quaternion forward=Quaternion.Euler(90,0,0);
-            Cylinder(head,"Black cylindrical spotlight housing",new Vector3(0,0,-.11f),forward,.115f,.34f,black);
-            Cylinder(head,"Fine bronze spotlight rim",new Vector3(0,0,.061f),forward,.122f,.026f,bronze);
-            Cylinder(head,"Warm recessed spotlight lens",new Vector3(0,0,.069f),forward,.101f,.006f,lens);
-            emitter=Group(head,"Emitter",new Vector3(0,0,.090f));
-            prop.Remember();return prop;
+            Cylinder(head,"Black cylindrical spotlight housing",new Vector3(0,0,-.035f),forward,.19f,.42f,black);
+            Cylinder(head,"Fine bronze spotlight rim",new Vector3(0,0,.185f),forward,.20f,.045f,bronze);
+            Cylinder(head,"Warm recessed spotlight lens",new Vector3(0,0,.210f),forward,.171f,.009f,lens);
+            emitter=Group(head,"Emitter",new Vector3(0,0,.225f));
+            AddBeam(emitter);
+            return root;
+        }
+
+        static void AddBeam(Transform emitter)
+        {
+            const int sides=32,rings=12;
+            var vertices=new Vector3[sides*(rings+1)];var normals=new Vector3[vertices.Length];
+            var uv=new Vector2[vertices.Length];var triangles=new int[sides*rings*6];
+            for(int y=0;y<=rings;y++)for(int x=0;x<sides;x++)
+            {
+                float depth=y/(float)rings,angle=2*Mathf.PI*x/sides;
+                Vector3 radial=new Vector3(Mathf.Cos(angle),Mathf.Sin(angle),0);
+                int i=y*sides+x;
+                vertices[i]=radial*(.12f+depth*2.15f)+Vector3.forward*(depth*7.4f);
+                normals[i]=(radial-Vector3.forward*.29f).normalized;
+                uv[i]=new Vector2(x/(float)sides,depth);
+                if(y==rings)continue;
+                int n=y*sides+(x+1)%sides,j=i*6;
+                triangles[j]=i;triangles[j+1]=n;triangles[j+2]=n+sides;
+                triangles[j+3]=i;triangles[j+4]=n+sides;triangles[j+5]=i+sides;
+            }
+            var mesh=new Mesh{name="Soft cone of amber light",vertices=vertices,normals=normals,uv=uv,triangles=triangles};
+            var beam=Group(emitter,"Amber spotlight beam",Vector3.zero).gameObject;
+            beam.AddComponent<MeshFilter>().sharedMesh=mesh;
+            var material=new Material(Shader.Find("Parallax/GalleryNikeBeam")){name="Nike spotlight · amber beam"};
+            GalleryWorld.Materials.Add(material);
+            var renderer=beam.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;
+            renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
         }
 
         static void AimHead(Transform head,Vector3 target,Vector3 up,Vector3 fallback)

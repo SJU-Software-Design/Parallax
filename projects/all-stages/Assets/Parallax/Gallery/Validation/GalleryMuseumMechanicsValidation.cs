@@ -42,7 +42,7 @@ namespace ShadeLink.Gallery
             public bool inputOnlyOrcusEnlarged, inputOnlyOrcusReleased, inputOnlyOrcusSettled, physicalMouthCrossing;
             public bool libraryLoaded, libraryActive, simulationRestored;
             public string phase, failure, unity, gpu, orcusLastRestriction;
-            public string scope = "Explicit enlarged bronze and repositioned spotlight solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. The separate GalleryShadowGameplayValidation covers camera pickup/carry/perspective resize/Drop from the original bronze and lamp without positive-case prop pose writes. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.";
+            public string scope = "Explicit enlarged bronze and repositioned Nike solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. The separate GalleryShadowGameplayValidation covers camera pickup/carry/perspective resize/Drop from the original bronze and Nike without positive-case prop pose writes. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough.";
             public int simulatedTicks, exposureRespawns, totalRespawns, finalCheckpoint, enlargementUpdates, mouthWalkFrames, librarySceneLoads;
             public float simulatedSeconds, maximumNegativeExposure, orcusRequiredScale, orcusMaximumScale, orcusReleasedScale, fallDistance, entryLateralOffset, entryLateralOffsetMetres;
             public Vector3 orcusReleasedPosition;
@@ -130,8 +130,8 @@ namespace ShadeLink.Gallery
             var course = game.GetComponentInChildren<GalleryMuseumShadowCourse>(true);
             var portrait = game.GetComponentInChildren<GalleryConceptPerspective>(true);
             var gate = game.GetComponentInChildren<GalleryPortraitGate>(true);
-            Require(course != null && course.bronze != null && course.lamp != null && game.nikeLight != null,
-                "Actual bronze and movable spotlight shadow-course tools are required");
+            Require(course != null && course.bronze != null && course.statue != null && game.nikeLight != null,
+                "Actual bronze and movable Nike shadow-course tools are required");
             Require(portrait != null && gate != null && game.orcusExit != null, "Portrait gate or sculpture mouth is missing");
             Physics.simulationMode = SimulationMode.Script; ownsSimulation = true;
             yield return null;
@@ -183,17 +183,16 @@ namespace ShadeLink.Gallery
             report.firstCourseWalk = true;
             Check("Explicit bronze fixture passes real placement checks; a physical camera-controller walk crosses its shade without respawn and reaches checkpoint 1");
 
-            report.phase = "room 2 explicit spotlight fixture, actual Nike point-shadow and physical shadow route";
-            Pose[][] lampCandidates = {
-                new[]{new Pose(-3.6f,21.6f,1f)}, new[]{new Pose(-3.45f,21.6f,1f)},
-                new[]{new Pose(-3.7f,21.5f,1f)} };
-            var second = ChooseFixtureRoute(new[]{course.lamp}, lampCandidates, new Vector2(0, 29.5f), "Nike spotlight room", true);
+            report.phase = "room 2 explicit Nike fixture, fixed spotlight and physical shadow route";
+            Pose[][] nikeCandidates = {
+                new[]{new Pose(GalleryNikeCanvas.SolutionPosition.x,GalleryNikeCanvas.SolutionPosition.z,GalleryNikeCanvas.SolutionScale)} };
+            var second = ChooseFixtureRoute(new[]{course.statue}, nikeCandidates, new Vector2(0, 29.5f), "Nike spotlight room", true);
             CaptureView("mechanics-02-nike-spotlight-fixture", new Vector3(0, 1.8f, 19.8f), new Vector3(0, 1.4f, 26));
             walking = WalkRoute(second.path, second.report);
             while (walking.MoveNext()) yield return walking.Current;
             Require(game.checkpoint >= 2 && course.NikeCleared, "Second actual shadow crossing did not advance its course/checkpoint");
             report.nikeCourseWalk = true;
-            Check("Explicit settled spotlight fixture projects the real fixed Nike onto the goal; the unlocked physical glass door and shadow-route walk reach checkpoint 2 without respawn");
+            Check("The settled Nike fixture matches its framed shadow; the seated painting opens the walnut doors and the controller reaches checkpoint 2 without respawn");
 
             var perspective = PerspectiveFixtures(portrait, gate);
             while (perspective.MoveNext()) yield return perspective.Current;
@@ -229,11 +228,22 @@ namespace ShadeLink.Gallery
                 if (requireSpotlightSolution)
                 {
                     game.nikeLight.ResetLight();
-                    for (int i = 0; i < 120; i++) Step(Vector2.zero);
-                    game.nikeLight.SyncPose();
-                    if (!game.nikeLight.SolutionReady)
+                    for (int i = 0; i < 180; i++) Step(Vector2.zero);
+                    var canvas = game.nikeLight.canvas;
+                    if (!canvas.Complete)
                     {
-                        last = "Spotlight did not cover the goal with settled Nike shade: " + game.nikeLight.Status;
+                        last = "Settled Nike did not fuse into the wall frame: " + game.nikeLight.Status;
+                        Debug.Log("MUSEUM_MECHANICS_CANDIDATE_REJECT " + room + " candidate=" + candidate + " " + last);
+                        continue;
+                    }
+                    var socket = game.shadowCourse.nikeSocket;
+                    PoseFixture(canvas.portablePainting, socket.Center - Vector3.forward * .30f, Quaternion.identity, GalleryNikeDoorSocket.TargetScale);
+                    Require(socket.FitHint(canvas.portablePainting) == null, "Painting key fixture does not fit the door");
+                    socket.BeginDock(canvas.portablePainting);
+                    for (int i = 0; i < 140; i++) Step(Vector2.zero);
+                    if (!game.shadowCourse.NikeGateOpen)
+                    {
+                        last = "Seated painting did not open the doorway";
                         Debug.Log("MUSEUM_MECHANICS_CANDIDATE_REJECT " + room + " candidate=" + candidate + " " + last);
                         continue;
                     }

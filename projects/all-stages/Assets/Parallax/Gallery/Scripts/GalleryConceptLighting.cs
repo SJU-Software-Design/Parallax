@@ -19,7 +19,7 @@ namespace ShadeLink.Gallery
         static readonly Vector3[] Targets={
             new Vector3(-4.9f,2.8f,13.8f),new Vector3(4.9f,2.8f,13.8f),
             new Vector3(-7.8f,2.7f,5.5f),new Vector3(7.8f,2.7f,5.5f),
-            new Vector3(-2,2.0f,24),new Vector3(7.7f,2.4f,23),
+            new Vector3(0,1.7f,21.65f),new Vector3(7.7f,2.4f,23),
             new Vector3(0,2.5f,38),new Vector3(0,1.5f,52)
         };
         public static void Configure(GalleryGame game)
@@ -112,6 +112,8 @@ namespace ShadeLink.Gallery
                 directions[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(38*Mathf.Deg2Rad));
                 colors[i]=new Vector4(1,.88f,.70f,i<4?4.0f:3.0f);
             }
+            colors[4].w=3.8f; // Soft fill on the sculpture's near side.
+            colors[5].w=4.2f; // Fill aimed at the Nike room's right wall.
             Shader.SetGlobalInt("_MuseumLightCount",8);
             Shader.SetGlobalVectorArray("_MuseumLightPositionRange",Positions);
             Shader.SetGlobalVectorArray("_MuseumLightColorIntensity",colors);

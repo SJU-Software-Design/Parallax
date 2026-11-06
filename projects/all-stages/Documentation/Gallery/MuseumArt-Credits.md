@@ -1,6 +1,6 @@
 # Museum artwork image credits
 
-These are real artwork reproductions used as museum display textures. Images were downloaded without cropping, repainting, or other image edits. The game preserves their aspect ratios when fitting them into frames.
+The reproductions listed below are real artworks used as museum display textures. Images were downloaded without cropping, repainting, or other image edits. The game preserves their aspect ratios when fitting them into frames.
 
 Source license verified through Wikimedia Commons imageinfo metadata on 2026-11-04: every selected file is marked Public domain, with attributionRequired=false. The underlying paintings and their faithful two-dimensional reproductions are listed under PD-Art / Public Domain Mark. Institution names identify the collections; these downloads were obtained from the linked Wikimedia files, not represented as institutional endorsement or a direct institutional image license.
 
@@ -72,3 +72,10 @@ Source license verified through Wikimedia Commons imageinfo metadata on 2026-11-
 ## Scope
 
 The procedural museum sculptures, perspective exhibits, Orcus interpretation, and game effects are separate game assets. This list does not imply that foundation photographs or installation photographs by living artists were included. Machine-readable source records are stored beside the textures as `sources.json`.
+
+## Nike shadow puzzle completion image
+
+- Local texture: `Assets/Parallax/Gallery/Resources/MuseumArt/NikeShadowStudy.png`
+- Unity Resources key: `MuseumArt/NikeShadowStudy`
+- Generated concept artwork based on the supplied museum puzzle reference, used for the completed movable Nike painting.
+- This completion image is separate from the unedited public-domain reproductions listed above. The original Nike scan attribution remains in `MuseumScan-Credits.md`.

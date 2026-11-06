@@ -20,10 +20,16 @@ namespace ShadeLink.Editor
                 Require(!game.exhibitionPreview,"The playable museum must enable the shadow course");
                 Require(Resources.Load<Mesh>("MuseumScans/NikeMesh")!=null,"Actual Nike scan is missing");
                 Require(game.GetComponentInChildren<GalleryConceptPerspective>()!=null,"Perspective exhibit missing");
-                Require(game.props.Length==6,"Expected bronze, lamp, three portrait parts and Cathedral");
-                Require(game.shadowCourse!=null&&game.shadowCourse.bronze!=null&&game.shadowCourse.lamp!=null,"Shadow interaction exhibits missing");
-                Require(game.nikeLight!=null&&game.nikeLight.lamp==game.shadowCourse.lamp&&game.nikeLight.emitter!=null&&game.nikeLight.nikeRoot!=null,"Nike light references missing");
+                Require(game.props.Length==6,"Expected bronze, Nike, three portrait parts and Cathedral");
+                Require(game.shadowCourse!=null&&game.shadowCourse.bronze!=null&&game.shadowCourse.statue!=null,"Shadow interaction exhibits missing");
+                Require(game.nikeLight!=null&&game.nikeLight.statue==game.shadowCourse.statue&&game.nikeLight.fixedLamp!=null&&
+                    game.nikeLight.emitter!=null&&game.nikeLight.fixedLamp.GetComponentInParent<GalleryProp>()==null,"Nike fixed light references missing");
+                Require(game.nikeLight.canvas!=null&&!game.nikeLight.canvas.Complete&&game.nikeLight.canvas.portablePainting!=null&&
+                    !game.nikeLight.canvas.portablePainting.gameObject.activeSelf&&!game.nikeLight.SolutionReady,"Nike gallery must begin at the silhouette puzzle");
                 Require(!game.shadowCourse.NikeUnlocked&&!game.shadowCourse.NikeGateOpen&&game.shadowCourse.NikeGateColliders.Length>0,"Nike gate must begin closed");
+                var socket=game.shadowCourse.nikeSocket;
+                Require(socket!=null&&socket.canvas==game.nikeLight.canvas&&socket.splitPainting.Length==2&&
+                    Array.TrueForAll(socket.splitPainting,half=>!half.activeSelf),"Nike door must start with an empty painting socket");
                 Require(game.portraitGate!=null&&!game.portraitGate.Opened&&game.portraitGate.barrier.enabled,"Portrait gate must begin closed");
                 Require(game.orcusExit!=null&&game.orcusExit.prop.homeScale.x<game.orcusExit.RequiredScale,"Exit must begin smaller than a player");
                 Require(game.orcusExit.customOpening&&!game.orcusExit.windEnabled,"Cathedral must use its measured opening and remain silent");
