@@ -337,9 +337,12 @@ Shader "Parallax/MuseumSurface"
                     #endif
                     ambient=ambient*.08+bounced;
                 }
+                float portraitMood=portraitRoom?saturate(_MuseumPortraitMood):0;
+                ambient*=lerp(1,.55,portraitMood);
                 ao*=contactOcclusion(i.world);
                 float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
                 float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
+                environmentColor*=lerp(1,.70,portraitMood);
                 // Match Unity's integrated GGX environment response. The
                 // perceptual roughness remap/mip selection occurs in the helper.
                 float realRoughness=roughness*roughness;
@@ -353,19 +356,39 @@ Shader "Parallax/MuseumSurface"
                 // Conductors receive indirect light through their coloured
                 // specular response rather than an extra diffuse ambient term.
                 float3 col=albedo*(1-_Metallic)*ambient*_AmbientStrength*ao;
-                // The visitor's walking floor receives no sun, spot, display,
-                // portal or gameplay-reflected beam contribution in this room.
-                // Decorative surface reflection is shared with every room.
+                // The safe floor receives surface reflections, not diffuse
+                // display light or the gameplay's direct/reflected sun beams.
                 // Constant low ambient keeps the stone readable without making
                 // a misleading lit/hazardous path during the red performance.
                 bool portraitWalkSurface=portraitRoom && i.world.y<.35 && abs(geometric.y)>.45;
+                float3 portraitLight=0;
+                if(portraitRoom) {
+                    [loop] for(int source=0;source<min(_MuseumPortraitLightCount,4);source++) {
+                        float4 lamp=_MuseumPortraitLightPositionRange[source];
+                        if(i.world.y>lamp.y)continue;
+                        float3 delta=lamp.xyz-i.world;float distance=length(delta);
+                        float3 direction=delta/max(distance,.001);
+                        float attenuation=pow(saturate(1-distance/max(lamp.w,.01)),2);
+                        attenuation*=1-smoothstep(lamp.y-.9,lamp.y,i.world.y);
+                        float4 cone=_MuseumPortraitLightDirectionCone[source];
+                        attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
+                        if(attenuation<.0001)continue;
+                        float4 radiance=_MuseumPortraitLightColorIntensity[source];
+                        float visibility=source==3?exhibitShadow(i.world,geometric,2):1;
+                        // Zero diffuse albedo leaves only the floor's dielectric specular highlight.
+                        float3 response=brdf(n,view,direction,portraitWalkSurface?float3(0,0,0):albedo,
+                            roughness,portraitWalkSurface?0:_Metallic);
+                        portraitLight+=response*radiance.rgb*radiance.w*attenuation*visibility*
+                            (portraitWalkSurface?_ReflectionStrength:1);
+                    }
+                }
                 if(portraitWalkSurface) {
                     float3 walkway=albedo*float3(.18,.135,.092)*ao;
                     if(_Grid>.5) {
                         float2 tile=abs(frac(i.world.xz/2)-.5);
                         walkway*=1-step(.493,max(tile.x,tile.y))*.14;
                     }
-                    return float4(walkway+surfaceReflection,1);
+                    return float4(walkway+surfaceReflection+portraitLight,1);
                 }
                 float3 toLight=reflection>.5&&sunlight<.5?-_GalleryReflectedDirection:_GalleryToSun;
                 float3 sunColor=reflection>.5&&sunlight<.5?float3(1,.76,.46):float3(1,.88,.70);
@@ -404,23 +427,7 @@ Shader "Parallax/MuseumSurface"
                     float visibility=source==0?exhibitShadow(i.world,geometric,0):source==4?exhibitShadow(i.world,geometric,1):source==6?exhibitShadow(i.world,geometric,3):1;
                     col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*floorSpill*visibility;
                 }
-                if(portraitRoom) {
-                    [loop] for(int source=0;source<min(_MuseumPortraitLightCount,4);source++) {
-                        float4 lamp=_MuseumPortraitLightPositionRange[source];
-                        if(i.world.y>lamp.y)continue;
-                        float3 delta=lamp.xyz-i.world;float distance=length(delta);
-                        float3 direction=delta/max(distance,.001);
-                        float attenuation=pow(saturate(1-distance/max(lamp.w,.01)),2);
-                        attenuation*=1-smoothstep(lamp.y-.9,lamp.y,i.world.y);
-                        float4 cone=_MuseumPortraitLightDirectionCone[source];
-                        attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
-                        if(attenuation<.0001)continue;
-                        float4 radiance=_MuseumPortraitLightColorIntensity[source];
-                        float visibility=source==3?exhibitShadow(i.world,geometric,2):1;
-                        col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*visibility;
-                    }
-                }
-                col+=surfaceReflection;
+                col+=surfaceReflection+portraitLight;
                 col=lerp(col,max(col,albedo*.78),saturate(_ExhibitLight)*(1-visibleLit));
                 // A continuous cornice bounce, confined to upper walls/ceiling.
                 // The portrait's protected walking floor returns before this.
@@ -443,7 +450,6 @@ Shader "Parallax/MuseumSurface"
                 float windowFacing=.3+.7*saturate(dot(n,windowDelta*rsqrt(max(.00001,dot(windowDelta,windowDelta)))));
                 col+=albedo*_PortalGlowColor.rgb*windowFalloff*windowFacing;
                 col+=_Selection.rgb+_EmissionColor.rgb;
-                if(portraitRoom)col*=lerp(float3(1.10,.98,.85),float3(1.35,.045,.065),saturate(_MuseumPortraitMood));
                 return float4(col,1);
             }
             ENDCG

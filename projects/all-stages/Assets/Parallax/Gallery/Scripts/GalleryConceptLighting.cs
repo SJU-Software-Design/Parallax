@@ -12,6 +12,7 @@ namespace ShadeLink.Gallery
         [SerializeField,Range(0,1)] float portraitMood;
         public float PortraitMood=>portraitMood;
         RenderTexture[] capturedRooms;
+        readonly Vector4[] portraitRadiance=new Vector4[4];
         // Exhibition fills are isolated from the gameplay sun and from all
         // horizontal walking surfaces by MuseumSurface. They light walls/art.
         static readonly Vector4[] PortraitPositions={
@@ -95,6 +96,14 @@ namespace ShadeLink.Gallery
         {
             portraitMood=Mathf.Clamp01(red01);
             Shader.SetGlobalFloat("_MuseumPortraitMood",portraitMood);
+            for(int i=0;i<portraitRadiance.Length;i++)
+            {
+                Color red=i<2?new Color(1,.15f,.07f):new Color(1,.055f,.025f);
+                Color color=Color.Lerp(new Color(1,.65f,.32f),red,portraitMood);
+                float gain=Mathf.Lerp(1,i<2?1.1f:i==2?1.5f:1.85f,portraitMood);
+                portraitRadiance[i]=new Vector4(color.r,color.g,color.b,(i<2?5f:7f)*gain);
+            }
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitRadiance);
         }
         void InstallCoves()
         {
@@ -170,16 +179,13 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalVectorArray("_MuseumLightColorIntensity",colors);
             Shader.SetGlobalVectorArray("_MuseumLightDirectionCone",directions);
             var portraitDirections=new Vector4[PortraitPositions.Length];
-            var portraitColors=new Vector4[PortraitPositions.Length];
             for(int i=0;i<PortraitPositions.Length;i++)
             {
                 Vector3 direction=(PortraitTargets[i]-(Vector3)PortraitPositions[i]).normalized;
                 portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(48*Mathf.Deg2Rad));
-                portraitColors[i]=new Vector4(1,.65f,.32f,i<2?5.0f:7.0f);
             }
             Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",PortraitPositions);
             Shader.SetGlobalVectorArray("_MuseumPortraitLightDirectionCone",portraitDirections);
-            Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitColors);
             Shader.SetGlobalInt("_MuseumPortraitLightCount",PortraitPositions.Length);
             SetPortraitMood(portraitMood);
             Shader.SetGlobalFloat("_MuseumUseUnityShadows",1);

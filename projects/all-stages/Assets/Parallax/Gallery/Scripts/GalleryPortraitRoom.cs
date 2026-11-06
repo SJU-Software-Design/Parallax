@@ -99,7 +99,7 @@ namespace ShadeLink.Gallery
             red01=Mathf.Clamp01(red01);
             if(Mathf.Abs(red01-lastMood)<.001f)return;
             lastMood=red01;properties??=new MaterialPropertyBlock();
-            Color tint=Color.Lerp(new Color(1,.74f,.38f),new Color(1,.025f,.015f),red01);
+            Color tint=Color.Lerp(new Color(1,.74f,.38f),new Color(1,.15f,.07f),red01);
             properties.SetColor("_Color",tint);properties.SetColor("_EmissionColor",tint*.32f);
             if(pictureDiffusers!=null)foreach(var renderer in pictureDiffusers)if(renderer!=null)renderer.SetPropertyBlock(properties);
         }
