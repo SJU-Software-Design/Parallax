@@ -343,14 +343,14 @@ Shader "Parallax/MuseumSurface"
                 float wallDistance=max(0,min(7.74-abs(i.world.x),min(i.world.z-roomStart,roomEnd-i.world.z)-.30));
                 float coveDistance=length(float2(wallDistance,i.world.y-6.47));
                 float cove=exp2(-coveDistance*2.6)*(.55+.45*saturate(-geometric.y));
-                ambient*=lerp(1,.55,portraitMood);
+                ambient*=lerp(float3(1,1,1),float3(1.05,.34,.26),portraitMood);
                 // Recolour the existing cove bounce without adding a bright strip.
                 float3 coveTint=lerp(float3(1,1,1),float3(1.45,.24,.16),portraitMood);
                 ambient*=lerp(float3(1,1,1),coveTint,saturate(cove));
                 ao*=contactOcclusion(i.world);
                 float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
                 float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
-                environmentColor*=lerp(1,.70,portraitMood);
+                environmentColor*=lerp(float3(1,1,1),float3(.85,.43,.34),portraitMood);
                 // Match Unity's integrated GGX environment response. The
                 // perceptual roughness remap/mip selection occurs in the helper.
                 float realRoughness=roughness*roughness;
@@ -366,7 +366,7 @@ Shader "Parallax/MuseumSurface"
                 float3 col=albedo*(1-_Metallic)*ambient*_AmbientStrength*ao;
                 // The safe floor receives surface reflections, not diffuse
                 // display light or the gameplay's direct/reflected sun beams.
-                // Constant low ambient keeps the stone readable without making
+                // Low indirect light keeps the stone readable without making
                 // a misleading lit/hazardous path during the red performance.
                 bool portraitWalkSurface=portraitRoom && i.world.y<.35 && abs(geometric.y)>.45;
                 float3 portraitLight=0;
@@ -391,7 +391,7 @@ Shader "Parallax/MuseumSurface"
                     }
                 }
                 if(portraitWalkSurface) {
-                    float3 walkway=albedo*float3(.18,.135,.092)*ao;
+                    float3 walkway=albedo*lerp(float3(.18,.135,.092),float3(.24,.085,.06),portraitMood)*ao;
                     if(_Grid>.5) {
                         float2 tile=abs(frac(i.world.xz/2)-.5);
                         walkway*=1-step(.493,max(tile.x,tile.y))*.14;
