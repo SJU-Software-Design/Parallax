@@ -58,7 +58,7 @@ namespace ShadeLink.Editor
                 Require(impacts == 2 && lastPitch > smallPitch, "A larger die did not shake more at the same impact speed");
                 Release(true, 40f);
                 Land(20f);
-                Require(impacts == 3 && lastPitch <= .45f, "Maximum impact exceeded the pitch limit");
+                Require(impacts == 3 && lastPitch <= 1.45f, "Maximum impact exceeded the pitch limit");
 
                 Release(true, 9.5f);
                 Call(feedback, "ClearPending");
@@ -78,9 +78,9 @@ namespace ShadeLink.Editor
                 Require(Sample(.024f) > .2f, "The first impact did not reach its expected peak");
                 Call(shake, "Play", .10f, .024f);
                 Require(Sample(.025f) > .2f, "A weaker overlapping impact replaced a stronger one");
-                Call(shake, "Play", .45f, .04f);
-                Require(Sample(.064f) > .40f && Sample(.064f) <= .45f, "Overlapping impacts accumulated or failed to replace the earlier peak");
-                Require(Sample(.13f) < Sample(.064f) && Sample(.22f) == 0f, "Pitch did not decay to baseline");
+                Call(shake, "Play", 3f, .04f);
+                Require(Sample(.064f) > 1.44f && Sample(.064f) <= 1.45f, "Stronger impacts did not reach the new cap or overlapping impacts accumulated");
+                Require(Sample(.13f) < Sample(.064f) && Sample(.28f) == 0f, "Pitch did not decay to baseline");
 
                 Call(shake, "ApplyView", .064f);
                 Matrix4x4 expected = Matrix4x4.Scale(new Vector3(1f, 1f, -1f)) *
@@ -134,7 +134,12 @@ namespace ShadeLink.Editor
             try
             {
                 Physics.simulationMode = SimulationMode.Script;
+                Require(Mathf.Abs(game.Controller.transform.position.x) < .01f &&
+                    Mathf.Abs(game.Camera.transform.forward.x) < .01f,
+                    "Tutorial must start at the centre looking straight down the room");
                 VerifyPhysicalContacts(game);
+                VerifyClimbArrival(game);
+                VerifyStageMenu(game);
                 Debug.Log("TUTORIAL_LANDING_PHYSICS_OK wall scrape, floor impacts, quiet support, bounce and pause");
             }
             catch (Exception error)
@@ -240,6 +245,204 @@ namespace ShadeLink.Editor
             Simulate(100);
             Require((float)Call(gameShake, "Sample", Time.unscaledTime + .024f) > 0f,
                 "A normally placed die did not shake when it reached the floor");
+        }
+
+        static void VerifyClimbArrival(TutorialGame game)
+        {
+            var dice = (GalleryProp[])typeof(TutorialGame).GetField("climbDice", Instance).GetValue(game);
+            Require(dice.Length == 2, "Stage two needs exactly two arrival dice");
+            Require(dice[0].homeScale.x >= 1f && dice[1].homeScale.x >= dice[0].homeScale.x * 1.5f,
+                "Arrival needs one medium die and one visibly larger die");
+
+            var room = (Bounds)typeof(TutorialGame).GetField("ClimbRoom", Static).GetValue(null);
+            bool Suspended(GalleryProp die) => die.gameObject.activeSelf && die.body.isKinematic &&
+                die.WorldBounds.max.y > room.max.y - .3f && die.WorldBounds.max.y < room.max.y;
+            Require(Array.TrueForAll(dice, Suspended),
+                "Both dice must already exist just below the ceiling before stage two is entered");
+            foreach (var die in dice)
+                Require(Mathf.Abs(die.homePosition.x - room.center.x) < room.extents.x * .3f &&
+                    Mathf.Abs(die.homePosition.z - room.center.z) < room.extents.z * .5f,
+                    "Arrival dice should land near the middle of stage two");
+            Require(dice[0].homePosition.z > room.center.z && dice[1].homePosition.z < room.center.z,
+                "Medium and large dice should arrive on the player's left and right");
+            Require(Mathf.Abs(dice[0].homePosition.x - dice[1].homePosition.x) > 3f &&
+                Quaternion.Angle(dice[0].homeRotation, dice[1].homeRotation) > 20f,
+                "Arrival dice need staggered depths and different diagonal rotations");
+
+            typeof(TutorialGame).GetField("exitUnlocked", Instance).SetValue(game, true);
+            game.Controller.enabled = false;
+            game.Controller.transform.position = new Vector3(room.min.x + .7f, .03f, room.center.z);
+            game.Controller.enabled = true;
+            typeof(TutorialGame).GetField("yaw", Instance).SetValue(game, 1.35f);
+            typeof(TutorialGame).GetField("pitch", Instance).SetValue(game, -.2f);
+            Call(game, "SyncView");
+            var entryViewPosition = game.Camera.transform.position;
+            var entryViewRotation = game.Camera.transform.rotation;
+            Call(game, "UpdateExit", .02f);
+            bool entryViewUnchanged = Vector3.Distance(game.Camera.transform.position, entryViewPosition) < .001f &&
+                Quaternion.Angle(game.Camera.transform.rotation, entryViewRotation) < .001f;
+            Require(game.Props == dice && !game.CanInteract, "Walking into stage two must begin the arrival demonstration");
+            float fieldOfView = game.Camera.fieldOfView;
+            game.Camera.fieldOfView = 90f;
+            var planes = GeometryUtility.CalculateFrustumPlanes(game.Camera);
+            Require(Array.TrueForAll(dice, die => !GeometryUtility.TestPlanesAABB(planes, die.WorldBounds)),
+                "Ceiling dice should enter the initial view by falling, even at the widest supported field of view");
+            game.Camera.fieldOfView = fieldOfView;
+
+            void Simulate(int steps)
+            {
+                for (int i = 0; i < steps; i++)
+                {
+                    Call(game, "FixedUpdate");
+                    Physics.Simulate(.02f);
+                    Physics.SyncTransforms();
+                }
+            }
+
+            Call(game, "SetPaused", true);
+            Simulate(100);
+            Require(Array.TrueForAll(dice, Suspended), "Pause released an arrival die");
+            Call(game, "SetPaused", false);
+            for (int i = 0; i < 100 && dice[0].body.isKinematic; i++) Simulate(1);
+            Require(!dice[0].body.isKinematic && dice[0].WorldBounds.max.y > room.max.y - .5f &&
+                Suspended(dice[1]), "The medium die must start falling from the ceiling while the large die waits");
+
+            Call(game, "RestartLesson");
+            Require(Array.TrueForAll(dice, Suspended),
+                "Restarting during arrival must suspend both dice at the ceiling");
+            int[] impacts = new int[2];
+            float[] strength = new float[2];
+            float[] impactTime = { -1f, -1f };
+            float elapsed = 0;
+            for (int i = 0; i < dice.Length; i++)
+            {
+                int index = i;
+                Call(dice[i].GetComponent<TutorialLandingFeedback>(), "Configure", (Action<float>)(pitch =>
+                {
+                    impacts[index]++;
+                    strength[index] = pitch;
+                    impactTime[index] = elapsed;
+                    Call(game, "PlayLandingShake", pitch);
+                }));
+            }
+            bool sawSecondFall = false;
+            float secondReleaseTime = -1f;
+            for (int tick = 0; tick < 500; tick++)
+            {
+                Simulate(1);
+                elapsed += .02f;
+                Call(game, "UpdateExit", .02f);
+                Require(Array.TrueForAll(dice, die => die.gameObject.activeSelf),
+                    "The demonstration activated or hid an arrival die in midair");
+                if (!dice[1].body.isKinematic && dice[1].body.position.y > 5f)
+                {
+                    if (!sawSecondFall) secondReleaseTime = elapsed;
+                    sawSecondFall = true;
+                    Require(impacts[0] == 1, "The large die fell before the medium die's first landing");
+                }
+            }
+            float releaseGap = secondReleaseTime - impactTime[0];
+            Debug.Log("TUTORIAL_TRANSITION_DIAGNOSTIC viewPreserved=" + entryViewUnchanged + " releaseGap=" + releaseGap);
+            Require(entryViewUnchanged, "Entering stage two reset the player's camera position or look direction");
+            Require(releaseGap >= .18f && releaseGap <= .26f,
+                "The large die should start falling about 0.2 seconds after the first landing, got " + releaseGap);
+            Require(sawSecondFall && impacts[0] == 1 && impacts[1] == 1 &&
+                impactTime[1] - impactTime[0] > 1f && strength[1] > strength[0],
+                "Sequential real floor impacts must shake once each, with a stronger second impact");
+            Require(strength[0] >= .65f && strength[1] >= .9f,
+                "Actual medium and large landings need a more noticeable shake, got " + strength[0] + " and " + strength[1]);
+            Require(game.CanInteract && Array.TrueForAll(dice, die => die.placement.Ready),
+                "Both landed dice must become usable for the climbing puzzle");
+            var mediumAudio = dice[0].GetComponent<AudioSource>();
+            var largeAudio = dice[1].GetComponent<AudioSource>();
+            Require(mediumAudio != null && largeAudio != null && largeAudio.pitch < mediumAudio.pitch &&
+                largeAudio.volume > mediumAudio.volume && mediumAudio.minDistance >= 5f,
+                "The real contact audio must be audible from the entrance and deeper and louder for the large die");
+
+            var interaction = (ObjectInteraction<GalleryProp>)typeof(TutorialGame).GetField("interaction", Instance).GetValue(game);
+            var direction = dice[0].transform.position - game.Camera.transform.position;
+            typeof(TutorialGame).GetField("yaw", Instance).SetValue(game, Mathf.Atan2(direction.x, direction.z));
+            typeof(TutorialGame).GetField("pitch", Instance).SetValue(game,
+                Mathf.Atan2(direction.y, new Vector2(direction.x, direction.z).magnitude));
+            Call(game, "SyncView");
+            interaction.UpdateAim();
+            Call(game, "InteractWithLandingFeedback");
+            Require(game.Held == dice[0], "A landed arrival die could not be picked up normally");
+            var restartViewRotation = game.Camera.transform.rotation;
+            Call(game, "RestartLesson");
+            Require(game.Held == null && Array.TrueForAll(dice, Suspended),
+                "Restart after pickup must replay the arrival with both original dice");
+            Require(Quaternion.Angle(game.Camera.transform.rotation, restartViewRotation) < .001f,
+                "Restarting the drop demonstration reset the player's look direction");
+            Debug.Log("TUTORIAL_CLIMB_ARRIVAL_OK ceiling drops without pop-in, staggered diagonal poses, different feedback, pause, restart and pickup");
+        }
+
+        static void VerifyStageMenu(TutorialGame game)
+        {
+            Require(typeof(TutorialGame).GetMethod("StartTutorialStage", Instance) != null,
+                "The pause menu needs a restart and direct stage selection action");
+            var practice = (GalleryProp)typeof(TutorialGame).GetField("die", Instance).GetValue(game);
+            var dice = (GalleryProp[])typeof(TutorialGame).GetField("climbDice", Instance).GetValue(game);
+            var tableHome = (Vector3)typeof(TutorialGame).GetField("TableHome", Static).GetValue(null);
+            var playerStart = (Vector3)typeof(TutorialGame).GetField("PlayerStart", Static).GetValue(null);
+            var climbSpawn = (Vector3)typeof(TutorialGame).GetField("ClimbSpawn", Static).GetValue(null);
+            var shake = typeof(TutorialGame).GetField("landingShake", Instance).GetValue(game);
+            var pendingLanding = typeof(TutorialLandingFeedback).GetProperty("AwaitingLanding", Instance);
+
+            // Simulate a saved lesson checkpoint before choosing "start over".
+            practice.homePosition = tableHome + Vector3.forward * 6f;
+            practice.homeScale = Vector3.one * 3f;
+            typeof(TutorialGame).GetField("step", Instance).SetValue(game, 2);
+            Call(game, "SetPaused", true);
+            Call(game, "StartTutorialStage", 1);
+            Require(game.CanInteract && game.Held == null && game.Aimed == null &&
+                game.Props.Length == 1 && game.Props[0] == practice &&
+                !(bool)typeof(TutorialGame).GetField("inClimbRoom", Instance).GetValue(game) &&
+                (int)typeof(TutorialGame).GetField("step", Instance).GetValue(game) == 0,
+                "Starting over did not return to the first lesson with its own tool");
+            Require(Vector3.Distance(game.Controller.transform.position, playerStart) < .01f &&
+                Vector3.Distance(practice.transform.position, tableHome) < .01f &&
+                Mathf.Abs(practice.transform.localScale.x - .36f) < .001f &&
+                !(bool)typeof(TutorialGame).GetField("exitUnlocked", Instance).GetValue(game),
+                "Starting over retained the previous checkpoint's size, position or unlocked door");
+
+            var interaction = (ObjectInteraction<GalleryProp>)typeof(TutorialGame).GetField("interaction", Instance).GetValue(game);
+            game.Camera.transform.LookAt(practice.transform.position);
+            interaction.UpdateAim();
+            Call(game, "InteractWithLandingFeedback");
+            Require(game.Held == practice, "The first-stage menu fixture could not pick up its practice die");
+            Call(game, "SetPaused", true);
+            Call(game, "StartTutorialStage", 2);
+            Require(game.Held == null && !practice.placement.Held && game.Aimed == null &&
+                game.Props == dice && !game.CanInteract &&
+                (bool)typeof(TutorialGame).GetField("inClimbRoom", Instance).GetValue(game) &&
+                (bool)typeof(TutorialGame).GetField("climbArrivalPlaying", Instance).GetValue(game) &&
+                Vector3.Distance(game.Controller.transform.position, climbSpawn) < .01f &&
+                game.Camera.transform.forward.x > .99f,
+                "Direct stage-two selection did not cancel pickup, position the player and start the drop demonstration");
+
+            for (int i = 0; i < 30; i++)
+            {
+                Call(game, "FixedUpdate");
+                Physics.Simulate(.02f);
+                Physics.SyncTransforms();
+            }
+            Require(!dice[0].body.isKinematic && dice[1].body.isKinematic,
+                "Stage-two menu selection did not release the first die");
+            Call(game, "SetPaused", true);
+            Call(game, "StartTutorialStage", 1);
+            Require(game.CanInteract && Array.TrueForAll(dice, die => die.body.isKinematic &&
+                !(bool)pendingLanding.GetValue(die.GetComponent<TutorialLandingFeedback>())) &&
+                !(bool)typeof(TutorialGame).GetField("climbArrivalPlaying", Instance).GetValue(game) &&
+                (float)Call(shake, "Sample", Time.unscaledTime + .024f) == 0f,
+                "Returning to stage one left a pending drop, camera shake or paused input");
+            Call(game, "SetPaused", true);
+            Call(game, "StartTutorialStage", 2);
+            Require(Array.TrueForAll(dice, die => die.body.isKinematic) &&
+                (int)typeof(TutorialGame).GetField("nextClimbDrop", Instance).GetValue(game) == 0 &&
+                !(bool)typeof(TutorialGame).GetField("paused", Instance).GetValue(game),
+                "Repeated stage selection did not restart the arrival sequence");
+            Debug.Log("TUTORIAL_STAGE_MENU_OK full restart, direct stage selection, held-prop cleanup and interrupted drop reset");
         }
 
         static object Call(object target, string method, params object[] args) =>
