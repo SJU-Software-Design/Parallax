@@ -18,6 +18,10 @@
     "macOSBuild": {
       "passed": true,
       "marker": "TUTORIAL_SUNLIGHT_BUILD Succeeded errors=0"
+    },
+    "wallAppearance": {
+      "passed": true,
+      "method": "Visual inspection of the actual entry and grown-dice camera captures after raising the frosted-panel opacity; sunlight smoke checks and macOS build repeated successfully."
     }
   },
   "scope": "Actual Tutorial scene in Play Mode. Shade and collision queries are sampled along explicitly arranged example-dice fixtures; this is not an input-only puzzle playthrough. Checkpoints, preservation of placed props, the natural stage 2 exit, stage resets and actual landing physics are exercised.",

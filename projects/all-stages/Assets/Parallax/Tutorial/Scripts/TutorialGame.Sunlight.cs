@@ -39,8 +39,10 @@ namespace ShadeLink.Tutorial
             SunlightFloor(new Bounds(new Vector3(31, 0, 22), new Vector3(14, 0, 16)));
             SunlightFloor(new Bounds(new Vector3(27, 0, 31.5f), new Vector3(3, 0, 3)));
 
-            var glass = new Material(surfaceShader) { color = new Color(.59f, .72f, .75f, .10f) };
-            glass.SetFloat("_Mode", 3);
+            var glass = new Material(surfaceShader)
+                { name = "Courtyard frosted glass", color = new Color(.58f, .64f, .65f, .68f) };
+            glass.SetFloat("_Mode", 2);
+            glass.SetFloat("_Glossiness", .18f);
             glass.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
             glass.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
             glass.SetInt("_ZWrite", 0);
