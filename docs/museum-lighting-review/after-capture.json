@@ -232,6 +232,38 @@
             "fieldOfView": 70.0,
             "width": 1600,
             "height": 900
+        },
+        {
+            "file": "11-portrait-right-picture-light.png",
+            "cameraPosition": {
+                "x": 3.799999952316284,
+                "y": 2.9000000953674318,
+                "z": 35.0
+            },
+            "lookTarget": {
+                "x": 7.78000020980835,
+                "y": 3.3499999046325685,
+                "z": 36.0
+            },
+            "fieldOfView": 65.0,
+            "width": 1600,
+            "height": 900
+        },
+        {
+            "file": "12-portrait-left-picture-light.png",
+            "cameraPosition": {
+                "x": -3.799999952316284,
+                "y": 3.0999999046325685,
+                "z": 35.0
+            },
+            "lookTarget": {
+                "x": -7.78000020980835,
+                "y": 3.5999999046325685,
+                "z": 36.0
+            },
+            "fieldOfView": 65.0,
+            "width": 1600,
+            "height": 900
         }
     ],
     "errors": []

@@ -100,7 +100,7 @@ namespace ShadeLink.Gallery
             {
                 Color red=i<2?new Color(1,.15f,.07f):new Color(1,.055f,.025f);
                 Color color=Color.Lerp(new Color(1,.65f,.32f),red,portraitMood);
-                float gain=Mathf.Lerp(1,i<2?1.1f:i==2?1.5f:1.85f,portraitMood);
+                float gain=Mathf.Lerp(1,i<2?11f:i==2?15f:18.5f,portraitMood);
                 portraitRadiance[i]=new Vector4(color.r,color.g,color.b,(i<2?5f:7f)*gain);
             }
             Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitRadiance);
@@ -162,8 +162,23 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalVectorArray("_MuseumRoomProbeBoxMin",minimum);Shader.SetGlobalVectorArray("_MuseumRoomProbeBoxMax",maximum);
             Shader.SetGlobalFloat("_MuseumProbeReady",1);Debug.Log("MUSEUM_ROOM_REFLECTION_OK rooms=4");
         }
+        void AlignPortraitFixtures()
+        {
+            var room=game!=null?game.GetComponentInChildren<GalleryPortraitRoom>(true):null;
+            if(room==null||room.pictureDiffusers==null||room.pictureDiffusers.Length<2)return;
+            for(int i=0;i<2;i++)
+            {
+                var painting=i==0?room.originalArtwork:room.installationArtwork;
+                var diffuser=room.pictureDiffusers[i];
+                if(painting==null||diffuser==null)continue;
+                Vector3 position=diffuser.bounds.center;
+                PortraitPositions[i]=new Vector4(position.x,position.y,position.z,6);
+                PortraitTargets[i]=painting.position;
+            }
+        }
         void Publish()
         {
+            AlignPortraitFixtures();
             var colors=new Vector4[8];var directions=new Vector4[8];
             for(int i=0;i<8;i++)
             {
@@ -182,7 +197,7 @@ namespace ShadeLink.Gallery
             for(int i=0;i<PortraitPositions.Length;i++)
             {
                 Vector3 direction=(PortraitTargets[i]-(Vector3)PortraitPositions[i]).normalized;
-                portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(48*Mathf.Deg2Rad));
+                portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos((i<2?70:48)*Mathf.Deg2Rad));
             }
             Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",PortraitPositions);
             Shader.SetGlobalVectorArray("_MuseumPortraitLightDirectionCone",portraitDirections);

@@ -89,7 +89,9 @@ namespace ShadeLink.Gallery
                 new Shot{file="07-nike-rear.png",cameraPosition=new Vector3(-2,2.1f,28),lookTarget=new Vector3(-2,2.5f,24)},
                 new Shot{file="08-nike-side.png",cameraPosition=new Vector3(-6.1f,2.1f,22),lookTarget=new Vector3(-2,2.5f,24)},
                 new Shot{file="09-paintings-oblique.png",cameraPosition=new Vector3(-4.8f,1.7f,3.3f),lookTarget=new Vector3(1.3f,2.65f,12.8f)},
-                new Shot{file="10-through-the-arch.png",cameraPosition=new Vector3(1.8f,1.7f,8),lookTarget=new Vector3(-2,2.6f,24)}
+                new Shot{file="10-through-the-arch.png",cameraPosition=new Vector3(1.8f,1.7f,8),lookTarget=new Vector3(-2,2.6f,24)},
+                new Shot{file="11-portrait-right-picture-light.png",cameraPosition=new Vector3(3.8f,2.9f,35),lookTarget=new Vector3(7.78f,3.35f,36),fieldOfView=65},
+                new Shot{file="12-portrait-left-picture-light.png",cameraPosition=new Vector3(-3.8f,3.1f,35),lookTarget=new Vector3(-7.78f,3.6f,36),fieldOfView=65}
             };
             float gameplayFov=game.view.fieldOfView;
             foreach(var shot in definitions)

@@ -338,7 +338,15 @@ Shader "Parallax/MuseumSurface"
                     ambient=ambient*.08+bounced;
                 }
                 float portraitMood=portraitRoom?saturate(_MuseumPortraitMood):0;
+                float roomStart=i.world.z<14?0:(i.world.z<29?14:(i.world.z<44?29:44));
+                float roomEnd=i.world.z<14?14:(i.world.z<29?29:(i.world.z<44?44:56));
+                float wallDistance=max(0,min(7.74-abs(i.world.x),min(i.world.z-roomStart,roomEnd-i.world.z)-.30));
+                float coveDistance=length(float2(wallDistance,i.world.y-6.47));
+                float cove=exp2(-coveDistance*2.6)*(.55+.45*saturate(-geometric.y));
                 ambient*=lerp(1,.55,portraitMood);
+                // Recolour the existing cove bounce without adding a bright strip.
+                float3 coveTint=lerp(float3(1,1,1),float3(1.45,.24,.16),portraitMood);
+                ambient*=lerp(float3(1,1,1),coveTint,saturate(cove));
                 ao*=contactOcclusion(i.world);
                 float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
                 float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
@@ -431,12 +439,7 @@ Shader "Parallax/MuseumSurface"
                 col=lerp(col,max(col,albedo*.78),saturate(_ExhibitLight)*(1-visibleLit));
                 // A continuous cornice bounce, confined to upper walls/ceiling.
                 // The portrait's protected walking floor returns before this.
-                float roomStart=i.world.z<14?0:(i.world.z<29?14:(i.world.z<44?29:44));
-                float roomEnd=i.world.z<14?14:(i.world.z<29?29:(i.world.z<44?44:56));
-                float wallDistance=max(0,min(7.74-abs(i.world.x),min(i.world.z-roomStart,roomEnd-i.world.z)-.30));
-                float coveDistance=length(float2(wallDistance,i.world.y-6.47));
-                float cove=exp2(-coveDistance*2.6)*(.55+.45*saturate(-geometric.y));
-                col+=albedo*(1-_Metallic)*_MuseumCoveRadiance.rgb*cove*(1-saturate(_MuseumBakedGI));
+                col+=albedo*(1-_Metallic)*_MuseumCoveRadiance.rgb*coveTint*cove*(1-saturate(_MuseumBakedGI));
                 if(_Grid>.5 && n.y>.9) {
                     float2 tile=abs(frac(i.world.xz/2)-.5);
                     float joint=step(.493,max(tile.x,tile.y)); col*=1-joint*.14;
@@ -449,7 +452,7 @@ Shader "Parallax/MuseumSurface"
                 float windowFalloff=pow(saturate(1-windowDistance/max(.01,_PortalGlowRadius)),2);
                 float windowFacing=.3+.7*saturate(dot(n,windowDelta*rsqrt(max(.00001,dot(windowDelta,windowDelta)))));
                 col+=albedo*_PortalGlowColor.rgb*windowFalloff*windowFacing;
-                col+=_Selection.rgb+_EmissionColor.rgb;
+                col+=_Selection.rgb+_EmissionColor.rgb*lerp(float3(1,1,1),coveTint,step(6.3,i.world.y));
                 return float4(col,1);
             }
             ENDCG
