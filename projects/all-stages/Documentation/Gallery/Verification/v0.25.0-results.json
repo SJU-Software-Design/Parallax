@@ -1,0 +1,61 @@
+{
+  "version": "0.25.0",
+  "unity": "6000.3.24f1",
+  "platform": "Windows x64",
+  "build": {
+    "warnings": 0,
+    "id": "76ac0ed778064713b0ecf2842fb372fc",
+    "result": "Succeeded",
+    "errors": 0
+  },
+  "checks": [
+    {
+      "name": "cathedral-rumble",
+      "passed": true,
+      "ticks": 755,
+      "openingSeconds": 2.2000021934509277,
+      "aftershockSeconds": 0.800000786781311,
+      "localOpeningWidth": 0.6800000071525574,
+      "widthIncreasePercent": 21.428571701049805,
+      "earlyEntryBlocked": true,
+      "blockedWalkTicks": 67,
+      "cameraDoesNotAccumulate": true
+    },
+    {
+      "name": "full-mechanics",
+      "passed": true,
+      "ticks": 5267,
+      "physicalMouthCrossing": true,
+      "libraryLoaded": true
+    },
+    {
+      "name": "cathedral-visual",
+      "passed": true,
+      "ticks": null
+    },
+    {
+      "name": "comfort",
+      "passed": true,
+      "ticks": 3458
+    },
+    {
+      "name": "portrait-performance",
+      "passed": true,
+      "ticks": 1851,
+      "maximumExposure": 0.0,
+      "respawns": 0,
+      "actualWalkTicks": 1594
+    },
+    {
+      "name": "shadow-gameplay",
+      "passed": true,
+      "ticks": 2697
+    }
+  ],
+  "editor": {
+    "sourceLayoutChecks": true,
+    "museumBuildChecks": true,
+    "cathedralPlacementChecks": true
+  },
+  "scope": "Explicit setup and approach fixtures; production controller, physics, lighting, reset, animation and Library transition paths. Not an unassisted full playthrough."
+}

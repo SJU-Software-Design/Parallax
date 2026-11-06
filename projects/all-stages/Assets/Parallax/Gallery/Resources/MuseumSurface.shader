@@ -60,6 +60,9 @@ Shader "Parallax/MuseumSurface"
             float4 _MuseumRoomProbeBoxMin[4],_MuseumRoomProbeBoxMax[4];
             int _MuseumLightCount;
             float4 _MuseumLightPositionRange[8], _MuseumLightColorIntensity[8], _MuseumLightDirectionCone[8];
+            float _GalleryPortraitNoSun,_MuseumPortraitMood;
+            int _MuseumPortraitLightCount;
+            float4 _MuseumPortraitLightPositionRange[4],_MuseumPortraitLightColorIntensity[4],_MuseumPortraitLightDirectionCone[4];
             int _GalleryCasterCount;
             float4x4 _GalleryCasterInverse[128];
             float _GalleryCasterPreview[128];
@@ -90,6 +93,7 @@ Shader "Parallax/MuseumSurface"
                 TRANSFER_SHADOW(o);return o;
             }
             bool windowLit(float3 location) {
+                if(_GalleryPortraitNoSun>.5 && location.z>=29 && location.z<44)return false;
                 float3 aperture = location + _GalleryToSun * ((_GalleryRoof-location.y)/_GalleryToSun.y);
                 bool inWindow = false;
                 [unroll] for(int w=0;w<4;w++) {
@@ -119,6 +123,7 @@ Shader "Parallax/MuseumSurface"
                 return blocked(surfacePosition+normal*.012,_GalleryToSun,1e20,false,false)?0:1;
             }
             float reflectedLit(float3 surfacePosition,float3 normal) {
+                if(_GalleryPortraitNoSun>.5 && surfacePosition.z>=29 && surfacePosition.z<44)return 0;
                 if(_GalleryMirrorActive<.5)return 0;
                 float denominator=dot(_GalleryReflectedDirection,_GalleryMirrorNormal);
                 if(dot(_GalleryMirrorNormal,_GalleryToSun)<=.015 || denominator<=.015)return 0;
@@ -248,6 +253,7 @@ Shader "Parallax/MuseumSurface"
                 // The roofed Nike room uses its movable lamp. Other rooms keep
                 // their original sunlight, mirror and material lighting.
                 bool nikeRoom=_NikeLightEnabled>.5 && i.world.z>=14 && i.world.z<29;
+                bool portraitRoom=_GalleryPortraitNoSun>.5 && i.world.z>=29 && i.world.z<44;
                 float3 geometric=normalize(i.normal);
                 float sunlight=nikeRoom?0:directLit(i.world,geometric),reflection=nikeRoom?0:reflectedLit(i.world,geometric);float lit=max(sunlight,reflection);
                 if(_Diagnostic>.5) {
@@ -283,6 +289,19 @@ Shader "Parallax/MuseumSurface"
                 // Conductors receive indirect light through their coloured
                 // specular response rather than an extra diffuse ambient term.
                 float3 col=albedo*(1-_Metallic)*ambient*_AmbientStrength*ao;
+                // The visitor's walking floor receives no sun, spot, display,
+                // portal or coloured reflection contribution in this room.
+                // Neutral low ambient keeps the stone readable without making
+                // a misleading lit/hazardous path during the red performance.
+                bool portraitWalkSurface=portraitRoom && i.world.y<.35 && abs(geometric.y)>.45;
+                if(portraitWalkSurface) {
+                    float3 walkway=albedo*float3(.12,.12,.115)*_AmbientStrength*ao;
+                    if(_Grid>.5) {
+                        float2 tile=abs(frac(i.world.xz/2)-.5);
+                        walkway*=1-step(.493,max(tile.x,tile.y))*.14;
+                    }
+                    return float4(walkway,1);
+                }
                 float3 toLight=reflection>.5&&sunlight<.5?-_GalleryReflectedDirection:_GalleryToSun;
                 float3 sunColor=reflection>.5&&sunlight<.5?float3(1,.76,.46):float3(1,.88,.70);
                 float sunIntensity=_MuseumSunIntensity>.001?_MuseumSunIntensity:2.8;
@@ -301,6 +320,7 @@ Shader "Parallax/MuseumSurface"
                     visibleLit=visibility*step(.001,attenuation);
                 }
                 [loop] for(int source=0;source<min(_MuseumLightCount,8);source++) {
+                    if(portraitRoom)continue;
                     float4 lamp=_MuseumLightPositionRange[source];
                     float3 delta=lamp.xyz-i.world;float distance=length(delta);
                     float3 direction=delta/max(distance,.001);
@@ -309,6 +329,18 @@ Shader "Parallax/MuseumSurface"
                     if(cone.w>=0)attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
                     float4 radiance=_MuseumLightColorIntensity[source];
                     col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*(nikeRoom?.5:1);
+                }
+                if(portraitRoom) {
+                    [loop] for(int source=0;source<min(_MuseumPortraitLightCount,4);source++) {
+                        float4 lamp=_MuseumPortraitLightPositionRange[source];
+                        float3 delta=lamp.xyz-i.world;float distance=length(delta);
+                        float3 direction=delta/max(distance,.001);
+                        float attenuation=pow(saturate(1-distance/max(lamp.w,.01)),2);
+                        float4 cone=_MuseumPortraitLightDirectionCone[source];
+                        attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
+                        float4 radiance=_MuseumPortraitLightColorIntensity[source];
+                        col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation;
+                    }
                 }
                 float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
                 float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
@@ -336,6 +368,7 @@ Shader "Parallax/MuseumSurface"
                 float windowFacing=.3+.7*saturate(dot(n,windowDelta*rsqrt(max(.00001,dot(windowDelta,windowDelta)))));
                 col+=albedo*_PortalGlowColor.rgb*windowFalloff*windowFacing;
                 col+=_Selection.rgb+_EmissionColor.rgb;
+                if(portraitRoom)col*=lerp(float3(1.10,.98,.85),float3(1.35,.045,.065),saturate(_MuseumPortraitMood));
                 return float4(col,1);
             }
             ENDCG

@@ -45,6 +45,8 @@ namespace ShadeLink.Gallery
         float pulse;
 
         void Start() { EnsureWind(); }
+        // Re-arm the crossing detector without closing an already-open door.
+        // Game restart separately resets the hand animation and its rumble.
         public void ResetEntrance() { Entering = false; tracked = false; pulse = 0; }
 
         public static float WindVolumeAtDistance(float distance)

@@ -16,7 +16,8 @@ namespace ShadeLink.Gallery
         };
         public GalleryCaster[] casters;
         public bool conceptLayout;
-        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(-GalleryConceptWorld.PortraitSkylightHalfWidth,GalleryConceptWorld.PortraitSkylightHalfWidth,32,35),new Vector4(-8.1f,8.1f,47,50)};
+        // Keep four shader slots, with the former portrait skylight disabled.
+        static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(1,-1,32,35),new Vector4(-8.1f,8.1f,47,50)};
         public GalleryMirror mirror;
         readonly Matrix4x4[] inverse = new Matrix4x4[MaxCasters];
         readonly float[] mirrorCaster = new float[MaxCasters];
@@ -56,6 +57,7 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalFloatArray("_GalleryCasterPreview",previewCaster);
             Shader.SetGlobalVector("_GalleryToSun", ToSun);
             Shader.SetGlobalFloat("_GalleryRoof", conceptLayout?GalleryConceptWorld.Roof:Roof);
+            Shader.SetGlobalFloat("_GalleryPortraitNoSun",conceptLayout?1:0);
             Shader.SetGlobalVectorArray("_GalleryWindows", conceptLayout?ConceptWindows:Windows);
             bool enabled = mirror != null && mirror.isActiveAndEnabled;
             Shader.SetGlobalFloat("_GalleryMirrorActive", enabled ? 1 : 0);
@@ -86,6 +88,7 @@ namespace ShadeLink.Gallery
         }
         public bool IsDirectLit(Vector3 surface, Vector3 normal)
         {
+            if(conceptLayout&&InPortraitRoom(surface))return false;
             if(conceptLayout&&surface.z>=14&&surface.z<29&&owner!=null&&owner.nikeLight!=null&&owner.nikeLight.isActiveAndEnabled)
                 return owner.nikeLight.IsIlluminated(surface,normal);
             if(conceptLayout)
@@ -125,6 +128,7 @@ namespace ShadeLink.Gallery
         }
         public bool IsReflectedLit(Vector3 surface, Vector3 normal)
         {
+            if(conceptLayout&&InPortraitRoom(surface))return false;
             if (mirror == null || !mirror.isActiveAndEnabled) return false;
             Vector3 n = mirror.transform.forward, direction = mirror.ReflectedDirection;
             float denominator = Vector3.Dot(direction, n);
@@ -140,6 +144,8 @@ namespace ShadeLink.Gallery
             return true;
         }
         public bool IsSunlit(Vector3 surface, Vector3 normal) => IsDirectLit(surface, normal) || IsReflectedLit(surface, normal);
+        static bool InPortraitRoom(Vector3 point)=>point.z>=GalleryConceptWorld.PortraitRoomStart&&point.z<GalleryConceptWorld.PortraitRoomEnd;
         void LateUpdate() { Synchronize(); }
+        void OnDisable(){if(conceptLayout)Shader.SetGlobalFloat("_GalleryPortraitNoSun",0);}
     }
 }

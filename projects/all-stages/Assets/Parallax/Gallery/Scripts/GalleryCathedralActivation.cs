@@ -3,22 +3,29 @@ using UnityEngine;
 
 namespace ShadeLink.Gallery
 {
-    // The scan keeps its original pose while small. A slight parting of the
+    // The scan keeps its original pose while small. A deliberate parting of the
     // palms makes a genuine human-sized opening after enlargement and settling.
     public sealed class GalleryCathedralActivation : MonoBehaviour
     {
+        public const float OpeningSeconds = 2.2f;
+        public const float RumbleAttackSeconds = .25f;
+        public const float AftershockSeconds = .8f;
         public GalleryOrcusExit entrance;
         public GalleryCathedralPortal portal;
         public SkinnedMeshRenderer[] morphTargets;
         public BoxCollider[] movingParts;
+        public BoxCollider entryBarrier;
         public Vector3[] closedCenters, openedCenters;
         public Bounds closedOpening, openedOpening;
-        [Min(.1f)] public float duration = .65f;
-        [Range(100, 150)] public float openedMorphWeight = 100;
+        [Min(.1f)] public float duration = OpeningSeconds;
+        [Range(100, 250)] public float openedMorphWeight = 100;
         [Range(.75f, 1)] public float assistanceRatio = .90f;
         [Range(0, 15)] public float maximumAssistTilt = 10f;
         [Min(.1f)] public float assistanceDuration = .55f;
         public float Progress { get; private set; }
+        public float Rumble01 { get; private set; }
+        public float RumbleTime { get; private set; }
+        public float AftershockRemaining { get; private set; }
         public bool Opened => Progress >= .999f;
         public bool OpeningBlocked { get; private set; }
         public bool Assisting { get; private set; }
@@ -59,18 +66,22 @@ namespace ShadeLink.Gallery
 
         void LateUpdate()
         {
-            if (Application.isPlaying && entrance != null && entrance.game != null && !entrance.game.active && !entrance.game.automated) return;
+            if (Application.isPlaying && entrance != null && entrance.game != null && !entrance.game.active && !entrance.game.automated)
+            { ClearRumble(); UpdateEntryBarrier(); return; }
             Tick(Time.unscaledDeltaTime);
         }
 
         // Public for deterministic integration checks; normal play uses LateUpdate.
         public void Tick(float dt)
         {
-            if (entrance == null || entrance.game == null || entrance.game.Transitioning) return;
+            if (entrance == null || entrance.game == null || entrance.game.Transitioning)
+            { ClearRumble(); DisableEntryBarrier(); return; }
             dt = Mathf.Clamp(dt, 0, .1f);
             if (Assisting)
             {
+                ClearRumble();
                 AdvanceAssistance(dt);
+                UpdateEntryBarrier();
                 return;
             }
             RestorePreviewPolicyWhenReady();
@@ -83,6 +94,7 @@ namespace ShadeLink.Gallery
                 {
                     BeginAssistance();
                     AdvanceAssistance(dt);
+                    UpdateEntryBarrier();
                     return;
                 }
                 AssistanceBlocked = true; AssistanceReason = reason; retryDelay = .12f;
@@ -93,8 +105,23 @@ namespace ShadeLink.Gallery
             OpeningBlocked = eligible && !openingApproved;
             float target = eligible && !OpeningBlocked ? 1 : 0;
             float next = Mathf.MoveTowards(Progress, target, dt / duration);
-            if (Mathf.Approximately(next, Progress)) return;
-            SetProgress(next);
+            if (target == 1 && next >= .999f) next = 1;
+            if (target < 1) ClearRumble();
+            else if (next > Progress)
+            {
+                RumbleTime += dt;
+                Rumble01 = Mathf.SmoothStep(0, 1, Mathf.Clamp01(RumbleTime / RumbleAttackSeconds));
+                if (next >= 1) AftershockRemaining = AftershockSeconds;
+            }
+            else if (Opened && AftershockRemaining > 0)
+            {
+                RumbleTime += dt;
+                AftershockRemaining = Mathf.Max(0, AftershockRemaining - dt);
+                Rumble01 = Mathf.SmoothStep(0, 1, AftershockRemaining / AftershockSeconds);
+            }
+            else Rumble01 = 0;
+            if (!Mathf.Approximately(next, Progress)) SetProgress(next);
+            UpdateEntryBarrier();
         }
 
         public void ResetToRest()
@@ -102,6 +129,28 @@ namespace ShadeLink.Gallery
             if (Assisting) CancelAssistance(false, PoseStillOwned());
             openingApproved = false; OpeningBlocked = AssistanceBlocked = false; AssistanceReason = null;
             retryDelay = 0; SetProgress(0); RestorePreviewPolicy();
+            ClearRumble(); DisableEntryBarrier();
+        }
+
+        void UpdateEntryBarrier()
+        {
+            if (entryBarrier == null) return;
+            bool closed = entrance != null && entrance.game != null && !entrance.game.Transitioning &&
+                !entrance.Entering && !Opened && !IsHeld && entrance.ScaleAndPlacementReady;
+            if (entryBarrier.enabled == closed) return;
+            entryBarrier.enabled = closed; Physics.SyncTransforms();
+        }
+        void DisableEntryBarrier()
+        {
+            if (entryBarrier == null || !entryBarrier.enabled) return;
+            entryBarrier.enabled = false; Physics.SyncTransforms();
+        }
+
+        public void ClearRumble()
+        {
+            Rumble01 = RumbleTime = AftershockRemaining = 0;
+            if (entrance != null && entrance.game != null)
+                entrance.game.GetComponent<GalleryCathedralRumble>()?.ClearSample();
         }
 
         bool CanConsiderAssistance()
@@ -167,6 +216,7 @@ namespace ShadeLink.Gallery
 
         void BeginAssistance()
         {
+            ClearRumble();
             var prop = entrance.prop; var body = prop.body;
             assistancePosition = transform.position; assistanceStartScale = transform.localScale; assistanceStartRotation = transform.rotation;
             TargetPose(out assistanceTargetScale, out assistanceTargetRotation);
@@ -266,7 +316,7 @@ namespace ShadeLink.Gallery
             { entrance.prop.placement.PreviewUntilSettled = oldPreviewUntilSettled; ownsPreviewPolicy = false; }
         }
 
-        void OnDisable() { if (Assisting) CancelAssistance(false, true); RestorePreviewPolicy(); }
+        void OnDisable() { if (Assisting) CancelAssistance(false, true); RestorePreviewPolicy(); ClearRumble(); DisableEntryBarrier(); }
 
         public bool CanOpenAtCurrentPlacement()
         {

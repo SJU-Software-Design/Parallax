@@ -38,7 +38,8 @@ namespace Parallax.Editor
             }
             EditorSceneManager.OpenScene(galleryPath, OpenSceneMode.Single);
             var game = UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
-            if (game == null || game.props == null || game.props.Length != 6 || game.lighting == null || game.nikeLight == null)
+            if (game == null || game.props == null || game.props.Length != 6 || game.lighting == null ||
+                game.nikeLight == null || game.nikeLight.canvas == null || game.shadowCourse == null || game.shadowCourse.nikeSocket == null)
                 throw new Exception("Gallery scene references are incomplete.");
             if (EditorBuildSettings.scenes.Length != 2 || !EditorBuildSettings.scenes[0].enabled ||
                 EditorBuildSettings.scenes[0].path != galleryPath)

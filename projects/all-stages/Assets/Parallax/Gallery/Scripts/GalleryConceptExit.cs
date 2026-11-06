@@ -39,6 +39,17 @@ namespace ShadeLink.Gallery
             var prop = CreateSculpture(game, collection, stone, bronze);
             var exit = prop.GetComponent<GalleryOrcusExit>();
             prop.Remember();
+            // This waiting barrier is not part of the carried exhibit's
+            // authored placement volume. Cache those parts before adding it.
+            var wait = new GameObject("Cathedral opening · wait for moving hands");
+            wait.transform.SetParent(prop.transform, false);
+            var entryBarrier = wait.AddComponent<BoxCollider>();
+            entryBarrier.center = new Vector3(exit.EntryCenterX,
+                (exit.EntryBottom + exit.EntryTop) * .5f, exit.EntryPlane);
+            entryBarrier.size = new Vector3(GalleryCathedralGeometry.ComfortableOpenedOpening.size.x,
+                exit.EntryTop - exit.EntryBottom, .04f);
+            entryBarrier.enabled = false;
+            exit.cathedralActivation.entryBarrier = entryBarrier;
             var props = game.props == null ? new List<GalleryProp>() : new List<GalleryProp>(game.props);
             if (!props.Contains(prop)) props.Add(prop);
             game.props = props.ToArray();
@@ -109,7 +120,9 @@ namespace ShadeLink.Gallery
             // The real hand colliders determine what can physically pass.
             // This transition window must not demand pixel-perfect centring
             // after the controller has already negotiated the actual opening.
-            exit.customOpening = true; exit.openingCenterX = 0; exit.openingHalfWidth = .24f;
+            exit.customOpening = true;
+            exit.openingCenterX = GalleryCathedralGeometry.ComfortableOpenedOpening.center.x;
+            exit.openingHalfWidth = GalleryCathedralGeometry.ComfortableOpenedOpening.extents.x;
             exit.openingBottom = GalleryCathedralGeometry.EntryFeetY;
             exit.openingTop = GalleryCathedralGeometry.EntryFeetY + 1.6f / GalleryCathedralGeometry.RequiredScale + .04f;
             exit.openingPlane = GalleryCathedralGeometry.PortalPlaneZ;
@@ -135,7 +148,12 @@ namespace ShadeLink.Gallery
             var go = new GameObject(name); go.transform.SetParent(parent, false);
             var renderer = go.AddComponent<SkinnedMeshRenderer>();
             renderer.sharedMesh = mesh; renderer.sharedMaterial = material;
-            var bounds = mesh.bounds; bounds.Expand(.20f); renderer.localBounds = bounds;
+            var bounds = mesh.bounds; bounds.Expand(.20f);
+            // Imported bounds include the native 100% morph. Preserve that
+            // margin while covering the wider runtime extrapolation as well.
+            float extraTravel = GalleryCathedralGeometry.NativePalmTravel *
+                Mathf.Max(0, GalleryCathedralGeometry.ComfortableOpeningMultiplier - 1);
+            bounds.Expand(new Vector3(extraTravel * 2, 0, 0)); renderer.localBounds = bounds;
             renderer.updateWhenOffscreen = true;
             return renderer;
         }

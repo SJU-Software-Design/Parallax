@@ -31,11 +31,12 @@ namespace ShadeLink.Gallery
             public bool simulationRestored;
             public string version, unity, failure;
             public string scope = "Explicit scene/camera/prop and held-state fixtures verify perceptual portrait acceptance, observation grace and collision-safe near-size assistance. The portrait faces deliberately differ from canonical size and viewer position. The Cathedral fixture uses real placement support, Rigidbody simulation, opening morph and the actual safety probe. This is focused integration QA, not autonomous puzzle solving or input-only carrying; GalleryMuseumMechanicsValidation separately checks real interaction, controller stairs and the Library handoff.";
-            public int ticks;
+            public string apronSafetyScope = "The portrait skylight is physically closed for the approved unlit walking route. The former requirement to find a sunlit 25.8m apron point is therefore obsolete. Every walkable sampled apron point is checked for safety at checkpoint 2; bronzeHazardProbe independently records a real sunlit walkable point in the unchanged bronze room which remains hazardous at checkpoints 0 and 2.";
+            public int ticks, portraitApronSamples;
             public float viewerDistanceFromMarker, jitterProgressBefore, jitterProgressDuring;
             public float assistedStartScale, assistedFinalScale, tiltBeforeDegrees, tiltAfterDegrees;
             public Vector3 approximateFaceScales, assistedStartPosition, assistedFinalPosition, blockedPosition;
-            public Vector3 portraitApronProbe;
+            public Vector3 portraitApronProbe, bronzeHazardProbe;
             public string portraitStatus;
             public string[] checks, errors;
         }
@@ -48,7 +49,7 @@ namespace ShadeLink.Gallery
         IEnumerator Start()
         {
             Application.logMessageReceived += Log;
-            deadline = Time.realtimeSinceStartupAsDouble + 60;
+            deadline = Time.realtimeSinceStartupAsDouble + 90;
             previousSimulation = Physics.simulationMode;
             var sequence = Sequence();
             while (true)
@@ -105,17 +106,18 @@ namespace ShadeLink.Gallery
 
             // A small whole face at a comfortable viewing location beyond the
             // former 1.05m observation-point restriction, with individual errors.
-            FaceFixture(portrait, new Vector3(.80f, .76f, .86f));
-            LookAtFace(portrait); gate.ResetGate();
-            for (int i = 0; i < 200 && !gate.Opened; i++) { gate.Tick(Dt); StepPhysics(); if (i % 12 == 0) yield return null; }
+            gate.ResetGate(); FaceFixture(portrait, new Vector3(.80f, .76f, .86f));
+            LookAtFace(portrait);
+            int portraitPerformanceTicks = Mathf.CeilToInt(18f / Dt);
+            for (int i = 0; i < portraitPerformanceTicks && !gate.Opened; i++) { gate.Tick(Dt); StepPhysics(); if (i % 12 == 0) yield return null; }
             Require(gate.Opened && !gate.barrier.enabled, "A recognisable smaller face at the player's actual viewing position was rejected: " + portrait.Status);
             report.smallerFaceAccepted = true;
             Check("A smaller translated face with mild piece offsets/rotations opens from 1.7m behind the old viewing mark");
 
             // Reproduce the user's visual intent: paired eyes, a smaller nose
             // and a noticeably smaller lip sofa are still a recognisable face.
-            FaceFixture(portrait, new Vector3(.80f, .65f, .49f));
-            LookAtFace(portrait); gate.ResetGate();
+            gate.ResetGate(); FaceFixture(portrait, new Vector3(.80f, .65f, .49f));
+            LookAtFace(portrait);
             for (int i = 0; i < 36; i++) { gate.Tick(Dt); StepPhysics(); }
             report.portraitStatus = portrait.Status;
             report.approximateFaceScales = new Vector3(portrait.pieces[0].transform.lossyScale.x,
@@ -143,7 +145,7 @@ namespace ShadeLink.Gallery
             Require(!gate.Opened, "Holding a portrait piece completed the curtain observation");
             report.heldPiecePausesUnlock = true;
             game.held = null; heldPiece.placement.ResetPlaced();
-            for (int i = 0; i < 220 && !gate.Opened; i++) { gate.Tick(Dt); StepPhysics(); if (i % 12 == 0) yield return null; }
+            for (int i = 0; i < portraitPerformanceTicks && !gate.Opened; i++) { gate.Tick(Dt); StepPhysics(); if (i % 12 == 0) yield return null; }
             Require(gate.Opened && !gate.barrier.enabled, "The user's recognisable smaller-nose/lips composition remained frustrating after release: " + portrait.Status);
             report.screenshotLikeFaceAccepted = true;
             for (int i = 0; i < 135; i++) gate.Tick(Dt);
@@ -169,7 +171,8 @@ namespace ShadeLink.Gallery
             ExitFixture(statue, nearScale, Quaternion.identity, false);
             report.assistedStartScale = statue.transform.lossyScale.x; report.assistedStartPosition = statue.transform.position;
             Require(activation.CanAssistAtCurrentPlacement(), "The central almost-large-enough statue cannot receive help");
-            for (int i = 0; i < 300 && !entrance.IsReadyForEntry; i++)
+            int assistedOpeningTicks = Mathf.CeilToInt((activation.assistanceDuration + activation.duration + 2) / Dt);
+            for (int i = 0; i < assistedOpeningTicks && !entrance.IsReadyForEntry; i++)
             { StepPhysics(); activation.Tick(Dt); if (i % 9 == 0) yield return null; }
             report.assistedFinalScale = statue.transform.lossyScale.x; report.assistedFinalPosition = statue.transform.position;
             Require(entrance.IsReadyForEntry && statue.transform.lossyScale.x >= entrance.RequiredScale && activation.Opened,
@@ -264,22 +267,37 @@ namespace ShadeLink.Gallery
             int previousCheckpoint = game.checkpoint;
             try
             {
-                game.checkpoint = 1; game.lighting.Synchronize();
-                bool found = false;
+                game.checkpoint = 2; game.lighting.Synchronize();
+                // The portrait skylight is deliberately closed. Apron safety
+                // must not depend on finding sunlight which no longer exists.
+                for (float z = 25.8f; z <= 29.3f; z += .5f)
                 for (float x = -6.5f; x <= 6.5f; x += .5f)
                 {
-                    var candidate = new Vector3(x, .025f, 25.8f);
-                    if (!game.CanStand(candidate) || !game.lighting.IsSunlit(candidate, Vector3.up) || game.FootSafe(candidate)) continue;
-                    report.portraitApronProbe = candidate; found = true; break;
+                    var candidate = new Vector3(x, .025f, z);
+                    if (!game.CanStand(candidate)) continue;
+                    Require(game.FootSafe(candidate), "The portrait observation apron still burns the player after checkpoint 2 at " + candidate);
+                    if (report.portraitApronSamples == 0) report.portraitApronProbe = candidate;
+                    report.portraitApronSamples++;
                 }
-                Require(found, "No physically sunlit, walkable 25.8m apron point was available to test the actual sunlight hazard");
+                Require(report.portraitApronSamples > 0, "No walkable portrait observation apron points were available");
+                report.portraitApronSafe = true;
+
+                // Independently retain the real sunlight hazard in the bronze
+                // room, including when the visitor has reached checkpoint 2.
+                bool foundHazard = false;
+                game.checkpoint = 0;
+                for (float z = 3; z <= 13 && !foundHazard; z += .5f)
+                for (float x = -6.5f; x <= 6.5f; x += .5f)
+                {
+                    var candidate = new Vector3(x, .025f, z);
+                    if (!game.CanStand(candidate) || !game.lighting.IsSunlit(candidate, Vector3.up) || game.FootSafe(candidate)) continue;
+                    report.bronzeHazardProbe = candidate; foundHazard = true; break;
+                }
+                Require(foundHazard, "The bronze room lost its physically sunlit, walkable hazard");
                 game.checkpoint = 2;
-                report.portraitApronSafe = game.FootSafe(report.portraitApronProbe);
-                Require(report.portraitApronSafe, "The portrait observation apron still burns the player after checkpoint 2");
-                game.checkpoint = 1;
-                report.shadowCourseHazardPreserved = !game.FootSafe(report.portraitApronProbe);
-                Require(report.shadowCourseHazardPreserved, "The portrait apron exemption removed the earlier shadow-course hazard");
-                Check("The actual sunlit 25.8m observation apron is safe after checkpoint 2 and retains its normal hazard at checkpoint 1");
+                report.shadowCourseHazardPreserved = !game.FootSafe(report.bronzeHazardProbe);
+                Require(report.shadowCourseHazardPreserved, "Portrait safety removed the bronze-room sunlight hazard after checkpoint 2");
+                Check("The walkable portrait observation apron is safe after checkpoint 2; a separate physically sunlit bronze-room point remains hazardous before and after checkpoint 2");
             }
             finally { game.checkpoint = previousCheckpoint; }
         }
@@ -327,7 +345,7 @@ namespace ShadeLink.Gallery
         static bool CentersMatch(GalleryCathedralActivation value, Vector3[] centers)
         { for (int i = 0; i < centers.Length; i++) if (Vector3.Distance(centers[i], value.movingParts[i].center) > .00001f) return false; return true; }
         void Check(string value) { checks.Add(value); Debug.Log("MUSEUM_COMFORT_PASS " + value); }
-        void Guard() { if (Time.realtimeSinceStartupAsDouble > deadline) throw new TimeoutException("Museum comfort validation exceeded 60 seconds"); }
+        void Guard() { if (Time.realtimeSinceStartupAsDouble > deadline) throw new TimeoutException("Museum comfort validation exceeded 90 seconds"); }
         void RestoreSimulation()
         {
             if (ownsSimulation) { Physics.simulationMode = previousSimulation; ownsSimulation = false; }

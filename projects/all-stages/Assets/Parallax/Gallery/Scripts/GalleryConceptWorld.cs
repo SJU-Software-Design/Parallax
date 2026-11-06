@@ -9,7 +9,10 @@ namespace ShadeLink.Gallery
     public static class GalleryConceptWorld
     {
         public const float Width=16,Length=56,Roof=6.6f;
-        public const float PortraitSkylightHalfWidth=2.2f;
+        // The portrait performance uses wall-only exhibition light. Its entire
+        // floor remains beneath an opaque roof rather than a sunlight aperture.
+        public const float PortraitSkylightHalfWidth=0;
+        public const float PortraitRoomStart=29,PortraitRoomEnd=44;
         static Transform root;
         static GalleryConceptArchitecture.Palette palette;
         static void Box(string name,Vector3 at,Vector3 size,Material material,Transform parent=null,bool caster=true,bool solid=true)
@@ -95,18 +98,9 @@ namespace ShadeLink.Gallery
             Box("Museum final end wall",new Vector3(0,Roof/2,56.16f),new Vector3(16,Roof,.32f),palette.plaster);
             foreach(float z in new[]{14f,29f,44f})Divider(z);
             float cursor=0;
-            foreach(var opening in new[]{new Vector2(3,6.2f),new Vector2(32,35),new Vector2(47,50)})
+            foreach(var opening in new[]{new Vector2(3,6.2f),new Vector2(47,50)})
             {
                 if(opening.x>cursor)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+opening.x)/2),new Vector3(16,.24f,opening.x-cursor),palette.plaster,caster:false);
-                if(opening.x==32)
-                    foreach(int side in new[]{-1,1})
-                    {
-                        var ceiling=GameObject.CreatePrimitive(PrimitiveType.Cube);ceiling.name="Portrait side aisle · solid ceiling";
-                        ceiling.transform.SetParent(root,false);
-                        ceiling.transform.localPosition=new Vector3(side*(Width/2+PortraitSkylightHalfWidth)/2,Roof+.12f,(opening.x+opening.y)/2);
-                        ceiling.transform.localScale=new Vector3(Width/2-PortraitSkylightHalfWidth,.24f,opening.y-opening.x);
-                        ceiling.GetComponent<Renderer>().sharedMaterial=palette.plaster;
-                    }
                 cursor=opening.y;
             }
             if(cursor<Length)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+Length)/2),new Vector3(16,.24f,Length-cursor),palette.plaster,caster:false);

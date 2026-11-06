@@ -115,7 +115,7 @@ namespace ShadeLink.Gallery
             var palette=new GalleryConceptArchitecture.Palette{assets=GalleryWorld.Materials,bronze=bronze,gold=GalleryWorld.Materials.Find(m=>m.name=="Concept museum · frame gold")};
             palette.paper=Material("Concept stage · catalogue paper","Paper",new Color(.96f,.94f,.88f));
             palette.ink=Material("Concept stage · dark frame linen","Ink",new Color(.07f,.06f,.05f));
-            GalleryConceptArchitecture.FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(7.78f,2.8f,36),Quaternion.Euler(0,90,0),3.6f,3.05f,palette);
+            // The paired Mae West references are installed by GalleryPortraitRoom.
         }
     }
 }

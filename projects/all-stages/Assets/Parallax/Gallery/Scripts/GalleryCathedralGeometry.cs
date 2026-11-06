@@ -9,8 +9,9 @@ namespace ShadeLink.Gallery
         public const float EntryFeetY=.62f, RequiredScale=2.7f, PortalPlaneZ=0;
         // Keep the captured rest pose, but part the palms a little farther at
         // runtime so traversal does not require the controller's exact centre.
-        // Native Open is authored at 100% / .08m per palm; 150% gives .12m.
-        public const float ComfortableOpeningMultiplier=1.5f;
+        // Native Open is authored at 100% / .08m per palm. 225% gives .18m
+        // per palm and a .68m aperture, 21.4% wider than the former .56m.
+        public const float NativePalmTravel=.08f, ComfortableOpeningMultiplier=2.25f;
         public struct BoxDescriptor
         {
             public Vector3 closedCenter,openedCenter,size;
