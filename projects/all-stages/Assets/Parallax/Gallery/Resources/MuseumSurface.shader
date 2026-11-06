@@ -338,11 +338,24 @@ Shader "Parallax/MuseumSurface"
                     ambient=ambient*.08+bounced;
                 }
                 ao*=contactOcclusion(i.world);
+                float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
+                float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
+                // Match Unity's integrated GGX environment response. The
+                // perceptual roughness remap/mip selection occurs in the helper.
+                float realRoughness=roughness*roughness;
+                #ifdef UNITY_COLORSPACE_GAMMA
+                    float surfaceReduction=1-.28*realRoughness*roughness;
+                #else
+                    float surfaceReduction=rcp(1+realRoughness*realRoughness);
+                #endif
+                float grazing=saturate(1-roughness+max(f0.r,max(f0.g,f0.b)));
+                float3 surfaceReflection=surfaceReduction*environmentColor*FresnelLerp(f0,grazing.xxx,saturate(dot(n,view)))*_ReflectionStrength*ao;
                 // Conductors receive indirect light through their coloured
                 // specular response rather than an extra diffuse ambient term.
                 float3 col=albedo*(1-_Metallic)*ambient*_AmbientStrength*ao;
                 // The visitor's walking floor receives no sun, spot, display,
-                // portal or coloured reflection contribution in this room.
+                // portal or gameplay-reflected beam contribution in this room.
+                // Decorative surface reflection is shared with every room.
                 // Constant low ambient keeps the stone readable without making
                 // a misleading lit/hazardous path during the red performance.
                 bool portraitWalkSurface=portraitRoom && i.world.y<.35 && abs(geometric.y)>.45;
@@ -352,7 +365,7 @@ Shader "Parallax/MuseumSurface"
                         float2 tile=abs(frac(i.world.xz/2)-.5);
                         walkway*=1-step(.493,max(tile.x,tile.y))*.14;
                     }
-                    return float4(walkway,1);
+                    return float4(walkway+surfaceReflection,1);
                 }
                 float3 toLight=reflection>.5&&sunlight<.5?-_GalleryReflectedDirection:_GalleryToSun;
                 float3 sunColor=reflection>.5&&sunlight<.5?float3(1,.76,.46):float3(1,.88,.70);
@@ -407,18 +420,7 @@ Shader "Parallax/MuseumSurface"
                         col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*visibility;
                     }
                 }
-                float3 f0=lerp(float3(.04,.04,.04),albedo,_Metallic);
-                float3 environmentColor=museumEnvironment(i.world,view,n,roughness,f0,sky,ground);
-                // Match Unity's integrated GGX environment response. The
-                // perceptual roughness remap/mip selection occurs in the helper.
-                float realRoughness=roughness*roughness;
-                #ifdef UNITY_COLORSPACE_GAMMA
-                    float surfaceReduction=1-.28*realRoughness*roughness;
-                #else
-                    float surfaceReduction=rcp(1+realRoughness*realRoughness);
-                #endif
-                float grazing=saturate(1-roughness+max(f0.r,max(f0.g,f0.b)));
-                col+=surfaceReduction*environmentColor*FresnelLerp(f0,grazing.xxx,saturate(dot(n,view)))*_ReflectionStrength*ao;
+                col+=surfaceReflection;
                 col=lerp(col,max(col,albedo*.78),saturate(_ExhibitLight)*(1-visibleLit));
                 // A continuous cornice bounce, confined to upper walls/ceiling.
                 // The portrait's protected walking floor returns before this.
