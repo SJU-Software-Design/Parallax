@@ -15,7 +15,7 @@ Mesh:
     topology: 0
     baseVertex: 0
     firstVertex: 0
-    vertexCount: 8
+    vertexCount: 16
     localAABB:
       m_Center: {x: 0, y: 0, z: -0.0235}
       m_Extent: {x: 1.3175, y: 1.3175, z: 0.0115}
@@ -35,10 +35,10 @@ Mesh:
   m_KeepVertices: 1
   m_KeepIndices: 1
   m_IndexFormat: 0
-  m_IndexBuffer: 000005000100000004000500010006000200010005000600020007000300020006000700030004000000030007000400
+  m_IndexBuffer: 000001000200000003000100040005000600040007000500080009000a0008000b0009000c000d000e000c000f000d00
   m_VertexData:
     serializedVersion: 3
-    m_VertexCount: 8
+    m_VertexCount: 16
     m_Channels:
     - stream: 0
       offset: 0
@@ -58,6 +58,10 @@ Mesh:
       dimension: 0
     - stream: 0
       offset: 24
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 32
       format: 0
       dimension: 2
     - stream: 0
@@ -92,12 +96,8 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    m_DataSize: 256
-    _typelessdata: a470a5bfa470a5bfa69b44bc319c80be9bda01bfce0a533fa470a5bea470a5bea470a53fa470a5bfa69b44bc9bda013f319c80bece0a533fa470a53ea470a5bea470a53fa470a53fa69b44bc319c803e9bda013fce0a533fa470a53ea470a53ea470a5bfa470a53fa69b44bc9bda01bf319c803ece0a533fa470a5bea470a53ed7a3a8bfd7a3a8bf295c0fbd012201bfa75e82bef736533fd7a3a8bed7a3a8bed7a3a83fd7a3a8bf295c0fbda75e823e012201bff736533fd7a3a83ed7a3a8bed7a3a83fd7a3a83f295c0fbd0122013fa75e823ef736533fd7a3a83ed7a3a83ed7a3a8bfd7a3a83f295c0fbda75e82be0122013ff736533fd7a3a8bed7a3a83e
+    m_DataSize: 640
+    _typelessdata: a470a5bfa470a5bfa69b44bc319c80be9bda01bfce0a533fa470a5bea470a5bea93d5a3c02cb883cd7a3a83fd7a3a8bf295c0fbda75e823e012201bff736533fd7a3a83ed7a3a8bef8037f3f0000803ba470a53fa470a5bfa69b44bc9bda013f319c80bece0a533fa470a53ea470a5be009b7c3f03cb883cd7a3a8bfd7a3a8bf295c0fbd012201bfa75e82bef736533fd7a3a8bed7a3a8be0000803b0000803ba470a53fa470a5bfa69b44bc9bda013f319c80bece0a533fa470a53ea470a5be019b7c3f03cb183dd7a3a83fd7a3a83f295c0fbd0122013fa75e823ef736533fd7a3a83ed7a3a83e0000803b84304d3da470a53fa470a53fa69b44bc319c803e9bda013fce0a533fa470a53ea470a53e1c3e5a3c03cb183dd7a3a83fd7a3a8bf295c0fbda75e823e012201bff736533fd7a3a83ed7a3a8bef8037f3f84304d3da470a53fa470a53fa69b44bc319c803e9bda013fce0a533fa470a53ea470a53e019b7c3f03cba83cd7a3a8bfd7a3a83f295c0fbda75e82be0122013ff736533fd7a3a8bed7a3a83e0000803b03cb083da470a5bfa470a53fa69b44bc9bda01bf319c803ece0a533fa470a5bea470a53e1c3e5a3c03cba83cd7a3a83fd7a3a83f295c0fbd0122013fa75e823ef736533fd7a3a83ed7a3a83ef8037f3f03cb083da470a5bfa470a53fa69b44bc9bda01bf319c803ece0a533fa470a5bea470a53ea93d5a3c02cb883dd7a3a8bfd7a3a8bf295c0fbd012201bfa75e82bef736533fd7a3a8bed7a3a8bef8037f3f84305d3da470a5bfa470a5bfa69b44bc319c80be9bda01bfce0a533fa470a5bea470a5be009b7c3f03cb883dd7a3a8bfd7a3a83f295c0fbda75e82be0122013ff736533fd7a3a8bed7a3a83e0000803b84305d3d
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0

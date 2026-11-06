@@ -15,9 +15,12 @@ namespace ShadeLink.Gallery
             var prop=parent.gameObject.AddComponent<GalleryProp>();
             prop.title=parent.name;prop.zone=1;prop.minScale=.45f;
             var material=new Material(Shader.Find("Parallax/MuseumSurface")){name="Concept Nike · cast plaster"};
-            GalleryMuseumMaterials.Apply(material,"Plaster");material.color=new Color(.96f,.94f,.88f);
-            material.SetFloat("_WorldTiling",.3f);material.SetFloat("_NormalStrength",.12f);material.SetFloat("_Roughness",.86f);
-            material.SetFloat("_ExhibitLight",.24f);
+            GalleryMuseumMaterials.Apply(material,"Plaster");material.color=new Color(.88f,.86f,.82f);
+            material.SetTexture("_SurfaceAlbedo",Texture2D.whiteTexture);
+            material.SetFloat("_SurfaceVariation",1);
+            material.SetFloat("_WorldTiling",.3f);material.SetFloat("_NormalStrength",.12f);material.SetFloat("_Roughness",.62f);
+            material.SetFloat("_ExhibitLight",0);
+            material.SetFloat("_AmbientStrength",.45f);
             GalleryWorld.Materials.Add(material);
             var stone=new Material(Shader.Find("Parallax/MuseumSurface")){name="Concept Nike · marble plinth"};
             GalleryMuseumMaterials.Apply(stone,"Stone");stone.SetFloat("_WorldTiling",.12f);GalleryWorld.Materials.Add(stone);
@@ -49,10 +52,10 @@ namespace ShadeLink.Gallery
                 var collider=sculpture.AddComponent<BoxCollider>();collider.center=shape[i].center;
                 collider.size=Vector3.Max(shape[i].size,Vector3.one*.015f)+Vector3.up*.004f;
             }
-            var labelObject=new GameObject("Nike collection attribution");labelObject.transform.SetParent(game.transform,false);
-            labelObject.transform.localPosition=parent.localPosition+new Vector3(1.5f,.22f,-.72f);
+            var labelObject=new GameObject("Nike collection attribution");labelObject.transform.SetParent(parent,false);
+            labelObject.transform.localPosition=new Vector3(plinthCenter.x,.24f,plinthCenter.z-plinthSize.z/2-.013f);
             var label=labelObject.AddComponent<GalleryLabel>();label.caption="사모트라케의 니케\nSkulpturhalle Basel 석고상 스캔\nCosmo Wenman · CC BY 3.0";
-            label.size=.075f;label.color=new Color(.22f,.19f,.15f);
+            label.size=.045f;label.color=new Color(.28f,.24f,.18f);
             prop.Remember();return prop;
         }
     }

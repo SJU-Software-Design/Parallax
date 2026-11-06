@@ -47,10 +47,10 @@ namespace ShadeLink.Gallery
         }
         static void Divider(float z)
         {
-            for(int side=-1;side<=1;side+=2)Box("Museum room partition",new Vector3(side*4.9f,Roof/2,z),new Vector3(6.2f,Roof,.32f),palette.plaster);
+            for(int side=-1;side<=1;side+=2)Box("Museum room partition",new Vector3(side*4.9f,Roof/2,z),new Vector3(6.2f,Roof,.32f),palette.wall);
             var header=new GameObject("Curved doorway · real open arch");header.transform.SetParent(root,false);header.transform.localPosition=new Vector3(0,0,z);
             var mesh=HeaderMesh(1.8f,3.9f,Roof,.32f);header.AddComponent<MeshFilter>().sharedMesh=mesh;
-            var renderer=header.AddComponent<MeshRenderer>();renderer.sharedMaterial=palette.plaster;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
+            var renderer=header.AddComponent<MeshRenderer>();renderer.sharedMaterial=palette.wall;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
             header.AddComponent<MeshCollider>().sharedMesh=mesh;
             // Trigger-only analytic proxies do not change the exact curved
             // physical opening. Eight strips keep sunlight occlusion bounded.
@@ -91,19 +91,19 @@ namespace ShadeLink.Gallery
             palette=GalleryConceptArchitecture.MuseumPalette(GalleryWorld.Materials);
             var game=root.gameObject.AddComponent<GalleryGame>();game.conceptLayout=true;game.exhibitionPreview=false;
             game.lighting=root.gameObject.AddComponent<GalleryLighting>();game.lighting.conceptLayout=true;game.mirror=null;game.lightGate=null;
-            Box("Museum limestone floor",new Vector3(0,-.15f,28),new Vector3(16,.30f,56),palette.stone,caster:false);
-            Box("Museum outer left wall",new Vector3(-8.16f,Roof/2,28),new Vector3(.32f,Roof,56.5f),palette.plaster);
+            Box("Museum limestone floor",new Vector3(0,-.15f,28),new Vector3(16,.30f,56),palette.floor,caster:false);
+            Box("Museum outer left wall",new Vector3(-8.16f,Roof/2,28),new Vector3(.32f,Roof,56.5f),palette.wall);
             GalleryConceptWindows.BuildRightWall(root,palette);
-            Box("Museum entrance end wall",new Vector3(0,Roof/2,-.16f),new Vector3(16,Roof,.32f),palette.plaster);
-            Box("Museum final end wall",new Vector3(0,Roof/2,56.16f),new Vector3(16,Roof,.32f),palette.plaster);
+            Box("Museum entrance end wall",new Vector3(0,Roof/2,-.16f),new Vector3(16,Roof,.32f),palette.wall);
+            Box("Museum final end wall",new Vector3(0,Roof/2,56.16f),new Vector3(16,Roof,.32f),palette.wall);
             foreach(float z in new[]{14f,29f,44f})Divider(z);
             float cursor=0;
             foreach(var opening in new[]{new Vector2(3,6.2f),new Vector2(47,50)})
             {
-                if(opening.x>cursor)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+opening.x)/2),new Vector3(16,.24f,opening.x-cursor),palette.plaster,caster:false);
+                if(opening.x>cursor)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+opening.x)/2),new Vector3(16,.24f,opening.x-cursor),palette.ceiling,caster:false);
                 cursor=opening.y;
             }
-            if(cursor<Length)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+Length)/2),new Vector3(16,.24f,Length-cursor),palette.plaster,caster:false);
+            if(cursor<Length)Box("Solid museum roof",new Vector3(0,Roof+.12f,(cursor+Length)/2),new Vector3(16,.24f,Length-cursor),palette.ceiling,caster:false);
             var props=new List<GalleryProp>();
             GalleryConceptPerspective.Create(game,root,props,palette);
             game.props=props.ToArray();

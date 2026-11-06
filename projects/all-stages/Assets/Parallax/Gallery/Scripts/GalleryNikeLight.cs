@@ -287,7 +287,7 @@ namespace ShadeLink.Gallery
             // Forward metres/far in RFloat avoids reversed-Z comparisons. The
             // actual DX11 capture verified a Y flip for this RT projection.
             float flipY = SystemInfo.graphicsUVStartsAtTop ? 1 : 0;
-            Shader.SetGlobalVector("_NikeShadowParams", new Vector4(range, shadowBias, 1, flipY));
+            Shader.SetGlobalVector("_NikeShadowParams", new Vector4(range, shadowBias, 2.2f, flipY));
             Shader.SetGlobalMatrix("_NikeWorldToShadowClip", GL.GetGPUProjectionMatrix(shadowCamera.projectionMatrix, true) * shadowCamera.worldToCameraMatrix);
             Shader.SetGlobalTexture("_NikeShadowMap", shadowMap);
             Shader.SetGlobalVector("_NikeShadowMap_TexelSize", new Vector4(1f / ShadowResolution, 1f / ShadowResolution, ShadowResolution, ShadowResolution));
