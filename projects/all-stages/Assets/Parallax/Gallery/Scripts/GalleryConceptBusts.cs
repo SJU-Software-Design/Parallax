@@ -48,7 +48,6 @@ namespace ShadeLink.Gallery
             var collection = new GameObject(CollectionName).transform;
             collection.SetParent(game.transform, false);
             Display(collection, source, art, stone, new Vector3(5.5f, 0, 26.8f), "동쪽 전시");
-            Display(collection, source, art, stone, new Vector3(-4.8f, 0, 26.5f), "서쪽 전시");
         }
 
         static void Display(Transform parent, GameObject source, Material art, Material stone, Vector3 at, string title)

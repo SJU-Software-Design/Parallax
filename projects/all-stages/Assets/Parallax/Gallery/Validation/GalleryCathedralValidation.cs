@@ -104,7 +104,9 @@ namespace ShadeLink.Gallery
             prop.transform.localScale = Vector3.one * 3;
             prop.body.position = prop.transform.position; prop.body.rotation = prop.transform.rotation;
             Physics.SyncTransforms(); prop.placement.ResetPlaced();
-            for (int frame = 0; frame < 100 && entrance.cathedralActivation != null && !entrance.cathedralActivation.Opened; frame++)
+            float openingBudget = entrance.cathedralActivation == null ? 0 : entrance.cathedralActivation.duration + 2;
+            for (float elapsed = 0; elapsed < openingBudget && entrance.cathedralActivation != null && !entrance.cathedralActivation.Opened;
+                elapsed += Mathf.Min(.1f, Time.unscaledDeltaTime))
             {
                 prop.placement.Tick(1f / 90); yield return null;
             }

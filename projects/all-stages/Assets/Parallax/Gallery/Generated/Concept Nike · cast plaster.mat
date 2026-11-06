@@ -49,7 +49,7 @@ Material:
     - _ContactAO: 0
     - _ContactDistance: 0.65
     - _Diagnostic: 0
-    - _ExhibitLight: 0
+    - _ExhibitLight: 0.24
     - _Grid: 0
     - _Metallic: 0
     - _NormalStrength: 0.12

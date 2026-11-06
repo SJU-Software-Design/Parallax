@@ -4,13 +4,17 @@ using UnityEngine.Rendering;
 
 namespace ShadeLink.Gallery
 {
-    // One movable museum lamp lights the fixed Nike. Physics decides shelter;
-    // the lamp camera renders the same real exhibits for the visible silhouette.
+    // Physics decides shelter; the spotlight camera draws the original mesh silhouette.
+#if UNITY_EDITOR
+    [ExecuteAlways]
+#endif
     [DefaultExecutionOrder(120)]
     public sealed class GalleryNikeLight : MonoBehaviour
     {
         public GalleryGame game;
-        public GalleryProp lamp;
+        public GalleryProp lamp, statue;
+        public Transform fixedLamp;
+        public GalleryNikeCanvas canvas;
         public Transform head, emitter, nikeRoot;
         public Vector3 AimPoint = new Vector3(0, .025f, 28.2f);
         public bool autoAim = true;
@@ -30,6 +34,8 @@ namespace ShadeLink.Gallery
         static GalleryNikeLight publishedOwner;
         Vector3 observedPosition;
         Quaternion observedRotation;
+        Matrix4x4 observedStatuePose;
+        bool observedStatueReady;
         float observedRange, observedFov;
         int poseRevision, sampledRevision = -1, renderedRevision = -1;
         float nextSampleTime, nextRenderTime, cachedShade;
@@ -39,19 +45,37 @@ namespace ShadeLink.Gallery
         {
             public Renderer renderer;
             public GalleryProp prop;
-            public bool glass;
+            public bool glass, fixture;
         }
 
-        bool SourceAvailable => lamp != null && emitter != null && lamp.gameObject.activeInHierarchy && emitter.gameObject.activeInHierarchy;
-        public bool Ready => isActiveAndEnabled && SourceAvailable &&
-            lamp.placement != null && lamp.placement.Ready && !lamp.placement.Held && (game == null || game.held != lamp);
+        GalleryProp Subject => statue != null ? statue : lamp;
+        bool SourceAvailable => emitter != null && emitter.gameObject.activeInHierarchy;
+        public bool Ready => isActiveAndEnabled && SourceAvailable && Subject != null &&
+            Subject.placement != null && Subject.placement.Ready && !Subject.placement.Held && (game == null || game.held != Subject);
         public float ShadeReadiness { get { UpdateReadiness(); return cachedShade; } }
-        public bool SolutionReady => Ready && CanPlace(out _) && ShadeReadiness >= RequiredShadeFraction;
+        public bool SolutionReady => Ready && (statue != null || CanPlace(out _)) &&
+            ShadeReadiness >= (canvas != null ? canvas.RequiredMatch : RequiredShadeFraction);
         public string Status
         {
             get
             {
-                if (lamp == null || emitter == null || nikeRoot == null) return "전시 조명을 준비하고 있습니다.";
+                if (Subject == null || emitter == null || nikeRoot == null) return "전시 조명을 준비하고 있습니다.";
+                if (canvas != null)
+                {
+                    if (canvas.Drawing) return "붓결을 따라 그림이 채워지고 있어요.";
+                    if (canvas.Fusing) return "니케가 그림으로 변하고 있어요 · 잠깐 기다려 주세요.";
+                    if (canvas.Complete && game != null && game.NikeKeyPuzzle)
+                        return game.shadowCourse.NikeUnlocked ? "액자가 맞물렸어요 · 열린 문으로 이동하세요." : "문 중앙의 홈에 액자 크기를 맞춰 끼우세요.";
+                    if (canvas.Complete) return canvas.shadeMarks.activeSelf ? "발자국을 따라 그늘로 이동하세요." : "그림을 세워 문 앞의 빛을 가리세요.";
+                    if (ShadeReadiness >= canvas.RequiredMatch) return "그림자가 들어왔어요 · 조각상을 내려놓으세요.";
+                    return "그림자 전체를 벽의 금색 윤곽 안에 넣어 보세요.";
+                }
+                if (statue != null)
+                {
+                    if (statue.placement != null && statue.placement.Held) return "날개 그림자를 보면서 니케의 위치를 맞춰 보세요.";
+                    if (!Ready) return "조각상이 안착하면 출구 앞의 그림자를 확인해요.";
+                    return SolutionReady ? "날개 그림자가 출구까지 이어졌어요." : "니케를 옮겨 문 앞 표시를 그림자로 덮어 보세요.";
+                }
                 if (lamp.placement != null && lamp.placement.Held || game != null && game.held == lamp)
                     return ShadeReadiness >= RequiredShadeFraction ? "그림자가 출구와 이어져요 · 조명을 내려놓아 고정하세요." : "조명을 옮겨 니케의 그림자를 출구 발판으로 보내 보세요.";
                 if (!CanPlace(out var reason)) return reason;
@@ -61,7 +85,15 @@ namespace ShadeLink.Gallery
             }
         }
 
-        void Awake() { if (game == null) game = GetComponent<GalleryGame>(); }
+        void Awake()
+        {
+            if (game == null) game = GetComponent<GalleryGame>();
+            if (statue != null && statue.placement != null)
+            {
+                statue.placement.PreviewWhileHeld = false;
+                statue.placement.PreviewUntilSettled = false;
+            }
+        }
         void OnEnable()
         {
             havePose = false; sampledRevision = renderedRevision = -1;
@@ -73,7 +105,7 @@ namespace ShadeLink.Gallery
         // fixed physical envelope. Aiming never rotates a cached collision part.
         public void SyncPose()
         {
-            if (emitter == null || lamp == null) return;
+            if (emitter == null) return;
             if (autoAim && head != null)
             {
                 Vector3 direction = AimPoint - head.position;
@@ -91,6 +123,18 @@ namespace ShadeLink.Gallery
             {
                 havePose = true; observedPosition = emitter.position; observedRotation = emitter.rotation;
                 observedRange = range; observedFov = fieldOfView; poseRevision++;
+            }
+            var artwork = canvas != null && canvas.portablePainting != null && (canvas.Complete || canvas.Fusing) &&
+                canvas.portablePainting.gameObject.activeInHierarchy ? canvas.portablePainting : statue;
+            if (artwork != null)
+            {
+                Matrix4x4 pose = artwork.transform.localToWorldMatrix;
+                bool ready = artwork.placement != null && artwork.placement.Ready;
+                if (pose != observedStatuePose || ready != observedStatueReady)
+                {
+                    if (ready != observedStatueReady) nextSampleTime = 0;
+                    observedStatuePose = pose; observedStatueReady = ready; poseRevision++;
+                }
             }
         }
 
@@ -121,7 +165,7 @@ namespace ShadeLink.Gallery
         {
             if (collider == null || collider is CharacterController || collider.GetComponentInParent<GalleryLightGlass>() != null) return true;
             var prop = collider.GetComponentInParent<GalleryProp>();
-            return prop == lamp || prop != null && prop.placement != null && !prop.placement.Ready;
+            return prop != null && (prop == lamp || prop.placement != null && !prop.placement.Ready);
         }
 
         Collider FirstBlocker(Vector3 direction, float distance)
@@ -154,10 +198,32 @@ namespace ShadeLink.Gallery
             return blocker != null && blocker.transform.IsChildOf(nikeRoot);
         }
 
+        public bool PaintingCoversExit()
+        {
+            if (canvas == null || !canvas.Complete || canvas.portablePainting == null || !canvas.portablePainting.placement.Ready) return false;
+            for (int z = 0; z < 3; z++)
+            for (int x = -1; x <= 1; x++)
+            {
+                var surface = new Vector3(x * .40f, .025f, 27.92f + z * .23f);
+                if (!TryLightRay(surface, Vector3.up, out var direction, out float distance)) return false;
+                var blocker = FirstBlocker(direction, distance);
+                if (blocker == null || !blocker.transform.IsChildOf(canvas.portablePainting.transform)) return false;
+            }
+            return true;
+        }
+
         void UpdateReadiness()
         {
             if (!isActiveAndEnabled || !SourceAvailable) { cachedShade = 0; sampledRevision = -1; return; }
             SyncPose();
+            if (canvas != null)
+            {
+                if (canvas.Complete || canvas.Fusing) { cachedShade = 1; return; }
+                if (sampledRevision == poseRevision || Time.unscaledTime < nextSampleTime) return;
+                cachedShade = canvas.Match(); sampledRevision = poseRevision;
+                nextSampleTime = Time.unscaledTime + RefreshSeconds;
+                return;
+            }
             if (sampledRevision == poseRevision && Time.unscaledTime < nextSampleTime) return;
             int covered = 0;
             for (int z = 0; z < 5; z++) for (int x = 0; x < 5; x++)
@@ -179,8 +245,16 @@ namespace ShadeLink.Gallery
             depthShader = Shader.Find("Hidden/Parallax/MuseumNikeDepth");
             if (depthShader == null || !depthShader.isSupported)
                 throw new System.InvalidOperationException("The museum Nike depth shader is unavailable.");
-            var cameraObject = new GameObject("Nike spotlight · real geometry shadow camera") { hideFlags = HideFlags.DontSave };
-            cameraObject.transform.SetParent(transform, false);
+            GameObject cameraObject;
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                cameraObject = UnityEditor.EditorUtility.CreateGameObjectWithHideFlags("Nike spotlight preview camera", HideFlags.HideAndDontSave);
+            else
+#endif
+            {
+                cameraObject = new GameObject("Nike spotlight · real geometry shadow camera") { hideFlags = HideFlags.DontSave };
+                cameraObject.transform.SetParent(transform, false);
+            }
             shadowCamera = cameraObject.AddComponent<Camera>(); shadowCamera.enabled = false;
             shadowCamera.renderingPath = RenderingPath.Forward;
             shadowCamera.clearFlags = CameraClearFlags.SolidColor; shadowCamera.backgroundColor = Color.white;
@@ -198,7 +272,8 @@ namespace ShadeLink.Gallery
             occluders.Clear();
             foreach (var renderer in game.GetComponentsInChildren<Renderer>(true))
                 occluders.Add(new Occluder { renderer = renderer, prop = renderer.GetComponentInParent<GalleryProp>(),
-                    glass = renderer.GetComponentInParent<GalleryLightGlass>() != null });
+                    glass = renderer.GetComponentInParent<GalleryLightGlass>() != null,
+                    fixture = fixedLamp != null && renderer.transform.IsChildOf(fixedLamp) });
             occludersDirty = false;
         }
 
@@ -232,23 +307,43 @@ namespace ShadeLink.Gallery
                 foreach (var entry in occluders)
                 {
                     var renderer = entry.renderer;
-                    if (renderer == null || !renderer.enabled) continue;
-                    if (entry.glass || entry.prop == lamp || entry.prop != null && entry.prop.placement != null && !entry.prop.placement.Ready)
-                    { temporarilyHidden.Add(renderer); renderer.enabled = false; }
+                    if (renderer == null || !renderer.enabled || renderer.forceRenderingOff) continue;
+                    if (entry.glass || entry.fixture || lamp != null && entry.prop == lamp ||
+                        entry.prop != null && entry.prop != statue && (canvas == null || entry.prop != canvas.portablePainting) &&
+                        entry.prop.placement != null && !entry.prop.placement.Ready)
+                    { temporarilyHidden.Add(renderer); renderer.forceRenderingOff = true; }
                 }
                 Publish();
                 shadowCamera.RenderWithShader(depthShader, "RenderType");
             }
             finally
             {
-                foreach (var renderer in temporarilyHidden) if (renderer != null) renderer.enabled = true;
+                foreach (var renderer in temporarilyHidden) if (renderer != null) renderer.forceRenderingOff = false;
                 temporarilyHidden.Clear(); RenderTexture.active = previous;
             }
-            renderedRevision = poseRevision; nextRenderTime = Time.unscaledTime + RefreshSeconds;
         }
+
+#if UNITY_EDITOR
+        void Update()
+        {
+            if (Application.isBatchMode || UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) return;
+            if (game == null || !game.conceptLayout || !SourceAvailable ||
+                gameObject.scene != UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene() ||
+                UnityEditor.SceneManagement.EditorSceneManager.IsPreviewSceneObject(gameObject))
+            { ClearPublishedLight(); return; }
+
+            // Preview the authored lamp pose without rotating the head or touching puzzle state.
+            EnsureResources();
+            occludersDirty = true;
+            RenderShadow();
+        }
+#endif
 
         void LateUpdate()
         {
+#if UNITY_EDITOR
+            if (!Application.IsPlaying(gameObject)) return;
+#endif
             if (game == null || !game.conceptLayout) { ClearPublishedLight(); return; }
             if (!SourceAvailable)
             {
@@ -269,7 +364,11 @@ namespace ShadeLink.Gallery
                 return;
             }
             SyncPose(); UpdateReadiness(); EnsureResources();
-            if (renderedRevision != poseRevision || Time.unscaledTime >= nextRenderTime) RenderShadow();
+            if (renderedRevision != poseRevision || Time.unscaledTime >= nextRenderTime)
+            {
+                RenderShadow();
+                renderedRevision = poseRevision; nextRenderTime = Time.unscaledTime + RefreshSeconds;
+            }
             else Publish();
         }
 

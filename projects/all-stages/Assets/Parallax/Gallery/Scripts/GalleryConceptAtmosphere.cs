@@ -19,7 +19,8 @@ namespace ShadeLink.Gallery
             var roots=new List<Transform>();
             foreach(var node in game.GetComponentsInChildren<Transform>())
                 if(node.name==Skylight)roots.Add(node);
-            if(roots.Count!=4)throw new InvalidOperationException("Skylight grid needs the four visible skylight lanterns; found "+roots.Count);
+            int expected=game.conceptLayout?3:4; // The portrait room has a closed roof.
+            if(roots.Count!=expected)throw new InvalidOperationException("Skylight grid expected "+expected+" visible skylight lanterns; found "+roots.Count);
 
             var selected=new List<MeshFilter>();
             foreach(var skylight in roots)

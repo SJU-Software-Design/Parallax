@@ -256,7 +256,7 @@ namespace ShadeLink.Gallery
             }
             WallFinish(root,new Vector3(0,0,.16f),Quaternion.Euler(0,180,0),15.6f,GalleryConceptWorld.Roof,p);
             WallFinish(root,new Vector3(0,0,55.84f),Quaternion.identity,15.6f,GalleryConceptWorld.Roof,p);
-            foreach(var aperture in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(32,35),new Vector2(47,50)})
+            foreach(var aperture in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(47,50)})
                 Skylight(root,new Vector3(0,GalleryConceptWorld.Roof,(aperture.x+aperture.y)/2),Quaternion.identity,
                     new Vector2(aperture.x==32?GalleryConceptWorld.PortraitSkylightHalfWidth*2:15.65f,aperture.y-aperture.x),1.15f,p);
 
@@ -280,13 +280,11 @@ namespace ShadeLink.Gallery
                 var rail=Group("Side gallery picture lighting",root,new Vector3(side*6.65f,6.1f,7),Quaternion.Euler(0,90,0));
                 Track(rail,Vector3.zero,10,p);
             }
-            // The sculpture remains the focus of room two, with generous empty
-            // floor, a seated viewing position and a recessed shadow-art wall.
-            Bench(root,new Vector3(-5.5f,0,24.5f),Quaternion.Euler(0,-35,0),2.8f,p);
+            // The left wall painting frames the open Nike projection area.
             FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(-7.78f,2.85f,23.1f),Quaternion.Euler(0,-90,0),3.5f,3.0f,p);
-            FramedArtwork(root,"GirlWithPearlEarring","진주 귀걸이를 한 소녀","요하네스 페르메이르 · 약 1665",new Vector3(4.95f,2.8f,28.74f),Quaternion.identity,2.3f,2.75f,p);
             Track(root,new Vector3(0,6.1f,27.5f),12,p);
             FramedArtwork(root,"Scream","절규","에드바르 뭉크 · 1893",new Vector3(-7.78f,2.75f,48.4f),Quaternion.Euler(0,-90,0),2.2f,2.9f,p);
+            GalleryPortraitRoom.Install(game,p);
         }
     }
 }

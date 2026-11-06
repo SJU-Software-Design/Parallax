@@ -9,7 +9,19 @@ namespace ShadeLink.Gallery
         public GalleryGame game;
         public ReflectionProbe galleryProbe;
         public ReflectionProbe[] roomProbes;
+        [SerializeField,Range(0,1)] float portraitMood;
+        public float PortraitMood=>portraitMood;
         RenderTexture[] capturedRooms;
+        // Exhibition fills are isolated from the gameplay sun and from all
+        // horizontal walking surfaces by MuseumSurface. They light walls/art.
+        static readonly Vector4[] PortraitPositions={
+            new Vector4(-6.7f,5.5f,35,6),new Vector4(6.7f,5.5f,37,6),
+            new Vector4(0,6.15f,39,8),new Vector4(0,6.15f,36.5f,12)
+        };
+        static readonly Vector3[] PortraitTargets={
+            new Vector3(-7.9f,2.7f,35),new Vector3(7.9f,2.7f,37),
+            new Vector3(0,2.8f,43.45f),new Vector3(0,4.7f,43.7f)
+        };
         static readonly Vector4[] Positions={
             new Vector4(-4.8f,6.2f,11.5f,12),new Vector4(4.8f,6.2f,11.5f,12),
             new Vector4(-5.9f,6.5f,5.5f,11),new Vector4(5.9f,6.5f,5.5f,11),
@@ -19,7 +31,7 @@ namespace ShadeLink.Gallery
         static readonly Vector3[] Targets={
             new Vector3(-4.9f,2.8f,13.8f),new Vector3(4.9f,2.8f,13.8f),
             new Vector3(-7.8f,2.7f,5.5f),new Vector3(7.8f,2.7f,5.5f),
-            new Vector3(-2,2.0f,24),new Vector3(7.7f,2.4f,23),
+            new Vector3(0,1.7f,21.65f),new Vector3(7.7f,2.4f,23),
             new Vector3(0,2.5f,38),new Vector3(0,1.5f,52)
         };
         public static void Configure(GalleryGame game)
@@ -63,7 +75,24 @@ namespace ShadeLink.Gallery
             }
             owner.galleryProbe=owner.roomProbes[1];
             game.view.gameObject.AddComponent<GalleryConceptPostFX>();
+            owner.InstallPortraitCoves();
             owner.Publish();
+        }
+        public void SetPortraitMood(float red01)
+        {
+            portraitMood=Mathf.Clamp01(red01);
+            Shader.SetGlobalFloat("_MuseumPortraitMood",portraitMood);
+        }
+        void InstallPortraitCoves()
+        {
+            var material=new Material(Shader.Find("Parallax/MuseumSurface"))
+                {name="Portrait performance · warm wall cove",color=new Color(.65f,.36f,.11f)};
+            material.SetColor("_EmissionColor",new Color(.48f,.16f,.025f));
+            material.SetFloat("_ExhibitLight",.8f);material.SetFloat("_ReflectionStrength",0);
+            GalleryWorld.Materials.Add(material);
+            foreach(int side in new[]{-1,1})
+                GalleryConceptArchitecture.Block(game.transform,"Portrait wall-only cove · "+side,
+                    new Vector3(side*7.90f,6.15f,36.5f),new Vector3(.035f,.035f,13),material,.006f);
         }
         void Awake()
         {
@@ -112,10 +141,25 @@ namespace ShadeLink.Gallery
                 directions[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(38*Mathf.Deg2Rad));
                 colors[i]=new Vector4(1,.88f,.70f,i<4?4.0f:3.0f);
             }
+            colors[4].w=3.8f; // Soft fill on the sculpture's near side.
+            colors[5].w=4.2f; // Fill aimed at the Nike room's right wall.
             Shader.SetGlobalInt("_MuseumLightCount",8);
             Shader.SetGlobalVectorArray("_MuseumLightPositionRange",Positions);
             Shader.SetGlobalVectorArray("_MuseumLightColorIntensity",colors);
             Shader.SetGlobalVectorArray("_MuseumLightDirectionCone",directions);
+            var portraitDirections=new Vector4[PortraitPositions.Length];
+            var portraitColors=new Vector4[PortraitPositions.Length];
+            for(int i=0;i<PortraitPositions.Length;i++)
+            {
+                Vector3 direction=(PortraitTargets[i]-(Vector3)PortraitPositions[i]).normalized;
+                portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(48*Mathf.Deg2Rad));
+                portraitColors[i]=new Vector4(1,.80f,.55f,i<2?5.4f:i==2?4.8f:3.5f);
+            }
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",PortraitPositions);
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightDirectionCone",portraitDirections);
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitColors);
+            Shader.SetGlobalInt("_MuseumPortraitLightCount",PortraitPositions.Length);
+            SetPortraitMood(portraitMood);
             Shader.SetGlobalFloat("_MuseumUseUnityShadows",1);
             Shader.SetGlobalFloat("_MuseumUseRoomEnvironment",1);Shader.SetGlobalFloat("_MuseumProbeReady",0);
             Shader.SetGlobalFloat("_MuseumSunIntensity",4.5f);
@@ -125,6 +169,7 @@ namespace ShadeLink.Gallery
         void OnDisable()
         {
             Shader.SetGlobalInt("_MuseumLightCount",0);Shader.SetGlobalFloat("_MuseumUseUnityShadows",0);Shader.SetGlobalFloat("_MuseumSunIntensity",0);
+            Shader.SetGlobalInt("_MuseumPortraitLightCount",0);Shader.SetGlobalFloat("_MuseumPortraitMood",0);
             Shader.SetGlobalFloat("_MuseumUseRoomEnvironment",0);Shader.SetGlobalFloat("_MuseumProbeReady",0);
             if(capturedRooms!=null)foreach(var cube in capturedRooms)if(cube!=null){cube.Release();Destroy(cube);}
             capturedRooms=null;
