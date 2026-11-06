@@ -11,7 +11,7 @@ namespace ShadeLink.Gallery
             Mesh mesh=Resources.Load<Mesh>("MuseumScans/NikeMesh");
             if(mesh==null)throw new InvalidOperationException("Actual Nike scan must be imported before preparing the concept museum.");
             var parent=new GameObject("02 · 사모트라케의 니케").transform;
-            parent.SetParent(game.transform,false);parent.localPosition=new Vector3(0,0,21.65f);
+            parent.SetParent(game.transform,false);parent.localPosition=new Vector3(1.5f,0,21.65f);
             var prop=parent.gameObject.AddComponent<GalleryProp>();
             prop.title=parent.name;prop.zone=1;prop.minScale=.45f;
             var material=new Material(Shader.Find("Parallax/MuseumSurface")){name="Concept Nike · cast plaster"};

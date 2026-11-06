@@ -88,3 +88,12 @@
 ## 게임 배포 시
 
 CC BY 조각을 실제 게임에 넣으면 제작자, 작품명, 원 배포 주소, CC BY 3.0 링크, 변환 사실을 플레이어가 열 수 있는 크레딧 또는 배포물의 저작권 고지에 함께 제공한다. 이 저장소 문서만 두고 게임 배포본의 표시를 생략하지 않는다.
+
+## Aurelius (PhotoScan) — movable Nike-room light cover
+
+- Creator: **ryanfb**. Portrait bust of Marcus Aurelius, Art Institute of Chicago.
+- Original model: https://sketchfab.com/3d-models/aurelius-photoscan-cad3a072546a457fa1e2e5a90b25063a
+- License: **Creative Commons Attribution 4.0**, https://creativecommons.org/licenses/by/4.0/
+- Original OBJ: 123,409 vertices / 246,073 triangles; original UV albedo retained.
+- Changes: display scale, museum shading, game carry colliders and a separate marble cover pedestal; texture imported at up to 4K with mipmaps. No geometry simplification.
+- Local provenance: `Resources/MuseumScans/Aurelius/source.json`.

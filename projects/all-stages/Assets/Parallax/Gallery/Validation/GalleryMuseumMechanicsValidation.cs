@@ -184,6 +184,11 @@ namespace ShadeLink.Gallery
             Check("Explicit bronze fixture passes real placement checks; a physical camera-controller walk crosses its shade without respawn and reaches checkpoint 1");
 
             report.phase = "room 2 explicit Nike fixture, fixed spotlight and physical shadow route";
+            var cover=game.nikeLight.cover;
+            Require(cover!=null,"Nike light-cover bust is missing");
+            PoseFixture(cover.Prop,GalleryNikeLightCover.RevealedPosition,Quaternion.identity,1);
+            cover.Observe(game.nikeLight.emitter,GalleryNikeCanvas.Center);game.nikeLight.SyncPose();
+            report.scope+=" The light-cover bust is explicitly moved aside as part of the disclosed Nike solution fixture. Actual cover pickup/slide/Drop is covered separately by Nike discovery validation.";
             Pose[][] nikeCandidates = {
                 new[]{new Pose(GalleryNikeCanvas.SolutionPosition.x,GalleryNikeCanvas.SolutionPosition.z,GalleryNikeCanvas.SolutionScale)} };
             var second = ChooseFixtureRoute(new[]{course.statue}, nikeCandidates, new Vector2(0, 29.5f), "Nike spotlight room", true);

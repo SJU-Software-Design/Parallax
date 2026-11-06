@@ -72,7 +72,8 @@ namespace ShadeLink.Gallery
                 Panel(new Rect(362,55,876,790),new Color(.04f,.075f,.09f,.96f));
                 GUI.Label(new Rect(412,95,770,66),game.won?"전시의 끝에 도착했습니다":game.started?"잠시 쉬어 가기":"PARALLAX  /  MUSEUM v"+GalleryGame.Version,title);
                 GUI.Label(new Rect(412,180,770,235),game.conceptLayout&&!game.exhibitionPreview?
-                    "첫 전시실에서는 청동판을 키워 그늘로 건넙니다.\n"+(game.NikeKeyPuzzle?
+                    "첫 전시실에서는 청동판을 키워 그늘로 건넙니다.\n"+(game.NikeCanvasPuzzle&&!game.nikeLight.LightDiscovered?
+                    "다음 방에서는 빈 캔버스와 주변 전시물을 살펴보세요.\n조각을 옮기며 작품에 빠진 것을 찾아보세요.":game.NikeKeyPuzzle?
                     "다음 방에서는 니케의 그림자를 금색 윤곽 안에 넣으세요.\n완성한 그림의 크기를 맞춰 아치문에 끼우세요.":game.NikeCanvasPuzzle?
                     "다음 방에서는 니케의 그림자를 금색 윤곽 안에 넣으세요.\n완성된 그림을 들어 빛을 가리면 그늘길이 열립니다.":game.MovableNike?
                     "다음 방에서는 니케를 옮겨 날개 그림자를 만들어 보세요.\n문 앞이 그늘에 들도록 조각상을 내려놓으면 통로가 열립니다.":

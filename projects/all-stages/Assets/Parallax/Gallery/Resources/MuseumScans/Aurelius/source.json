@@ -1,0 +1,20 @@
+{
+  "title": "Aurelius (PhotoScan)",
+  "creator": "ryanfb",
+  "source": "https://sketchfab.com/3d-models/aurelius-photoscan-cad3a072546a457fa1e2e5a90b25063a",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "description": "Portrait bust of Marcus Aurelius, Art Institute of Chicago; photograph-based scan by ryanfb.",
+  "downloaded": "2026-11-06",
+  "format": "Original OBJ archive downloaded through the model official Download button",
+  "originalVertexCount": 123409,
+  "originalTriangleCount": 246073,
+  "modelSha256": "e039c97a3da317c5889f451f05af47e8d339f5e7928bdeeb23ab6876d4490fc4",
+  "albedoSha256": "ff5e4b797f891435637144f6e11a360b033160ccf560d0175f710ab44e7750f0",
+  "changes": [
+    "Original OBJ and UV albedo copied without geometry or image edits.",
+    "Display normalized to 0.75m, reoriented if needed and shaded with the museum material.",
+    "Albedo imported at up to 4096px with mipmaps for the player.",
+    "Separate simple colliders and a new movable marble cover pedestal added by Parallax."
+  ]
+}

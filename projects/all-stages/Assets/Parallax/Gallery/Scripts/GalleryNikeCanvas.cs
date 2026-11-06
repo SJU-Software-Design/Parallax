@@ -144,13 +144,25 @@ namespace ShadeLink.Gallery
             {
                 int i = y * width + x;
                 int grain = ((x * 131 + y * 97 + (x ^ y) * 53) & 7) - 3;
-                // Scoring retains its margin; the linen shows one clear silhouette.
-                pixels[i] = mask[i] ?
-                    new Color32((byte)(110 + grain), (byte)(90 + grain), (byte)(70 + grain), 255) :
-                    new Color32((byte)(214 + grain), (byte)(207 + grain), (byte)(194 + grain), 255);
+                // Only the displayed guide becomes an outline. The target mask
+                // and its scoring margin above keep their original filled shape.
+                float nearestEdge = float.PositiveInfinity;
+                for (int dy = -2; dy <= 2; dy++)
+                for (int dx = -2; dx <= 2; dx++)
+                {
+                    int nx = x + dx, ny = y + dy;
+                    if (nx < 0 || nx >= width || ny < 0 || ny >= height || mask[ny * width + nx] == mask[i]) continue;
+                    nearestEdge = Mathf.Min(nearestEdge, Mathf.Sqrt(dx * dx + dy * dy));
+                }
+                // A soft two-pixel contour leaves both sides as ivory linen;
+                // the dark interior must come from the actual cast shadow.
+                float ink = Mathf.Clamp01(1.75f - nearestEdge);
+                var linen = new Color32((byte)(214 + grain), (byte)(207 + grain), (byte)(194 + grain), 255);
+                var outline = new Color32((byte)(110 + grain), (byte)(90 + grain), (byte)(70 + grain), 255);
+                pixels[i] = Color32.Lerp(linen, outline, ink);
             }
             var texture = new Texture2D(width, height, TextureFormat.RGBA32, true)
-            { name = "Nike shadow alignment guide", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear };
+            { name = "Nike shadow alignment contour guide", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Trilinear };
             texture.SetPixels32(pixels);
             texture.Apply(true);
             return texture;
