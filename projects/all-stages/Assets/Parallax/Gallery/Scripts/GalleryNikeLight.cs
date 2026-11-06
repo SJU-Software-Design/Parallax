@@ -14,6 +14,7 @@ namespace ShadeLink.Gallery
         public GalleryGame game;
         public GalleryProp lamp, statue;
         public Transform fixedLamp;
+        public GalleryNikeLightCover cover;
         public GalleryNikeCanvas canvas;
         public Transform head, emitter, nikeRoot;
         public Vector3 AimPoint = new Vector3(0, .025f, 28.2f);
@@ -40,6 +41,8 @@ namespace ShadeLink.Gallery
         int poseRevision, sampledRevision = -1, renderedRevision = -1;
         float nextSampleTime, nextRenderTime, cachedShade;
         bool havePose, occludersDirty = true;
+        Matrix4x4 observedCoverPose;
+        Renderer beamRenderer;
 
         sealed class Occluder
         {
@@ -50,7 +53,9 @@ namespace ShadeLink.Gallery
 
         GalleryProp Subject => statue != null ? statue : lamp;
         bool SourceAvailable => emitter != null && emitter.gameObject.activeInHierarchy;
-        public bool Ready => isActiveAndEnabled && SourceAvailable && Subject != null &&
+        public bool SourceCovered => cover != null && cover.BlocksLight(emitter, GalleryNikeCanvas.Center);
+        public bool LightDiscovered => cover == null || cover.Discovered;
+        public bool Ready => isActiveAndEnabled && SourceAvailable && !SourceCovered && Subject != null &&
             Subject.placement != null && Subject.placement.Ready && !Subject.placement.Held && (game == null || game.held != Subject);
         public float ShadeReadiness { get { UpdateReadiness(); return cachedShade; } }
         public bool SolutionReady => Ready && (statue != null || CanPlace(out _)) &&
@@ -67,6 +72,8 @@ namespace ShadeLink.Gallery
                     if (canvas.Complete && game != null && game.NikeKeyPuzzle)
                         return game.shadowCourse.NikeUnlocked ? "액자가 맞물렸어요 · 열린 문으로 이동하세요." : "문 중앙의 홈에 액자 크기를 맞춰 끼우세요.";
                     if (canvas.Complete) return canvas.shadeMarks.activeSelf ? "발자국을 따라 그늘로 이동하세요." : "그림을 세워 문 앞의 빛을 가리세요.";
+                    if (!LightDiscovered) return "빈 캔버스와 주변 전시물을 살펴보세요.";
+                    if (SourceCovered) return "조명 앞의 전시물을 옮겨 빛길을 열어 보세요.";
                     if (ShadeReadiness >= canvas.RequiredMatch) return "그림자가 들어왔어요 · 조각상을 내려놓으세요.";
                     return "그림자 전체를 벽의 금색 윤곽 안에 넣어 보세요.";
                 }
@@ -136,6 +143,22 @@ namespace ShadeLink.Gallery
                     observedStatuePose = pose; observedStatueReady = ready; poseRevision++;
                 }
             }
+            if (cover != null)
+            {
+                Matrix4x4 pose = cover.transform.localToWorldMatrix;
+                if (pose != observedCoverPose)
+                {
+                    observedCoverPose = pose; poseRevision++;
+                    nextSampleTime = nextRenderTime = 0;
+                }
+                if (Application.isPlaying) cover.Observe(emitter, GalleryNikeCanvas.Center);
+            }
+            if (beamRenderer == null)
+            {
+                var beam = emitter.Find("Amber spotlight beam");
+                if (beam != null) beamRenderer = beam.GetComponent<Renderer>();
+            }
+            if (beamRenderer != null) beamRenderer.enabled = !SourceCovered;
         }
 
         public bool CanPlace(out string reason)
@@ -150,7 +173,7 @@ namespace ShadeLink.Gallery
         bool TryLightRay(Vector3 surface, Vector3 normal, out Vector3 direction, out float distance)
         {
             direction = Vector3.zero; distance = 0;
-            if (!isActiveAndEnabled || !SourceAvailable) return false;
+            if (!isActiveAndEnabled || !SourceAvailable || SourceCovered) return false;
             SyncPose();
             Vector3 target = surface + normal * GalleryLighting.SurfaceBias;
             Vector3 offset = target - emitter.position;
@@ -165,6 +188,9 @@ namespace ShadeLink.Gallery
         {
             if (collider == null || collider is CharacterController || collider.GetComponentInParent<GalleryLightGlass>() != null) return true;
             var prop = collider.GetComponentInParent<GalleryProp>();
+            // A held cover still blocks the source: picking it up must not
+            // instantly expose a lamp that remains inside the marble shell.
+            if (cover != null && prop == cover.Prop) return false;
             return prop != null && (prop == lamp || prop.placement != null && !prop.placement.Ready);
         }
 
@@ -216,6 +242,7 @@ namespace ShadeLink.Gallery
         {
             if (!isActiveAndEnabled || !SourceAvailable) { cachedShade = 0; sampledRevision = -1; return; }
             SyncPose();
+            if (SourceCovered) { cachedShade = 0; sampledRevision = -1; return; }
             if (canvas != null)
             {
                 if (canvas.Complete || canvas.Fusing) { cachedShade = 1; return; }
@@ -283,7 +310,7 @@ namespace ShadeLink.Gallery
             publishedOwner = this;
             Shader.SetGlobalVector("_NikeLightPositionRange", new Vector4(position.x, position.y, position.z, range));
             Shader.SetGlobalVector("_NikeLightDirectionCone", new Vector4(forward.x, forward.y, forward.z, Mathf.Cos(fieldOfView * .5f * Mathf.Deg2Rad)));
-            Shader.SetGlobalVector("_NikeLightColorIntensity", new Vector4(lightColor.r, lightColor.g, lightColor.b, intensity));
+            Shader.SetGlobalVector("_NikeLightColorIntensity", new Vector4(lightColor.r, lightColor.g, lightColor.b, SourceCovered ? 0 : intensity));
             // Forward metres/far in RFloat avoids reversed-Z comparisons. The
             // actual DX11 capture verified a Y flip for this RT projection.
             float flipY = SystemInfo.graphicsUVStartsAtTop ? 1 : 0;
@@ -309,7 +336,7 @@ namespace ShadeLink.Gallery
                     var renderer = entry.renderer;
                     if (renderer == null || !renderer.enabled || renderer.forceRenderingOff) continue;
                     if (entry.glass || entry.fixture || lamp != null && entry.prop == lamp ||
-                        entry.prop != null && entry.prop != statue && (canvas == null || entry.prop != canvas.portablePainting) &&
+                        entry.prop != null && entry.prop != statue && (cover == null || entry.prop != cover.Prop) && (canvas == null || entry.prop != canvas.portablePainting) &&
                         entry.prop.placement != null && !entry.prop.placement.Ready)
                     { temporarilyHidden.Add(renderer); renderer.forceRenderingOff = true; }
                 }

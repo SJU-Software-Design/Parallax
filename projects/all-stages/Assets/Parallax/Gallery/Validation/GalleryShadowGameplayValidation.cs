@@ -47,7 +47,7 @@ namespace ShadeLink.Gallery
         }
         [Serializable] sealed class Report
         {
-            public bool passed, initialSixTools, homeStatueRejected, closedDoorSolid, heldStatueRejected, unsettledStatueRejected;
+            public bool passed, initialSevenTools, homeStatueRejected, closedDoorSolid, heldStatueRejected, unsettledStatueRejected;
             public bool bronzeInputReleased, bronzePhysicallySettled, bronzeCourseWalk;
             public bool statueInputReleased, statuePhysicallySettled, fixedLightStillIlluminates, originalScanShadowMesh, physicalDoorOpened, nikeCourseWalk;
             public bool shadeOnlyRejected, wrongKeySizeRejected, keyDocked, keyReset;
@@ -101,7 +101,7 @@ namespace ShadeLink.Gallery
             report.carries = carries.ToArray(); report.routes = routes.ToArray();
             report.checks = checks.ToArray(); report.errors = errors.ToArray();
             if (game != null && !report.nikeCourseWalk) { report.respawns = game.respawns; report.checkpoint = game.checkpoint; }
-            report.passed = report.failure == null && errors.Count == 0 && report.initialSixTools &&
+            report.passed = report.failure == null && errors.Count == 0 && report.initialSevenTools &&
                 report.homeStatueRejected && report.closedDoorSolid && report.heldStatueRejected && report.unsettledStatueRejected &&
                 report.bronzeInputReleased && report.bronzePhysicallySettled && report.bronzeCourseWalk &&
                 report.statueInputReleased && report.statuePhysicallySettled && report.fixedLightStillIlluminates && report.originalScanShadowMesh &&
@@ -141,14 +141,14 @@ namespace ShadeLink.Gallery
             game.ResetAll(); game.Resume();
             for (int i = 0; i < 90; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
             report.initialPropCount = game.props.Length;
-            Require(game.props.Length == 6 && Array.FindAll(game.props, p => p != null && p.zone == 0).Length == 1 &&
-                Array.FindAll(game.props, p => p != null && p.zone == 1).Length == 1,
-                "Fresh layout must have six tools: bronze, Nike, portrait three and exit sculpture");
+            Require(game.props.Length == 7 && Array.FindAll(game.props, p => p != null && p.zone == 0).Length == 1 &&
+                Array.FindAll(game.props, p => p != null && p.zone == 1).Length == 2,
+                "Fresh layout must have seven tools: bronze, Nike, light-cover bust, portrait three and exit sculpture");
             Require(Vector3.Distance(course.bronze.transform.position, course.bronze.homePosition) < .02f &&
                 Vector3.Distance(course.statue.transform.position, course.statue.homePosition) < .02f,
                 "Input-positive tools did not begin at their original home poses");
-            report.initialSixTools = true;
-            Check("Fresh playable museum contains one original bronze and one original movable Nike, six tools total");
+            report.initialSevenTools = true;
+            Check("Fresh playable museum contains seven tools including the original Nike and light-cover bust");
 
             report.phase = "initial unsolved Nike and actual closed-door controller collision";
             game.nikeLight.ResetLight();
@@ -185,6 +185,7 @@ namespace ShadeLink.Gallery
             Check("Original bronze is enlarged and released through actual input, settles in PhysX, and its real shade supports a controller crossing without respawn");
 
             report.phase = "spotlight actual pickup/carry/perspective placement/Drop/PhysX";
+            RevealCoverFixture();
             var emitter = game.nikeLight.emitter;
             Vector3 sourcePosition = emitter.position;
             Quaternion sourceRotation = emitter.rotation;
@@ -263,6 +264,7 @@ namespace ShadeLink.Gallery
             Check("The supplied painting visibly progresses from blank to a partial brush reveal; it cannot be picked up or unlock the door, and R resets the interrupted animation");
             for (int i = 0; i < 90; i++) { Step(Vector2.zero); if (i % 12 == 0) yield return null; }
             report.phase = "re-solve after R, complete the painting, then eject its portable frame";
+            RevealCoverFixture();
             nikeInput = CarryOriginal(course.statue, GalleryNikeCanvas.SolutionPosition, GalleryNikeCanvas.SolutionScale,
                 new Vector3(-2.30f, 0, 20.40f), true);
             while (nikeInput.MoveNext()) yield return nikeInput.Current;
@@ -363,6 +365,18 @@ namespace ShadeLink.Gallery
                 "Reset must restore the statue and close the door with an empty socket");
             report.keyReset = true;
             Check("Restart restores the movable statue and an empty door socket");
+        }
+
+        void RevealCoverFixture()
+        {
+            var cover=game.nikeLight.cover;
+            Require(cover!=null,"Discovery cover is missing");
+            cover.Prop.Restore();
+            cover.transform.position=GalleryNikeLightCover.RevealedPosition;
+            cover.Prop.body.position=cover.transform.position;
+            Physics.SyncTransforms();cover.Prop.placement.ResetPlaced();
+            cover.Observe(game.nikeLight.emitter,GalleryNikeCanvas.Center);game.nikeLight.SyncPose();
+            report.scope+=" The light-cover bust is explicitly moved aside as a disclosed fixture before each Nike input sequence; the separate Nike discovery validator tests its actual public pickup/slide/Drop.";
         }
 
         IEnumerator WalkKeyToward(Vector2 destination, GalleryNikeDoorSocket socket)

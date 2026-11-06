@@ -60,6 +60,7 @@ namespace ShadeLink.Gallery
                 NikeCanvasPuzzle&&nikeLight.canvas.portablePainting!=null&&nikeLight.canvas.Complete&&
                 !nikeLight.canvas.shadeMarks.activeSelf?"그림을 들어 문 앞의 빛을 가리세요":
                 shadowCourse!=null&&shadowCourse.NikeUnlocked?"발자국을 따라 열린 문으로 이동하세요":
+                NikeCanvasPuzzle&&!nikeLight.LightDiscovered?"빈 캔버스와 주변 전시물을 살펴보세요":
                 NikeCanvasPuzzle?"니케의 그림자를 벽 액자의 윤곽에 맞추세요":
                 MovableNike?"니케를 옮겨 날개 그림자를 문 앞까지 보내세요":"전시 조명을 옮겨 니케의 그림자를 문 앞까지 보내세요"):checkpoint==2?
             (portraitGate!=null&&(portraitGate.Performing||portraitGate.Opened)?portraitGate.Status:"양쪽 벽의 작품을 보고 눈·코·입으로 얼굴을 만들어 보세요"):
@@ -68,7 +69,8 @@ namespace ShadeLink.Gallery
                 "손 사이에 다른 공간이 보이는 조각을 확대해 내려놓으세요");
         public string RoomHint => checkpoint==0?
             "접힌 청동판을 잡고, 먼 바닥을 향해 크기를 키워 보세요.\n빛 구간 앞에 내려놓고 넓어진 그늘로 건넙니다.\n낮은 받침의 옆으로 돌아 그늘에 들어가세요.":checkpoint==1?
-            (NikeKeyPuzzle?"니케의 그림자 전체를 금색 윤곽 안에 넣고 내려놓으세요.\n붓질로 완성된 그림이 튀어나오면 집어 드세요.\n문 중앙의 홈을 보고 앞뒤로 움직여 크기를 맞춘 뒤\n클릭하면 액자가 갈라지며 문이 열려요.":
+            (NikeCanvasPuzzle&&!nikeLight.LightDiscovered?"캔버스에는 니케와 닮은 윤곽만 남아 있어요.\n주변 전시물도 집어서 옮길 수 있습니다.\n전시물의 받침 주변을 조금 더 살펴보세요.":
+                NikeKeyPuzzle?"니케의 그림자 전체를 금색 윤곽 안에 넣고 내려놓으세요.\n붓질로 완성된 그림이 튀어나오면 집어 드세요.\n문 중앙의 홈을 보고 앞뒤로 움직여 크기를 맞춘 뒤\n클릭하면 액자가 갈라지며 문이 열려요.":
                 NikeCanvasPuzzle?"니케를 그림과 합친 뒤 액자를 들어 빛을 가리세요.":
                 MovableNike?"니케를 옮겨 문 앞 표시를 그림자로 덮으세요.\n문이 열리면 출구 앞의 빛을 피해 건너세요.":
                 "전시 조명을 옮기면 니케가 만드는 그림자가 달라집니다.\n전원 구역에 내려놓아 문 앞 표시를 그늘로 덮어 보세요."):checkpoint==2?
@@ -106,8 +108,9 @@ namespace ShadeLink.Gallery
             bool shadowGameplayTest=Array.IndexOf(arguments,"-gallery-shadow-gameplay-test")>=0;
             bool portraitPerformanceTest=Array.IndexOf(arguments,"-gallery-portrait-performance-test")>=0;
             bool cathedralRumbleTest=Array.IndexOf(arguments,"-gallery-cathedral-rumble-test")>=0;
+            bool nikeDiscoveryTest=Array.IndexOf(arguments,"-gallery-nike-discovery-test")>=0;
             conceptCapture=Array.IndexOf(arguments,"-gallery-concept-capture")>=0;
-            automated=cathedralRumbleTest||portraitPerformanceTest||shadowGameplayTest||comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
+            automated=nikeDiscoveryTest||cathedralRumbleTest||portraitPerformanceTest||shadowGameplayTest||comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
             Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
@@ -128,7 +131,8 @@ namespace ShadeLink.Gallery
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint==0),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
-            if(cathedralRumbleTest)new GameObject("Cathedral hand opening and rumble validation").AddComponent<GalleryCathedralRumbleValidation>().game=this;
+            if(nikeDiscoveryTest)new GameObject("Nike light discovery validation").AddComponent<GalleryNikeDiscoveryValidation>().game=this;
+            else if(cathedralRumbleTest)new GameObject("Cathedral hand opening and rumble validation").AddComponent<GalleryCathedralRumbleValidation>().game=this;
             else if(portraitPerformanceTest)new GameObject("Portrait curtain performance validation").AddComponent<GalleryPortraitPerformanceValidation>().game=this;
             else if(shadowGameplayTest)new GameObject("Museum shadow gameplay validation").AddComponent<GalleryShadowGameplayValidation>().game=this;
             else if(comfortTest)new GameObject("Museum comfort validation").AddComponent<GalleryComfortValidation>().game=this;

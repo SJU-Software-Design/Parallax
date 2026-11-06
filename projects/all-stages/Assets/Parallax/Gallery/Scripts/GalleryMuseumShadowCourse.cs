@@ -13,6 +13,7 @@ namespace ShadeLink.Gallery
         public GalleryGame game;
         public GalleryProp bronze,statue;
         public GalleryNikeLight nikeLight;
+        public GalleryNikeLightCover nikeCover;
         public GalleryNikeDoorSocket nikeSocket;
         public GalleryProp[] panels=Array.Empty<GalleryProp>();
         public Transform[] nikeGateLeaves;
@@ -49,9 +50,11 @@ namespace ShadeLink.Gallery
             course.nikeLight.game=owner;course.nikeLight.fixedLamp=lamp;course.nikeLight.statue=statue;
             course.nikeLight.head=head;course.nikeLight.emitter=emitter;course.nikeLight.nikeRoot=statue.transform;
             course.nikeLight.autoAim=false;course.nikeLight.fieldOfView=70;course.nikeLight.range=32;course.nikeLight.intensity=17;
+            course.nikeCover=GalleryNikeLightCover.Install(owner,collection.transform);
+            course.nikeLight.cover=course.nikeCover;
             owner.nikeLight=course.nikeLight;
             var props=new List<GalleryProp>(owner.props??Array.Empty<GalleryProp>());
-            props.Add(course.bronze);props.Add(statue);owner.props=props.ToArray();
+            props.Add(course.bronze);props.Add(statue);props.Add(course.nikeCover.Prop);owner.props=props.ToArray();
             var walnut=Material("Nike door and frame · antique walnut","Wood",new Color(.46f,.33f,.23f));
             var trim=Material("Nike door panels · walnut inset","Wood",new Color(.34f,.24f,.17f));
             var gold=Material("Nike frames · warm gilding","Bronze",new Color(.77f,.53f,.24f));
@@ -64,10 +67,10 @@ namespace ShadeLink.Gallery
             course.nikeSocket=GalleryNikeDoorSocket.Install(collection.transform,course.nikeGateLeaves,course.nikeLight.canvas,gold,walnut,lining);
             foreach(float z in new[]{7.25f,TutorialFinish})course.Inlay(z,bronze);
             course.FloorLabel("청동 조각을 키워 빛을 가려 보세요",new Vector3(0,.015f,6.60f),.12f);
-            course.FloorLabel("니케의 그림자를 벽의 윤곽에 맞춰 보세요",new Vector3(-2.7f,.015f,20.9f),.105f);
+            course.FloorLabel("빈 캔버스와 주변 전시물을 살펴보세요",new Vector3(-2.7f,.015f,20.9f),.105f);
             course.ResetProgress();
             Physics.SyncTransforms();
-            foreach(var prop in new[]{course.bronze,statue})
+            foreach(var prop in new[]{course.bronze,statue,course.nikeCover.Prop})
             {
                 prop.InitializePhysics();
                 if(owner.controller!=null)prop.placement.SetPlayer(owner.controller);
@@ -190,6 +193,7 @@ namespace ShadeLink.Gallery
                 NikeCleared=false;nikeCrossed=false;NikeUnlocked=false;
                 nikeSocket?.ResetSocket();
                 nikeLight?.canvas?.ResetPuzzle(game);
+                nikeCover?.ResetDiscovery();
                 nikeLight?.ResetLight();
                 // Normal R resets the visitor to the room entrance first. If
                 // called elsewhere, keep the panes away until the visitor exits.
