@@ -7,7 +7,7 @@ namespace ShadeLink.Tutorial
     [DisallowMultipleComponent]
     public sealed class TutorialLandingFeedback : MonoBehaviour
     {
-        internal const float MaximumPitch = .45f;
+        internal const float MaximumPitch = 1.45f;
         const float QuietSpeed = .35f;
         const float FullImpactSpeed = 3.5f;
         const float SupportNormalY = .6f;
@@ -15,6 +15,8 @@ namespace ShadeLink.Tutorial
         Action<float> onImpact;
         bool pending;
         float releasedSide;
+
+        internal bool AwaitingLanding => pending;
 
         internal void Configure(Action<float> listener) => onImpact = listener;
 
@@ -78,7 +80,7 @@ namespace ShadeLink.Tutorial
 
             startingPitch = Sample(now);
             peakPitch = Mathf.Min(pitch, TutorialLandingFeedback.MaximumPitch);
-            duration = Mathf.Lerp(.10f, .16f, peakPitch / TutorialLandingFeedback.MaximumPitch);
+            duration = Mathf.Lerp(.12f, .22f, peakPitch / TutorialLandingFeedback.MaximumPitch);
             startTime = now;
         }
 

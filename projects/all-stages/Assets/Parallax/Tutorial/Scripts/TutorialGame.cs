@@ -22,10 +22,9 @@ namespace ShadeLink.Tutorial
         const float RoomHeight = 16f;
         const float TableTargetSize = .70f;
         public const float TableHeight = .82f;
-        static readonly float LayoutShiftX = -16f / 3f - 4.8f;
-        static readonly Vector3 PlayerStart = new Vector3(-16f / 3f, .03f, 0);
-        static readonly Vector3 BoardPosition = new Vector3(-.8f + LayoutShiftX, 0, 4.3f);
-        static readonly Vector3 TablePosition = new Vector3(3.35f + LayoutShiftX, 0, 2.35f);
+        static readonly Vector3 PlayerStart = new Vector3(0, .03f, 0);
+        static readonly Vector3 BoardPosition = new Vector3(-4.8f, 0, 4.3f);
+        static readonly Vector3 TablePosition = new Vector3(1.35f, 0, 2.35f);
         static readonly Vector3 TableHome = TablePosition + Vector3.up * (TableHeight + StartSize * .5f);
         static readonly Color Accent = new Color(1f, .58f, .18f);
         static readonly Color TableAccent = new Color(.97f, .83f, .32f);
@@ -65,7 +64,7 @@ namespace ShadeLink.Tutorial
         public GalleryProp Held { get; set; }
         public GalleryProp Aimed { get; set; }
         public int InteractionMask => (1 << 0) | (1 << HeldCollisionState.Layer);
-        public bool CanInteract => !paused;
+        public bool CanInteract => !paused && !climbArrivalPlaying;
 
         Vector3 GoalCenter => step == 1 ? TableHome : step == 0
             ? new Vector3(0, OrangeTargetSize * .5f, Room.max.z)
@@ -470,7 +469,7 @@ namespace ShadeLink.Tutorial
             Controller.enabled = true;
             motor.Reset();
             controls.Reset();
-            yaw = -.36f;
+            yaw = 0;
             pitch = -.23f;
             SyncView();
             messageUntil = 0;
@@ -498,6 +497,45 @@ namespace ShadeLink.Tutorial
                 return;
             }
             ResetStep();
+        }
+
+        void StartTutorialStage(int stage)
+        {
+            ClearLandingFeedback();
+            if (Held != null) interaction.Cancel(true);
+            if (Aimed != null) Aimed.Highlight(false, false);
+            Aimed = null;
+            inClimbRoom = false;
+            climbComplete = false;
+            climbArrivalPlaying = false;
+            nextClimbDrop = 0;
+            climbDropDelay = 0;
+            motor.MantleReachFor = null;
+            step = 0;
+            firstSize = 0;
+            die.homePosition = TableHome;
+            die.homeScale = Vector3.one * StartSize;
+            die.homeRotation = Quaternion.identity;
+            Props = new[] { die };
+            ResetStep();
+            foreach (var prop in climbDice)
+            {
+                prop.GetComponent<TutorialLandingFeedback>().ClearPending();
+                SuspendClimbDie(prop);
+            }
+
+            if (stage == 2)
+            {
+                step = LessonCount;
+                EnterClimbRoom();
+                Controller.enabled = false;
+                Controller.transform.position = ClimbSpawn;
+                Controller.enabled = true;
+                yaw = Mathf.PI * .5f;
+                pitch = 0;
+                SyncView();
+            }
+            SetPaused(false);
         }
 
         void Update()
@@ -723,10 +761,21 @@ namespace ShadeLink.Tutorial
             }
             if (paused)
             {
-                var menu = new Rect(width / 2 - 130, height / 2 - 44, 260, 88);
+                float menuWidth = Mathf.Min(400f, width - 32f);
+                var menu = new Rect((width - menuWidth) / 2, height / 2 - 162, menuWidth, 324);
+                var button = new GUIStyle(GUI.skin.button) { font = font, fontSize = 20, wordWrap = true };
                 GUI.Box(menu, GUIContent.none);
-                if (GUI.Button(new Rect(menu.x + 15, menu.y + 15, 230, 58), "계속하기", style))
+                GUI.Label(new Rect(menu.x + 20, menu.y + 12, menu.width - 40, 32), "튜토리얼 일시정지", style);
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 56, menu.width - 40, 48), "계속하기", button))
                     SetPaused(false);
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 116, menu.width - 40, 48), "처음부터 다시 시작", button))
+                    StartTutorialStage(1);
+                GUI.Label(new Rect(menu.x + 20, menu.y + 176, menu.width - 40, 28), "스테이지 바로가기", style);
+                float stageWidth = (menu.width - 52) / 2;
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 216, stageWidth, 64), "1스테이지\n크기 조절", button))
+                    StartTutorialStage(1);
+                if (GUI.Button(new Rect(menu.x + 32 + stageWidth, menu.y + 216, stageWidth, 64), "2스테이지\n주사위 발판", button))
+                    StartTutorialStage(2);
             }
         }
 
