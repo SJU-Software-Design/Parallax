@@ -19,8 +19,8 @@ namespace ShadeLink.Tutorial
         [SerializeField] UnityEvent onMatched = new UnityEvent();
 
         const int SearchGridResolution = 56;
-        const float PaperHalfWidth = 2.325f;
-        const float PaperHalfHeight = 2.325f;
+        float PaperHalfWidth => Mathf.Max(.001f, Mathf.Abs(receiver.lossyScale.x) * .5f);
+        float PaperHalfHeight => Mathf.Max(.001f, Mathf.Abs(receiver.lossyScale.z) * .5f);
         const float MinimumKeyScale = .65f;
         const float MaximumKeyScale = 1.25f;
         const float KeyScaleStep = .10f;
@@ -52,6 +52,7 @@ namespace ShadeLink.Tutorial
         Vector3[] startingScales;
         bool[] adjustedByPlayer;
         bool reported;
+        Collider floorCollider;
 
         public float Coverage { get; private set; }
         public float TableContribution { get; private set; }
@@ -75,6 +76,8 @@ namespace ShadeLink.Tutorial
         void Start()
         {
             if (casters == null) return;
+            var floor = GameObject.Find("Room · floor");
+            if (floor != null) floorCollider = floor.GetComponent<Collider>();
             insideLightVolume = new bool[casters.Length];
             startingPositions = new Vector3[casters.Length];
             startingRotations = new Quaternion[casters.Length];
@@ -132,13 +135,15 @@ namespace ShadeLink.Tutorial
                 Time.time < nextSampleTime) return;
 
             nextSampleTime = Time.time + .1f;
-            SamplePaperShadows();
             UpdatePlayerAdjustments();
-            if (!BothPropsAdjusted)
+            // A held or settling prop cannot contribute to a valid shadow.
+            // Skip the paper raycasts and shape search until both props are ready.
+            if (reported || !BothPropsAdjusted || !TableReady || !DonutReady)
             {
                 Matching = false;
                 matchingTime = 0;
                 Coverage = TableContribution = DonutContribution = 0;
+                TableShadowSamples = DonutShadowSamples = 0;
                 return;
             }
             Evaluate();
@@ -188,56 +193,63 @@ namespace ShadeLink.Tutorial
             Matching = false;
             Coverage = 0;
             TableContribution = DonutContribution = 0;
-            EnsureTemplate();
+            var top = casters[0].Find("Long wooden tabletop");
+            var ringMesh = casters[1].GetComponent<MeshFilter>();
+            if (top == null || ringMesh == null || ringMesh.sharedMesh == null) return;
+            var topBox = top.GetComponent<BoxCollider>();
+            if (topBox == null || !ProjectedBounds(top, new Bounds(topBox.center, topBox.size), out Rect shaft) ||
+                !ProjectedBounds(casters[1], ringMesh.sharedMesh.bounds, out Rect head)) return;
 
-            float bestCoverage = -1;
-            float bestBalancedContribution = -1;
-            int scaleSteps = Mathf.RoundToInt((MaximumKeyScale - MinimumKeyScale) / KeyScaleStep);
-            for (int scaleIndex = 0; scaleIndex <= scaleSteps; scaleIndex++)
+            float diameter = Mathf.Max(head.width, head.height);
+            float length = shaft.width;
+            float radius = diameter * .5f;
+            float headX = head.center.x;
+            float join = headX < shaft.center.x ? shaft.xMin : shaft.xMax;
+            float gap = Mathf.Abs(join - headX) - radius;
+            float verticalGap = Mathf.Abs(head.center.y - shaft.center.y);
+            float facing = Mathf.Abs(Vector3.Dot(casters[1].up,
+                (source.transform.position - casters[1].position).normalized));
+            bool inPaper = shaft.Overlaps(new Rect(-PaperHalfWidth, -PaperHalfHeight, PaperHalfWidth * 2, PaperHalfHeight * 2)) &&
+                head.Overlaps(new Rect(-PaperHalfWidth, -PaperHalfHeight, PaperHalfWidth * 2, PaperHalfHeight * 2));
+            bool validSize = diameter > .45f && diameter < 2.8f && length > diameter * .8f &&
+                length < diameter * 4.2f && shaft.height < diameter * .85f;
+            bool connected = gap <= radius * .35f && gap >= -radius * .85f &&
+                verticalGap < radius * .65f;
+            bool round = facing > .55f && head.width / Mathf.Max(.001f, head.height) > .65f &&
+                head.width / Mathf.Max(.001f, head.height) < 1.55f;
+            TableShadowSamples = inPaper && validSize ? 1 : 0;
+            DonutShadowSamples = inPaper && round ? 1 : 0;
+            if (!inPaper || !validSize || !round || !connected) return;
+
+            float alignment = 1f - Mathf.Clamp01(Mathf.Max(0, gap) / (radius * .35f)) * .2f -
+                Mathf.Clamp01(verticalGap / (radius * .65f)) * .15f;
+            Coverage = alignment;
+            TableContribution = DonutContribution = alignment * .5f;
+            Matching = Coverage >= requiredCoverage;
+            if (Matching) MatchedPosition = receiver.position;
+        }
+
+        bool ProjectedBounds(Transform shape, Bounds bounds, out Rect result)
+        {
+            float left = float.PositiveInfinity, right = float.NegativeInfinity;
+            float bottom = float.PositiveInfinity, top = float.NegativeInfinity;
+            for (int x = -1; x <= 1; x += 2)
+            for (int y = -1; y <= 1; y += 2)
+            for (int z = -1; z <= 1; z += 2)
             {
-                float scale = MinimumKeyScale + scaleIndex * KeyScaleStep;
-                for (int rotationIndex = 0; rotationIndex < RotationSteps; rotationIndex++)
-                {
-                    float angle = rotationIndex * (360f / RotationSteps) * Mathf.Deg2Rad;
-                    float cos = Mathf.Cos(angle), sin = Mathf.Sin(angle);
-                    GetRotatedKeyBounds(cos, sin, scale,
-                        out float minX, out float maxX, out float minZ, out float maxZ);
-
-                    float minCenterX = -PaperHalfWidth - minX;
-                    float maxCenterX = PaperHalfWidth - maxX;
-                    float minCenterZ = -PaperHalfHeight - minZ;
-                    float maxCenterZ = PaperHalfHeight - maxZ;
-                    int xSteps = Mathf.CeilToInt((maxCenterX - minCenterX) / SearchPositionStep);
-                    int zSteps = Mathf.CeilToInt((maxCenterZ - minCenterZ) / SearchPositionStep);
-                    for (int xStep = 0; xStep <= xSteps; xStep++)
-                    for (int zStep = 0; zStep <= zSteps; zStep++)
-                    {
-                        float centerX = Mathf.Min(minCenterX + xStep * SearchPositionStep, maxCenterX);
-                        float centerZ = Mathf.Min(minCenterZ + zStep * SearchPositionStep, maxCenterZ);
-                        bool matched = EvaluateCandidate(centerX, centerZ, scale, cos, sin,
-                            out float coverage, out float tableContribution, out float donutContribution);
-                        float balancedContribution = Mathf.Min(tableContribution, donutContribution);
-                        if (coverage > bestCoverage + .0001f ||
-                            (Mathf.Abs(coverage - bestCoverage) <= .0001f && balancedContribution > bestBalancedContribution))
-                        {
-                            bestCoverage = coverage;
-                            bestBalancedContribution = balancedContribution;
-                            Coverage = coverage;
-                            TableContribution = tableContribution;
-                            DonutContribution = donutContribution;
-                        }
-                        if (!matched) continue;
-
-                        Coverage = coverage;
-                        Matching = true;
-                        float scaleX = Mathf.Max(.0001f, receiver.lossyScale.x);
-                        float scaleZ = Mathf.Max(.0001f, receiver.lossyScale.z);
-                        MatchedPosition = receiver.TransformPoint(new Vector3(
-                            centerX / scaleX, .001f, centerZ / scaleZ));
-                        return;
-                    }
-                }
+                Vector3 corner = shape.TransformPoint(bounds.center + Vector3.Scale(bounds.extents, new Vector3(x, y, z)));
+                Vector3 ray = corner - source.transform.position;
+                float denominator = Vector3.Dot(ray, receiver.up);
+                if (Mathf.Abs(denominator) < .001f) { result = default; return false; }
+                float distance = Vector3.Dot(receiver.position - source.transform.position, receiver.up) / denominator;
+                if (distance <= 1f || distance > 5f) { result = default; return false; }
+                Vector3 local = receiver.InverseTransformPoint(source.transform.position + ray * distance);
+                float px = local.x * receiver.lossyScale.x, py = local.z * receiver.lossyScale.z;
+                left = Mathf.Min(left, px); right = Mathf.Max(right, px);
+                bottom = Mathf.Min(bottom, py); top = Mathf.Max(top, py);
             }
+            result = Rect.MinMaxRect(left, bottom, right, top);
+            return true;
         }
 
         void EnsureTemplate()
@@ -270,6 +282,8 @@ namespace ShadeLink.Tutorial
             Vector3 normal = receiver.up;
             float scaleX = Mathf.Max(.0001f, receiver.lossyScale.x);
             float scaleZ = Mathf.Max(.0001f, receiver.lossyScale.z);
+            bool hasFloor = floorCollider != null && floorCollider.enabled;
+            Bounds floorBounds = hasFloor ? floorCollider.bounds : default;
             TableShadowSamples = DonutShadowSamples = 0;
             for (int row = 0; row < SearchGridResolution; row++)
             for (int column = 0; column < SearchGridResolution; column++)
@@ -278,7 +292,15 @@ namespace ShadeLink.Tutorial
                 float x = Mathf.Lerp(-PaperHalfWidth, PaperHalfWidth, (column + .5f) / SearchGridResolution);
                 float z = Mathf.Lerp(-PaperHalfHeight, PaperHalfHeight, (row + .5f) / SearchGridResolution);
                 Vector3 point = receiver.TransformPoint(new Vector3(x / scaleX, .001f, z / scaleZ));
-                litSamples[index] = InSpotlight(point);
+                // A portion of the paper can be below the room floor after it is moved.
+                // Such points are not visible and must not count as a successful shadow.
+                bool belowFloor = false;
+                if (hasFloor)
+                {
+                    belowFloor = point.y < floorBounds.max.y && point.x >= floorBounds.min.x && point.x <= floorBounds.max.x &&
+                        point.z >= floorBounds.min.z && point.z <= floorBounds.max.z;
+                }
+                litSamples[index] = !belowFloor && InSpotlight(point);
                 shadowSamples[index] = false;
                 shadowCasterSamples[index] = 0;
                 if (litSamples[index] && HasPuzzleShadow(point, normal, out Transform caster))
@@ -327,7 +349,7 @@ namespace ShadeLink.Tutorial
                 donutContribution >= MinimumCasterContribution;
         }
 
-        static bool TryGetPaperSample(float x, float z, out int index)
+        bool TryGetPaperSample(float x, float z, out int index)
         {
             if (x < -PaperHalfWidth || x >= PaperHalfWidth ||
                 z < -PaperHalfHeight || z >= PaperHalfHeight)

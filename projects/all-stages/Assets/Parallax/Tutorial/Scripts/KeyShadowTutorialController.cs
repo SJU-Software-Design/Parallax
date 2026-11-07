@@ -21,11 +21,8 @@ namespace ShadeLink.Tutorial
         readonly FirstPersonMotor motor = new FirstPersonMotor();
         readonly PlayerControls controls = new PlayerControls();
         ObjectInteraction<GalleryProp> interaction;
-        Font uiFont;
         float yaw = -.78f;
         float pitch = .10f;
-        float messageUntil;
-        string message;
         bool paused;
         bool interactionLocked;
         GalleryProp pendingRelease;
@@ -35,7 +32,9 @@ namespace ShadeLink.Tutorial
         public GalleryProp[] Props => props;
         public GalleryProp Held { get; set; }
         public GalleryProp Aimed { get; set; }
-        public int InteractionMask => (1 << 0) | (1 << HeldCollisionState.Layer);
+        // Use the same collision query mask as Beach, so every physical prop
+        // layer remains targetable while shadow-only overlays stay excluded.
+        public int InteractionMask => ShadeLink.Beach.BeachWorld.PhysicalMask;
         public bool CanInteract => !paused && !interactionLocked;
         public event Action<GalleryProp> PropReleased;
 
@@ -59,6 +58,10 @@ namespace ShadeLink.Tutorial
                 return;
             }
 
+            // A missing source prop must not poison every pickup attempt. Beach's
+            // prop list is dense; this scene can contain optional empty slots.
+            props = Array.FindAll(props, prop => prop != null);
+
             FirstPersonMotor.Configure(player, view);
             PlayerControls.ConfigureCamera(view);
             interaction = new ObjectInteraction<GalleryProp>(this);
@@ -67,14 +70,16 @@ namespace ShadeLink.Tutorial
                 if (prop == null) continue;
                 prop.Remember();
                 prop.InitializePhysics();
+                if (prop.name == "ShadowKey - Branch Sculpture Preview")
+                {
+                    prop.placement.ShowOriginalWhileHeld = true;
+                    prop.placement.PreviewUntilSettled = false;
+                }
                 prop.placement.SetPlayer(player);
             }
 
-            uiFont = Font.CreateDynamicFontFromOSFont(
-                new[] { "Malgun Gothic", "Noto Sans CJK KR", "Arial" }, 22);
             SyncView();
             SetPaused(false);
-            Tell("오른쪽 조명으로 왼쪽 벽의 흰 종이에 탁자와 도넛의 열쇠 그림자를 만드세요. 파란 도안은 참고용입니다. 도넛을 세워 고리 모양을 만들어 보세요.", 8);
         }
 
         void Update()
@@ -230,60 +235,24 @@ namespace ShadeLink.Tutorial
 
         public void Tell(string text, float duration = 4)
         {
-            message = text;
-            messageUntil = Time.time + duration;
+            // Tutorial guidance text is intentionally hidden in this preview.
         }
 
         void OnGUI()
         {
             if (view == null) return;
             float width = Screen.width, height = Screen.height;
-            GUIStyle style = new GUIStyle(GUI.skin.label)
-            {
-                font = uiFont,
-                fontSize = 20,
-                wordWrap = true,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.white }
-            };
-
             PlayerControls.DrawCursor(new Vector2(width * .5f, height * .5f),
                 Aimed != null, Held != null, false, new Color(.16f, .42f, .95f), Color.white);
-
-            string status = shadowMatcher != null && shadowMatcher.Matched
-                ? "열쇠 그림자 완성"
-                : shadowMatcher != null && !shadowMatcher.BothPropsAdjusted
-                    ? "탁자와 도넛을 각각 움직여 그림자를 만들어 보세요"
-                    : $"열쇠 실루엣 {Mathf.RoundToInt((shadowMatcher?.Coverage ?? 0) * 100)}% / 65%  ·  탁자 {Mathf.RoundToInt((shadowMatcher?.TableContribution ?? 0) * 100)}%  ·  도넛 {Mathf.RoundToInt((shadowMatcher?.DonutContribution ?? 0) * 100)}% (각 10% 이상 필요)";
-            Rect header = new Rect(24, 18, width - 48, 50);
-            GUI.Box(header, GUIContent.none);
-            GUI.Label(header, status, style);
-
-            if (shadowMatcher != null)
-            {
-                GUIStyle detailStyle = new GUIStyle(style) { fontSize = 15 };
-                Rect detail = new Rect(24, 70, width - 48, 28);
-                string tableShadowState = !shadowMatcher.TableReady ? "운반/안착 중" :
-                    shadowMatcher.TableShadowSamples > 0 ? "종이에 그림자 있음" : "종이에 그림자 없음";
-                string donutShadowState = !shadowMatcher.DonutReady ? "운반/안착 중" :
-                    shadowMatcher.DonutShadowSamples > 0 ? "종이에 그림자 있음" : "종이에 그림자 없음";
-                string sourceState = $"실제 그림자 · 탁자 {tableShadowState} · 도넛 {donutShadowState}";
-                GUI.Label(detail, sourceState, detailStyle);
-            }
-
-            string notice = Time.time < messageUntil ? message :
-                "오른쪽 조명으로 탁자와 도넛 그림자를 함께 만드세요. 전체 열쇠 실루엣은 65%, 두 물체 그림자는 각각 10% 이상이어야 합니다. 파란 열쇠는 참고 그림입니다.   왼쪽 클릭 잡기/놓기 · WASD 이동 · 마우스 시점 · Space 점프 · Q/E 회전 · 우클릭+마우스 회전 · Backspace 취소 · R 다시 시작";
-            Rect banner = new Rect(24, height - 100, width - 48, 76);
-            GUI.Box(banner, GUIContent.none);
-            GUI.Label(new Rect(banner.x + 12, banner.y + 3, banner.width - 24, banner.height - 6), notice, style);
 
             if (paused)
             {
                 Rect menu = new Rect(width * .5f - 140, height * .5f - 44, 280, 88);
                 GUI.Box(menu, GUIContent.none);
-                if (GUI.Button(new Rect(menu.x + 15, menu.y + 15, 250, 58), "계속하기", style))
+                if (GUI.Button(new Rect(menu.x + 15, menu.y + 15, 250, 58), "계속하기"))
                     SetPaused(false);
             }
         }
     }
+
 }

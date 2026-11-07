@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using ShadeLink.Gallery;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace ShadeLink.Tutorial
 {
@@ -17,10 +15,12 @@ namespace ShadeLink.Tutorial
         [SerializeField] Transform doorPivot;
         [SerializeField] Vector3 lockPosition;
 
-        const float RevealSeconds = 1.15f;
+        const float RevealSeconds = 1.6f;
         const float TurnSeconds = .55f;
         const float DoorSeconds = 1.2f;
         const float InsertDistance = .40f;
+        // The imported model is centered and normalized to .76 units tall.
+        const float KeyTipOffset = .38f;
 
         Phase phase;
         GalleryProp key;
@@ -33,6 +33,26 @@ namespace ShadeLink.Tutorial
         Quaternion doorStartRotation;
         Quaternion doorOpenRotation;
         bool subscribed;
+        bool revealFailed;
+        Vector3[] sourcePositions, sourceScales;
+        Quaternion[] sourceRotations;
+        public bool DoorIsOpen => phase == Phase.Complete;
+        public bool TutorialCompleted { get; private set; }
+        public event System.Action TutorialFinished;
+
+        public void CompleteTutorial()
+        {
+            if (TutorialCompleted) return;
+            TutorialCompleted = true;
+            controller.Tell("튜토리얼 완료! 문 너머의 복도에 도착했습니다.", float.PositiveInfinity);
+            TutorialFinished?.Invoke();
+        }
+
+        void Start()
+        {
+            if (controller != null && doorPivot != null)
+                gameObject.AddComponent<KeyShadowDoorPortal>().Configure(this, controller.Camera, controller.Controller);
+        }
 
         public void Configure(KeyShadowMatcher shadowMatcher, Transform wallTarget,
             GalleryProp[] sources, KeyShadowTutorialController gameplay, Transform hingedDoor,
@@ -66,7 +86,7 @@ namespace ShadeLink.Tutorial
         {
             if (phase == Phase.Waiting)
             {
-                if (matcher != null && matcher.Matched) BeginReveal();
+                if (!revealFailed && matcher != null && matcher.Matched) BeginReveal();
                 return;
             }
 
@@ -78,16 +98,55 @@ namespace ShadeLink.Tutorial
 
         void BeginReveal()
         {
+            var model = Resources.Load<GameObject>("Tutorial/ShadowKeyV4/ShadowKey_v4");
+            var baseColor = Resources.Load<Texture2D>("Tutorial/ShadowKeyV4/ShadowKey_BaseColor");
+            var metallic = Resources.Load<Texture2D>("Tutorial/ShadowKeyV4/ShadowKey_MetallicSmoothness");
+            if (model == null || baseColor == null || metallic == null)
+            {
+                revealFailed = true;
+                Debug.LogError("ShadowKey v4 model or material textures could not be loaded.", this);
+                controller.Tell("열쇠 모델을 불러오지 못했습니다. Unity 콘솔을 확인하세요.", 8);
+                return;
+            }
+            sourcePositions = new Vector3[sourceProps.Length];
+            sourceScales = new Vector3[sourceProps.Length];
+            sourceRotations = new Quaternion[sourceProps.Length];
+            Vector3[] sourceCenters = new Vector3[sourceProps.Length];
+            float donutSize = .6f;
+            for (int i = 0; i < sourceProps.Length; i++)
+            {
+                var prop = sourceProps[i];
+                if (prop == null) continue;
+                sourcePositions[i] = prop.transform.position;
+                sourceScales[i] = prop.transform.localScale;
+                sourceRotations[i] = prop.transform.rotation;
+                sourceCenters[i] = VisualCenter(prop.transform);
+                if (i == 1 && prop.TryGetComponent<Renderer>(out var donutRenderer))
+                {
+                    Vector3 s = donutRenderer.bounds.size;
+                    donutSize = Mathf.Max(s.x, s.y, s.z);
+                }
+            }
             phase = Phase.Reveal;
             phaseTime = 0;
             controller.PrepareRewardTransition();
-            foreach (GalleryProp prop in sourceProps)
-                if (prop != null) prop.gameObject.SetActive(false);
+            for (int i = 0; i < sourceProps.Length; i++)
+            {
+                var prop = sourceProps[i];
+                if (prop == null) continue;
+                prop.transform.SetPositionAndRotation(sourcePositions[i], sourceRotations[i]);
+                prop.transform.localScale = sourceScales[i];
+                foreach (var collider in prop.GetComponentsInChildren<Collider>()) collider.enabled = false;
+                if (prop.TryGetComponent<Rigidbody>(out var body)) { body.isKinematic = true; body.useGravity = false; }
+            }
 
-            keyPosition = matcher.MatchedPosition + receiver.up * .36f;
-            key = CreateKey(keyPosition);
+            keyPosition = (sourceCenters[0] + sourceCenters[1]) * .5f;
+            key = CreateKey(keyPosition, model, baseColor, metallic);
+            targetKeyScale = Vector3.one * Mathf.Max(.2f, donutSize / .76f);
             key.transform.localScale = Vector3.one * .015f;
-            keyStartRotation = Quaternion.Euler(16f, 32f, 0f);
+            Vector3 towardPlayer = Vector3.ProjectOnPlane(controller.Camera.transform.position - keyPosition, Vector3.up);
+            keyStartRotation = towardPlayer.sqrMagnitude > .001f
+                ? Quaternion.LookRotation(towardPlayer, Vector3.up) : Quaternion.identity;
             key.transform.rotation = keyStartRotation;
             controller.Tell("두 그림자가 맞았습니다. 열쇠가 만들어집니다.", 3);
         }
@@ -95,15 +154,25 @@ namespace ShadeLink.Tutorial
         void TickReveal()
         {
             float t = Mathf.Clamp01(phaseTime / RevealSeconds);
-            float eased = t * t * (3f - 2f * t);
-            key.transform.position = keyPosition + receiver.up * (Mathf.Sin(t * Mathf.PI) * .18f);
-            key.transform.localScale = Vector3.Lerp(Vector3.one * .015f, targetKeyScale, eased);
+            float absorb = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / .72f));
+            for (int i = 0; i < sourceProps.Length; i++)
+            {
+                var prop = sourceProps[i];
+                if (prop == null || !prop.gameObject.activeSelf) continue;
+                prop.transform.position = Vector3.Lerp(sourcePositions[i], keyPosition, absorb);
+                prop.transform.rotation = Quaternion.AngleAxis(220f * absorb * (i == 0 ? 1 : -1), Vector3.up) * sourceRotations[i];
+                prop.transform.localScale = Vector3.Lerp(sourceScales[i], sourceScales[i] * .01f, absorb);
+                if (absorb >= 1f) prop.gameObject.SetActive(false);
+            }
+            float appear = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - .35f) / .65f));
+            key.transform.position = keyPosition + Vector3.up * (Mathf.Sin(t * Mathf.PI) * .18f);
+            key.transform.localScale = Vector3.Lerp(Vector3.one * .015f, targetKeyScale, appear);
             key.transform.rotation = Quaternion.AngleAxis(360f * t, Vector3.up) * keyStartRotation;
             if (t < 1f) return;
 
             key.transform.SetPositionAndRotation(keyPosition, keyStartRotation);
             var collider = key.gameObject.AddComponent<BoxCollider>();
-            collider.size = new Vector3(.34f, .76f, .10f);
+            collider.size = new Vector3(.32f, .76f, .08f);
             var body = key.gameObject.AddComponent<Rigidbody>();
             body.isKinematic = true;
             body.useGravity = false;
@@ -121,79 +190,61 @@ namespace ShadeLink.Tutorial
             phase = Phase.Ready;
         }
 
-        GalleryProp CreateKey(Vector3 position)
+        static Vector3 VisualCenter(Transform prop)
+        {
+            var renderers = prop.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0) return prop.position;
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+            return bounds.center;
+        }
+
+        GalleryProp CreateKey(Vector3 position, GameObject model, Texture2D baseColor, Texture2D metallic)
         {
             var root = new GameObject("Reward key · turning into view");
             root.transform.position = position;
-            keyMaterial = new Material(Shader.Find("Standard")) { name = "Forged key · warm brass" };
-            keyMaterial.color = new Color(.76f, .52f, .20f);
-            keyMaterial.SetFloat("_Metallic", .72f);
-            keyMaterial.SetFloat("_Glossiness", .76f);
-
-            AddKeyPart(root.transform, "Key shaft", PrimitiveType.Cube,
-                new Vector3(0, -.065f, 0), new Vector3(.064f, .45f, .065f));
-            AddKeyPart(root.transform, "Key bit", PrimitiveType.Cube,
-                new Vector3(.045f, -.265f, 0), new Vector3(.13f, .07f, .075f));
-            AddKeyPart(root.transform, "Key second notch", PrimitiveType.Cube,
-                new Vector3(-.038f, -.17f, 0), new Vector3(.095f, .06f, .075f));
-            var bow = new GameObject("Pierced round key bow");
-            bow.transform.SetParent(root.transform, false);
-            bow.transform.localPosition = new Vector3(0, .22f, 0);
-            bow.AddComponent<MeshFilter>().sharedMesh = TorusMesh();
-            var renderer = bow.AddComponent<MeshRenderer>();
-            renderer.sharedMaterial = keyMaterial;
-            renderer.shadowCastingMode = ShadowCastingMode.On;
-            renderer.receiveShadows = true;
-            return root.AddComponent<GalleryProp>();
-        }
-
-        void AddKeyPart(Transform parent, string name, PrimitiveType type, Vector3 position, Vector3 size)
-        {
-            GameObject part = GameObject.CreatePrimitive(type);
-            part.name = name;
-            Object.Destroy(part.GetComponent<Collider>());
-            part.transform.SetParent(parent, false);
-            part.transform.localPosition = position;
-            part.transform.localScale = size;
-            var renderer = part.GetComponent<Renderer>();
-            renderer.sharedMaterial = keyMaterial;
-            renderer.shadowCastingMode = ShadowCastingMode.On;
-            renderer.receiveShadows = true;
-        }
-
-        static Mesh TorusMesh()
-        {
-            const int around = 48, across = 16;
-            const float major = .115f, minor = .031f;
-            var vertices = new List<Vector3>((around + 1) * (across + 1));
-            var triangles = new List<int>(around * across * 6);
-            for (int i = 0; i <= around; i++)
-            for (int j = 0; j <= across; j++)
+            keyMaterial = new Material(Shader.Find("Standard")) { name = "ShadowKey v4 · warm brass", color = Color.white };
+            keyMaterial.mainTexture = baseColor;
+            keyMaterial.SetTexture("_MetallicGlossMap", metallic);
+            keyMaterial.SetFloat("_Glossiness", 1f);
+            keyMaterial.EnableKeyword("_METALLICGLOSSMAP");
+            var visual = Instantiate(model, root.transform);
+            visual.name = "ShadowKey v4 model";
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            foreach (var renderer in visual.GetComponentsInChildren<Renderer>()) renderer.sharedMaterial = keyMaterial;
+            var filters = visual.GetComponentsInChildren<MeshFilter>();
+            float topMin = float.PositiveInfinity, topMax = float.NegativeInfinity;
+            float bottomMin = float.PositiveInfinity, bottomMax = float.NegativeInfinity;
+            var renderers = visual.GetComponentsInChildren<Renderer>();
+            Bounds bounds = renderers[0].bounds;
+            foreach (var renderer in renderers) bounds.Encapsulate(renderer.bounds);
+            foreach (var filter in filters)
             {
-                float a = i * Mathf.PI * 2f / around;
-                float b = j * Mathf.PI * 2f / across;
-                vertices.Add(new Vector3((major + minor * Mathf.Cos(b)) * Mathf.Cos(a),
-                    (major + minor * Mathf.Cos(b)) * Mathf.Sin(a), minor * Mathf.Sin(b)));
-                if (i < around && j < across)
+                if (filter.sharedMesh == null) continue;
+                foreach (var vertex in filter.sharedMesh.vertices)
                 {
-                    int p = i * (across + 1) + j, q = p + across + 1;
-                    triangles.Add(p); triangles.Add(p + 1); triangles.Add(q);
-                    triangles.Add(p + 1); triangles.Add(q + 1); triangles.Add(q);
+                    Vector3 p = root.transform.InverseTransformPoint(filter.transform.TransformPoint(vertex));
+                    if (p.y > bounds.center.y - root.transform.position.y + bounds.size.y * .25f) { topMin = Mathf.Min(topMin, p.x); topMax = Mathf.Max(topMax, p.x); }
+                    if (p.y < bounds.center.y - root.transform.position.y - bounds.size.y * .25f) { bottomMin = Mathf.Min(bottomMin, p.x); bottomMax = Mathf.Max(bottomMax, p.x); }
                 }
             }
-            var mesh = new Mesh { name = "Forged key · pierced bow" };
-            mesh.SetVertices(vertices);
-            mesh.SetTriangles(triangles, 0);
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();
-            return mesh;
+            if (topMax - topMin < bottomMax - bottomMin) visual.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            bounds = renderers[0].bounds;
+            foreach (var renderer in renderers) bounds.Encapsulate(renderer.bounds);
+            float factor = .76f / Mathf.Max(.001f, bounds.size.y);
+            visual.transform.localScale *= factor;
+            visual.transform.localPosition = -(bounds.center - root.transform.position) * factor;
+            return root.AddComponent<GalleryProp>();
         }
 
         void OnPropReleased(GalleryProp prop)
         {
             if (phase != Phase.Ready || prop != key) return;
 
-            float distance = Vector3.Distance(prop.transform.position, lockPosition);
+            Vector3 tipPosition = prop.transform.TransformPoint(Vector3.down * KeyTipOffset);
+            float distance = Mathf.Min(Vector3.Distance(prop.transform.position, lockPosition),
+                Vector3.Distance(tipPosition, lockPosition));
             if (distance > InsertDistance)
             {
                 controller.Tell("열쇠를 문고리 구멍 가까이에 놓으세요.", 4);
@@ -202,7 +253,8 @@ namespace ShadeLink.Tutorial
 
             float facing = Vector3.Angle(prop.transform.forward, doorPivot.forward);
             float upright = Vector3.Angle(prop.transform.up, Vector3.up);
-            if (facing > 24f || upright > 24f)
+            float inserted = Vector3.Angle(-prop.transform.up, doorPivot.forward);
+            if ((facing > 24f || upright > 24f) && inserted > 24f)
             {
                 controller.Tell("열쇠 방향이 맞지 않습니다. Q/E와 마우스 회전으로 맞춰 보세요.", 5);
                 return;
@@ -223,9 +275,12 @@ namespace ShadeLink.Tutorial
             phase = Phase.TurnKey;
             phaseTime = 0;
             controller.SetInteractionLocked(true);
-            keyTargetRotation = doorPivot.rotation;
+            Vector3 faceDirection = Vector3.ProjectOnPlane(key.transform.forward, doorPivot.forward);
+            if (faceDirection.sqrMagnitude < .001f) faceDirection = doorPivot.up;
+            keyTargetRotation = Quaternion.LookRotation(faceDirection.normalized, -doorPivot.forward);
+            float tipDistance = KeyTipOffset * key.transform.lossyScale.y;
             key.transform.SetParent(doorPivot, true);
-            key.transform.SetPositionAndRotation(lockPosition, keyTargetRotation);
+            key.transform.SetPositionAndRotation(lockPosition - doorPivot.forward * tipDistance, keyTargetRotation);
             foreach (Collider collider in key.GetComponentsInChildren<Collider>()) collider.enabled = false;
             key.body.isKinematic = true;
             key.body.useGravity = false;

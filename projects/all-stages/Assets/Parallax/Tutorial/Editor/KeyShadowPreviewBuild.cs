@@ -57,6 +57,8 @@ namespace ShadeLink.Editor
             sequence.Configure(matcher, receiver, new[] { tableProp, donutProp }, controller,
                 doorPivot, new Vector3(.88f,2.67f,5.57f));
 
+            KeyShadowRoomFinish.Apply(scene);
+
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
@@ -81,10 +83,12 @@ namespace ShadeLink.Editor
         static void BuildRoom(Material floor, Material wall, Material trim)
         {
             Box("Room · floor",new Vector3(0,-.12f,0),new Vector3(18,.24f,16),floor);
-            // Leave a real doorway opening behind the freestanding tutorial door.
+            // The freestanding door will show its separate corridor through a portal;
+            // the room's back wall must remain solid when viewed from the side.
             Box("Room · back wall left of door",new Vector3(-5.3f,4.5f,7.8f),new Vector3(7.4f,9,.35f),wall);
             Box("Room · back wall right of door",new Vector3(5.3f,4.5f,7.8f),new Vector3(7.4f,9,.35f),wall);
-            Box("Room · back wall above door",new Vector3(0,8.05f,7.8f),new Vector3(3.2f,1.9f,.35f),wall);
+            Box("Room · back wall behind door",new Vector3(0,4.5f,7.8f),new Vector3(3.2f,9f,.35f),wall);
+            Box("Room · front wall",new Vector3(0,4.5f,-7.8f),new Vector3(18f,9f,.35f),wall);
             Box("Room · left wall",new Vector3(-8.8f,4.5f,0),new Vector3(.35f,9,16),wall);
             Box("Room · right wall",new Vector3(8.8f,4.5f,0),new Vector3(.35f,9,16),wall);
             Box("Room · closed ceiling",new Vector3(0,9.05f,0),new Vector3(18,.3f,16),trim);
@@ -192,7 +196,7 @@ namespace ShadeLink.Editor
             stencil.transform.localScale=new Vector3(.38f,1,.18f);
             var renderer=stencil.GetComponent<Renderer>();renderer.sharedMaterial=stencilMaterial;
             renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;
-            return stencil.transform;
+            return paper.transform;
         }
         static LineRenderer NewLine(string name,Material material,int points)
         {var go=new GameObject(name);var line=go.AddComponent<LineRenderer>();line.useWorldSpace=true;line.sharedMaterial=material;line.startWidth=line.endWidth=.035f;line.shadowCastingMode=ShadowCastingMode.Off;line.receiveShadows=false;line.positionCount=points;return line;}
