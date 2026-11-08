@@ -1,0 +1,17 @@
+Original regression: expected failure
+Exception: A resting diagonal plank must activate even when five sampled points miss its supports.
+
+Original support in the actual Beach scene
+BEACH_PLANK_BEFORE_OK original code, supported physical plank remains ghost and player falls through
+BEACH_WATER_CAPTURE_OK plank-before real PlayMode, 6 matched cameras
+
+Fixed regression and actual Beach scene
+PLACEMENT_SUPPORT_TESTS_OK diagonal landing, real player standing, materials/collision, regrab/settling, support removal, wall/ceiling rejection
+BEACH_TEAL_B_OK selected absorption applied to all five water surfaces.
+BEACH_CALM_WATER_OK four stationary surfaces; boat-only +Z 0.12m/s; ripple strength 0.12; physical boat flow 0.9m/s unchanged.
+BEACH_SIMPLE_WATER_OK five surfaces, four gameplay regions, original mesh, depth and disable/re-enable; colliders=673
+BEACH_PLANK_AFTER_OK solid material and actual Beach player standing on the same plank
+BEACH_WATER_CAPTURE_OK after real PlayMode, 6 matched cameras
+
+macOS Beach build
+BEACH_WATER_MAC_BUILD_OK errors=0
