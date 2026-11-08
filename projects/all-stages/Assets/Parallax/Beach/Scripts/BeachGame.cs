@@ -53,6 +53,7 @@ namespace ShadeLink.Beach
         void Awake()
         {
             FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
+            gameObject.AddComponent<BeachWaterAppearance>();
             var arguments=Environment.GetCommandLineArgs();
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
             bool waterTest=Array.IndexOf(arguments,"-beach-water-test")>=0;
