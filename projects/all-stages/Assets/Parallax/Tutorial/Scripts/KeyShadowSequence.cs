@@ -3,14 +3,11 @@ using UnityEngine;
 
 namespace ShadeLink.Tutorial
 {
-    /// <summary>Turns a matched live shadow into a grabbable key, then opens the door.</summary>
+    /// <summary>Reveals a key on request, then handles the door sequence.</summary>
     public sealed class KeyShadowSequence : MonoBehaviour
     {
         enum Phase { Waiting, Reveal, Ready, TurnKey, OpenDoor, Complete }
 
-        [SerializeField] KeyShadowMatcher matcher;
-        [SerializeField] Transform receiver;
-        [SerializeField] GalleryProp[] sourceProps;
         [SerializeField] KeyShadowTutorialController controller;
         [SerializeField] Transform doorPivot;
         [SerializeField] Vector3 lockPosition;
@@ -33,9 +30,6 @@ namespace ShadeLink.Tutorial
         Quaternion doorStartRotation;
         Quaternion doorOpenRotation;
         bool subscribed;
-        bool revealFailed;
-        Vector3[] sourcePositions, sourceScales;
-        Quaternion[] sourceRotations;
         public bool DoorIsOpen => phase == Phase.Complete;
         public bool TutorialCompleted { get; private set; }
         public event System.Action TutorialFinished;
@@ -58,9 +52,6 @@ namespace ShadeLink.Tutorial
             GalleryProp[] sources, KeyShadowTutorialController gameplay, Transform hingedDoor,
             Vector3 insertionPoint)
         {
-            matcher = shadowMatcher;
-            receiver = wallTarget;
-            sourceProps = sources;
             controller = gameplay;
             doorPivot = hingedDoor;
             lockPosition = insertionPoint;
@@ -84,11 +75,7 @@ namespace ShadeLink.Tutorial
 
         void Update()
         {
-            if (phase == Phase.Waiting)
-            {
-                if (!revealFailed && matcher != null && matcher.Matched) BeginReveal();
-                return;
-            }
+            if (phase == Phase.Waiting) return;
 
             phaseTime += Time.deltaTime;
             if (phase == Phase.Reveal) TickReveal();
@@ -96,74 +83,35 @@ namespace ShadeLink.Tutorial
             else if (phase == Phase.OpenDoor) TickDoorOpen();
         }
 
-        void BeginReveal()
+        public void BeginReveal(Vector3 position, float keySize)
         {
+            if (phase != Phase.Waiting) return;
             var model = Resources.Load<GameObject>("Tutorial/ShadowKeyV4/ShadowKey_v4");
             var baseColor = Resources.Load<Texture2D>("Tutorial/ShadowKeyV4/ShadowKey_BaseColor");
             var metallic = Resources.Load<Texture2D>("Tutorial/ShadowKeyV4/ShadowKey_MetallicSmoothness");
             if (model == null || baseColor == null || metallic == null)
             {
-                revealFailed = true;
                 Debug.LogError("ShadowKey v4 model or material textures could not be loaded.", this);
                 controller.Tell("열쇠 모델을 불러오지 못했습니다. Unity 콘솔을 확인하세요.", 8);
                 return;
             }
-            sourcePositions = new Vector3[sourceProps.Length];
-            sourceScales = new Vector3[sourceProps.Length];
-            sourceRotations = new Quaternion[sourceProps.Length];
-            Vector3[] sourceCenters = new Vector3[sourceProps.Length];
-            float donutSize = .6f;
-            for (int i = 0; i < sourceProps.Length; i++)
-            {
-                var prop = sourceProps[i];
-                if (prop == null) continue;
-                sourcePositions[i] = prop.transform.position;
-                sourceScales[i] = prop.transform.localScale;
-                sourceRotations[i] = prop.transform.rotation;
-                sourceCenters[i] = VisualCenter(prop.transform);
-                if (i == 1 && prop.TryGetComponent<Renderer>(out var donutRenderer))
-                {
-                    Vector3 s = donutRenderer.bounds.size;
-                    donutSize = Mathf.Max(s.x, s.y, s.z);
-                }
-            }
             phase = Phase.Reveal;
             phaseTime = 0;
             controller.PrepareRewardTransition();
-            for (int i = 0; i < sourceProps.Length; i++)
-            {
-                var prop = sourceProps[i];
-                if (prop == null) continue;
-                prop.transform.SetPositionAndRotation(sourcePositions[i], sourceRotations[i]);
-                prop.transform.localScale = sourceScales[i];
-                foreach (var collider in prop.GetComponentsInChildren<Collider>()) collider.enabled = false;
-                if (prop.TryGetComponent<Rigidbody>(out var body)) { body.isKinematic = true; body.useGravity = false; }
-            }
-
-            keyPosition = (sourceCenters[0] + sourceCenters[1]) * .5f;
+            keyPosition = position;
             key = CreateKey(keyPosition, model, baseColor, metallic);
-            targetKeyScale = Vector3.one * Mathf.Max(.2f, donutSize / .76f);
+            targetKeyScale = Vector3.one * Mathf.Max(.2f, keySize / .76f);
             key.transform.localScale = Vector3.one * .015f;
             Vector3 towardPlayer = Vector3.ProjectOnPlane(controller.Camera.transform.position - keyPosition, Vector3.up);
             keyStartRotation = towardPlayer.sqrMagnitude > .001f
                 ? Quaternion.LookRotation(towardPlayer, Vector3.up) : Quaternion.identity;
             key.transform.rotation = keyStartRotation;
-            controller.Tell("두 그림자가 맞았습니다. 열쇠가 만들어집니다.", 3);
+
         }
 
         void TickReveal()
         {
             float t = Mathf.Clamp01(phaseTime / RevealSeconds);
-            float absorb = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / .72f));
-            for (int i = 0; i < sourceProps.Length; i++)
-            {
-                var prop = sourceProps[i];
-                if (prop == null || !prop.gameObject.activeSelf) continue;
-                prop.transform.position = Vector3.Lerp(sourcePositions[i], keyPosition, absorb);
-                prop.transform.rotation = Quaternion.AngleAxis(220f * absorb * (i == 0 ? 1 : -1), Vector3.up) * sourceRotations[i];
-                prop.transform.localScale = Vector3.Lerp(sourceScales[i], sourceScales[i] * .01f, absorb);
-                if (absorb >= 1f) prop.gameObject.SetActive(false);
-            }
             float appear = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - .35f) / .65f));
             key.transform.position = keyPosition + Vector3.up * (Mathf.Sin(t * Mathf.PI) * .18f);
             key.transform.localScale = Vector3.Lerp(Vector3.one * .015f, targetKeyScale, appear);
@@ -188,15 +136,6 @@ namespace ShadeLink.Tutorial
             controller.SetInteractionLocked(false);
             controller.Tell("열쇠 획득 · 문고리의 구멍에 맞춰 놓으세요. Q/E로 방향을 돌릴 수 있습니다.", 8);
             phase = Phase.Ready;
-        }
-
-        static Vector3 VisualCenter(Transform prop)
-        {
-            var renderers = prop.GetComponentsInChildren<Renderer>();
-            if (renderers.Length == 0) return prop.position;
-            Bounds bounds = renderers[0].bounds;
-            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
-            return bounds.center;
         }
 
         GalleryProp CreateKey(Vector3 position, GameObject model, Texture2D baseColor, Texture2D metallic)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using ShadeLink.Gallery;
 using UnityEngine;
 
@@ -21,11 +22,20 @@ namespace ShadeLink.Tutorial
         readonly FirstPersonMotor motor = new FirstPersonMotor();
         readonly PlayerControls controls = new PlayerControls();
         ObjectInteraction<GalleryProp> interaction;
+        KeyShadowAutoAlign autoAlign;
+        GalleryProp sculpture;
+        Vector3 sculptureAnchor;
+        float[] previousOverlapDepths = Array.Empty<float>();
+        float[] alignmentOverlapDepths = Array.Empty<float>();
+        Quaternion alignmentStartRotation;
         float yaw = -.78f;
         float pitch = .10f;
         bool paused;
         bool interactionLocked;
         GalleryProp pendingRelease;
+        float successFlash;
+        bool swapping;
+        bool alignmentBlocked;
 
         public Camera Camera => view;
         public CharacterController Controller => player;
@@ -68,18 +78,58 @@ namespace ShadeLink.Tutorial
             foreach (GalleryProp prop in props)
             {
                 if (prop == null) continue;
+                if (prop.name == "ShadowKey - Branch Sculpture Preview")
+                    sculptureAnchor = prop.transform.position;
                 prop.Remember();
                 prop.InitializePhysics();
                 if (prop.name == "ShadowKey - Branch Sculpture Preview")
                 {
                     prop.placement.ShowOriginalWhileHeld = true;
                     prop.placement.PreviewUntilSettled = false;
+                    sculpture = prop;
+                    GameObject lamp = GameObject.Find("Only light source · modern wall lamp on right");
+                    Light light = lamp != null ? lamp.GetComponent<Light>() : null;
+                    if (light == null) Debug.LogError("Key-shadow alignment requires the tutorial spotlight.", this);
+                    autoAlign = new KeyShadowAutoAlign(prop.transform, light != null ? light.transform : null);
                 }
                 prop.placement.SetPlayer(player);
             }
 
             SyncView();
             SetPaused(false);
+        }
+
+        bool ApplyFixedSculptureRotation(bool alignmentStep)
+        {
+            Quaternion previous = sculpture.transform.rotation;
+            var parts = sculpture.parts;
+            if (previousOverlapDepths.Length != parts.Length) previousOverlapDepths = new float[parts.Length];
+            if (alignmentOverlapDepths.Length != parts.Length) alignmentOverlapDepths = new float[parts.Length];
+            Physics.SyncTransforms();
+            for (int i = 0; i < parts.Length; i++)
+                previousOverlapDepths[i] = PlayerOverlapDepth(parts[i]);
+            if (alignmentStep)
+            {
+                sculpture.transform.rotation = alignmentStartRotation;
+                Physics.SyncTransforms();
+                for (int i = 0; i < parts.Length; i++)
+                    alignmentOverlapDepths[i] = PlayerOverlapDepth(parts[i]);
+            }
+            sculpture.transform.SetPositionAndRotation(sculptureAnchor, interaction.Rotation);
+            Physics.SyncTransforms();
+            for (int i = 0; i < parts.Length; i++)
+            {
+                float depth = PlayerOverlapDepth(parts[i]);
+                bool worsensPrevious = depth > previousOverlapDepths[i] + .0001f;
+                bool worsensAlignmentStart = alignmentStep && depth > alignmentOverlapDepths[i] + .0001f &&
+                    depth >= previousOverlapDepths[i] - .000001f;
+                if (!worsensPrevious && !worsensAlignmentStart) continue;
+                sculpture.transform.rotation = previous;
+                interaction.Rotation = previous;
+                Physics.SyncTransforms();
+                return false;
+            }
+            return true;
         }
 
         void Update()
@@ -89,7 +139,7 @@ namespace ShadeLink.Tutorial
             if (paused) return;
             if (Cursor.lockState != CursorLockMode.Locked) { SetPaused(true); return; }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (!interactionLocked && Input.GetKeyDown(KeyCode.R))
             {
                 ResetPuzzle();
                 return;
@@ -97,6 +147,7 @@ namespace ShadeLink.Tutorial
 
             float dt = Time.deltaTime;
             PlayerControls.Frame frame = controls.Read(dt, Aimed != null, Held != null);
+            bool manualRotation = Held == sculpture && frame.RotateHeld && frame.Look.sqrMagnitude > 0f;
             if (Held != null && frame.RotateHeld)
             {
                 Vector2 turn = PlayerControls.ObjectRotationDegrees(frame.Look);
@@ -114,17 +165,49 @@ namespace ShadeLink.Tutorial
 
             if (Held != null)
             {
-                if (frame.CancelPressed) { interaction.Cancel(); return; }
+                if (frame.CancelPressed)
+                {
+                    interaction.Cancel();
+                    if (Held == null) autoAlign?.Reset();
+                    return;
+                }
+                if (Held == sculpture && frame.GrabPressed)
+                {
+                    interaction.Drop();
+                    if (Held == null) autoAlign?.Reset();
+                    return;
+                }
                 float turn = (Input.GetKey(KeyCode.E) ? 1 : 0) - (Input.GetKey(KeyCode.Q) ? 1 : 0);
                 float tilt = (Input.GetKey(KeyCode.X) ? 1 : 0) - (Input.GetKey(KeyCode.Z) ? 1 : 0);
+                manualRotation |= Held == sculpture && (turn != 0 || tilt != 0);
                 if (turn != 0 || tilt != 0)
                     interaction.Rotation = Quaternion.AngleAxis(turn * 75f * dt, Vector3.up) *
                         interaction.Rotation * Quaternion.AngleAxis(tilt * 75f * dt, Vector3.right);
 
+                bool autoStep = Held == sculpture && autoAlign != null && autoAlign.IsAligning && !manualRotation;
+                if (Held == sculpture && autoAlign != null)
+                    interaction.Rotation = autoAlign.Tick(interaction.Rotation, dt, manualRotation);
+                else autoAlign?.Reset();
+                bool alignmentStep = autoStep && (autoAlign.IsAligning || autoAlign.HasPendingCompletion);
+                if (!autoStep && Held == sculpture && autoAlign != null && autoAlign.IsAligning)
+                    alignmentStartRotation = sculpture.transform.rotation;
                 interaction.Advance(dt);
-                UpdateProjection();
+                if (Held == sculpture)
+                {
+                    bool applied = ApplyFixedSculptureRotation(alignmentStep);
+                    alignmentBlocked = !applied && alignmentStep;
+                    if (!applied)
+                    {
+                        if (alignmentStep) autoAlign.RejectAlignmentStep(sculpture.transform.rotation);
+                        else autoAlign?.Reset();
+                    }
+                }
+                else UpdateProjection();
+                if (Held == sculpture && autoAlign != null && !swapping &&
+                    autoAlign.TryConsumeCompletion(out int direction, out Quaternion lightAdjustment))
+                    StartCoroutine(ReplaceSculpture(direction, lightAdjustment));
             }
-            else interaction.UpdateAim();
+            else { autoAlign?.Reset(); interaction.UpdateAim(); }
 
             if (frame.GrabPressed)
             {
@@ -138,15 +221,10 @@ namespace ShadeLink.Tutorial
 
         void ResetPuzzle()
         {
-            if (shadowMatcher != null && shadowMatcher.Matched)
-            {
-                Tell("열쇠가 만들어진 뒤에는 이 장면을 다시 시작할 수 없습니다.", 4);
-                return;
-            }
+            autoAlign?.Reset();
             if (Held != null) interaction.Cancel(true);
             foreach (GalleryProp prop in props)
                 if (prop != null) prop.Restore();
-            shadowMatcher?.ResetMatch();
             motor.Reset();
             controls.Reset();
             player.enabled = false;
@@ -158,11 +236,57 @@ namespace ShadeLink.Tutorial
             Tell("처음 배치로 돌아왔습니다. 벽 종이에 열쇠 모양 그림자를 다시 만들어 보세요.", 4);
         }
 
+        IEnumerator ReplaceSculpture(int direction, Quaternion lightAdjustment)
+        {
+            var model = Resources.Load<GameObject>("Tutorial/MatchedKey_Silver");
+            var visual = sculpture != null ? sculpture.transform.Find("ShadowKey_Branch") : null;
+            if (model == null || visual == null)
+            {
+                Debug.LogError("The matched key model or sculpture visual is missing; no replacement was made.", this);
+                autoAlign?.Reset();
+                yield break;
+            }
+            var sourceRenderer = visual.GetComponentInChildren<Renderer>();
+            Material silver = sourceRenderer != null ? sourceRenderer.sharedMaterial : null;
+            swapping = true;
+            SetInteractionLocked(true);
+            float time = 0f;
+            const float fadeIn = .22f, fadeOut = .55f, peak = .72f;
+            while (time < fadeIn)
+            {
+                time += Time.deltaTime;
+                successFlash = peak * Mathf.Clamp01(time / fadeIn);
+                yield return null;
+            }
+            successFlash = peak;
+            GalleryProp key = KeyShadowReplacement.Create(model, visual, direction, lightAdjustment, silver);
+            if (key != null)
+            {
+                if (Held == sculpture) interaction.Cancel(true);
+                sculpture.gameObject.SetActive(false);
+                RegisterProp(key);
+                key.placement.ShowOriginalWhileHeld = true;
+                key.placement.PreviewUntilSettled = false;
+            }
+            else Debug.LogError("The silver key could not be created; the sculpture remains available.", this);
+            time = 0f;
+            while (time < fadeOut)
+            {
+                time += Time.deltaTime;
+                successFlash = peak * (1f - Mathf.Clamp01(time / fadeOut));
+                yield return null;
+            }
+            successFlash = 0f;
+            swapping = false;
+            SetInteractionLocked(false);
+        }
+
         void SyncView() => view.transform.rotation = Quaternion.Euler(-pitch * Mathf.Rad2Deg, yaw * Mathf.Rad2Deg, 0);
 
         void SetPaused(bool value)
         {
             paused = value;
+            if (value) autoAlign?.Reset();
             motor.ClearInput();
             controls.Reset();
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
@@ -177,14 +301,14 @@ namespace ShadeLink.Tutorial
         }
 
         public void StartPlacement() => Held.BeginHold();
-        public void PrepareRelease() { pendingRelease = Held; UpdateProjection(); }
+        public void PrepareRelease() { pendingRelease = Held; if (Held != sculpture) UpdateProjection(); }
 
-        public void SetInteractionLocked(bool value) => interactionLocked = value;
+        public void SetInteractionLocked(bool value) { interactionLocked = value; if (value) autoAlign?.Reset(); }
 
         public void PrepareRewardTransition()
         {
             if (Held != null && interaction != null) interaction.Cancel(true);
-            interactionLocked = true;
+            SetInteractionLocked(true);
         }
 
         public void RegisterProp(GalleryProp prop)
@@ -218,14 +342,27 @@ namespace ShadeLink.Tutorial
                 player, player.transform.position, player.transform.rotation, out _, out _);
         }
 
+        float PlayerOverlapDepth(BoxCollider part)
+        {
+            return part != null && Physics.ComputePenetration(part, part.transform.position, part.transform.rotation,
+                player, player.transform.position, player.transform.rotation, out _, out float depth) ? depth : 0f;
+        }
+
         public void FinishInteraction(bool released)
         {
             GalleryProp releasedProp = pendingRelease;
             pendingRelease = null;
-            if (released)
-                Tell(shadowMatcher != null && shadowMatcher.Matched
-                    ? "열쇠 그림자가 완성됐습니다."
-                    : "배치 완료. 빛 안에서 그림자 윤곽을 확인하세요.", 4);
+            if (released && releasedProp == sculpture)
+            {
+                PropReleasePhysics.Attach(sculpture.body).CancelPendingRelease();
+                sculpture.body.isKinematic = true;
+                sculpture.body.useGravity = false;
+                sculpture.transform.position = sculptureAnchor;
+                sculpture.body.position = sculptureAnchor;
+                Physics.SyncTransforms();
+            }
+            autoAlign?.Reset();
+            if (released) Tell("배치 완료.", 4);
             if (released && releasedProp != null) PropReleased?.Invoke(releasedProp);
         }
 
@@ -242,8 +379,31 @@ namespace ShadeLink.Tutorial
         {
             if (view == null) return;
             float width = Screen.width, height = Screen.height;
+            if (successFlash > 0f)
+            {
+                Color original = GUI.color;
+                GUI.color = new Color(.9f, .95f, 1f, successFlash);
+                GUI.DrawTexture(new Rect(0, 0, width, height), Texture2D.whiteTexture);
+                GUI.color = original;
+            }
             PlayerControls.DrawCursor(new Vector2(width * .5f, height * .5f),
                 Aimed != null, Held != null, false, new Color(.16f, .42f, .95f), Color.white);
+
+#if UNITY_EDITOR
+            if (sculpture != null && sculpture.gameObject.activeInHierarchy && autoAlign != null)
+            {
+                float angle = autoAlign.NearestTargetAngle(sculpture.transform.rotation, out int direction);
+                bool held = Held == sculpture;
+                string state = !held ? "Not held" : paused ? "Paused" : interactionLocked ? "Locked" :
+                    autoAlign.IsAligning && alignmentBlocked ? "Blocked - move away" : autoAlign.IsAligning ? "Aligning" :
+                    angle > KeyShadowAutoAlign.AllowedAngle ? "Outside range" : "Hold still";
+                GUI.Box(new Rect(16, 16, 310, 100), GUIContent.none);
+                GUI.Label(new Rect(26, 22, 290, 22), "Alignment check (Editor only)");
+                GUI.Label(new Rect(26, 43, 290, 22), $"Nearest target: {direction + 1}   Difference: {angle:F1} deg");
+                GUI.Label(new Rect(26, 64, 290, 22), $"Range: {KeyShadowAutoAlign.AllowedAngle:F0} deg   State: {state}");
+                GUI.Label(new Rect(26, 85, 290, 22), $"Hold: {Mathf.Min(autoAlign.HeldTime, KeyShadowAutoAlign.RequiredHoldTime):F1} / {KeyShadowAutoAlign.RequiredHoldTime:F1} sec");
+            }
+#endif
 
             if (paused)
             {
