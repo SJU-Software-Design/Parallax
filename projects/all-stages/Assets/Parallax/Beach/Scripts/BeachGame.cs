@@ -124,7 +124,7 @@ namespace ShadeLink.Beach
         public void StartMirrorDemo()
         {
             ResetAll();Resume();
-            Tell("작은 거울을 잡고 멀리 배치해 키우세요 · Q/E 회전 · H 힌트",7);
+            Tell("작은 거울을 잡고 멀리 배치해 키우세요 · 오른쪽 버튼 + 마우스 회전 · H 힌트",7);
         }
         public void StartHarborDemo()
         {
@@ -211,18 +211,6 @@ namespace ShadeLink.Beach
             SyncView();UpdateAim();
             if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
-            if(held!=null)
-            {
-                float turn=(Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0);
-                float tilt=(Input.GetKey(KeyCode.X)?1:0)-(Input.GetKey(KeyCode.Z)?1:0);
-                RotateHeld(turn*75*Time.deltaTime,tilt*75*Time.deltaTime);
-                if(Input.GetKeyDown(KeyCode.C))heldRotation=Quaternion.Euler(0,Mathf.Round(heldRotation.eulerAngles.y/15)*15,0);
-            }
-            else if(adjustingMirror&&mirror!=null)
-            {
-                if(Input.GetMouseButtonDown(1)||Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
-                else mirror.Turn(((Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0))*28*Time.deltaTime);
-            }
             if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
             gameJumpHeld=frame.JumpHeld;
             Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
@@ -518,7 +506,7 @@ namespace ShadeLink.Beach
             if(exposure>=1||player.feet.y< -3||BeachWater.InHazard(player.feet))Respawn();
         }
         ObjectInteraction<BeachProp> interaction;
-        ObjectInteraction<BeachProp> Interaction => interaction??(interaction=new ObjectInteraction<BeachProp>(this));
+        ObjectInteraction<BeachProp> Interaction => interaction??(interaction=new ObjectInteraction<BeachProp>(this, autoUprightOnPickup: true));
         Camera IObjectInteractionHost<BeachProp>.Camera => view;
         CharacterController IObjectInteractionHost<BeachProp>.Controller => controller;
         BeachProp[] IObjectInteractionHost<BeachProp>.Props => props;
@@ -536,12 +524,6 @@ namespace ShadeLink.Beach
         {
             if(castleRoute!=null&&castleRoute.IsFixed(aimed))
             {Tell("복구한 성벽입니다 · 연결한 자리에 고정되어 있습니다.");return true;}
-            if(aimedMirror!=null)
-            {
-                adjustingMirror=!adjustingMirror;
-                Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);
-                return true;
-            }
             adjustingMirror=false;return false;
         }
         void IObjectInteractionHost<BeachProp>.CancelSpecialInteraction() { adjustingMirror=false; }
