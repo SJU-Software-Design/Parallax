@@ -22,10 +22,9 @@ namespace ShadeLink.Tutorial
         const float RoomHeight = 16f;
         const float TableTargetSize = .70f;
         public const float TableHeight = .82f;
-        static readonly float LayoutShiftX = -16f / 3f - 4.8f;
-        static readonly Vector3 PlayerStart = new Vector3(-16f / 3f, .03f, 0);
-        static readonly Vector3 BoardPosition = new Vector3(-.8f + LayoutShiftX, 0, 4.3f);
-        static readonly Vector3 TablePosition = new Vector3(3.35f + LayoutShiftX, 0, 2.35f);
+        static readonly Vector3 PlayerStart = new Vector3(0, .03f, 0);
+        static readonly Vector3 BoardPosition = new Vector3(-4.8f, 0, 4.3f);
+        static readonly Vector3 TablePosition = new Vector3(1.35f, 0, 2.35f);
         static readonly Vector3 TableHome = TablePosition + Vector3.up * (TableHeight + StartSize * .5f);
         static readonly Color Accent = new Color(1f, .58f, .18f);
         static readonly Color TableAccent = new Color(.97f, .83f, .32f);
@@ -65,7 +64,7 @@ namespace ShadeLink.Tutorial
         public GalleryProp Held { get; set; }
         public GalleryProp Aimed { get; set; }
         public int InteractionMask => (1 << 0) | (1 << HeldCollisionState.Layer);
-        public bool CanInteract => !paused;
+        public bool CanInteract => !paused && !climbArrivalPlaying;
 
         Vector3 GoalCenter => step == 1 ? TableHome : step == 0
             ? new Vector3(0, OrangeTargetSize * .5f, Room.max.z)
@@ -126,8 +125,11 @@ namespace ShadeLink.Tutorial
             BuildSigns();
             BuildDistanceMarks();
             BuildClimbRoom();
+            BuildSunlightCourse();
             ResetStep();
             SetPaused(false);
+            if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "--tutorial-stage3"))
+                StartTutorialStage(3);
         }
 
         void BuildRoom()
@@ -202,11 +204,15 @@ namespace ShadeLink.Tutorial
         void UpdateExit(float dt)
         {
             Vector3 feet = Controller.transform.position;
+            if (inSunlightRoom) return;
             if (inClimbRoom)
             {
                 if (feet.x > ClimbRoom.max.x + .65f && feet.y >= ClimbDoorHeight - .05f &&
                     Mathf.Abs(feet.z - DoorCenter) < DoorWidth * .5f)
+                {
                     climbComplete = true;
+                    EnterSunlightRoom();
+                }
                 return;
             }
             if (!exitUnlocked) return;
@@ -446,12 +452,14 @@ namespace ShadeLink.Tutorial
             Font.textureRebuilt -= RefreshSignFont;
             if (signInk != null) Destroy(signInk);
             landingShake?.Dispose();
+            if (sunlightWarningClip != null) Destroy(sunlightWarningClip);
         }
 
         void OnDisable() => ClearLandingFeedback();
 
         void RefreshLesson()
         {
+            primaryTarget.gameObject.SetActive(true);
             firstSign.SetActive(step == 0);
             shrinkSign.SetActive(step == 1);
             secondSign.SetActive(step >= 2);
@@ -470,7 +478,7 @@ namespace ShadeLink.Tutorial
             Controller.enabled = true;
             motor.Reset();
             controls.Reset();
-            yaw = -.36f;
+            yaw = 0;
             pitch = -.23f;
             SyncView();
             messageUntil = 0;
@@ -492,12 +500,68 @@ namespace ShadeLink.Tutorial
 
         void RestartLesson()
         {
+            if (inSunlightRoom)
+            {
+                RespawnSunlight();
+                return;
+            }
             if (inClimbRoom)
             {
                 ResetClimbRoom();
                 return;
             }
             ResetStep();
+        }
+
+        void StartTutorialStage(int stage)
+        {
+            ClearLandingFeedback();
+            if (Held != null) interaction.Cancel(true);
+            if (Aimed != null) Aimed.Highlight(false, false);
+            Aimed = null;
+            inSunlightRoom = false;
+            SetSunlightLighting(false);
+            ResetSunlightCourse();
+            inClimbRoom = false;
+            climbComplete = false;
+            climbArrivalPlaying = false;
+            nextClimbDrop = 0;
+            climbDropDelay = 0;
+            motor.MantleReachFor = null;
+            step = 0;
+            firstSize = 0;
+            die.homePosition = TableHome;
+            die.homeScale = Vector3.one * StartSize;
+            die.homeRotation = Quaternion.identity;
+            Props = new[] { die };
+            ResetStep();
+            foreach (var prop in climbDice)
+            {
+                prop.GetComponent<TutorialLandingFeedback>().ClearPending();
+                SuspendClimbDie(prop);
+            }
+
+            if (stage == 2)
+            {
+                step = LessonCount;
+                EnterClimbRoom();
+                Controller.enabled = false;
+                Controller.transform.position = ClimbSpawn;
+                Controller.enabled = true;
+                yaw = Mathf.PI * .5f;
+                pitch = 0;
+                SyncView();
+            }
+            else if (stage == 3)
+            {
+                step = LessonCount;
+                EnterSunlightRoom();
+                MoveToSunlightCheckpoint();
+                yaw = Mathf.PI * .5f;
+                pitch = -.04f;
+                SyncView();
+            }
+            SetPaused(false);
         }
 
         void Update()
@@ -521,6 +585,7 @@ namespace ShadeLink.Tutorial
             motor.Step(Controller, frame.Move, yaw, frame.JumpPressed, frame.JumpHeld, Time.deltaTime);
             SyncView();
             UpdateExit(Time.deltaTime);
+            if (inSunlightRoom) TickSunlight(Time.deltaTime);
             if (!CanInteract) return;
 
             if (Held != null)
@@ -568,7 +633,7 @@ namespace ShadeLink.Tutorial
         void UpdateProjection()
         {
             Physics.SyncTransforms();
-            Bounds bounds = inClimbRoom ? ClimbRoom : Room;
+            Bounds bounds = inSunlightRoom ? SunlightBounds : inClimbRoom ? ClimbRoom : Room;
             interaction.ResolvePlacement(bounds.min + Vector3.one * .005f, bounds.max - Vector3.one * .005f);
             interaction.TryApplyPlacement();
         }
@@ -687,6 +752,7 @@ namespace ShadeLink.Tutorial
             float height = Screen.height;
             var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = 20, wordWrap = true, alignment = TextAnchor.MiddleCenter };
             style.normal.textColor = Color.white;
+            if (inSunlightRoom) DrawSunlightExposure(width, height);
             bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
                 interaction.ProjectionApplied && interaction.ReleaseRestriction == null &&
                 SizeFeedback(die.transform.localScale.x) == null;
@@ -710,7 +776,8 @@ namespace ShadeLink.Tutorial
                 DrawReference(rect, Reference);
             }
             PlayerControls.DrawCursor(new Vector2(width / 2, height / 2), Aimed != null, Held != null, false, Accent, Color.white);
-            string notice = climbComplete ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
+            string notice = sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
+                climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
                 Time.time < messageUntil ? message :
                 exitUnlocked && !inClimbRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
                 null;
@@ -723,10 +790,23 @@ namespace ShadeLink.Tutorial
             }
             if (paused)
             {
-                var menu = new Rect(width / 2 - 130, height / 2 - 44, 260, 88);
+                float menuWidth = Mathf.Min(400f, width - 32f);
+                var menu = new Rect((width - menuWidth) / 2, height / 2 - 202, menuWidth, 404);
+                var button = new GUIStyle(GUI.skin.button) { font = font, fontSize = 20, wordWrap = true };
                 GUI.Box(menu, GUIContent.none);
-                if (GUI.Button(new Rect(menu.x + 15, menu.y + 15, 230, 58), "계속하기", style))
+                GUI.Label(new Rect(menu.x + 20, menu.y + 12, menu.width - 40, 32), "튜토리얼 일시정지", style);
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 56, menu.width - 40, 48), "계속하기", button))
                     SetPaused(false);
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 116, menu.width - 40, 48), "처음부터 다시 시작", button))
+                    StartTutorialStage(1);
+                GUI.Label(new Rect(menu.x + 20, menu.y + 176, menu.width - 40, 28), "스테이지 바로가기", style);
+                float stageWidth = (menu.width - 52) / 2;
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 216, stageWidth, 64), "1스테이지\n크기 조절", button))
+                    StartTutorialStage(1);
+                if (GUI.Button(new Rect(menu.x + 32 + stageWidth, menu.y + 216, stageWidth, 64), "2스테이지\n주사위 발판", button))
+                    StartTutorialStage(2);
+                if (GUI.Button(new Rect(menu.x + 20, menu.y + 292, menu.width - 40, 64), "3스테이지 · 햇빛과 그늘", button))
+                    StartTutorialStage(3);
             }
         }
 
