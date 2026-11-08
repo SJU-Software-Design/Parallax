@@ -15,6 +15,7 @@ namespace ShadeLink.Tutorial
         GameObject hallway, surface, cameraObject;
         RenderTexture texture;
         Material surfaceMaterial, wallMaterial, floorMaterial;
+        Mesh apertureMesh;
         int originalMask;
         bool entered, maskChanged;
         float previousZ;
@@ -44,11 +45,28 @@ namespace ShadeLink.Tutorial
             surface = GameObject.CreatePrimitive(PrimitiveType.Quad);
             surface.name = "Corridor visible through door";
             Destroy(surface.GetComponent<Collider>());
-            surface.transform.SetPositionAndRotation(new Vector3(0, 3.225f, DoorZ + .012f), Quaternion.identity);
-            surface.transform.localScale = new Vector3(2.74f, 6.44f, 1f);
+            surface.transform.SetPositionAndRotation(new Vector3(0, 0, DoorZ + .012f), Quaternion.identity);
+            // Clip the off-screen room to the arched doorway, including while
+            // the leaves are moving; never expose a rectangular upper corner.
+            const int segments = 24;
+            var vertices = new Vector3[segments + 4];
+            vertices[0] = new Vector3(-1.37f, .005f, 0);
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = Mathf.PI - Mathf.PI * i / segments;
+                vertices[i + 1] = new Vector3(1.37f * Mathf.Cos(angle), 4.95f + 1.49f * Mathf.Sin(angle), 0);
+            }
+            vertices[segments + 2] = new Vector3(1.37f, .005f, 0);
+            var triangles = new int[(segments + 1) * 3];
+            for (int i = 0; i < segments + 1; i++)
+            { triangles[i * 3] = 0; triangles[i * 3 + 1] = i + 1; triangles[i * 3 + 2] = i + 2; }
+            apertureMesh = new Mesh { name = "Tutorial arched portal" };
+            apertureMesh.vertices = vertices;
+            apertureMesh.triangles = triangles;
+            apertureMesh.RecalculateBounds();
+            surface.GetComponent<MeshFilter>().sharedMesh = apertureMesh;
             surface.GetComponent<Renderer>().sharedMaterial = surfaceMaterial;
             surface.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
-            surface.SetActive(false);
             cameraObject = new GameObject("Tutorial corridor preview camera");
             portalCamera = cameraObject.AddComponent<Camera>();
             portalCamera.enabled = false;
@@ -66,8 +84,6 @@ namespace ShadeLink.Tutorial
         {
             if (source == null || sequence == null || entered) return;
             bool open = sequence.DoorIsOpen;
-            if (surface.activeSelf != open) surface.SetActive(open);
-            if (!open) { previousZ = character.transform.position.z; return; }
             portalCamera.CopyFrom(source);
             portalCamera.enabled = false;
             portalCamera.transform.SetPositionAndRotation(source.transform.position + Offset, source.transform.rotation);
@@ -78,6 +94,7 @@ namespace ShadeLink.Tutorial
             portalCamera.backgroundColor = Color.black;
             portalCamera.Render();
             Vector3 p = character.transform.position;
+            if (!open) { previousZ = p.z; return; }
             if (previousZ < DoorZ && p.z >= DoorZ && Mathf.Abs(p.x) < 1.25f && p.y < 6f)
             {
                 character.enabled = false;
@@ -96,6 +113,7 @@ namespace ShadeLink.Tutorial
             if (source != null && maskChanged) source.cullingMask = originalMask;
             if (texture != null) { texture.Release(); Destroy(texture); }
             if (surfaceMaterial != null) Destroy(surfaceMaterial);
+            if (apertureMesh != null) Destroy(apertureMesh);
             if (wallMaterial != null) Destroy(wallMaterial);
             if (floorMaterial != null) Destroy(floorMaterial);
             if (surface != null) Destroy(surface);

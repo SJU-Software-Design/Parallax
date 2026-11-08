@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace ShadeLink.Tutorial
 {
-    // The two key poses were measured against the two sculpture reference views.
+        // Both solutions reveal the same clearly readable key shadow.
     public static class KeyShadowReplacement
     {
         static readonly Quaternion[] KeyRotations =
         {
-            Quaternion.Euler(-114.658f, 90f, -186.441f),
-            Quaternion.Euler(-78.329f, -90f, -186.441f)
+            Quaternion.Euler(30.486f, -57.252f, -3.113f),
+            Quaternion.Euler(30.486f, -57.252f, -3.113f)
         };
         public static GalleryProp Create(GameObject model, Transform sculptureVisual,
             int direction, Quaternion beamAdjustment, Material silver)
@@ -20,7 +20,7 @@ namespace ShadeLink.Tutorial
             try
             {
                 root.transform.SetPositionAndRotation(sculptureVisual.position,
-                    beamAdjustment * KeyRotations[direction]);
+                    KeyRotations[direction]);
                 var instance = Object.Instantiate(model, root.transform, false);
                 foreach (var renderer in instance.GetComponentsInChildren<Renderer>())
                     if (silver != null)
@@ -55,8 +55,27 @@ namespace ShadeLink.Tutorial
                 float keyLength = Mathf.Max(localBounds.size.x, localBounds.size.y, localBounds.size.z);
                 if (sourceLength < .0001f || keyLength < .0001f) { Debug.LogError($"Key replacement: invalid model size (sculpture {sourceLength}, key {keyLength})."); Object.Destroy(root); return null; }
                 root.transform.localScale = Vector3.one * (sourceLength / keyLength);
+                // Move the interaction pivot to the mesh's center without moving
+                // the visible model from its calibrated replacement pose.
+                Vector3 heightOffset = Vector3.up * 0.4f;
+                Vector3 visualPosition = instance.transform.position + heightOffset;
+                root.transform.position = root.transform.TransformPoint(localBounds.center) + heightOffset;
+                // The pedestal's root and its centered collider define the display center.
+                var pedestal = GameObject.Find("Museum pedestal · movable");
+                if (pedestal != null)
+                {
+                    var pedestalCollider = pedestal.GetComponent<BoxCollider>();
+                    Vector3 center = pedestalCollider != null
+                        ? pedestal.transform.TransformPoint(pedestalCollider.center)
+                        : pedestal.transform.position;
+                    Vector3 horizontalOffset = new Vector3(center.x - root.transform.position.x, 0f,
+                        center.z - root.transform.position.z);
+                    root.transform.position += horizontalOffset;
+                    visualPosition += horizontalOffset;
+                }
+                instance.transform.position = visualPosition;
                 var collider = root.AddComponent<BoxCollider>();
-                collider.center = localBounds.center;
+                collider.center = Vector3.zero;
                 collider.size = localBounds.size;
                 var body = root.AddComponent<Rigidbody>();
                 body.isKinematic = true;

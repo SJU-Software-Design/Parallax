@@ -24,6 +24,8 @@ namespace ShadeLink.Tutorial
         ObjectInteraction<GalleryProp> interaction;
         KeyShadowAutoAlign autoAlign;
         GalleryProp sculpture;
+        GalleryProp fixedReward;
+        Vector3 rewardAnchor;
         Vector3 sculptureAnchor;
         float[] previousOverlapDepths = Array.Empty<float>();
         float[] alignmentOverlapDepths = Array.Empty<float>();
@@ -169,6 +171,26 @@ namespace ShadeLink.Tutorial
                 StartCoroutine(ReplaceSculpture(direction, lightAdjustment));
         }
 
+        void ApplyFixedRewardRotation()
+        {
+            Quaternion previous = fixedReward.transform.rotation;
+            var parts = fixedReward.parts;
+            if (previousOverlapDepths.Length != parts.Length) previousOverlapDepths = new float[parts.Length];
+            Physics.SyncTransforms();
+            for (int i = 0; i < parts.Length; i++)
+                previousOverlapDepths[i] = PlayerOverlapDepth(parts[i]);
+            fixedReward.transform.SetPositionAndRotation(rewardAnchor, interaction.Rotation);
+            Physics.SyncTransforms();
+            for (int i = 0; i < parts.Length; i++)
+                if (PlayerOverlapDepth(parts[i]) > previousOverlapDepths[i] + .0001f)
+                {
+                    fixedReward.transform.rotation = previous;
+                    interaction.Rotation = previous;
+                    Physics.SyncTransforms();
+                    break;
+                }
+        }
+
         void Update()
         {
             if (interaction == null) return;
@@ -219,7 +241,7 @@ namespace ShadeLink.Tutorial
                     if (Held == null) autoAlign?.Reset();
                     return;
                 }
-                if (Held == sculpture && frame.GrabPressed)
+                if ((Held == sculpture || Held == fixedReward) && frame.GrabPressed)
                 {
                     interaction.Drop();
                     if (Held == null) autoAlign?.Reset();
@@ -234,6 +256,7 @@ namespace ShadeLink.Tutorial
 
                 interaction.Advance(dt);
                 if (Held == sculpture) TickSculptureAlignment(interaction.Rotation, dt);
+                else if (Held == fixedReward) { autoAlign?.Reset(); ApplyFixedRewardRotation(); }
                 else { autoAlign?.Reset(); UpdateProjection(); }
             }
             else
@@ -301,6 +324,10 @@ namespace ShadeLink.Tutorial
                 if (Held == sculpture) interaction.Cancel(true);
                 sculpture.gameObject.SetActive(false);
                 RegisterProp(key);
+                fixedReward = key;
+                rewardAnchor = key.transform.position;
+                var doorSequence = FindFirstObjectByType<KeyShadowSequence>();
+                if (doorSequence != null) doorSequence.AcceptMatchedKey(key);
                 key.placement.ShowOriginalWhileHeld = true;
                 key.placement.PreviewUntilSettled = false;
             }
@@ -379,7 +406,7 @@ namespace ShadeLink.Tutorial
             Held.BeginHold();
             if (Held == sculpture) lastAppliedSculptureRotation = sculpture.transform.rotation;
         }
-        public void PrepareRelease() { pendingRelease = Held; if (Held != sculpture) UpdateProjection(); }
+        public void PrepareRelease() { pendingRelease = Held; if (Held != sculpture && Held != fixedReward) UpdateProjection(); }
 
         public void SetInteractionLocked(bool value) { interactionLocked = value; if (value) autoAlign?.Reset(); }
 
@@ -430,13 +457,14 @@ namespace ShadeLink.Tutorial
         {
             GalleryProp releasedProp = pendingRelease;
             pendingRelease = null;
-            if (released && releasedProp == sculpture)
+            if (released && (releasedProp == sculpture || releasedProp == fixedReward))
             {
-                PropReleasePhysics.Attach(sculpture.body).CancelPendingRelease();
-                sculpture.body.isKinematic = true;
-                sculpture.body.useGravity = false;
-                sculpture.transform.position = sculptureAnchor;
-                sculpture.body.position = sculptureAnchor;
+                Vector3 anchor = releasedProp == sculpture ? sculptureAnchor : rewardAnchor;
+                PropReleasePhysics.Attach(releasedProp.body).CancelPendingRelease();
+                releasedProp.body.isKinematic = true;
+                releasedProp.body.useGravity = false;
+                releasedProp.transform.position = anchor;
+                releasedProp.body.position = anchor;
                 Physics.SyncTransforms();
             }
             autoAlign?.Reset();

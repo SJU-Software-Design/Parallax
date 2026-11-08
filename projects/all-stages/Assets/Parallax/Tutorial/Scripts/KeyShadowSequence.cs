@@ -6,10 +6,11 @@ namespace ShadeLink.Tutorial
     /// <summary>Reveals a key on request, then handles the door sequence.</summary>
     public sealed class KeyShadowSequence : MonoBehaviour
     {
-        enum Phase { Waiting, Reveal, Ready, TurnKey, OpenDoor, Complete }
+        enum Phase { Waiting, Reveal, Ready, TurnKey, UnlockDelay, OpenDoor, Complete }
 
         [SerializeField] KeyShadowTutorialController controller;
         [SerializeField] Transform doorPivot;
+        [SerializeField] Transform otherDoorPivot;
         [SerializeField] Vector3 lockPosition;
 
         const float RevealSeconds = 1.6f;
@@ -29,6 +30,7 @@ namespace ShadeLink.Tutorial
         Quaternion keyTargetRotation;
         Quaternion doorStartRotation;
         Quaternion doorOpenRotation;
+        Quaternion otherDoorStartRotation;
         bool subscribed;
         public bool DoorIsOpen => phase == Phase.Complete;
         public bool TutorialCompleted { get; private set; }
@@ -80,6 +82,7 @@ namespace ShadeLink.Tutorial
             phaseTime += Time.deltaTime;
             if (phase == Phase.Reveal) TickReveal();
             else if (phase == Phase.TurnKey) TickKeyTurn();
+            else if (phase == Phase.UnlockDelay && phaseTime >= .6f) BeginDoorOpening();
             else if (phase == Phase.OpenDoor) TickDoorOpen();
         }
 
@@ -184,6 +187,8 @@ namespace ShadeLink.Tutorial
             Vector3 tipPosition = prop.transform.TransformPoint(Vector3.down * KeyTipOffset);
             float distance = Mathf.Min(Vector3.Distance(prop.transform.position, lockPosition),
                 Vector3.Distance(tipPosition, lockPosition));
+            if (otherDoorPivot != null)
+                distance = Vector3.Distance(prop.WorldBounds.ClosestPoint(lockPosition), lockPosition);
             if (distance > InsertDistance)
             {
                 controller.Tell("열쇠를 문고리 구멍 가까이에 놓으세요.", 4);
@@ -193,20 +198,30 @@ namespace ShadeLink.Tutorial
             float facing = Vector3.Angle(prop.transform.forward, doorPivot.forward);
             float upright = Vector3.Angle(prop.transform.up, Vector3.up);
             float inserted = Vector3.Angle(-prop.transform.up, doorPivot.forward);
-            if ((facing > 24f || upright > 24f) && inserted > 24f)
+            if (otherDoorPivot == null && (facing > 24f || upright > 24f) && inserted > 24f)
             {
                 controller.Tell("열쇠 방향이 맞지 않습니다. Q/E와 마우스 회전으로 맞춰 보세요.", 5);
                 return;
             }
 
             float scale = prop.transform.localScale.y;
-            if (scale < .42f || scale > 1.12f)
+            if (otherDoorPivot == null && (scale < .42f || scale > 1.12f))
             {
                 controller.Tell("열쇠 크기가 구멍과 맞지 않습니다. 거리를 조절해 크기를 맞추세요.", 5);
                 return;
             }
 
             BeginKeyTurn();
+        }
+
+        // The sculpture puzzle creates its own matched key, rather than using
+        // the older two-object forge's reveal sequence.
+        public void AcceptMatchedKey(GalleryProp matchedKey)
+        {
+            if (matchedKey == null || phase != Phase.Waiting) return;
+            key = matchedKey;
+            phase = Phase.UnlockDelay;
+            phaseTime = 0f;
         }
 
         void BeginKeyTurn()
@@ -233,9 +248,15 @@ namespace ShadeLink.Tutorial
             key.transform.rotation = Quaternion.AngleAxis(90f * t, doorPivot.forward) * keyStartRotation;
             if (t < 1f) return;
 
+            BeginDoorOpening();
+        }
+
+        void BeginDoorOpening()
+        {
             phase = Phase.OpenDoor;
             phaseTime = 0;
             doorStartRotation = doorPivot.rotation;
+            if (otherDoorPivot != null) otherDoorStartRotation = otherDoorPivot.rotation;
             doorOpenRotation = Quaternion.AngleAxis(-100f, Vector3.up) * doorStartRotation;
             controller.Tell("자물쇠가 풀렸습니다.", 2);
         }
@@ -245,6 +266,8 @@ namespace ShadeLink.Tutorial
             float t = Mathf.Clamp01(phaseTime / DoorSeconds);
             float eased = t * t * (3f - 2f * t);
             doorPivot.rotation = Quaternion.Slerp(doorStartRotation, doorOpenRotation, eased);
+            if (otherDoorPivot != null)
+                otherDoorPivot.rotation = Quaternion.AngleAxis(100f * eased, Vector3.up) * otherDoorStartRotation;
             if (t < 1f) return;
 
             phase = Phase.Complete;
