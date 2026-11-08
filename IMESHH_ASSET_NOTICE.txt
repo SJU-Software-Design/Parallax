@@ -1,0 +1,5 @@
+This file contains imeshh.com assets and should not be redistributed further.
+
+Asset: Cylinder Spotlight 04
+Source: https://imeshh.com/assets/ceiling-spotlight-5-adjustable
+Changes: The black variant was selected and exported as FBX for the tutorial preview.
