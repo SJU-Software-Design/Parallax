@@ -21,6 +21,7 @@ namespace ShadeLink.Gallery
             public string file;
             public Vector3 cameraPosition,lookTarget;
             public float fieldOfView;
+            public int width=1600,height=900;
         }
         [Serializable] sealed class Manifest
         {
@@ -54,7 +55,7 @@ namespace ShadeLink.Gallery
             }
             var manifest=new Manifest{passed=failure==null&&errors.Count==0,version=GalleryGame.Version,
                 scene=SceneManager.GetActiveScene().name,unity=Application.unityVersion,gpu=SystemInfo.graphicsDeviceName,
-                scope="Actual 1600x900 player-camera views with the camera post-processing stack. This is visual QA, not a puzzle-completion test.",
+                scope="Actual player-camera renders with the camera post-processing stack. Dimensions and field of view are recorded for each shot, including the wide reference-comparison view. This is visual QA, not a puzzle-completion test.",
                 failure=failure,shots=shots.ToArray(),errors=errors.ToArray()};
             File.WriteAllText(Path.Combine(output,"capture-manifest.json"),JsonUtility.ToJson(manifest,true));
             Application.logMessageReceived-=Log;
@@ -75,6 +76,10 @@ namespace ShadeLink.Gallery
             game.active=false;Time.timeScale=1;
             CheckMaterials();
             var definitions=new[]{
+                new Shot{file="00-nike-reference-wide.png",cameraPosition=GalleryNikeCanvas.DemoPosition+Vector3.up*1.65f,lookTarget=new Vector3(0,2.20f,24),fieldOfView=46,width=1920,height=660},
+                new Shot{file="00-nike-front.png",cameraPosition=GalleryNikeCanvas.DemoPosition+Vector3.up*1.65f,lookTarget=new Vector3(0,1.65f,24)},
+                new Shot{file="00-portrait-front.png",cameraPosition=new Vector3(0,1.65f,30.2f),lookTarget=new Vector3(0,2.7f,43.3f)},
+                new Shot{file="00-cathedral-front.png",cameraPosition=new Vector3(0,1.65f,45.5f),lookTarget=new Vector3(0,2.7f,54)},
                 new Shot{file="01-entry.png",cameraPosition=new Vector3(0,1.65f,2.2f),lookTarget=new Vector3(0,1.65f,14)},
                 new Shot{file="02-painting-room.png",cameraPosition=new Vector3(5.6f,2.2f,11.7f),lookTarget=new Vector3(-2,2,5)},
                 new Shot{file="03-nike-room.png",cameraPosition=new Vector3(4.8f,2.1f,18),lookTarget=new Vector3(-2,2.2f,22)},
@@ -86,10 +91,12 @@ namespace ShadeLink.Gallery
                 new Shot{file="09-paintings-oblique.png",cameraPosition=new Vector3(-4.8f,1.7f,3.3f),lookTarget=new Vector3(1.3f,2.65f,12.8f)},
                 new Shot{file="10-through-the-arch.png",cameraPosition=new Vector3(1.8f,1.7f,8),lookTarget=new Vector3(-2,2.6f,24)}
             };
+            float gameplayFov=game.view.fieldOfView;
             foreach(var shot in definitions)
             {
                 game.view.transform.SetPositionAndRotation(shot.cameraPosition,Quaternion.LookRotation(shot.lookTarget-shot.cameraPosition));
-                game.view.aspect=1600f/900;game.lighting.Synchronize();
+                game.view.aspect=(float)shot.width/shot.height;
+                game.view.fieldOfView=shot.fieldOfView>0?shot.fieldOfView:gameplayFov;game.lighting.Synchronize();
                 // Let lighting drivers and camera effects see this exact pose.
                 yield return null;yield return new WaitForEndOfFrame();
                 Render(shot);shots.Add(shot);
@@ -97,6 +104,24 @@ namespace ShadeLink.Gallery
         }
         void CheckMaterials()
         {
+            var bounce=game.GetComponent<GalleryBakedLighting>();
+            if(bounce!=null)
+            {
+                if(LightmapSettings.lightmaps.Length==0||Shader.GetGlobalFloat("_MuseumBakedGI")<.5f)
+                    throw new InvalidOperationException("Museum baked irradiance was not loaded in the player");
+                foreach(var source in bounce.bakeSources)
+                    if(source!=null&&source.enabled)throw new InvalidOperationException("Offline bounce source remained active at runtime");
+                Debug.Log("MUSEUM_BOUNCE_PLAYER_OK maps="+LightmapSettings.lightmaps.Length);
+            }
+            if(Shader.GetGlobalFloat("_MuseumExhibitShadowReady")<.5f)
+                throw new InvalidOperationException("Museum display-light mesh shadows did not initialize");
+            var shadows=game.GetComponent<GalleryExhibitShadows>();
+            shadows.enabled=false;
+            if(Shader.GetGlobalFloat("_MuseumExhibitShadowReady")>.5f)
+                throw new InvalidOperationException("Museum display-light shadows were not released on disable");
+            shadows.enabled=true;
+            if(Shader.GetGlobalFloat("_MuseumExhibitShadowReady")<.5f)
+                throw new InvalidOperationException("Museum display-light shadows did not return after re-enable");
             foreach(var renderer in game.GetComponentsInChildren<Renderer>(true))
                 foreach(var material in renderer.sharedMaterials)
                     if(material==null||material.shader==null||!material.shader.isSupported||material.shader.name=="Hidden/InternalErrorShader")
@@ -105,12 +130,13 @@ namespace ShadeLink.Gallery
         void Render(Shot shot)
         {
             Camera camera=game.view;var oldTarget=camera.targetTexture;var oldActive=RenderTexture.active;
-            var target=new RenderTexture(1600,900,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name="Actual museum visual QA"};
+            var target=new RenderTexture(shot.width,shot.height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB)
+                {name="Actual museum visual QA",antiAliasing=4};
             Texture2D image=null;
             try
             {
                 camera.targetTexture=target;camera.Render();RenderTexture.active=target;
-                image=new Texture2D(1600,900,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1600,900),0,0);image.Apply();
+                image=new Texture2D(shot.width,shot.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,shot.width,shot.height),0,0);image.Apply();
                 File.WriteAllBytes(Path.Combine(output,shot.file),image.EncodeToPNG());shot.fieldOfView=camera.fieldOfView;
             }
             finally

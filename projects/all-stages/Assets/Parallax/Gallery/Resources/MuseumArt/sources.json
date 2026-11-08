@@ -108,5 +108,51 @@
     "bytes": 594446,
     "sha256": "fc7aa0b6dcae15e41f1b9b64ba8e89db6fd5e6cbbd9ca74d61eefe8d135fa6f7",
     "accessed": "2026-11-04"
+  },
+  {
+    "file": "NikeVisconti1919.jpg",
+    "resourcesKey": "MuseumArt/NikeVisconti1919",
+    "title": "Vitória de Samotrácia",
+    "artist": "Eliseu Visconti",
+    "year": "1919",
+    "collection": "Museu Nacional de Belas Artes, Rio de Janeiro",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/Eliseu_Visconti_-_Vit%C3%B3ria_de_Samotr%C3%A1cia.jpg",
+    "license": "Public domain / PD-Art as stated on Wikimedia Commons",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "attributionRequired": false,
+    "downloadedSourceDerivative": "Original Wikimedia file, unmodified",
+    "width": 2454,
+    "height": 3968,
+    "bytes": 3719505,
+    "sha256": "1a359c5df62a59849c6e955e5ca3f78e9010dc75a91b5d2a2a0c75bcd9202c45",
+    "accessed": "2026-11-05"
+  },
+  {
+    "file": "MaeWestFace.jpg",
+    "resourcesKey": "MuseumArt/MaeWestFace",
+    "title": "Mae West's Face which May be Used as a Surrealist Apartment",
+    "artist": "Salvador Dalí",
+    "year": "1934–35",
+    "sourcePage": "https://www.boijmans.nl/en/collection/artworks/122647/mae-west-lips-sofa",
+    "downloadUrl": "https://storage.boijmans.nl/styles/artwork_research/uploads/2020/12/09/nSai1X3ebW6misqe2Ki0UXo3bwzI0sj0253ymQG8.jpeg",
+    "rights": "Copyright remains with the artwork and photograph rights holders. Reference reproduction; no public-domain or reuse license asserted.",
+    "role": "Portrait puzzle reference display",
+    "sha256": "d18feb0f7a57cb845ce37158d41ec07cdc45793f75670378128fc35fe8962d7a",
+    "accessed": "2026-11-06"
+  },
+  {
+    "file": "MaeWestRoom.jpg",
+    "resourcesKey": "MuseumArt/MaeWestRoom",
+    "title": "Mae West Room, installation photograph",
+    "artist": "Salvador Dalí and Òscar Tusquets; photograph via ARTE.it",
+    "year": "",
+    "sourcePage": "https://www.arte.it/notizie/mondo/il-teatro-museo-di-figueres-un-sogno-firmato-dal%C3%AC-17233",
+    "downloadUrl": "https://www.arte.it/foto/orig/b1/102883-Museo_Dali_Sala_Mae_West.jpg",
+    "rights": "Copyright remains with the artwork and photograph rights holders. Reference reproduction; no public-domain or reuse license asserted.",
+    "role": "Portrait puzzle reference display",
+    "sha256": "29a5c7021959de1f276a270487f13497b8bb43085c4bcf004c428db530dbdb88",
+    "accessed": "2026-11-06"
   }
 ]

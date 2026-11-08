@@ -158,8 +158,8 @@ namespace ShadeLink.Gallery
         static void Window(Transform parent,float center,GalleryConceptArchitecture.Palette p,Material glass)
         {
             var window=Group(parent,"Classical arched exterior window",new Vector3(center,0,0));
-            Box(window,"Solid wall below window sill",new Vector3(0,Bottom/2,0),new Vector3(Radius*2,Bottom,Thickness),p.plaster,true);
-            Geometry(window,"True curved window header",Header(),p.plaster,true);
+            Box(window,"Solid wall below window sill",new Vector3(0,Bottom/2,0),new Vector3(Radius*2,Bottom,Thickness),p.wall,true);
+            Geometry(window,"True curved window header",Header(),p.wall,true);
             Vector2[] stoneProfile={new Vector2(0,.16f),new Vector2(0,-.17f),new Vector2(.025f,-.195f),new Vector2(.065f,-.235f),
                 new Vector2(.105f,-.235f),new Vector2(.13f,-.19f),new Vector2(.18f,-.20f),new Vector2(.235f,-.28f),
                 new Vector2(.29f,-.28f),new Vector2(.35f,-.21f),new Vector2(.35f,.16f)};
@@ -202,10 +202,10 @@ namespace ShadeLink.Gallery
             foreach(float center in new[]{-22.5f,6.5f})
             {
                 float edge=center-Radius;
-                if(edge>cursor)Box(wall,"Solid exterior wall between windows",new Vector3((cursor+edge)/2,Height/2,0),new Vector3(edge-cursor,Height,Thickness),p.plaster,true);
+                if(edge>cursor)Box(wall,"Solid exterior wall between windows",new Vector3((cursor+edge)/2,Height/2,0),new Vector3(edge-cursor,Height,Thickness),p.wall,true);
                 Window(wall,center,p,glass);cursor=center+Radius;
             }
-            if(cursor<Length/2)Box(wall,"Solid exterior wall after window",new Vector3((cursor+Length/2)/2,Height/2,0),new Vector3(Length/2-cursor,Height,Thickness),p.plaster,true);
+            if(cursor<Length/2)Box(wall,"Solid exterior wall after window",new Vector3((cursor+Length/2)/2,Height/2,0),new Vector3(Length/2-cursor,Height,Thickness),p.wall,true);
         }
     }
 }

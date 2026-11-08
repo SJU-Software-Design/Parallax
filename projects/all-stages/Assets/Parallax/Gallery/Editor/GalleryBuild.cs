@@ -7,6 +7,7 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 namespace ShadeLink.Editor
 {
@@ -32,9 +33,14 @@ namespace ShadeLink.Editor
                 "Source: https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604\n"+
                 "License: Free Standard (NoAI), as recorded for the existing Library assets. This asset is not CC BY.\n\n"+
                 "Marble Bust 01 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/marble_bust_01\n\n"+
+                "Aurelius (PhotoScan) - ryanfb, portrait bust of Marcus Aurelius, Art Institute of Chicago. CC BY 4.0.\n"+
+                "Source: https://sketchfab.com/3d-models/aurelius-photoscan-cad3a072546a457fa1e2e5a90b25063a\n"+
+                "License: https://creativecommons.org/licenses/by/4.0/\n"+
+                "Changes: original OBJ and albedo imported, scaled and shaded for a movable marble exhibit with a new lamp-cover plinth.\n\n"+
                 "Potted Plant 02 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/potted_plant_02\n\n"+
                 "Surface textures: Poly Haven, CC0. https://polyhaven.com/license\n"+
-                "Paintings: Public-domain sources from Wikimedia Commons.\n\n");
+                "Historic paintings: Public-domain sources from Wikimedia Commons. The completed Nike canvas is a generated painting based on the supplied concept reference.\n"+
+                "Mae West face and room references: Salvador Dali; installation with Oscar Tusquets. Reproductions from Museum Boijmans Van Beuningen and ARTE.it. Rights reserved; no public-domain or reuse license is asserted. See MuseumArt-Credits.md and MuseumArt/sources.json for source URLs.\n\n");
             foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md"})
             {
                 string source=Path.Combine("Documentation/Gallery",name);
@@ -43,17 +49,25 @@ namespace ShadeLink.Editor
         }
         static void Integrate(GalleryGame game)
         {
-            GalleryConceptScans.Install(game);
+            var nike=GalleryConceptScans.Install(game);
             GalleryConceptBusts.Install(game);
             GalleryConceptPlants.Install(game);
             GalleryConceptStage.Install(game);
             GalleryConceptAtmosphere.Install(game);
-            game.shadowCourse=GalleryMuseumShadowCourse.Install(game);
+            game.shadowCourse=GalleryMuseumShadowCourse.Install(game,nike);
+            var canvas=game.shadowCourse.nikeLight.canvas;
+            const string guidePath=Generated+"Nike shadow alignment guide.asset";
+            var guide=canvas.BakeGuide();
+            var storedGuide=AssetDatabase.LoadAssetAtPath<Texture2D>(guidePath);
+            if(storedGuide==null){AssetDatabase.CreateAsset(guide,guidePath);storedGuide=guide;}
+            else{EditorUtility.CopySerialized(guide,storedGuide);UnityEngine.Object.DestroyImmediate(guide);}
+            canvas.guide.sharedMaterial.mainTexture=storedGuide;
             game.portraitGate=GalleryPortraitGate.Install(game);
             game.orcusExit=GalleryConceptExit.Install(game);
+            GalleryCathedralRumble.Install(game,game.orcusExit.cathedralActivation);
             GalleryConceptLighting.Configure(game);
         }
-        static void SaveMuseumMeshes(GalleryGame game)
+        static void SaveMuseumMeshes(GalleryGame game, string prefix="MuseumMesh_")
         {
             // Scene references to temporary procedural meshes would disappear in
             // a player build. Persist every generated mesh before saving the scene.
@@ -63,7 +77,7 @@ namespace ShadeLink.Editor
             {
             foreach(var group in game.GetComponentsInChildren<MeshFilter>(true).Where(f=>f.sharedMesh!=null&&!AssetDatabase.Contains(f.sharedMesh)).GroupBy(f=>f.sharedMesh).ToArray())
             {
-                Mesh mesh=group.Key;string name="MuseumMesh_"+(index++).ToString("D3")+"_"+mesh.name;
+                Mesh mesh=group.Key;string name=prefix+(index++).ToString("D3")+"_"+mesh.name;
                 foreach(char c in Path.GetInvalidFileNameChars())name=name.Replace(c,'_');
                 string path=Generated+name+".asset";
                 var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
@@ -74,6 +88,75 @@ namespace ShadeLink.Editor
             }
             }
             finally { AssetDatabase.StopAssetEditing(); }
+        }
+        // Upgrade only the moving Nike exhibits. Keep the saved architecture,
+        // lightmap UVs, lighting data and authored probes intact.
+        public static void ApplyNikeDiscoveryUpgrade()
+        {
+            Scene scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var game=UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
+            if(game==null||game.shadowCourse==null||game.nikeLight==null)
+                throw new InvalidOperationException("The saved museum's Nike course is missing.");
+            var lightingData=Lightmapping.lightingDataAsset;
+            int lightmapCount=LightmapSettings.lightmaps.Length;
+            if(lightingData==null||lightmapCount==0)
+                throw new InvalidOperationException("Nike upgrade requires the saved baked museum lighting.");
+            GalleryWorld.Materials.Clear();
+            var course=game.shadowCourse;
+            course.nikeCover=GalleryNikeLightCover.Install(game,course.transform);
+            course.nikeCover.Prop.minScale=.45f;
+            course.nikeCover.Prop.maxScale=3.4f;
+            EditorUtility.SetDirty(course.nikeCover.Prop);
+            game.nikeLight.cover=course.nikeCover;
+            var props=game.props.ToList();
+            if(!props.Contains(course.nikeCover.Prop))props.Add(course.nikeCover.Prop);
+            game.props=props.ToArray();
+            var nike=course.statue;
+            nike.transform.localPosition=new Vector3(1.5f,0,21.65f);
+            nike.Remember();
+            if(nike.body!=null){nike.body.position=nike.transform.position;nike.body.rotation=nike.transform.rotation;}
+            foreach(var label in course.GetComponentsInChildren<GalleryLabel>(true))
+                if(label.caption=="니케의 그림자를 벽의 윤곽에 맞춰 보세요")
+                    label.caption="빈 캔버스와 주변 전시물을 살펴보세요";
+            foreach(var renderer in course.nikeCover.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                GameObjectUtility.SetStaticEditorFlags(renderer.gameObject,
+                    GameObjectUtility.GetStaticEditorFlags(renderer.gameObject)&~StaticEditorFlags.ContributeGI);
+                renderer.receiveGI=ReceiveGI.LightProbes;
+                renderer.lightProbeUsage=LightProbeUsage.BlendProbes;
+            }
+            // A separate mesh prefix avoids overwriting the existing baked
+            // architecture's generated mesh assets during this partial upgrade.
+            SaveMuseumMeshes(game,"NikeDiscoveryMesh_");
+            foreach(var material in GalleryWorld.Materials.ToArray())
+            {
+                string path=Generated+"NikeDiscovery_"+material.name.Replace('/','_')+".mat";
+                var saved=AssetDatabase.LoadAssetAtPath<Material>(path);
+                if(saved==null){AssetDatabase.CreateAsset(material,path);saved=material;}
+                else EditorUtility.CopySerialized(material,saved);
+                foreach(var renderer in course.nikeCover.GetComponentsInChildren<Renderer>(true))
+                {
+                    var slots=renderer.sharedMaterials;bool changed=false;
+                    for(int i=0;i<slots.Length;i++)if(slots[i]==material){slots[i]=saved;changed=true;}
+                    if(changed)renderer.sharedMaterials=slots;
+                }
+            }
+            var canvas=game.nikeLight.canvas;
+            string guidePath=Generated+"Nike shadow alignment guide.asset";
+            var guide=canvas.BakeGuide();
+            var stored=AssetDatabase.LoadAssetAtPath<Texture2D>(guidePath);
+            if(stored==null){AssetDatabase.CreateAsset(guide,guidePath);stored=guide;}
+            else{EditorUtility.CopySerialized(guide,stored);UnityEngine.Object.DestroyImmediate(guide);}
+            canvas.guide.sharedMaterial.mainTexture=stored;
+            EditorUtility.SetDirty(canvas.guide.sharedMaterial);
+            game.lighting.Rebuild();game.nikeLight.SyncPose();
+            if(Lightmapping.lightingDataAsset!=lightingData||LightmapSettings.lightmaps.Length!=lightmapCount)
+                throw new InvalidOperationException("Nike upgrade unexpectedly changed saved museum lighting.");
+            if(game.props.Length!=7)throw new InvalidOperationException("Nike discovery layout requires seven movable exhibits.");
+            EditorUtility.SetDirty(game);EditorUtility.SetDirty(course);EditorUtility.SetDirty(game.nikeLight);
+            EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
+            Debug.Log("NIKE_DISCOVERY_UPGRADE_OK props="+game.props.Length+" retainedLightmaps="+lightmapCount+
+                " lamp="+game.nikeLight.fixedLamp.position+" nike="+nike.transform.position);
         }
         [MenuItem("Parallax/미술관 씬 준비")]
         public static void Prepare()
@@ -92,7 +175,7 @@ namespace ShadeLink.Editor
                 else
                 {
                     EditorUtility.CopySerialized(m,existing);
-                    foreach(var r in game.GetComponentsInChildren<Renderer>())
+                    foreach(var r in game.GetComponentsInChildren<Renderer>(true))
                     {
                         var slots=r.sharedMaterials;bool changed=false;
                         for(int i=0;i<slots.Length;i++)if(slots[i]==m){slots[i]=existing;changed=true;}
@@ -103,10 +186,12 @@ namespace ShadeLink.Editor
                 }
             }
             game.lighting.Rebuild();
-            if(game.props.Length!=6||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null)throw new Exception("Playable museum exhibit missing");
-            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth"})
+            if(game.props.Length!=7||game.GetComponentInChildren<GalleryConceptPerspective>()==null||!game.conceptLayout||game.orcusExit==null||game.portraitGate==null||game.shadowCourse==null||game.nikeLight==null)throw new Exception("Playable museum exhibit missing");
+            foreach(string shader in new[]{"Parallax/MuseumSurface","Parallax/GalleryConceptPostFX","Parallax/MuseumFoliage","Parallax/MuseumLibraryPortal","Hidden/Parallax/MuseumNikeDepth","Parallax/GalleryNikeBeam","Parallax/GalleryNikeFusion","Parallax/MuseumNikeBrush","Parallax/PortraitCurtainFace"})
             {
                 var asset=Shader.Find(shader);
+                if(asset!=null&&ShaderUtil.ShaderHasError(asset))
+                    foreach(var message in ShaderUtil.GetShaderMessages(asset))Debug.LogError(shader+" line "+message.line+": "+message.message);
                 if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);
             }
             EditorSceneManager.SaveScene(scene,ScenePath);
@@ -123,6 +208,7 @@ namespace ShadeLink.Editor
             if(AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath)==null)
                 throw new FileNotFoundException("The existing destination Library scene is missing.",LibraryBuild.ScenePath);
             Prepare();
+            GalleryBakedLightingBuild.Bake();
             foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/MuseumSurface","Parallax/GalleryMirror","Parallax/GalleryGlass","Parallax/GalleryOrcusPortal"})
                 if(ShaderUtil.ShaderHasError(Shader.Find(shader)))
                 {

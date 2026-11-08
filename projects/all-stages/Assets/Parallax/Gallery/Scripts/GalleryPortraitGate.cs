@@ -10,33 +10,54 @@ namespace ShadeLink.Gallery
     {
         public const float HoldSeconds=1;
         public const float ObservationGraceSeconds=.35f;
+        public const float AbsorbSeconds=2.5f,RedSeconds=2f,SmileSeconds=3f,OpenSeconds=4.5f;
+        public const float TotalPerformanceSeconds=AbsorbSeconds+RedSeconds+SmileSeconds+OpenSeconds;
+        public enum RevealStage { Waiting, Absorbing, Reddening, Smiling, Opening, Open }
         public GalleryGame game;
         public GalleryConceptPerspective portrait;
         public Transform leftCurtain,rightCurtain;
         public BoxCollider barrier;
         public bool Opened;
         public float Progress;
-        float opening,missedTime;
+        public GalleryPortraitPerformance performance;
+        public RevealStage Stage {get;private set;}
+        public bool Performing=>Stage!=RevealStage.Waiting&&Stage!=RevealStage.Open;
+        public bool Absorbed=>Stage==RevealStage.Reddening||Stage==RevealStage.Smiling||Stage==RevealStage.Opening||Stage==RevealStage.Open;
+        public float MoodRed01 {get;private set;}
+        public float Smile01 {get;private set;}
+        public float Opening01=>Mathf.SmoothStep(0,1,opening);
+        public float RevealProgress=>Stage==RevealStage.Waiting?Progress/(HoldSeconds+TotalPerformanceSeconds):
+            Mathf.Clamp01((HoldSeconds+performanceTime)/(HoldSeconds+TotalPerformanceSeconds));
+        public float PerformanceElapsed=>performanceTime;
+        float opening,missedTime,performanceTime;
+        GalleryConceptLighting conceptLighting;
         bool wasAtPoint,wasMatching;
 
-        public bool CanUnlock=>game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.CanObserve;
+        public bool CanUnlock=>Stage==RevealStage.Waiting&&game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.CanObserve;
         public string Status=>Opened?"커튼이 열렸어요. 다음 전시실로 이동하세요.":
+            Stage==RevealStage.Absorbing?"완성된 초상이 커튼에 스며들고 있어요.":
+            Stage==RevealStage.Reddening?"초상이 커튼에 남았어요. 조명이 천천히 바뀌고 있어요.":
+            Stage==RevealStage.Smiling?"초상이 천천히 미소 짓고 있어요.":
+            Stage==RevealStage.Opening?"웃는 커튼이 천천히 열리고 있어요.":
             portrait==null?"눈·코·입을 하나의 얼굴로 이어 보세요.":portrait.Status;
 
         public void ResetGate()
         {
-            Opened=false;Progress=opening=missedTime=0;wasAtPoint=wasMatching=false;
+            if(performance!=null)performance.ResetPerformance();
+            Stage=RevealStage.Waiting;Opened=false;Progress=opening=missedTime=performanceTime=0;wasAtPoint=wasMatching=false;
+            MoodRed01=Smile01=0;SetMood(0);
             if(barrier!=null)barrier.enabled=true;
             portrait?.ResetEvaluation();PositionCurtains();Physics.SyncTransforms();
         }
         public void Tick(float dt)
         {
             if(game==null||portrait==null)return;
-            portrait.Evaluate();dt=Mathf.Max(0,dt);
-            if(Opened)
+            dt=Mathf.Max(0,dt);
+            if(Stage!=RevealStage.Waiting)
             {
-                Progress=1;opening=Mathf.MoveTowards(opening,1,dt/1.35f);PositionCurtains();return;
+                TickPerformance(dt);return;
             }
+            portrait.Evaluate();
             bool matching=CanUnlock;
             if(portrait.AtViewingPoint&&!wasAtPoint&&game.active&&game.checkpoint==2)
                 game.Tell("눈·코·입이 얼굴로 보이면, 작품을 내려놓고 잠깐 바라봐 주세요.",7);
@@ -47,9 +68,10 @@ namespace ShadeLink.Gallery
                 Progress=Mathf.Clamp01(Progress+dt/HoldSeconds);
                 if(Progress>=1)
                 {
-                    Opened=true;if(barrier!=null)barrier.enabled=false;
-                    opening=Mathf.MoveTowards(opening,1,dt/1.35f);PositionCurtains();
-                    if(game.active)game.Tell("하나의 초상이 완성되었습니다. 열린 커튼 너머로 이동하세요.",7);
+                    if(performance==null)performance=gameObject.AddComponent<GalleryPortraitPerformance>();
+                    performance.Begin(this,portrait);
+                    Stage=RevealStage.Absorbing;performanceTime=0;
+                    if(game.active)game.Tell("하나의 초상이 완성되었습니다. 커튼을 바라봐 주세요.",5);
                 }
             }
             else if(portrait.AnyPieceHeld)
@@ -63,6 +85,31 @@ namespace ShadeLink.Gallery
             }
             wasAtPoint=portrait.AtViewingPoint;wasMatching=matching;
         }
+        void TickPerformance(float dt)
+        {
+            bool alreadyOpen=Opened;
+            performanceTime=Mathf.Min(TotalPerformanceSeconds,performanceTime+dt);
+            float absorbed=Mathf.Clamp01(performanceTime/AbsorbSeconds);
+            if(performance!=null)performance.SetAbsorption(absorbed);
+            if(performanceTime<AbsorbSeconds)Stage=RevealStage.Absorbing;
+            else if(performanceTime<AbsorbSeconds+RedSeconds)Stage=RevealStage.Reddening;
+            else if(performanceTime<AbsorbSeconds+RedSeconds+SmileSeconds)Stage=RevealStage.Smiling;
+            else if(performanceTime<TotalPerformanceSeconds)Stage=RevealStage.Opening;
+            else Stage=RevealStage.Open;
+            MoodRed01=Mathf.SmoothStep(0,1,Mathf.Clamp01((performanceTime-AbsorbSeconds)/RedSeconds));
+            Smile01=Mathf.SmoothStep(0,1,Mathf.Clamp01((performanceTime-AbsorbSeconds-RedSeconds)/SmileSeconds));
+            opening=Mathf.Clamp01((performanceTime-AbsorbSeconds-RedSeconds-SmileSeconds)/OpenSeconds);
+            SetMood(MoodRed01);PositionCurtains();
+            if(performance!=null)performance.SetExpression(Smile01,Opening01,MoodRed01);
+            Progress=1;Opened=Stage==RevealStage.Open;
+            if(barrier!=null)barrier.enabled=!Opened;
+            if(Opened&&!alreadyOpen&&game.active)game.Tell("초상이 길을 열었어요. 열린 커튼 사이로 이동하세요.",7);
+        }
+        void SetMood(float red)
+        {
+            if(conceptLighting==null&&game!=null)conceptLighting=game.GetComponent<GalleryConceptLighting>();
+            if(conceptLighting!=null)conceptLighting.SetPortraitMood(red);
+        }
         void PositionCurtains()
         {
             float eased=Mathf.SmoothStep(0,1,opening),x=Mathf.Lerp(.92f,2.14f,eased),width=Mathf.Lerp(1,.26f,eased);
@@ -73,7 +120,8 @@ namespace ShadeLink.Gallery
         {
             if(material==null)return;
             if(!GalleryWorld.Materials.Contains(material))GalleryWorld.Materials.Add(material);
-            foreach(var renderer in GetComponentsInChildren<MeshRenderer>())renderer.sharedMaterial=material;
+            if(leftCurtain!=null)leftCurtain.GetComponent<MeshRenderer>().sharedMaterial=material;
+            if(rightCurtain!=null)rightCurtain.GetComponent<MeshRenderer>().sharedMaterial=material;
         }
         static Mesh FoldedVelvet(int side)
         {
@@ -123,6 +171,7 @@ namespace ShadeLink.Gallery
             var existing=game.GetComponentInChildren<GalleryPortraitGate>();if(existing!=null)return existing;
             var go=new GameObject("Portrait gallery · opening curtain gate");go.transform.SetParent(game.transform,false);go.transform.localPosition=new Vector3(0,0,43.5f);
             var gate=go.AddComponent<GalleryPortraitGate>();gate.game=game;gate.portrait=game.GetComponentInChildren<GalleryConceptPerspective>();
+            gate.performance=go.AddComponent<GalleryPortraitPerformance>();
             gate.leftCurtain=Panel(go.transform,-1);gate.rightCurtain=Panel(go.transform,1);
             gate.barrier=go.AddComponent<BoxCollider>();gate.barrier.center=new Vector3(0,2.85f,0);gate.barrier.size=new Vector3(3.6f,5.7f,.24f);
             go.AddComponent<GalleryCaster>().shape=gate.barrier;

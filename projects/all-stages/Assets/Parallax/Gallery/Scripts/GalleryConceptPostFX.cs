@@ -10,14 +10,15 @@ namespace ShadeLink.Gallery
     {
         public bool EffectEnabled=true;
         public bool DebugOcclusion;
-        [Range(0,1)] public float OcclusionStrength=.55f;
-        [Range(.08f,1.5f)] public float OcclusionRadius=.55f;
+        [Range(0,1)] public float OcclusionStrength=.45f;
+        [Range(.08f,1.5f)] public float OcclusionRadius=.22f;
         [Range(.001f,.2f)] public float OcclusionBias=.035f;
         [Range(.4f,2)] public float Exposure=1;
-        [Range(0,1)] public float ToneMappingStrength=.60f;
-        [Range(.5f,1.5f)] public float Saturation=1.015f;
-        [Range(0,.2f)] public float BloomStrength=.035f;
+        [Range(0,1)] public float ToneMappingStrength=.85f;
+        [Range(.5f,1.5f)] public float Saturation=1;
+        [Range(0,.2f)] public float BloomStrength=.018f;
         [Range(.5f,3)] public float BloomThreshold=1.05f;
+        public Vector3 WhiteBalance=new Vector3(1.035f,.96f,1);
 
         Camera targetCamera;
         Material treatment;
@@ -63,6 +64,7 @@ namespace ShadeLink.Gallery
                 treatment.SetVector("_Tone",new Vector4(Exposure,ToneMappingStrength,Saturation,BloomStrength));
                 treatment.SetFloat("_BloomThreshold",BloomThreshold);
                 treatment.SetFloat("_DebugOcclusion",DebugOcclusion?1:0);
+                treatment.SetVector("_WhiteBalance",WhiteBalance);
                 Graphics.Blit(source,half,treatment,0);
                 treatment.SetTexture("_AmbientBloom",half);
                 Graphics.Blit(source,destination,treatment,1);

@@ -90,7 +90,7 @@ namespace ShadeLink.Tutorial
                 prop.InitializePhysics();
                 if (prop.name == "ShadowKey - Branch Sculpture Preview")
                 {
-                    prop.placement.ShowOriginalWhileHeld = true;
+                    prop.placement.PreviewWhileHeld = false;
                     prop.placement.PreviewUntilSettled = false;
                     sculpture = prop;
                     lastAppliedSculptureRotation = prop.transform.rotation;
@@ -328,7 +328,7 @@ namespace ShadeLink.Tutorial
                 rewardAnchor = key.transform.position;
                 var doorSequence = FindFirstObjectByType<KeyShadowSequence>();
                 if (doorSequence != null) doorSequence.AcceptMatchedKey(key);
-                key.placement.ShowOriginalWhileHeld = true;
+                key.placement.PreviewWhileHeld = false;
                 key.placement.PreviewUntilSettled = false;
             }
             else Debug.LogError("The silver key could not be created; the sculpture remains available.", this);

@@ -11,7 +11,7 @@ namespace ShadeLink.Gallery
     {
         public sealed class Palette
         {
-            public Material plaster, stone, bronze, gold, wood, paper, ink;
+            public Material plaster, wall, ceiling, stone, floor, bronze, gold, wood, paper, ink;
             public IList<Material> assets;
         }
 
@@ -200,13 +200,18 @@ namespace ShadeLink.Gallery
         static Material Material(Palette p,string category,string name,Color color)
         {
             var material=new Material(Shader.Find("Parallax/MuseumSurface")){name=name,color=color};
-            GalleryMuseumMaterials.Apply(material,category);p.assets?.Add(material);return material;
+            GalleryMuseumMaterials.Apply(material,category);material.color=color;p.assets?.Add(material);return material;
         }
         public static Palette MuseumPalette(IList<Material> registry)
         {
             var p=new Palette{assets=registry};
-            p.plaster=Material(p,"Plaster","Concept museum · ivory plaster",new Color(.94f,.91f,.84f));
-            p.stone=Material(p,"Stone","Concept museum · warm limestone",new Color(.86f,.83f,.75f));
+            p.plaster=Material(p,"Plaster","Concept museum · ivory plaster",new Color(.90f,.85f,.82f));
+            p.wall=Material(p,"Plaster","Concept museum · warm grey gallery walls",new Color(1.04f,1.07f,1.04f));
+            p.wall.SetFloat("_AmbientStrength",1.12f);
+            p.ceiling=Material(p,"Plaster","Concept museum · softly lit ceiling",new Color(.88f,.87f,.82f));
+            p.stone=Material(p,"Stone","Concept museum · warm limestone",new Color(1,.99f,1));
+            p.floor=new Material(p.stone){name="Concept museum · polished limestone floor"};
+            p.floor.SetFloat("_AmbientStrength",.40f);registry?.Add(p.floor);
             p.bronze=Material(p,"Bronze","Concept museum · patinated bronze",new Color(.56f,.36f,.14f));
             p.gold=Material(p,"Bronze","Concept museum · frame gold",new Color(1,.85f,.57f));
             p.gold.SetFloat("_Metallic",.98f);p.gold.SetFloat("_Roughness",.28f);p.gold.SetFloat("_ReflectionStrength",1);p.gold.SetFloat("_AmbientStrength",1);
@@ -256,7 +261,7 @@ namespace ShadeLink.Gallery
             }
             WallFinish(root,new Vector3(0,0,.16f),Quaternion.Euler(0,180,0),15.6f,GalleryConceptWorld.Roof,p);
             WallFinish(root,new Vector3(0,0,55.84f),Quaternion.identity,15.6f,GalleryConceptWorld.Roof,p);
-            foreach(var aperture in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(32,35),new Vector2(47,50)})
+            foreach(var aperture in new[]{new Vector2(3,6.2f),new Vector2(18,22.2f),new Vector2(47,50)})
                 Skylight(root,new Vector3(0,GalleryConceptWorld.Roof,(aperture.x+aperture.y)/2),Quaternion.identity,
                     new Vector2(aperture.x==32?GalleryConceptWorld.PortraitSkylightHalfWidth*2:15.65f,aperture.y-aperture.x),1.15f,p);
 
@@ -280,13 +285,11 @@ namespace ShadeLink.Gallery
                 var rail=Group("Side gallery picture lighting",root,new Vector3(side*6.65f,6.1f,7),Quaternion.Euler(0,90,0));
                 Track(rail,Vector3.zero,10,p);
             }
-            // The sculpture remains the focus of room two, with generous empty
-            // floor, a seated viewing position and a recessed shadow-art wall.
-            Bench(root,new Vector3(-5.5f,0,24.5f),Quaternion.Euler(0,-35,0),2.8f,p);
+            // The left wall painting frames the open Nike projection area.
             FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(-7.78f,2.85f,23.1f),Quaternion.Euler(0,-90,0),3.5f,3.0f,p);
-            FramedArtwork(root,"GirlWithPearlEarring","진주 귀걸이를 한 소녀","요하네스 페르메이르 · 약 1665",new Vector3(4.95f,2.8f,28.74f),Quaternion.identity,2.3f,2.75f,p);
             Track(root,new Vector3(0,6.1f,27.5f),12,p);
             FramedArtwork(root,"Scream","절규","에드바르 뭉크 · 1893",new Vector3(-7.78f,2.75f,48.4f),Quaternion.Euler(0,-90,0),2.2f,2.9f,p);
+            GalleryPortraitRoom.Install(game,p);
         }
     }
 }

@@ -1,0 +1,1057 @@
+{
+  "schemaVersion": 1,
+  "testedAt": "2026-11-06",
+  "repository": "SJU-Software-Design/Parallax",
+  "testedCheckout": {
+    "branch": "codex/local-pr21-lighting",
+    "committedHead": "9af5380196f34a601a80f3c680d3d399ff5b9a62",
+    "nikeChangesUncommittedAtValidation": true,
+    "includesLocalPR21LightingIntegration": true,
+    "standaloneCleanPRBranchValidated": false,
+    "scope": "These Windows results came from the canonical local checkout with PR21 lighting integrated plus the Nike changes. The new PR is separated onto origin/main; no clean standalone PR build result is asserted."
+  },
+  "build": {
+    "stage": "Gallery",
+    "scene": "Assets/Parallax/Gallery/Scenes/Gallery.unity",
+    "scenes": [
+      "Assets/Parallax/Gallery/Scenes/Gallery.unity",
+      "Assets/Parallax/Library/Scenes/Library.unity"
+    ],
+    "result": "Succeeded",
+    "buildId": "22350c33f761478ca2b39ae5ff70e1c9",
+    "unityVersion": "6000.3.24f1",
+    "errors": 0,
+    "warnings": 6,
+    "warningDetails": "Six existing Parallax/MuseumSurface D3D11 gradient-in-varying-loop warnings at lines 273, 274, 283, 284, 285 and 286.",
+    "assemblySha256": "B1FF7B894CBC5DAA53BA37E79826F858918A8404940554A18A6FC0DE08245E74"
+  },
+  "preservation": {
+    "originalLightmapsAndLightingDataPreserved": true,
+    "retainedLightmaps": 2,
+    "fixedLamp": {
+      "x": -6.159999847412109,
+      "y": 0.0,
+      "z": 18.200000762939453
+    }
+  },
+  "discovery": {
+    "passed": true,
+    "physicsRestored": true,
+    "selectedScanPresent": true,
+    "nikeShifted": true,
+    "contourOnly": true,
+    "coveredSolutionRejected": true,
+    "heldCoverStillBlocks": true,
+    "inputPickup": true,
+    "inputSlide": true,
+    "inputDrop": true,
+    "coverSettled": true,
+    "inputLift": true,
+    "inputFreeCarry": true,
+    "perspectiveScaling": true,
+    "lightDiscovered": true,
+    "fixedSourcePreserved": true,
+    "brushObserved": true,
+    "frameEjected": true,
+    "doorOpened": true,
+    "resetRestored": true,
+    "simulatedTicks": 968,
+    "scanTriangles": 246841,
+    "contourInkPixels": 3672,
+    "contourLinenPixels": 143528,
+    "respawns": 0,
+    "lightmapCount": 2,
+    "maximumBrushProgress": 1.0,
+    "maximumLift": 3.4555158615112305,
+    "carriedScaleChange": 1.456398606300354,
+    "coverStart": {
+      "x": -6.159999847412109,
+      "y": 0.0,
+      "z": 18.200000762939453
+    },
+    "coverLifted": {
+      "x": -7.010295867919922,
+      "y": 3.4555158615112305,
+      "z": 18.935218811035156
+    },
+    "coverCarried": {
+      "x": -0.7795655727386475,
+      "y": 3.2412657737731934,
+      "z": 22.156999588012695
+    },
+    "coverReleased": {
+      "x": -2.676577091217041,
+      "y": 0.016378402709960938,
+      "z": 21.311063766479492
+    },
+    "fixedLamp": {
+      "x": -6.159999847412109,
+      "y": 0.0,
+      "z": 18.200000762939453
+    },
+    "phase": "current-room reset",
+    "failure": "",
+    "version": "0.25.0",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "scope": "Actual saved museum, original Aurelius scan, guide texture histogram and production CPU light/goal queries. The cover positive starts at its original pose and uses public camera Interact, ordinary perspective carry with upward and roomward camera aiming, then Drop/PhysX. There are no cover transform/scale/rigidbody/readiness writes in the positive case. A player-only pickup approach fixture is disclosed. Matching Nike and final key poses are explicitly assigned mathematical fixtures; they test source blocking and the existing brush/ejection/docking sequence, not an input-only solution of those puzzles. Before/lifted/after captures use the identical camera. This is not a GPU/CPU pixel-parity claim.",
+    "checks": [
+      "Original scan and right-shifted Nike are present; guide is contour-only and source starts covered",
+      "Even the exact matching Nike fixture cannot complete through the opaque cover",
+      "Public ordinary perspective pickup lifts the bust and pedestal, allows free three-dimensional carry and scaling, then Drop settles it beside the same fixed source",
+      "After light discovery, matching shadow still performs the original brush, frame ejection and door opening",
+      "Public room reset restores covered light, discovery state, shifted Nike and closed door"
+    ],
+    "errors": []
+  },
+  "mechanics": {
+    "passed": true,
+    "exposureRespawn": true,
+    "firstCourseWalk": true,
+    "nikeCourseWalk": true,
+    "wrongViewRejected": true,
+    "partialPortraitRejected": true,
+    "heldPortraitRejected": true,
+    "inputOnlyPortrait": true,
+    "portraitOpened": true,
+    "curtainWalk": true,
+    "smallExitRejected": true,
+    "heldExitRejected": true,
+    "unsettledExitRejected": true,
+    "reverseExitRejected": true,
+    "sideExitRejected": true,
+    "inputOnlyOrcusEnlarged": true,
+    "inputOnlyOrcusReleased": true,
+    "inputOnlyOrcusSettled": true,
+    "physicalMouthCrossing": true,
+    "libraryLoaded": true,
+    "libraryActive": true,
+    "simulationRestored": true,
+    "phase": "sculpture portal: negative eligibility, input-only enlargement and physical handoff",
+    "failure": "",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "orcusLastRestriction": "Surface: ",
+    "scope": "Explicit enlarged bronze and repositioned Nike solution fixtures are searched and checked with real placement geometry, capsule queries and the game's FootSafe predicate, then traversed with the actual CharacterController and exposure rules. The separate GalleryShadowGameplayValidation covers camera pickup/carry/perspective resize/Drop from the original bronze and Nike without positive-case prop pose writes. Portrait negatives use labelled mathematical pose fixtures. The positive portrait sequence restores all three original pieces and uses camera pickup, CharacterController carry, shared perspective resize, Drop and PhysX only, followed by actual one-second observation. Cathedral pickup, carry, resize and Drop use public input to reach the helpful near-size threshold; the game then performs its disclosed safe size assistance. Player-only pickup and ground-approach entry fixtures are disclosed; the final controller walk begins on clear floor with a disclosed off-centre offset, climbs the actual sculpture staircase and crosses the aperture before the real Library scene transition. This is focused integration QA, not an autonomous full puzzle playthrough. The light-cover bust is explicitly moved aside as part of the disclosed Nike solution fixture. Actual cover pickup/slide/Drop is covered separately by Nike discovery validation.",
+    "simulatedTicks": 5267,
+    "exposureRespawns": 1,
+    "totalRespawns": 0,
+    "finalCheckpoint": 3,
+    "enlargementUpdates": 135,
+    "mouthWalkFrames": 181,
+    "librarySceneLoads": 1,
+    "simulatedSeconds": 58.52222442626953,
+    "maximumNegativeExposure": 0.9777779579162598,
+    "orcusRequiredScale": 2.700000047683716,
+    "orcusMaximumScale": 2.4387450218200684,
+    "orcusReleasedScale": 2.4387450218200684,
+    "fallDistance": 13.988935470581055,
+    "entryLateralOffset": 0.03999999910593033,
+    "entryLateralOffsetMetres": 0.10823999345302582,
+    "orcusReleasedPosition": {
+      "x": 0.014422357082366943,
+      "y": 0.01692056655883789,
+      "z": 54.40971374511719
+    },
+    "routes": [
+      {
+        "room": "bronze room",
+        "candidate": 4,
+        "gridNodes": 2350,
+        "routeNodes": 49,
+        "walkTicks": 365,
+        "length": 13.582671165466309,
+        "longestUnshadedRun": 0.0,
+        "totalUnshadedLength": 0.0,
+        "maximumExposure": 0.0,
+        "minimumWalkFeetY": 0.02500000037252903,
+        "maximumWalkFeetY": 0.1439327895641327,
+        "plannedPath": [
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 3.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 3.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 3.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 3.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 4.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 4.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 4.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 4.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 5.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 5.25
+          },
+          {
+            "x": -0.5,
+            "y": 0.02500000037252903,
+            "z": 5.5
+          },
+          {
+            "x": -0.75,
+            "y": 0.02500000037252903,
+            "z": 5.75
+          },
+          {
+            "x": -1.0,
+            "y": 0.02500000037252903,
+            "z": 6.0
+          },
+          {
+            "x": -1.25,
+            "y": 0.02500000037252903,
+            "z": 6.25
+          },
+          {
+            "x": -1.5,
+            "y": 0.02500000037252903,
+            "z": 6.5
+          },
+          {
+            "x": -1.75,
+            "y": 0.02500000037252903,
+            "z": 6.75
+          },
+          {
+            "x": -2.0,
+            "y": 0.02500000037252903,
+            "z": 7.0
+          },
+          {
+            "x": -2.0,
+            "y": 0.02500000037252903,
+            "z": 7.25
+          },
+          {
+            "x": -2.0,
+            "y": 0.02500000037252903,
+            "z": 7.5
+          },
+          {
+            "x": -1.75,
+            "y": 0.11900000274181366,
+            "z": 7.75
+          },
+          {
+            "x": -1.5,
+            "y": 0.11900000274181366,
+            "z": 7.75
+          },
+          {
+            "x": -1.25,
+            "y": 0.11900000274181366,
+            "z": 8.0
+          },
+          {
+            "x": -1.25,
+            "y": 0.02500000037252903,
+            "z": 8.25
+          },
+          {
+            "x": -1.25,
+            "y": 0.02500000037252903,
+            "z": 8.5
+          },
+          {
+            "x": -1.0,
+            "y": 0.02500000037252903,
+            "z": 8.75
+          },
+          {
+            "x": -0.75,
+            "y": 0.02500000037252903,
+            "z": 9.0
+          },
+          {
+            "x": -0.5,
+            "y": 0.02500000037252903,
+            "z": 9.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 9.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 9.75
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 10.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 10.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 10.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 10.75
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 11.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 11.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 11.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 11.75
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 12.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 12.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 12.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 12.75
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 13.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 13.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 13.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 13.75
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 14.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 14.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.02500000037252903,
+            "z": 14.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 14.75
+          }
+        ],
+        "fixturePositions": [
+          {
+            "x": 0.4000000059604645,
+            "y": 0.006000000052154064,
+            "z": 7.199999809265137
+          }
+        ],
+        "fixtureScales": [
+          2.200000047683716
+        ]
+      },
+      {
+        "room": "Nike spotlight room",
+        "candidate": 0,
+        "gridNodes": 2914,
+        "routeNodes": 60,
+        "walkTicks": 399,
+        "length": 14.75,
+        "longestUnshadedRun": 0.0,
+        "totalUnshadedLength": 0.0,
+        "maximumExposure": 0.0,
+        "minimumWalkFeetY": 0.04999992251396179,
+        "maximumWalkFeetY": 0.04999998211860657,
+        "plannedPath": [
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 14.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 15.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 15.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 15.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 15.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 16.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 16.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 16.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 16.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 17.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 17.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 17.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 17.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 18.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 18.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 18.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 18.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 19.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 19.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 19.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 19.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 20.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 20.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 20.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 20.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 21.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 21.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 21.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 21.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 22.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 22.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 22.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 22.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 23.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 23.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 23.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 23.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 24.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 24.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 24.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 24.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 25.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 25.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 25.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 25.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 26.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 26.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 26.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 26.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 27.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 27.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 27.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 27.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 28.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 28.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 28.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 28.75
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 29.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 29.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.02500000037252903,
+            "z": 29.5
+          }
+        ],
+        "fixturePositions": [
+          {
+            "x": -5.099999904632568,
+            "y": 0.006000000052154064,
+            "z": 24.75
+          }
+        ],
+        "fixtureScales": [
+          0.8999999761581421
+        ]
+      }
+    ],
+    "checks": [
+      "Negative: actual unprotected CharacterController walk accumulates sunlight exposure and returns to the checkpoint",
+      "Explicit bronze fixture passes real placement checks; a physical camera-controller walk crosses its shade without respawn and reaches checkpoint 1",
+      "The settled Nike fixture matches its framed shadow; the seated painting opens the walnut doors and the controller reaches checkpoint 2 without respawn",
+      "The recognizable portrait is assembled through actual pickup/carry/Drop; observation starts the slow curtain-face performance, which opens the real barrier only after its smile and reveal; held or clearly separated pieces remain unfinished",
+      "Actual CharacterController walks beside the aligned sculptures and through the opened curtain into room 4",
+      "Actual camera/carried movement/Drop reaches the helpful near-size threshold, the sculpture completes its size and settles, then permits physical entry",
+      "Real ground approach with a labelled off-centre offset climbs the sculpture staircase, crosses the aperture and triggers a descent longer than ten metres and one Library scene load with active controls and normal physics"
+    ],
+    "errors": []
+  },
+  "capture": {
+    "passed": true,
+    "version": "0.25.0",
+    "scene": "Gallery",
+    "unity": "6000.3.24f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "scope": "Actual player-camera renders with the camera post-processing stack. Dimensions and field of view are recorded for each shot, including the wide reference-comparison view. This is visual QA, not a puzzle-completion test.",
+    "failure": "",
+    "width": 1600,
+    "height": 900,
+    "shots": [
+      {
+        "file": "00-nike-reference-wide.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 15.699999809265137
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 2.200000047683716,
+          "z": 24.0
+        },
+        "fieldOfView": 46.0,
+        "width": 1920,
+        "height": 660
+      },
+      {
+        "file": "00-nike-front.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 15.699999809265137
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 24.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "00-portrait-front.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 30.200000762939453
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 2.700000047683716,
+          "z": 43.29999923706055
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "00-cathedral-front.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 45.5
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 2.700000047683716,
+          "z": 54.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "01-entry.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 2.200000047683716
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 1.649999976158142,
+          "z": 14.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "02-painting-room.png",
+        "cameraPosition": {
+          "x": 5.599999904632568,
+          "y": 2.200000047683716,
+          "z": 11.699999809265137
+        },
+        "lookTarget": {
+          "x": -2.0,
+          "y": 2.0,
+          "z": 5.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "03-nike-room.png",
+        "cameraPosition": {
+          "x": 4.800000190734863,
+          "y": 2.0999999046325684,
+          "z": 18.0
+        },
+        "lookTarget": {
+          "x": -2.0,
+          "y": 2.200000047683716,
+          "z": 22.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "04-museum-axis.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 2.200000047683716,
+          "z": 12.0
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 2.200000047683716,
+          "z": 45.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "05-perspective-room.png",
+        "cameraPosition": {
+          "x": 0.0,
+          "y": 1.5499999523162842,
+          "z": 30.200000762939453
+        },
+        "lookTarget": {
+          "x": 0.0,
+          "y": 1.5499999523162842,
+          "z": 42.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "06-gallery-hero.png",
+        "cameraPosition": {
+          "x": 5.0,
+          "y": 1.75,
+          "z": 26.899999618530273
+        },
+        "lookTarget": {
+          "x": -2.0999999046325684,
+          "y": 2.700000047683716,
+          "z": 21.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "07-nike-rear.png",
+        "cameraPosition": {
+          "x": -2.0,
+          "y": 2.0999999046325684,
+          "z": 28.0
+        },
+        "lookTarget": {
+          "x": -2.0,
+          "y": 2.5,
+          "z": 24.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "08-nike-side.png",
+        "cameraPosition": {
+          "x": -6.099999904632568,
+          "y": 2.0999999046325684,
+          "z": 22.0
+        },
+        "lookTarget": {
+          "x": -2.0,
+          "y": 2.5,
+          "z": 24.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "09-paintings-oblique.png",
+        "cameraPosition": {
+          "x": -4.800000190734863,
+          "y": 1.7000000476837158,
+          "z": 3.299999952316284
+        },
+        "lookTarget": {
+          "x": 1.2999999523162842,
+          "y": 2.6500000953674316,
+          "z": 12.800000190734863
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "10-through-the-arch.png",
+        "cameraPosition": {
+          "x": 1.7999999523162842,
+          "y": 1.7000000476837158,
+          "z": 8.0
+        },
+        "lookTarget": {
+          "x": -2.0,
+          "y": 2.5999999046325684,
+          "z": 24.0
+        },
+        "fieldOfView": 70.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "11-portrait-right-picture-light.png",
+        "cameraPosition": {
+          "x": 3.799999952316284,
+          "y": 2.9000000953674316,
+          "z": 35.0
+        },
+        "lookTarget": {
+          "x": 7.78000020980835,
+          "y": 3.3499999046325684,
+          "z": 36.0
+        },
+        "fieldOfView": 65.0,
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "file": "12-portrait-left-picture-light.png",
+        "cameraPosition": {
+          "x": -3.799999952316284,
+          "y": 3.0999999046325684,
+          "z": 35.0
+        },
+        "lookTarget": {
+          "x": -7.78000020980835,
+          "y": 3.5999999046325684,
+          "z": 36.0
+        },
+        "fieldOfView": 65.0,
+        "width": 1600,
+        "height": 900
+      }
+    ],
+    "errors": []
+  },
+  "screenshots": [
+    {
+      "file": "01-covered.png",
+      "source": "workspace/artifacts/museum-nike-free-carry-20261106/discovery/nike-discovery-01-covered.png",
+      "sha256": "6d1252825718f445d82ddbd1af60fd7abd506ebad4e10cf3a21fc0bb3ce11d1b"
+    },
+    {
+      "file": "02-lifted.png",
+      "source": "workspace/artifacts/museum-nike-free-carry-20261106/discovery/nike-discovery-02-lifted.png",
+      "sha256": "1aa9e9c584ea9074bcfb24126ff9f58abfcb2c3e67daa05092987da4182fb24e"
+    },
+    {
+      "file": "03-released.png",
+      "source": "workspace/artifacts/museum-nike-free-carry-20261106/discovery/nike-discovery-03-revealed.png",
+      "sha256": "5e04f7a4794dc600ca3149d929a3a469e83a05a5962a00261284cf19e71eab2a"
+    }
+  ],
+  "evidenceSources": {
+    "discovery": "workspace/artifacts/museum-nike-free-carry-20261106/discovery/nike-discovery-results.json",
+    "capture": "workspace/artifacts/museum-nike-free-carry-20261106/capture/capture-manifest.json",
+    "mechanics": "workspace/artifacts/museum-nike-free-carry-20261106/mechanics/museum-mechanics-results.json",
+    "build": "workspace/artifacts/museum-nike-free-carry-20261106/build-result.json"
+  }
+}
