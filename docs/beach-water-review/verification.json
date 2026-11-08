@@ -53,9 +53,8 @@
   "imageSha256": {
     "water-before.png": "4126615230a2db1ae0cc7cc0120cac8ff9a17b6607f5d1145e35299907074cf7",
     "water-after.png": "397c8b9a3530149b0046190f2aaae767523cacc7c0c733c5a0333b6b6b2e386a",
-    "color-clear.png": "5a6301db2ff4fff1b4536ccfe89f5cc1b216d0c93d4bc3a028740e3343c23db6",
-    "color-b.png": "bd6d6572825767049beba3ba7f7323843d2509f731287b3d2703fa8864a0474e",
     "plank-before.png": "17a6cb56976b37e715e92e3844ae0a930a7127d0cf835ac8bdedffda096b6d92",
     "plank-after.png": "e21a12b7eed186fb9e68d809dfcc2543ff4cbe0cee55d53dab8d44bb5bde5d35"
-  }
+  },
+  "waterBefore": "Initial pre-asset BeachWaterRefresh surface; intermediate clear-water drafts excluded."
 }
