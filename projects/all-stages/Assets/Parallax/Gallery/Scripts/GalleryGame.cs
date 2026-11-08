@@ -184,7 +184,7 @@ namespace ShadeLink.Gallery
         {
             if(conceptLayout){StartConceptDemo(1);return;}
             ResetAll();checkpoint=1;PlacePlayer(SpawnPoints[1]);Resume();
-            Tell(exhibitionPreview?"니케 전시실 · 실물 스캔과 채광을 둘러보세요.":"거울 전시실 체험 · 거울 클릭 후 Q/E로 회전 · H 힌트",7);
+            Tell(exhibitionPreview?"니케 전시실 · 실물 스캔과 채광을 둘러보세요.":"거울 전시실 체험 · 거울 클릭 후 오른쪽 버튼 + 마우스로 회전 · H 힌트",7);
         }
         public void StartOrcusDemo()
         {
@@ -269,22 +269,13 @@ namespace ShadeLink.Gallery
             {
                 Vector2 turn=PlayerControls.ObjectRotationDegrees(frame.Look);RotateHeld(turn.x,turn.y);
             }
+            else if(adjustingMirror&&mirror!=null&&PlayerControls.RotationHeld)
+                mirror.Turn(PlayerControls.ObjectRotationDegrees(frame.Look).x);
             else PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);
             SyncView();UpdateAim();
             if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
-            if(held!=null)
-            {
-                float turn=(Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0);
-                float tilt=(Input.GetKey(KeyCode.X)?1:0)-(Input.GetKey(KeyCode.Z)?1:0);
-                RotateHeld(turn*75*Time.deltaTime,tilt*75*Time.deltaTime);
-                if(Input.GetKeyDown(KeyCode.C))heldRotation=Quaternion.Euler(0,Mathf.Round(heldRotation.eulerAngles.y/15)*15,0);
-            }
-            else if(adjustingMirror&&mirror!=null)
-            {
-                if(Input.GetMouseButtonDown(1)||Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
-                else mirror.Turn(((Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0))*28*Time.deltaTime);
-            }
+            if(held==null&&adjustingMirror&&mirror!=null&&Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
             if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
             gameJumpHeld=frame.JumpHeld;
             Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
@@ -576,7 +567,7 @@ namespace ShadeLink.Gallery
             if(exposure>=1||player.feet.y< -3)Respawn();
         }
         ObjectInteraction<GalleryProp> interaction;
-        ObjectInteraction<GalleryProp> Interaction => interaction??(interaction=new ObjectInteraction<GalleryProp>(this));
+        ObjectInteraction<GalleryProp> Interaction => interaction??(interaction=new ObjectInteraction<GalleryProp>(this, autoUprightOnPickup: true));
         Camera IObjectInteractionHost<GalleryProp>.Camera => view;
         CharacterController IObjectInteractionHost<GalleryProp>.Controller => controller;
         GalleryProp[] IObjectInteractionHost<GalleryProp>.Props => Array.FindAll(props,p=>p!=null&&p.gameObject.activeInHierarchy);
@@ -594,7 +585,7 @@ namespace ShadeLink.Gallery
             if(aimedMirror!=null)
             {
                 adjustingMirror=!adjustingMirror;
-                Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);
+                Tell(adjustingMirror?"오른쪽 버튼 + 마우스 좌우로 거울 회전 · 클릭 또는 Backspace로 조작 종료":"거울 각도를 고정했습니다.",5);
                 return true;
             }
             adjustingMirror=false;return false;

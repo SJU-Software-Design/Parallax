@@ -13,7 +13,7 @@ namespace ShadeLink.Gallery
         public static readonly string[] Titles = { "01  명화가 만드는 그늘", "02  빛을 꺾는 거울", "03  시점과 그림자의 전시", "04  오르쿠스의 입 안으로" };
         public static readonly string[] Hints = {
             "입구 벽의 그림을 떼어 키워 보세요.\n햇빛 앞에 세우고, 그림 뒤로 돌아 그늘을 따라 건넙니다.",
-            "거울을 클릭하고 Q/E로 회전해 센서를 초록색으로 만드세요.\n차광판을 들고 옮겨 반사광 아래에 그늘을 만듭니다.\n센서는 계속 빛나야 문이 열립니다. 유리는 빛을 통과시킵니다.",
+            "거울을 클릭하고 오른쪽 버튼 + 마우스 좌우로 회전해 센서를 초록색으로 만드세요.\n차광판을 들고 옮겨 반사광 아래에 그늘을 만듭니다.\n센서는 계속 빛나야 문이 열립니다. 유리는 빛을 통과시킵니다.",
             "낮은 전시대를 키워 2m 높이의 통로로 올라갑니다.\n큰 그림은 발판과 통로의 윗면까지 가려야 합니다.",
             "전시대를 키워 높은 전시실에 올라가세요.\n바람이 들리는 작은 오르쿠스를 확대해 내려놓습니다.\n입이 몸보다 커지고 안착하면 일렁이는 입 안으로 들어갑니다."
         };
@@ -91,7 +91,7 @@ namespace ShadeLink.Gallery
             }
             Box("Mirror pedestal",new Vector3(-5,.22f,19),new Vector3(2,.44f,1.5f),stone);
             Box("Mirror support",new Vector3(-5,2.28f,19),new Vector3(.16f,3.68f,.16f),bronze);
-            Label("MIRROR  /  Q · E",new Vector3(-5,1.05f,17.95f),.32f,new Color(.4f,1,.87f),Quaternion.identity);
+            Label("MIRROR  /  오른쪽 버튼 + 마우스",new Vector3(-5,1.05f,17.95f),.32f,new Color(.4f,1,.87f),Quaternion.identity);
             var glass=new Material(Shader.Find("Parallax/GalleryGlass")){name="Light transmitting safety glass"};Materials.Add(glass);
             for(int side=-1;side<=1;side+=2)
             {

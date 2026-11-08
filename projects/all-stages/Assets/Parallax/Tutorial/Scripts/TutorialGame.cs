@@ -106,7 +106,7 @@ namespace ShadeLink.Tutorial
             die.placement.PreviewUntilSettled = false;
             AttachLandingFeedback(die);
             Props = new[] { die };
-            interaction = new ObjectInteraction<GalleryProp>(this);
+            interaction = new ObjectInteraction<GalleryProp>(this, autoUprightOnPickup: true);
             primaryTarget = WallTarget("First wall target", orange, new Vector3(0, OrangeTargetSize * .5f, Room.max.z), OrangeTargetSize);
             tabletopTarget = Outline("Tabletop target", new Material(guideShader) { color = TableAccent });
             tabletopTarget.position = TablePosition + Vector3.up * TableHeight;
@@ -449,13 +449,14 @@ namespace ShadeLink.Tutorial
 
         void OnDestroy()
         {
+            DisposeShadowPreview();
             Font.textureRebuilt -= RefreshSignFont;
             if (signInk != null) Destroy(signInk);
             landingShake?.Dispose();
             if (sunlightWarningClip != null) Destroy(sunlightWarningClip);
         }
 
-        void OnDisable() => ClearLandingFeedback();
+        void OnDisable() { ClearLandingFeedback(); ClearRotationHintTransient(); ClearShadowPreview(); }
 
         void RefreshLesson()
         {
@@ -469,6 +470,7 @@ namespace ShadeLink.Tutorial
 
         void ResetStep()
         {
+            ResetRotationHint();
             ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
             die.Restore();
@@ -492,6 +494,7 @@ namespace ShadeLink.Tutorial
         void SetPaused(bool value)
         {
             paused = value;
+            if (paused) ClearShadowPreview();
             if (paused) landingShake?.Clear();
             motor.ClearInput();
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
@@ -575,9 +578,12 @@ namespace ShadeLink.Tutorial
             }
 
             var frame = controls.Read(Time.deltaTime, Aimed != null, Held != null);
+            bool practicedRotation = false;
+            Quaternion beforeRotation = Held != null ? Held.transform.rotation : Quaternion.identity;
             if (Held != null && frame.RotateHeld)
             {
                 Vector2 rotation = PlayerControls.ObjectRotationDegrees(frame.Look);
+                practicedRotation = rotation.sqrMagnitude > 1e-8f;
                 interaction.Rotation = Quaternion.AngleAxis(rotation.x, Vector3.up) * interaction.Rotation *
                     Quaternion.AngleAxis(rotation.y, Vector3.right);
             }
@@ -585,6 +591,7 @@ namespace ShadeLink.Tutorial
             motor.Step(Controller, frame.Move, yaw, frame.JumpPressed, frame.JumpHeld, Time.deltaTime);
             SyncView();
             UpdateExit(Time.deltaTime);
+            TickRotationHint(Time.deltaTime);
             if (inSunlightRoom) TickSunlight(Time.deltaTime);
             if (!CanInteract) return;
 
@@ -593,6 +600,7 @@ namespace ShadeLink.Tutorial
                 if (frame.CancelPressed) { interaction.Cancel(); return; }
                 interaction.Advance(Time.deltaTime);
                 UpdateProjection();
+                if (practicedRotation) RecordRotationPractice(AppliedRotationDegrees(beforeRotation, Held.transform.rotation));
             }
             else interaction.UpdateAim();
 
@@ -643,6 +651,7 @@ namespace ShadeLink.Tutorial
             Held.GetComponent<TutorialLandingFeedback>().ClearPending();
             referenceViewportSize = ProjectedSize(Held.WorldBounds);
             Held.BeginHold();
+            BeginRotationHint();
         }
 
         Vector2 ProjectedSize(Bounds bounds)
@@ -684,6 +693,7 @@ namespace ShadeLink.Tutorial
 
         public void FinishInteraction(bool released)
         {
+            ClearRotationHintTransient();
             if (!released || exitUnlocked || step >= LessonCount) return;
 
             float size = die.transform.localScale.x;
@@ -731,6 +741,7 @@ namespace ShadeLink.Tutorial
             die.homeScale = Vector3.one * checkpointSize;
             die.homeRotation = Quaternion.identity;
             step++;
+            ResetRotationHint();
             RefreshLesson();
             Tell(instruction, 8);
         }
@@ -779,8 +790,10 @@ namespace ShadeLink.Tutorial
             string notice = sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
                 climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
                 Time.time < messageUntil ? message :
+                inSunlightRoom && Held != null ? "빗금은 예상 그늘이에요. 주사위를 놓으면 실제 그늘이 생겨요." :
                 exitUnlocked && !inClimbRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
                 null;
+            DrawRotationHint(width, height);
             if (notice != null)
             {
                 float bannerWidth = Mathf.Min(width - 36, 1040);

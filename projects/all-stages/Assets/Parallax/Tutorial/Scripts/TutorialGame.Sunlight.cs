@@ -186,6 +186,7 @@ namespace ShadeLink.Tutorial
 
         void SetSunlightLighting(bool active)
         {
+            if (!active) ClearShadowPreview();
             if (sunlight == null) return;
             sunlight.enabled = active;
             foreach (var light in trainingLights) if (light != null) light.enabled = !active;

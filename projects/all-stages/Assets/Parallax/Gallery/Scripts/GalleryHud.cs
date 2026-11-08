@@ -47,14 +47,14 @@ namespace ShadeLink.Gallery
                 {
                     Panel(new Rect(405,590,790,175),new Color(.035f,.065f,.08f,.94f));
                     GUI.Label(new Rect(427,605,746,32),game.held.title+"  ·  거리 "+game.holdDistance.ToString("0.00")+"m  ·  크기 ×"+game.RequestedScale.ToString("0.00"),text);
-                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 회전\nQ/E: 회전  ·  Z/X: 기울기  ·  C: 바로 세우기",small);
+                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 상하좌우 회전\n시선으로 크기 조절 · 잡을 때 자동 바로 세우기",small);
                     GUI.Label(new Rect(427,711,746,40),game.NikeSocketHint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 방향을 바꾸거나 Backspace로 취소":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  Backspace: 잡기 취소"),small);
                 }
                 else if(game.adjustingMirror&&game.mirror!=null)
                 {
                     Panel(new Rect(405,622,790,135),new Color(.035f,.065f,.08f,.94f));
                     GUI.Label(new Rect(427,635,746,34),"거울 조작 · 각도 "+game.mirror.angle.ToString("0.0")+"°",text);
-                    GUI.Label(new Rect(427,678,746,64),"Q/E: 천천히 회전 · WASD: 이동 · 클릭 / 오른쪽 클릭: 종료\n센서가 초록색이면 문이 열립니다. 통로의 반사광은 차광판으로 가리세요.",small);
+                    GUI.Label(new Rect(427,678,746,64),"오른쪽 버튼 + 마우스 좌우: 회전 · 클릭 / Backspace: 종료\n센서가 초록색이면 문이 열립니다. 통로의 반사광은 차광판으로 가리세요.",small);
                 }
                 else if(game.aimedMirror!=null)
                     GUI.Label(new Rect(550,475,570,42),"[왼쪽 클릭]  거울 각도 조절",text);

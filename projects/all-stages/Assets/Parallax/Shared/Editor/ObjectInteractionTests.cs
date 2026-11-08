@@ -80,6 +80,184 @@ namespace ShadeLink.Editor
         static void Near(Vector3 actual, Vector3 expected, string message)
         { Require(Vector3.Distance(actual, expected) < .002f, message + ": " + actual + " != " + expected); }
 
+        static object Shared(Fixture fixture) => fixture.game.GetType()
+            .GetField("interaction", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fixture.game);
+
+        // Keep the physical pose fixed while exercising the shared rotation request.
+        // The normal map projection may resize or move the prop to a distant surface,
+        // which would otherwise hide the rotation-only obstacle in these fixtures.
+        static Quaternion AdvanceAtCurrentPose(Fixture fixture, float dt)
+        {
+            object shared = Shared(fixture);
+            Call(shared, "Advance", dt);
+            Quaternion rotation = (Quaternion)Get(shared, "Rotation");
+            fixture.prop.transform.rotation = rotation;
+            Physics.SyncTransforms();
+            return rotation;
+        }
+
+        static bool Penetrates(Collider first, Collider second)
+        {
+            return Physics.ComputePenetration(first, first.transform.position, first.transform.rotation,
+                second, second.transform.position, second.transform.rotation, out _, out float distance) && distance > .002f;
+        }
+
+        static void CheckAutoUpright(Results result, string stage)
+        {
+            Check(result, stage, "pickup eases upright while preserving heading, child geometry and cancel state", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    Quaternion original = Quaternion.Euler(20, 37, 25);
+                    Vector3 heading = Vector3.ProjectOnPlane(original * Vector3.forward, Vector3.up).normalized;
+                    Quaternion upright = Quaternion.LookRotation(heading, Vector3.up);
+                    var child = f.New("Intentionally tilted compound reflector");
+                    child.transform.SetParent(f.prop.transform, false);
+                    child.transform.localPosition = new Vector3(.2f, .55f, .1f);
+                    child.transform.localRotation = Quaternion.Euler(35, 17, -12);
+                    child.transform.localScale = new Vector3(.3f, .4f, .2f);
+                    child.AddComponent<BoxCollider>();
+                    Vector3 childPosition = child.transform.localPosition, childScale = child.transform.localScale;
+                    Quaternion childRotation = child.transform.localRotation;
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Call(f.prop, "Remember"); Physics.SyncTransforms(); f.Grab();
+                    Require(Quaternion.Angle(f.prop.transform.rotation, original) < .01f, "Pickup snapped upright in its first frame");
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one; Physics.SyncTransforms();
+                    Quaternion first = AdvanceAtCurrentPose(f, .05f);
+                    Require(Quaternion.Angle(first, original) > .05f, "Automatic alignment did not start");
+                    Require(Quaternion.Angle(first, upright) > .1f, "Automatic alignment finished in one short frame");
+                    float previous = Quaternion.Angle(first, upright);
+                    for (int i = 0; i < 30; i++)
+                    {
+                        Quaternion current = AdvanceAtCurrentPose(f, .05f);
+                        float remaining = Quaternion.Angle(current, upright);
+                        Require(remaining <= previous + .02f, "Automatic alignment moved away from upright");
+                        previous = remaining;
+                        Near(child.transform.localPosition, childPosition, "Alignment moved a compound child");
+                        Near(child.transform.localScale, childScale, "Alignment resized a compound child");
+                        Require(Quaternion.Angle(child.transform.localRotation, childRotation) < .01f, "Alignment flattened the reflector's authored local tilt");
+                    }
+                    Require(Quaternion.Angle(f.prop.transform.rotation, upright) < .1f, "Alignment did not finish in free space");
+                    Require(Vector3.Angle(f.prop.transform.forward, heading) < .1f, "Alignment changed the horizontal facing");
+                    Call(f.game, "Cancel", false);
+                    Require(Quaternion.Angle(f.prop.transform.rotation, original) < .01f, "Cancel lost the pre-alignment rotation");
+                    Near(f.prop.transform.position, position, "Cancel lost the pre-alignment position");
+                }
+            });
+            Check(result, stage, "vertical forward pickup uses its right axis to recover horizontal facing", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    Quaternion original = Quaternion.Euler(90, 37, 0);
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one; Physics.SyncTransforms();
+                    for (int i = 0; i < 30; i++) AdvanceAtCurrentPose(f, .05f);
+                    Require(Quaternion.Angle(f.prop.transform.rotation, Quaternion.Euler(0, 37, 0)) < .1f,
+                        "Vertical forward produced an invalid or arbitrary upright facing");
+                }
+            });
+            Check(result, stage, "manual rotation interrupts automatic alignment and survives later advances and release", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    Quaternion original = Quaternion.Euler(28, 12, 15);
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one; Physics.SyncTransforms();
+                    AdvanceAtCurrentPose(f, .1f);
+                    Quaternion requested = Quaternion.Euler(-18, 81, 9);
+                    Shared(f).GetType().GetProperty("Rotation").SetValue(Shared(f), requested);
+                    f.prop.transform.rotation = requested; Physics.SyncTransforms();
+                    for (int i = 0; i < 30; i++)
+                        Require(Quaternion.Angle(AdvanceAtCurrentPose(f, .05f), requested) < .01f,
+                            "Automatic alignment overwrote the player's manual rotation");
+                    Require((bool)Call(f.game, "Drop"), "Manually rotated release was rejected");
+                    Require(Quaternion.Angle(f.prop.transform.rotation, requested) < .01f, "Release lost the manually selected rotation");
+                }
+            });
+            Check(result, stage, "unchanged rotation keeps alignment active but a tiny manual turn interrupts it", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    Quaternion original = Quaternion.Euler(28, 12, 15);
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one; Physics.SyncTransforms();
+                    object shared = Shared(f);
+                    var rotationProperty = shared.GetType().GetProperty("Rotation");
+                    rotationProperty.SetValue(shared, rotationProperty.GetValue(shared));
+                    Quaternion continued = AdvanceAtCurrentPose(f, .05f);
+                    Require(Quaternion.Angle(continued, original) > .1f, "Reassigning the same rotation cancelled alignment");
+                    rotationProperty.SetValue(shared, new Quaternion(-continued.x, -continued.y, -continued.z, -continued.w));
+                    Quaternion beforeTurn = AdvanceAtCurrentPose(f, .05f);
+                    Require(Quaternion.Angle(beforeTurn, continued) > .1f, "Equivalent negative quaternion cancelled alignment");
+                    Quaternion requested = Quaternion.AngleAxis(.002f, Vector3.up) * beforeTurn;
+                    Require(Vector3.Distance(requested * Vector3.forward, beforeTurn * Vector3.forward) > .00001f,
+                        "Fixture did not apply the tiny manual turn");
+                    rotationProperty.SetValue(shared, requested);
+                    f.prop.transform.rotation = requested; Physics.SyncTransforms();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Quaternion actual = AdvanceAtCurrentPose(f, .1f);
+                        // Quaternion.Angle rounds very small differences to zero;
+                        // compare transformed axes to retain the tiny-input signal.
+                        Require(Vector3.Distance(actual * Vector3.forward, requested * Vector3.forward) < .000001f &&
+                            Vector3.Distance(actual * Vector3.up, requested * Vector3.up) < .000001f,
+                            "Automatic alignment overwrote a .002-degree manual turn");
+                    }
+                }
+            });
+            Check(result, stage, "release during automatic alignment preserves the displayed intermediate rotation", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    Quaternion original = Quaternion.Euler(25, 37, 15);
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Physics.SyncTransforms(); f.Grab();
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one; Physics.SyncTransforms();
+                    Quaternion displayed = AdvanceAtCurrentPose(f, .1f);
+                    Require(Vector3.Angle(displayed * Vector3.up, Vector3.up) > 1, "Fixture completed alignment before release");
+                    Require((bool)Call(f.game, "Drop"), "Intermediate aligned release was rejected");
+                    Require(Quaternion.Angle(f.prop.transform.rotation, displayed) < .01f, "Release snapped the displayed prop to its final upright pose");
+                }
+            });
+            Check(result, stage, "alignment cannot pass an intermediate obstacle and resumes when it is removed", () =>
+            {
+                using (var f = new Fixture(stage))
+                {
+                    var bar = f.prop.GetComponent<BoxCollider>(); bar.size = new Vector3(.2f, 2, .2f);
+                    Quaternion original = Quaternion.Euler(0, 0, 60);
+                    Vector3 position = f.prop.transform.position;
+                    f.prop.transform.rotation = original; Call(f.prop, "Remember"); Physics.SyncTransforms(); f.Grab();
+                    f.prop.transform.SetPositionAndRotation(position, original); f.prop.transform.localScale = Vector3.one;
+                    var obstacle = f.Blocker(position + Quaternion.Euler(0, 0, 30) * (Vector3.up * .9f));
+                    obstacle.transform.localScale = new Vector3(.1f, .1f, .4f); var obstacleShape = obstacle.GetComponent<Collider>();
+                    Physics.SyncTransforms();
+                    Require(!Penetrates(bar, obstacleShape), "Obstacle overlaps the initial tilted bar");
+                    f.prop.transform.rotation = Quaternion.identity; Physics.SyncTransforms();
+                    Require(!Penetrates(bar, obstacleShape), "Obstacle overlaps the final upright bar");
+                    f.prop.transform.rotation = Quaternion.Euler(0, 0, 30); Physics.SyncTransforms();
+                    Require(Penetrates(bar, obstacleShape), "Fixture does not obstruct the intermediate rotation");
+                    f.prop.transform.rotation = original; Physics.SyncTransforms();
+                    // A long frame must check the swept orientations even when both
+                    // the start and requested end orientations are collision-free.
+                    Quaternion stopped = AdvanceAtCurrentPose(f, 1f);
+                    Require(Quaternion.Angle(stopped, Quaternion.identity) > 5, "Alignment jumped through the thin obstacle to a clear endpoint");
+                    Require(Quaternion.Angle(stopped, original) > 1, "Alignment did not use the available clear rotation");
+                    for (int i = 0; i < 10; i++)
+                    {
+                        AdvanceAtCurrentPose(f, .1f);
+                        Require(!Penetrates(bar, obstacleShape), "Automatic alignment penetrated its blocking obstacle");
+                        Require(Quaternion.Angle(f.prop.transform.rotation, Quaternion.identity) > 5, "Blocked alignment bypassed the obstacle over later frames");
+                    }
+                    obstacleShape.enabled = false; Physics.SyncTransforms();
+                    for (int i = 0; i < 30; i++) AdvanceAtCurrentPose(f, .05f);
+                    Require(Quaternion.Angle(f.prop.transform.rotation, Quaternion.identity) < .1f, "Alignment did not resume after clearance became available");
+                }
+            });
+        }
+
         static Vector2 ProjectedSize(Component prop, Camera camera)
         {
             Vector2 minimum=Vector2.one*float.PositiveInfinity,maximum=Vector2.one*float.NegativeInfinity;
@@ -260,6 +438,7 @@ namespace ShadeLink.Editor
             if (!Application.isBatchMode) throw new InvalidOperationException("Run these scene fixtures in a separate batch-mode project.");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var result = new Results();
+            foreach (string stage in new[] { "Gallery", "Beach" }) CheckAutoUpright(result, stage);
             Check(result,"Starship","successful dense placement reports its physics queries",()=>
             {
                 using(var f=new Fixture("Starship"))

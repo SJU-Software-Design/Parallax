@@ -47,19 +47,36 @@ namespace ShadeLink
         // Release limits belong to the puzzle, not to carried contact geometry.
         const float MinimumHeldScale = .001f;
         readonly IObjectInteractionHost<T> host;
+        readonly bool autoUprightOnPickup;
         RaycastHit[] hits = new RaycastHit[64];
         RaycastHit[] assistHits = new RaycastHit[20];
+        Collider[] rotationOverlaps = new Collider[32];
         RaycastHit aimHit;
         Pickup pickup;
         PerspectivePlacement placement;
         bool placementFeasible;
         Vector3 initialDirection = Vector3.forward;
         float alignmentTime;
+        Quaternion rotation = Quaternion.identity, uprightTarget;
+        bool uprightPending;
         public float PickupAssistRadius { get; set; } = .05f;
         public float OverlapReduction { get; private set; } = 1;
         public Vector3 HeldDirection => host.Camera.transform.rotation * Vector3.Slerp(initialDirection, Vector3.forward,
             1 - Mathf.Pow(1 - Mathf.Clamp01(alignmentTime / .8f), 2));
-        public void Advance(float dt) { alignmentTime = Mathf.Min(.8f, alignmentTime + Mathf.Max(0, dt)); }
+        public void Advance(float dt)
+        {
+            if (float.IsNaN(dt) || float.IsInfinity(dt) || dt <= 0) return;
+            alignmentTime = Mathf.Min(.8f, alignmentTime + dt);
+            if (!uprightPending || host.Held == null) return;
+            // Follow the accepted physical pose so blocked rotation cannot build
+            // up a large correction that snaps forward once the prop is lifted.
+            Quaternion current = host.Held.transform.rotation;
+            float angle = Quaternion.Angle(current, uprightTarget);
+            float step = Mathf.Min(180 * dt, angle * (1 - Mathf.Exp(-12 * dt)));
+            Quaternion next = angle <= .05f ? uprightTarget : Quaternion.RotateTowards(current, uprightTarget, step);
+            rotation = ClearUprightRotation(current, next);
+            if (angle <= .05f && Quaternion.Angle(rotation, uprightTarget) < .01f) uprightPending = false;
+        }
         public bool PlacementFeasible => placementFeasible;
         public PerspectivePlacement.Result LastPlacement { get; private set; }
         public bool ProjectionApplied { get; private set; }
@@ -79,8 +96,26 @@ namespace ShadeLink
         public Vector3 ScaledGrabLocalPoint => ShapePoint(GrabLocalPoint);
         public float Depth { get; set; }
         // Looking around moves the carry target without tilting the prop.
-        // Only the explicit rotate/tilt/straighten controls change its world orientation.
-        public Quaternion Rotation { get; set; } = Quaternion.identity;
+        // Explicit rotation takes over from the one-time pickup correction.
+        public Quaternion Rotation
+        {
+            get => rotation;
+            set
+            {
+                // Quaternion.Angle rounds very small changes to zero. Compare
+                // components so even a slow deliberate drag takes ownership.
+                float difference = (rotation.x - value.x) * (rotation.x - value.x) +
+                    (rotation.y - value.y) * (rotation.y - value.y) +
+                    (rotation.z - value.z) * (rotation.z - value.z) +
+                    (rotation.w - value.w) * (rotation.w - value.w);
+                float opposite = (rotation.x + value.x) * (rotation.x + value.x) +
+                    (rotation.y + value.y) * (rotation.y + value.y) +
+                    (rotation.z + value.z) * (rotation.z + value.z) +
+                    (rotation.w + value.w) * (rotation.w + value.w);
+                if (Mathf.Min(difference, opposite) > 1e-14f) uprightPending = false;
+                rotation = value;
+            }
+        }
         public Vector3 ShapePoint(Vector3 localPoint) => Vector3.Scale(localPoint,ReferenceShapeRatio);
         public Vector3 ScaleAt(float scale) => ReferenceShapeRatio*scale;
 
@@ -95,7 +130,60 @@ namespace ShadeLink
             public Action restoreAuxiliary;
         }
 
-        public ObjectInteraction(IObjectInteractionHost<T> host) { this.host = host; }
+        public ObjectInteraction(IObjectInteractionHost<T> host, bool autoUprightOnPickup = false)
+        { this.host = host; this.autoUprightOnPickup = autoUprightOnPickup; }
+
+        Quaternion ClearUprightRotation(Quaternion from, Quaternion to)
+        {
+            var prop = host.Held;
+            Bounds bounds = prop.WorldBounds;
+            float radius = bounds.extents.magnitude + Vector3.Distance(bounds.center, prop.transform.position);
+            int steps = Mathf.Max(1, Mathf.CeilToInt(radius * Quaternion.Angle(from, to) * Mathf.Deg2Rad / .025f));
+            // Keep very large props within the query budget by reducing this
+            // frame's angular progress, never by skipping collision samples.
+            if (steps > 128) { to = Quaternion.Slerp(from, to, 128f / steps); steps = 128; }
+            Quaternion accepted = from;
+            Physics.SyncTransforms();
+            try
+            {
+                for (int i = 1; i <= steps; i++)
+                {
+                    Quaternion candidate = Quaternion.Slerp(from, to, (float)i / steps);
+                    prop.transform.rotation = candidate;
+                    if (!HasRotationClearance(prop)) break;
+                    accepted = candidate;
+                }
+            }
+            finally { prop.transform.rotation = from; }
+            return accepted;
+        }
+
+        bool HasRotationClearance(T prop)
+        {
+            foreach (var part in prop.Parts)
+            {
+                if (host.IntersectsPlayer(part)) return false;
+                Vector3 half = Vector3.Scale(part.size, part.transform.lossyScale) * .5f;
+                half = Vector3.Max(Vector3.one * .001f,
+                    new Vector3(Mathf.Abs(half.x), Mathf.Abs(half.y), Mathf.Abs(half.z)) - Vector3.one * .002f);
+                int count;
+                while (true)
+                {
+                    count = Physics.OverlapBoxNonAlloc(part.transform.TransformPoint(part.center), half,
+                        rotationOverlaps, part.transform.rotation, host.InteractionMask, QueryTriggerInteraction.Ignore);
+                    if (count < rotationOverlaps.Length) break;
+                    Array.Resize(ref rotationOverlaps, rotationOverlaps.Length * 2);
+                }
+                for (int i = 0; i < count; i++)
+                {
+                    var other = rotationOverlaps[i];
+                    if (other.attachedRigidbody == prop.Body) continue;
+                    if (other == host.Controller) continue;
+                    return false;
+                }
+            }
+            return true;
+        }
 
         public void UpdateAim()
         {
@@ -150,7 +238,11 @@ namespace ShadeLink
             ReferenceDistance = Mathf.Max(.01f, offset.magnitude);
             initialDirection = Quaternion.Inverse(host.Camera.transform.rotation) * offset.normalized;
             alignmentTime = 0; OverlapReduction = 1;
-            Depth = ReferenceDistance; Rotation = pickup.rotation;placementFeasible=true;
+            Depth = ReferenceDistance; rotation = pickup.rotation; placementFeasible = true;
+            Vector3 forward = Vector3.ProjectOnPlane(pickup.rotation * Vector3.forward, Vector3.up);
+            if (forward.sqrMagnitude < .0001f) forward = Vector3.Cross(pickup.rotation * Vector3.right, Vector3.up);
+            uprightTarget = Quaternion.LookRotation(forward, Vector3.up);
+            uprightPending = autoUprightOnPickup && Quaternion.Angle(rotation, uprightTarget) > .05f;
             placement=new PerspectivePlacement(held.transform,held.Parts,GrabLocalPoint,ReferenceScale,ReferenceDistance);
             host.StartPlacement();
         }
@@ -197,6 +289,7 @@ namespace ShadeLink
 
         void Finish(bool released)
         {
+            uprightPending = false;
             host.Held.Highlight(false, false); host.Held = null; host.Aimed = null; pickup = null;placement=null;
             Physics.SyncTransforms(); host.FinishInteraction(released);
         }
