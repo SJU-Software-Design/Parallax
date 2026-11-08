@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1399df019663b3e4d9c03f1b9b672ef1, type: 3}
+  m_Name: KeyShadowPassageTest
+  m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Tutorial.KeyShadowPassageSettings
+  originalPassage: {fileID: -4145310547056762910, guid: 6e468b0cec6488a41babff5c64fb1ef5, type: 3}
+  narrowPassage: {fileID: 4300000, guid: c50d471571373c34e8c2d1616d6a1719, type: 2}
+  useNarrowPassage: 1
