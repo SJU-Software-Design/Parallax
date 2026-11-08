@@ -1,0 +1,17 @@
+{
+  "unity": "6000.3.24f1",
+  "result": "passed",
+  "sourceMapsUnchanged": true,
+  "beachSceneUnchanged": true,
+  "sceneSha256": "0602e457d39bca80e6c270bf9e19aa910c319e62e0619abab2a0693dc9a69a69",
+  "sandRenderers": 28,
+  "shaderChecks": "sand and original beach shaders compile; normal/specular 1024; normal import, repeat, mipmaps, anisotropic filtering validated",
+  "capture": "Actual saved Beach scene in Unity Play Mode, same cameras before and after; no retouching, no HUD",
+  "visualCheck": "Ripples and granular reflections visible; no black ground or shader error color",
+  "limitations": [
+    "No standalone player build",
+    "No full four-zone gameplay walkthrough"
+  ],
+  "placementPreviewFunctionUnchanged": true,
+  "reviewBase": "0c517d7ced49587528905570cd102a6b2179002a"
+}
