@@ -10,9 +10,14 @@ using ShadeLink.Beach;
 
 namespace ShadeLink.Editor
 {
-    public static class BeachBuild
+    public static partial class BeachBuild
     {
         const string Generated="Assets/Parallax/Beach/Generated/",ScenePath="Assets/Parallax/Beach/Scenes/Beach.unity";
+        // Optional partial hooks let each asset pack merge independently.
+        static partial void ConfigureWood(BeachGame game);
+        static partial void ConfigureFlowers(BeachGame game);
+        static partial void ConfigureCastleSurface(BeachGame game);
+        static partial void ConfigureParasols(BeachGame game);
         [Serializable] sealed class ModelData {public string name;public float[] size;public Part[] parts;}
         [Serializable] sealed class Part {public float[] vertices,color;public int[] triangles;public float metallic,roughness;}
         static T Save<T>(T value,string path) where T:UnityEngine.Object
@@ -67,6 +72,7 @@ namespace ShadeLink.Editor
                     UnityEngine.Object.DestroyImmediate(material);
                 }
             }
+            ConfigureWood(game);ConfigureFlowers(game);ConfigureCastleSurface(game);ConfigureParasols(game);
             EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
             PlayerSettings.productName="Parallax - Last Beach v"+BeachGame.Version;PlayerSettings.bundleVersion=BeachGame.Version;PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true)};
