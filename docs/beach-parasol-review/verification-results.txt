@@ -1,0 +1,9 @@
+ART_PR_CAPTURE_OK parasol before
+ART_PR_PLAY_OK parasol props=11 water=4 checkpoints=4 shaders=OK
+ART_PR_CAPTURE_OK parasol after
+BEACH_PREPARE_OK props=11
+ART_PR_REGENERATE_OK parasol
+
+Four independent branches merged without conflicts.
+ART_PR_PLAY_OK all props=11 water=4 checkpoints=4 shaders=OK
+ART_PR_REGENERATE_OK all
