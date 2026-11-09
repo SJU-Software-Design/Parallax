@@ -1,0 +1,33 @@
+{
+  "source": "https://assetstore.unity.com/packages/2d/textures-materials/wood/plank-textures-pbr-72318",
+  "publisher": "A dog's life software",
+  "package": "Plank Textures PBR",
+  "version": "1.0",
+  "material": "Planks4a",
+  "acquired": "2026-11-09",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "39ac923fd4a64d2dc84b3bc16626c404ef08dbfc44e072830f9bba1b1c064144",
+  "files": [
+    {
+      "file": "Planks4_Normal.tga",
+      "originalPath": "Assets/ADG_Textures/Plank Textures/Planks4/textures/Planks4_Normal.tga",
+      "sha256": "24a3a19f4a57fd93153be38df11ed80d40572a1640d8e1fa5e4deb612ce9e58a"
+    },
+    {
+      "file": "Planks4a.tif",
+      "originalPath": "Assets/ADG_Textures/Plank Textures/Planks4/textures/Planks4a.tif",
+      "sha256": "8fdf28aa3076599a2ea0a23606bafbf025a9e9ba97ce517e24ae890698ee981e"
+    },
+    {
+      "file": "Planks4_Ambient_Occlusion.tga",
+      "originalPath": "Assets/ADG_Textures/Plank Textures/Planks4/textures/Planks4_Ambient_Occlusion.tga",
+      "sha256": "27865e4b6793b538b0d36d6c148ea0e005a68bf1fe8a7743c336b24fed8e4088"
+    },
+    {
+      "file": "Planks4_Metallic.tga",
+      "originalPath": "Assets/ADG_Textures/Plank Textures/Planks4/textures/Planks4_Metallic.tga",
+      "sha256": "9fe410543179a3ce319c9170e50db34af3a72a0061bebbf52a491d7c1d8fc8d9"
+    }
+  ]
+}
