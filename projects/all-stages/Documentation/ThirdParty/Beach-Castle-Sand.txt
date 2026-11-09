@@ -1,0 +1,12 @@
+Yughues Free Sand Materials — Nobiax / Yughues
+https://assetstore.unity.com/packages/2d/textures-materials/nature/yughues-free-sand-materials-12964
+Only Sand11 albedo and normal maps are used on castle bodies and restoration
+pieces. The separate YughuesCastleSand folder keeps this change independent of
+the Sand01 ground PR. Flags, windows, shell inlays and the beach floor retain
+their original materials. Object-aligned projection avoids missing mesh UVs.
+
+Acquired 2026-11-09. Standard Unity Asset Store EULA:
+https://unity.com/legal/as-terms
+Original asset hashes and source paths are recorded in the imported package's
+source.json. Source asset bytes are retained; Unity import settings and generated
+rendering assets are adapted for Built-in rendering.

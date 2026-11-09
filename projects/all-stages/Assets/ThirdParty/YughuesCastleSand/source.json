@@ -1,0 +1,24 @@
+{
+  "source": "https://assetstore.unity.com/packages/2d/textures-materials/nature/yughues-free-sand-materials-12964",
+  "publisher": "Nobiax / Yughues",
+  "package": "Yughues Free Sand Materials",
+  "version": "1.1",
+  "acquired": "2026-11-08",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "86003b468c84c86238a044e4b268fb08795b13bacbe56b26c2e2d689cb374042",
+  "material": "M_YFSM_Sand01",
+  "files": [
+    {
+      "file": "T_YFSM_11_n.tga",
+      "originalPath": "Assets/YughuesFreeSandMaterials/Textures/T_YFSM_11_n.tga",
+      "sha256": "a2c33447de360b93de61e3e64518bcaf35a95dbdb7cb4667c070a14b819994ab"
+    },
+    {
+      "file": "T_YFSM_11_d.tga",
+      "originalPath": "Assets/YughuesFreeSandMaterials/Textures/T_YFSM_11_d.tga",
+      "sha256": "5c2e967eb4bc4357068e36e108b4af8012f3ac8e63b585934dec9de097116393"
+    }
+  ],
+  "additionalMaterial": "M_YFSM_Sand11"
+}
