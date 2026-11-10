@@ -14,6 +14,9 @@ namespace ShadeLink.Editor
             if(harbor==null||harbor.target.Find("Coastal Workshop frame")!=null)return;
             var samples=harbor.samples.Select(s=>(s.point,s.inside,s.region)).ToArray();
             var colliders=harbor.GetComponentsInChildren<Collider>(true);
+            // Keep the boat pickup under real C fabric without shading the upright canvas.
+            var shelter=harbor.GetComponentsInChildren<Transform>().Single(t=>t.name.StartsWith("Beach resort parasol · 그림자 제작소 작업 쉼터")&&t.position.x>9);
+            shelter.position=new Vector3(9.3f,3.3f,48.3f);
             var wood=CoastalWood("Coastal Workshop weathered oak",new Color(.87f,.82f,.70f));
             var teal=CoastalWood("Coastal Workshop painted legs",new Color(.13f,.31f,.31f),true);
             var linen=CoastalLinen("Coastal Workshop stretched canvas",new Color(.96f,.91f,.76f));
