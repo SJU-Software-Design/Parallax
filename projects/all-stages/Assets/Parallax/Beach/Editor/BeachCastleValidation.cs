@@ -251,7 +251,8 @@ namespace ShadeLink.Editor
             Travel(Mid);Idle(6);Require(route.FirstRestored&&route.AtMidpoint,"Actual first stair and landing did not register.");
             var lowerPosition=route.LowerFragment.transform.position;var lowerScale=route.LowerFragment.transform.localScale;
             Capture("FirstFrontStairLandingPlayerEye",game.view.transform.position,route.Parasol.transform.position);
-            Travel(new Vector3(.9f,3.44f,91.9f),tolerance:.02f);GrabActual(route.Parasol,"Native movable parasol pickup");
+            // The wider C canopy leaves its real pickup approach just left of the old fixture.
+            Travel(new Vector3(.65f,3.44f,91.9f),tolerance:.02f);GrabActual(route.Parasol,"Native movable parasol pickup");
             Look(game.view.transform.position+new Vector3(0,.5f,1));Travel(new Vector3(.2f,3.44f,91.7f),tolerance:.02f);PlaceNativeParasol();ValidateParasolShade(false);
             Capture("ManualParasolOnFlatDeckPlayerEye",game.view.transform.position,route.Parasol.transform.position);
             Travel(new Vector3(-1,3.44f,92.3f),tolerance:.02f);GrabActual(route.UpperFragment,"Native separate B source pickup");
