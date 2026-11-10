@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-10",
+  "unity": "6000.3.24f1",
+  "branch": "codex/beach-coastal-rental-signage",
+  "code_head_before_evidence_commit": "e96a8b62c0a8c58a3f93e34e6238fcd7682c536e",
+  "base_branch": "codex/beach-coastal-base",
+  "base_sha": "caed3560b83411ada740bebaa9eebf0100ea223c",
+  "runtime_evidence": "Reused implementation-time native Unity Play Mode validation; not rerun for documentation publication.",
+  "integration_preview_sha": "a9dbeb20d755b632b3493d58abcfc5ba9501db3a",
+  "native_checks_passed": 5,
+  "native_scene_unchanged": true,
+  "images": {
+    "before.png": "9c1b89c5d1684aa1bda82dd5559b1179278f972ab2e9733f5ffc34a8abb07d5e",
+    "after.png": "6339eea7d7924f1070506549f9ebb2b99f1a72ac46d9513426cdb58c609e64dd"
+  },
+  "image_dimensions": [
+    1600,
+    900
+  ],
+  "image_context": "Original native game camera renders. Before: pre-coastal baseline. After: six-feature integrated preview; surrounding features may also differ. No generated concept images or image edits.",
+  "publication_checks": [
+    "six source diffs passed git diff --check",
+    "PNG dimensions and original file hashes checked",
+    "integrated scene hash matches captured implementation state"
+  ],
+  "not_run": [
+    "standalone build",
+    "full unassisted walkthrough",
+    "new GPU performance measurement"
+  ]
+}
