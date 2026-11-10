@@ -1,9 +1,8 @@
-Cartoon Umbrella 1.0 — Golem Kin Games
-https://assetstore.unity.com/packages/3d/props/exterior/cartoon-umbrella-285322
-Uses the original prefab, mesh and three materials. The approved B variation
-keeps the curved dome and pole, drops the padded underside, and renders the
-upper cloth surface from both sides. The curve's vertical scale is .8; this is
-not the rejected flat-sheet preview. Full model height is normalized to 2.36 m.
+ToonTastic - Beach Props Pack 1.0 — Akduman
+https://assetstore.unity.com/packages/3d/props/exterior/toontastic-beach-props-pack-309713
+Uses the original beach umbrella prefab, FBX, palette texture/material and
+ThirdPartyNotices.txt. The selected C umbrella retains the supplied orange/ivory
+canopy profile and pole. Full model height is normalized to 2.36 m.
 Fixed cantilever shelters keep their offset supports and original footprint.
 Actual canopy geometry provides shadows; placement bounds follow the canopy.
 
@@ -11,4 +10,5 @@ Acquired 2026-11-09. Standard Unity Asset Store EULA:
 https://unity.com/legal/as-terms
 Original asset hashes and source paths are recorded in the imported package's
 source.json. Source asset bytes are retained; Unity import settings and generated
-rendering assets are adapted for Built-in rendering.
+rendering assets are adapted for Built-in rendering. The source FBX also contains
+other beach props; only the umbrella is extracted or instantiated by this change.

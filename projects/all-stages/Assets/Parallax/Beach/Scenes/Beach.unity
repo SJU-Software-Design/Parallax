@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 9000000000003}
   - component: {fileID: 9000000000002}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,11 +67,11 @@ Transform:
   m_GameObject: {fileID: 9000000000000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.0151796, y: 1, z: 1.831975}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.35958, y: 1, z: 1.0733526}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 337049898}
+  m_Father: {fileID: 1931217297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000002
 MeshCollider:
@@ -94,7 +94,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000003
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -120,8 +120,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -152,7 +151,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000000}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000005
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +165,7 @@ GameObject:
   - component: {fileID: 9000000000008}
   - component: {fileID: 9000000000007}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,11 +180,11 @@ Transform:
   m_GameObject: {fileID: 9000000000005}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.839571, y: 1, z: 2.1067712}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.7173643, y: 1, z: 1.4311367}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 253929976}
+  m_Father: {fileID: 2065746056}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000007
 MeshCollider:
@@ -208,7 +207,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000008
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -234,8 +233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -266,7 +264,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000005}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000010
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +278,7 @@ GameObject:
   - component: {fileID: 9000000000013}
   - component: {fileID: 9000000000012}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,11 +293,11 @@ Transform:
   m_GameObject: {fileID: 9000000000010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.1983778, y: 1, z: 1.831975}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 2.218262, y: 1, z: 1.6458073}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1263958740}
+  m_Father: {fileID: 253929976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000012
 MeshCollider:
@@ -322,7 +320,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000013
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -348,8 +346,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -380,7 +377,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000010}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000015
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +391,7 @@ GameObject:
   - component: {fileID: 9000000000018}
   - component: {fileID: 9000000000017}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -409,11 +406,11 @@ Transform:
   m_GameObject: {fileID: 9000000000015}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.839571, y: 1, z: 2.1067712}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 2.218262, y: 1, z: 1.6458073}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1930196236}
+  m_Father: {fileID: 1369292079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000017
 MeshCollider:
@@ -436,7 +433,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -462,8 +459,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -494,7 +490,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000015}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000020
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +504,7 @@ GameObject:
   - component: {fileID: 9000000000023}
   - component: {fileID: 9000000000022}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,11 +519,11 @@ Transform:
   m_GameObject: {fileID: 9000000000020}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.839571, y: 1, z: 2.1067712}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 2.0035915, y: 1, z: 1.5026935}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 254484810}
+  m_Father: {fileID: 1942556927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000022
 MeshCollider:
@@ -550,7 +546,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000023
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -576,8 +572,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -608,7 +603,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000020}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000025
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +617,7 @@ GameObject:
   - component: {fileID: 9000000000028}
   - component: {fileID: 9000000000027}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,11 +632,11 @@ Transform:
   m_GameObject: {fileID: 9000000000025}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.5647738, y: 1, z: 1.9235736}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.7173643, y: 1, z: 1.4311367}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1942556927}
+  m_Father: {fileID: 1263958740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000027
 MeshCollider:
@@ -664,7 +659,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000028
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -690,8 +685,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -722,7 +716,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000025}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000030
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +730,7 @@ GameObject:
   - component: {fileID: 9000000000033}
   - component: {fileID: 9000000000032}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -751,8 +745,8 @@ Transform:
   m_GameObject: {fileID: 9000000000030}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.0151796, y: 1, z: 1.831975}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.5742506, y: 1, z: 1.4311367}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 348050340}
@@ -778,7 +772,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000033
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -804,8 +798,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -836,7 +829,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000030}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000035
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,7 +843,7 @@ GameObject:
   - component: {fileID: 9000000000038}
   - component: {fileID: 9000000000037}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,11 +858,11 @@ Transform:
   m_GameObject: {fileID: 9000000000035}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 1.7403823, y: 1, z: 1.3739812}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.7173643, y: 1, z: 1.4311367}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1931217297}
+  m_Father: {fileID: 784097203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000037
 MeshCollider:
@@ -892,7 +885,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000038
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -918,8 +911,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -950,7 +942,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000035}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000040
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,7 +956,7 @@ GameObject:
   - component: {fileID: 9000000000043}
   - component: {fileID: 9000000000042}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -979,11 +971,11 @@ Transform:
   m_GameObject: {fileID: 9000000000040}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.1983778, y: 1, z: 1.831975}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 2.218262, y: 1, z: 1.6458073}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2065746056}
+  m_Father: {fileID: 254484810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000042
 MeshCollider:
@@ -1006,7 +998,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000043
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1032,8 +1024,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1064,7 +1055,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000040}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,7 +1069,7 @@ GameObject:
   - component: {fileID: 9000000000048}
   - component: {fileID: 9000000000047}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1093,11 +1084,11 @@ Transform:
   m_GameObject: {fileID: 9000000000045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.1983778, y: 1, z: 1.831975}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 1.5742506, y: 1, z: 1.4311367}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 784097203}
+  m_Father: {fileID: 337049898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000047
 MeshCollider:
@@ -1120,7 +1111,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000048
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1146,8 +1137,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1178,7 +1168,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000045}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!1 &9000000000050
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,7 +1182,7 @@ GameObject:
   - component: {fileID: 9000000000053}
   - component: {fileID: 9000000000052}
   m_Layer: 0
-  m_Name: Fabric parasol B shelter canopy
+  m_Name: ToonTastic Umbrella C shelter canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1207,11 +1197,11 @@ Transform:
   m_GameObject: {fileID: 9000000000050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.2916193, z: 0}
-  m_LocalScale: {x: 2.839571, y: 1, z: 2.1067712}
+  m_LocalPosition: {x: 0, y: -2.3105493, z: 0}
+  m_LocalScale: {x: 2.218262, y: 1, z: 1.6458073}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1369292079}
+  m_Father: {fileID: 1930196236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &9000000000052
 MeshCollider:
@@ -1234,7 +1224,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!23 &9000000000053
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1260,8 +1250,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1292,7 +1281,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000000000050}
-  m_Mesh: {fileID: 4300000, guid: 06badc8a5b9a34384b109e9b5c8eb791, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 73e98215b58134dd69a15e1ec00ccfa0, type: 2}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -6122,8 +6111,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1834283, y: 0.49426556, z: 2.183436}
-  m_Center: {x: 0, y: 2.0444865, z: 0}
+  m_Size: {x: 2.7949808, y: 0.61087704, z: 2.794981}
+  m_Center: {x: 0, y: 2.0051107, z: 0.00000011920929}
 --- !u!1 &45119264
 GameObject:
   m_ObjectHideFlags: 0
@@ -22307,7 +22296,7 @@ Transform:
   - {fileID: 635023089}
   - {fileID: 2133425470}
   - {fileID: 2110886036}
-  - {fileID: 9000000000006}
+  - {fileID: 9000000000011}
   m_Father: {fileID: 1104105559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &254484809
@@ -22352,7 +22341,7 @@ Transform:
   - {fileID: 636097392}
   - {fileID: 865922777}
   - {fileID: 639035202}
-  - {fileID: 9000000000021}
+  - {fileID: 9000000000041}
   m_Father: {fileID: 1907485356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &255451423
@@ -29790,7 +29779,7 @@ Transform:
   - {fileID: 1021725442}
   - {fileID: 52740020}
   - {fileID: 1634028536}
-  - {fileID: 9000000000001}
+  - {fileID: 9000000000046}
   m_Father: {fileID: 291133980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338813412
@@ -31668,9 +31657,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31701,7 +31688,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363188227}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!1 &363204744
 GameObject:
   m_ObjectHideFlags: 0
@@ -64523,9 +64510,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -64556,7 +64541,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714294771}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!4 &714294774
 Transform:
   m_ObjectHideFlags: 0
@@ -71385,7 +71370,7 @@ Transform:
   - {fileID: 1852489293}
   - {fileID: 1618099936}
   - {fileID: 1834811071}
-  - {fileID: 9000000000046}
+  - {fileID: 9000000000036}
   m_Father: {fileID: 609724521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &784984100
@@ -73495,8 +73480,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1834283, y: 0.49426556, z: 2.183436}
-  m_Center: {x: 0, y: 2.0444865, z: 0}
+  m_Size: {x: 2.7949808, y: 0.61087704, z: 2.794981}
+  m_Center: {x: 0, y: 2.0051107, z: 0.00000011920929}
 --- !u!1 &797118568
 GameObject:
   m_ObjectHideFlags: 0
@@ -80488,9 +80473,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80543,7 +80526,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870943946}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!4 &870943950
 Transform:
   m_ObjectHideFlags: 0
@@ -82007,8 +81990,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1834283, y: 0.49426556, z: 2.183436}
-  m_Center: {x: 0, y: 2.0444865, z: 0}
+  m_Size: {x: 2.7949808, y: 0.61087704, z: 2.794981}
+  m_Center: {x: 0, y: 2.0051107, z: 0.00000011920929}
 --- !u!1 &884537177
 GameObject:
   m_ObjectHideFlags: 0
@@ -86002,9 +85985,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86035,7 +86016,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935380210}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!4 &935380213
 Transform:
   m_ObjectHideFlags: 0
@@ -93824,9 +93805,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93857,7 +93836,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021028944}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!1 &1021132053
 GameObject:
   m_ObjectHideFlags: 0
@@ -95519,9 +95498,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95552,7 +95529,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040225012}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!1 &1040812417
 GameObject:
   m_ObjectHideFlags: 0
@@ -116432,7 +116409,7 @@ Transform:
   - {fileID: 816899067}
   - {fileID: 647435158}
   - {fileID: 1191603750}
-  - {fileID: 9000000000011}
+  - {fileID: 9000000000026}
   m_Father: {fileID: 609724521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1264063191
@@ -125366,7 +125343,7 @@ Transform:
   - {fileID: 893814356}
   - {fileID: 636623820}
   - {fileID: 709596977}
-  - {fileID: 9000000000051}
+  - {fileID: 9000000000016}
   m_Father: {fileID: 1104105559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1369395225
@@ -128360,9 +128337,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128393,7 +128368,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401254310}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!4 &1401254313
 Transform:
   m_ObjectHideFlags: 0
@@ -142397,8 +142372,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1834283, y: 0.49426556, z: 2.183436}
-  m_Center: {x: 0, y: 2.0444865, z: 0}
+  m_Size: {x: 2.7949808, y: 0.61087704, z: 2.794981}
+  m_Center: {x: 0, y: 2.0051107, z: 0.00000011920929}
 --- !u!1 &1564020130
 GameObject:
   m_ObjectHideFlags: 0
@@ -151502,9 +151477,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151535,7 +151508,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655979994}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!1 &1657133798
 GameObject:
   m_ObjectHideFlags: 0
@@ -168818,9 +168791,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 700f77e0d2a8844cfb183bb485440b9c, type: 2}
-  - {fileID: 2100000, guid: 8211a1662bab44d6e9d4f03a24f7a09a, type: 2}
-  - {fileID: 2100000, guid: 56428ba7c15c546afaad531611b9f1f6, type: 2}
+  - {fileID: 2100000, guid: c9e1f4f898a5b4e35b176474ceb2b27d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -168851,7 +168822,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849488724}
-  m_Mesh: {fileID: 4300000, guid: 835d2f20db9434e9fb7555a311df9fa8, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 820b39cbf80344a1f9526db55b5da463, type: 2}
 --- !u!1 &1850622700
 GameObject:
   m_ObjectHideFlags: 0
@@ -176597,7 +176568,7 @@ Transform:
   - {fileID: 291032178}
   - {fileID: 187675123}
   - {fileID: 846336356}
-  - {fileID: 9000000000016}
+  - {fileID: 9000000000051}
   m_Father: {fileID: 1104105559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1931114274
@@ -176733,7 +176704,7 @@ Transform:
   - {fileID: 754215938}
   - {fileID: 1671944826}
   - {fileID: 188854875}
-  - {fileID: 9000000000036}
+  - {fileID: 9000000000001}
   m_Father: {fileID: 250426815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1933435082
@@ -177758,7 +177729,7 @@ Transform:
   - {fileID: 1183460024}
   - {fileID: 940604333}
   - {fileID: 1852259905}
-  - {fileID: 9000000000026}
+  - {fileID: 9000000000021}
   m_Father: {fileID: 1236350123}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942850694
@@ -187976,7 +187947,7 @@ Transform:
   - {fileID: 611317456}
   - {fileID: 1128514285}
   - {fileID: 1915646818}
-  - {fileID: 9000000000041}
+  - {fileID: 9000000000006}
   m_Father: {fileID: 609724521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2066394114

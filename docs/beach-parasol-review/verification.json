@@ -1,19 +1,21 @@
 {
   "unity": "6000.3.24f1",
-  "base": "91787ed595d8bd7bc19085344a1ffa8e193ef94e",
-  "feature": "parasol",
-  "independentPlayMode": true,
-  "props": 11,
-  "waterRegions": 4,
-  "safeCheckpoints": 4,
-  "sceneRegeneration": true,
-  "capture": [
-    1920,
-    1080
+  "variant": "C / ToonTastic - Beach Props Pack",
+  "scope": "main plus parasol change only",
+  "passed": true,
+  "checks": [
+    "ART_PR_CAPTURE_OK parasol before",
+    "ART_PR_PLAY_OK parasol props=11 water=4 checkpoints=4 shaders=OK",
+    "ART_PR_CAPTURE_OK parasol after",
+    "ART_PR_REGENERATE_OK parasol",
+    "Saved scene reloaded in a fresh Unity Editor:",
+    "ART_PR_PLAY_OK parasol props=11 water=4 checkpoints=4 shaders=OK",
+    "ART_PR_CAPTURE_OK parasol after",
+    "ART_PR_REGENERATE_OK parasol"
   ],
-  "fullWalkthrough": false,
-  "performanceProfiled": false,
-  "combinedMergeWithoutConflicts": true,
-  "combinedSavedScenePlayMode": true,
-  "combinedSceneRegeneration": true
+  "saved_scene_new_objects": 55,
+  "full_walkthrough": false,
+  "standalone_build": false,
+  "images": "actual Play Mode camera renders, not concept images",
+  "saved_scene_reloaded": true
 }
