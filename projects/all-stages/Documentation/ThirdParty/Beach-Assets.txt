@@ -44,3 +44,22 @@ the workspace .tmp/beach-refresh-assets directory.
 Only the previously local geometry-conversion function was reused; no downloaded
 scripts, packages, native libraries or installers were executed.
 Materials keep the kit palette; collision, lighting and gameplay are authored locally.
+
+Sand surface — 2026-11-08
+
+Source: Yughues Free Sand Materials 1.1, Nobiax / Yughues
+https://assetstore.unity.com/packages/2d/textures-materials/nature/yughues-free-sand-materials-12964
+License shown by Unity: Standard Unity Asset Store EULA
+https://unity.com/legal/as-terms
+
+Selected Sand01, using the original 1024 x 1024 normal and specular/smoothness
+textures and the original material base color. The two texture files and their
+import metadata are under Assets/ThirdParty/YughuesFreeSandMaterials; source.json
+records the original paths and SHA256 hashes. The remaining package materials,
+preview scene and render-pipeline packages were not imported.
+
+The beach sand shader uses a consistent world-space repeat of approximately
+2.86 metres, so the pattern does not stretch across differently sized ground
+sections. It retains the existing blue placement-shadow preview. BeachBuild
+reapplies this setup when preparing the scene. Ground geometry and collision
+are unchanged; the ripples are surface shading rather than raised geometry.

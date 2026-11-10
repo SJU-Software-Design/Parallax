@@ -40,6 +40,7 @@ namespace ShadeLink.Editor
             Directory.CreateDirectory(Generated);Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));AssetDatabase.Refresh();
             var models=new Dictionary<string,GameObject>();foreach(string key in new[]{"umbrella","ball","chair","mat","sandcastle","fence","driftwood","surfboard","volleyball","hirehut","boardrack","cooler"})models[key]=Import(key);
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);var game=BeachWorld.Build(key=>models[key]);
+            ConfigureSand(BeachWorld.Materials.Find(material=>material.name=="Sand"));
             // Procedural parasol fabric/ribs must be assets before the saved scene
             // is reopened or copied into the isolated player-build project.
             foreach(var filter in game.GetComponentsInChildren<MeshFilter>(true))
@@ -77,6 +78,18 @@ namespace ShadeLink.Editor
         {BuildPlayer(Parallax.Editor.BuildPaths.Output("Parallax_Unity_v"+BeachGame.Version+"_Beach/Parallax.exe"),"Validation/Beach/build-result.txt");}
         public static void BuildWaterBaseline()
         {BuildPlayer(Path.GetFullPath("Validation/BeachWater/Baseline/Runtime/Parallax.exe"),"Validation/BeachWater/Baseline/build-result.txt");}
+        static void ConfigureSand(Material material)
+        {
+            const string textures="Assets/ThirdParty/YughuesFreeSandMaterials/T_YFSM_01_";
+            var normal=AssetDatabase.LoadAssetAtPath<Texture2D>(textures+"n.tga");
+            var specular=AssetDatabase.LoadAssetAtPath<Texture2D>(textures+"s.tga");
+            var shader=Shader.Find("Parallax/BeachSand");
+            if(material==null||normal==null||specular==null||shader==null)
+                throw new InvalidOperationException("Yughues Sand01 material or textures are missing.");
+            material.shader=shader;material.color=new Color(.65f,.5955497f,.48664922f);
+            material.SetTexture("_BumpMap",normal);material.SetTexture("_SpecGlossMap",specular);
+            material.SetFloat("_BumpScale",1);material.SetFloat("_Glossiness",1);material.SetFloat("_Tiling",.35f);
+        }
         static void BuildPlayer(string output,string resultPath)
         {
             Prepare();Directory.CreateDirectory(Path.GetDirectoryName(output));
