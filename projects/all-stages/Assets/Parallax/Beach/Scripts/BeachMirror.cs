@@ -49,14 +49,14 @@ namespace ShadeLink.Beach
             mirrorMaterial.SetTexture("_MirrorTex", reflectionTexture);
             reflectionCamera = new GameObject("Beach planar reflection camera").AddComponent<Camera>();
             reflectionCamera.enabled = false; reflectionCamera.gameObject.hideFlags = HideFlags.HideAndDontSave;
-            rayMaterial = new Material(Shader.Find("ShadeLink/Flat")) { color = new Color(1, .72f, .28f) };
+            rayMaterial = new Material(Shader.Find("Parallax/BeachSunRay")) { name = "Coastal Mirror sunlight rays", color = new Color(1, .72f, .28f) };
             incoming = RayLine("Incoming sunlight"); outgoing = RayLine("Reflected sunlight");
         }
         LineRenderer RayLine(string title)
         {
             var line = new GameObject(title).AddComponent<LineRenderer>();line.transform.SetParent(transform, false);
             line.sharedMaterial = rayMaterial; line.positionCount = 2; line.useWorldSpace = true;
-            line.startWidth = line.endWidth = .055f; line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            line.startWidth = line.endWidth = .018f; line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             return line;
         }
         void LateUpdate()
