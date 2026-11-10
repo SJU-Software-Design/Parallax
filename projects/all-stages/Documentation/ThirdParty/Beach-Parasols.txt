@@ -1,0 +1,14 @@
+ToonTastic - Beach Props Pack 1.0 — Akduman
+https://assetstore.unity.com/packages/3d/props/exterior/toontastic-beach-props-pack-309713
+Uses the original beach umbrella prefab, FBX, palette texture/material and
+ThirdPartyNotices.txt. The selected C umbrella retains the supplied orange/ivory
+canopy profile and pole. Full model height is normalized to 2.36 m.
+Fixed cantilever shelters keep their offset supports and original footprint.
+Actual canopy geometry provides shadows; placement bounds follow the canopy.
+
+Acquired 2026-11-09. Standard Unity Asset Store EULA:
+https://unity.com/legal/as-terms
+Original asset hashes and source paths are recorded in the imported package's
+source.json. Source asset bytes are retained; Unity import settings and generated
+rendering assets are adapted for Built-in rendering. The source FBX also contains
+other beach props; only the umbrella is extracted or instantiated by this change.

@@ -1,0 +1,37 @@
+{
+  "source": "https://assetstore.unity.com/packages/3d/props/exterior/toontastic-beach-props-pack-309713",
+  "publisher": "Akduman",
+  "package": "ToonTastic - Beach Props Pack",
+  "version": "1.0",
+  "acquired": "2026-11-09",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "d647521b75c70b83e72dac810a08788d391f0d53b57593711ad0d624f1fe5e3f",
+  "files": [
+    {
+      "file": "Prop_BeachUmbrella.prefab",
+      "originalPath": "Assets/Akduman/ToonTastic - Beach Props/Prefabs/Prop_BeachUmbrella.prefab",
+      "sha256": "3252ce231b820cce4b91d4c55c7206cb4500ab77d6b3edaf0f911689095300dc"
+    },
+    {
+      "file": "beachprops.fbx",
+      "originalPath": "Assets/Akduman/ToonTastic - Beach Props/Models/beachprops.fbx",
+      "sha256": "aa46340e34d71f945e68c7c77db19b5f7c6c5da26ba9ecdd809142f77a60ef4a"
+    },
+    {
+      "file": "ColorPalette_256.mat",
+      "originalPath": "Assets/Akduman/ToonTastic - Beach Props/Materials/ColorPalette_256.mat",
+      "sha256": "83cdda9421906c74509e882d75e90a2f584aca19c4a2ebea8598f1a4482ada10"
+    },
+    {
+      "file": "ColorPalette_256.png",
+      "originalPath": "Assets/Akduman/ToonTastic - Beach Props/Textures/ColorPalette_256.png",
+      "sha256": "dfac608fafd378f1c4ad7e300e4534810984a8dffffe62a1576157c62030b243"
+    },
+    {
+      "file": "ThirdPartyNotices.txt",
+      "originalPath": "Assets/Akduman/ToonTastic - Beach Props/ThirdPartyNotices.txt",
+      "sha256": "d8e14083ab58868a11806549566bd51eec5d3fb96db78278ac74ed857bb327b5"
+    }
+  ]
+}
