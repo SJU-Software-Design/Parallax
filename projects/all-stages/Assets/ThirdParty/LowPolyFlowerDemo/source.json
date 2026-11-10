@@ -1,0 +1,42 @@
+{
+  "source": "https://assetstore.unity.com/packages/3d/vegetation/flowers/demo-low-poly-flower-pack-325074",
+  "publisher": "Emilulz",
+  "package": "DEMO: Low Poly Flower Pack",
+  "version": "1.0",
+  "acquired": "2026-11-09",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "8ca8b92e8f8515b14ce0184e0c99773f658f57b7b41dc32212b7f8bbeaca2a06",
+  "files": [
+    {
+      "file": "SM_Rose_Red_Open.fbx",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/SM_Rose_Red_Open.fbx",
+      "sha256": "95a6f3a6943f8b6dcf089a961f87c3d051d27e174e4ea5824d461780898a4f66"
+    },
+    {
+      "file": "SM_Hyacinth_PastellBlue_Big.fbx",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/SM_Hyacinth_PastellBlue_Big.fbx",
+      "sha256": "88d4f7f054bce78f58b965ce66cc8af843cd0121315c29cca4cd071e2520645b"
+    },
+    {
+      "file": "SM_Dandelion_Small.fbx",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/SM_Dandelion_Small.fbx",
+      "sha256": "e36e8b8b2184857bccb1bbbb3d4400666c16803349e49ff647dcafdffc756976"
+    },
+    {
+      "file": "DEMOAtlas_Flowerpack.png",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/DEMOAtlas_Flowerpack.png",
+      "sha256": "72a450f5088163733bd94bb6ec19a10c99ba26c4417a8fecb4d02f3d4ebc0182"
+    },
+    {
+      "file": "SM_Rose_Black_Open.fbx",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/SM_Rose_Black_Open.fbx",
+      "sha256": "7432e449a3119b7c49aa9618ed361cc4a5f9c65717eb03392c071e2d31edbade"
+    },
+    {
+      "file": "SM_Daisy_Single.fbx",
+      "originalPath": "Assets/Emilulz_Assets/DEMOLowPolyFlowers/Assets/SM_Daisy_Single.fbx",
+      "sha256": "2536f42ee24e8f309cfd28287637cc9789ff31d12905c16c2d870db7a6e339a6"
+    }
+  ]
+}
