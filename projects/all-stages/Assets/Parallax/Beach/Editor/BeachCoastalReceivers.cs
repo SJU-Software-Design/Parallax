@@ -25,7 +25,7 @@ namespace ShadeLink.Editor
                 var receiver=gate.receiverVisuals[i];var target=receiver.Target;var targetPosition=target.position;
                 foreach(var renderer in receiver.GetComponentsInChildren<Renderer>())renderer.enabled=false;
                 var root=new GameObject("Coastal Receiver "+(i+1).ToString("00")).transform;root.SetParent(receiver.transform,false);
-                string name=root.name+" ";var front=Quaternion.Euler(90,0,0);
+                const string name="Coastal Receiver ";var front=Quaternion.Euler(90,0,0);
 
                 CoastalBox(root,name+"base shoe",new Vector3(0,-1.59f,.23f),new Vector3(1.2f,.12f,.67f),teal,.04f);
                 CoastalBox(root,name+"base cap",new Vector3(0,-1.515f,.23f),new Vector3(1.1f,.035f,.57f),metal,.012f);
@@ -53,7 +53,7 @@ namespace ShadeLink.Editor
                 for(int ray=0;ray<8;ray++)
                 {
                     float angle=ray*45,rad=angle*Mathf.Deg2Rad;
-                    var item=CoastalBox(root,name+"sun ray "+ray,new Vector3(Mathf.Sin(rad)*.37f,Mathf.Cos(rad)*.37f,.014f),new Vector3(.052f,.18f,.028f),gold,.009f);
+                    var item=CoastalBox(root,name+"sun ray",new Vector3(Mathf.Sin(rad)*.37f,Mathf.Cos(rad)*.37f,.014f),new Vector3(.052f,.18f,.028f),gold,.009f);
                     item.transform.localRotation=Quaternion.Euler(0,0,-angle);
                 }
                 CoastalRing(root,name+"status lamp bezel",new Vector3(-.615f,-.93f,.008f),.071f,.011f,metal);
@@ -64,7 +64,7 @@ namespace ShadeLink.Editor
                 for(int segment=0;segment<segments.arraySize;segment++)
                 {
                     float angle=segment*360f/segments.arraySize,rad=angle*Mathf.Deg2Rad;
-                    var item=CoastalBox(root,name+"charge segment "+segment,new Vector3(Mathf.Sin(rad)*.662f,Mathf.Cos(rad)*.662f,-.004f),new Vector3(.19f,.055f,.018f),chargeLight,.006f);
+                    var item=CoastalBox(root,name+"charge segment",new Vector3(Mathf.Sin(rad)*.662f,Mathf.Cos(rad)*.662f,-.004f),new Vector3(.19f,.055f,.018f),chargeLight,.006f);
                     item.transform.localRotation=Quaternion.Euler(0,0,-angle);segments.GetArrayElementAtIndex(segment).objectReferenceValue=item.GetComponent<Renderer>();
                 }
                 var numberAnchor=(Transform)state.FindProperty("numberAnchor").objectReferenceValue;numberAnchor.localPosition=new Vector3(-.53f,1.065f,.008f);numberAnchor.localScale=Vector3.one*.84f;
@@ -74,12 +74,12 @@ namespace ShadeLink.Editor
 
                 foreach(float side in new[]{-1f,1f})
                 {
-                    CoastalBox(root,name+"top fixing strap "+side,new Vector3(side*.56f,1.38f,.32f),new Vector3(.13f,.30f,.10f),metal,.02f);
-                    CoastalBox(root,name+"top fixing hook "+side,new Vector3(side*.56f,1.49f,.26f),new Vector3(.13f,.09f,.24f),metal,.02f);
+                    CoastalBox(root,name+"top fixing strap",new Vector3(side*.56f,1.38f,.32f),new Vector3(.13f,.30f,.10f),metal,.02f);
+                    CoastalBox(root,name+"top fixing hook",new Vector3(side*.56f,1.49f,.26f),new Vector3(.13f,.09f,.24f),metal,.02f);
                     ReceiverFastener(root,name+"top screw "+side,new Vector3(side*.56f,1.43f,.252f),metal,gasket,front);
                     foreach(float height in new[]{-.50f,.50f})
                     {
-                        CoastalBox(root,name+"pivot clamp "+side+" "+height,new Vector3(side*.95f,height,.10f),new Vector3(.20f,.15f,.19f),metal,.025f);
+                        CoastalBox(root,name+"pivot clamp",new Vector3(side*.95f,height,.10f),new Vector3(.20f,.15f,.19f),metal,.025f);
                         ReceiverFastener(root,name+"pivot screw "+side+" "+height,new Vector3(side*.95f,height,-.004f),metal,gasket,front);
                     }
                     foreach(float height in new[]{-.76f,.76f})ReceiverFastener(root,name+"case screw "+side+" "+height,new Vector3(side*.84f,height,.070f),metal,gasket,front);
@@ -95,7 +95,7 @@ namespace ShadeLink.Editor
         static void ReceiverFastener(Transform parent,string name,Vector3 position,Material metal,Material slot,Quaternion front)
         {
             CoastalCylinder(parent,name,position,new Vector3(.052f,.016f,.052f),metal,front);
-            CoastalBox(parent,name+" slot",position+Vector3.back*.010f,new Vector3(.028f,.007f,.004f),slot,.0015f);
+            CoastalBox(parent,"Coastal Receiver screw slot",position+Vector3.back*.010f,new Vector3(.028f,.007f,.004f),slot,.0015f);
         }
     }
 }
