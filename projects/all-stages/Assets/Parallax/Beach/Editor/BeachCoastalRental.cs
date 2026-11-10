@@ -20,7 +20,7 @@ namespace ShadeLink.Editor
             var canvas=CoastalLinen("Coastal Rental ivory sign canvas",new Color(.94f,.91f,.80f));
             var ink=new Color(.055f,.25f,.28f);
 
-            var hut=game.transform.Find("Beach entrance / rental and picnic/Surf rental hut");
+            var hut=game.GetComponentsInChildren<Transform>(true).SingleOrDefault(t=>t.name=="Surf rental hut");
             if(hut==null)throw new InvalidOperationException("The original surf rental hut is missing.");
             var filter=hut.GetComponent<MeshFilter>();var renderer=hut.GetComponent<MeshRenderer>();
             var original=filter.sharedMesh;var oldMaterials=renderer.sharedMaterials;
