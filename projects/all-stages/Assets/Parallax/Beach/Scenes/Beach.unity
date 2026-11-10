@@ -57156,7 +57156,7 @@ GameObject:
   - component: {fileID: 14000000000003}
   - component: {fileID: 14000000000002}
   m_Layer: 0
-  m_Name: Coastal Workshop upright rim
+  m_Name: Coastal Workshop canvas pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57170,12 +57170,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000000}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.46, y: 0, z: 0.005}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 2.33, y: 1.5, z: 0.115}
+  m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000002
 MeshRenderer:
@@ -57202,7 +57202,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
+  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -57211,7 +57211,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 0
+  m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -57233,7 +57233,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000000}
-  m_Mesh: {fileID: 4300000, guid: 2dd2bf5c7c46f4416a70cb7b294c39bf, type: 2}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &14000000000004
 GameObject:
   m_ObjectHideFlags: 0
@@ -57261,11 +57261,11 @@ Transform:
   m_GameObject: {fileID: 14000000000004}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.33, y: 1.5, z: 0.115}
+  m_LocalPosition: {x: 2.33, y: -1.5, z: 0.115}
   m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000006
 MeshRenderer:
@@ -57355,7 +57355,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000010
 MeshRenderer:
@@ -57423,8 +57423,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 14000000000013}
+  - component: {fileID: 14000000000015}
+  - component: {fileID: 14000000000014}
   m_Layer: 0
-  m_Name: Coastal Workshop receiving tray trim
+  m_Name: Coastal Workshop upright rim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57438,59 +57440,20 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000012}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.723263, y: 0.39999998, z: 51.80929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.46, y: 0, z: 0.005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 14000000000061}
-  - {fileID: 14000000000053}
-  - {fileID: 14000000000065}
-  - {fileID: 14000000000015}
-  - {fileID: 14000000000057}
-  - {fileID: 14000000000041}
-  m_Father: {fileID: 609724521}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &14000000000014
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 14000000000015}
-  - component: {fileID: 14000000000017}
-  - component: {fileID: 14000000000016}
-  m_Layer: 0
-  m_Name: Coastal Workshop tray screw
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &14000000000015
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000014}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.52, y: 0.052, z: 0.5}
-  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
-  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000016
+--- !u!23 &14000000000014
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000014}
+  m_GameObject: {fileID: 14000000000012}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -57509,7 +57472,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -57518,7 +57481,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -57533,15 +57496,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000017
+--- !u!33 &14000000000015
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000014}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000018
+  m_GameObject: {fileID: 14000000000012}
+  m_Mesh: {fileID: 4300000, guid: 2dd2bf5c7c46f4416a70cb7b294c39bf, type: 2}
+--- !u!1 &14000000000016
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57549,9 +57512,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 14000000000017}
   - component: {fileID: 14000000000019}
-  - component: {fileID: 14000000000021}
-  - component: {fileID: 14000000000020}
+  - component: {fileID: 14000000000018}
   m_Layer: 0
   m_Name: Coastal Workshop canvas pin
   m_TagString: Untagged
@@ -57559,28 +57522,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000019
+--- !u!4 &14000000000017
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000018}
+  m_GameObject: {fileID: 14000000000016}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.33, y: -1.5, z: 0.115}
+  m_LocalPosition: {x: -2.33, y: 1.5, z: 0.115}
   m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000020
+--- !u!23 &14000000000018
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000018}
+  m_GameObject: {fileID: 14000000000016}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -57623,15 +57586,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000021
+--- !u!33 &14000000000019
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000018}
+  m_GameObject: {fileID: 14000000000016}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000022
+--- !u!1 &14000000000020
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57639,9 +57602,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 14000000000021}
   - component: {fileID: 14000000000023}
-  - component: {fileID: 14000000000025}
-  - component: {fileID: 14000000000024}
+  - component: {fileID: 14000000000022}
   m_Layer: 0
   m_Name: Coastal Workshop carved header
   m_TagString: Untagged
@@ -57649,28 +57612,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000023
+--- !u!4 &14000000000021
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000022}
+  m_GameObject: {fileID: 14000000000020}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.99, z: -0.015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000024
+--- !u!23 &14000000000022
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000022}
+  m_GameObject: {fileID: 14000000000020}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -57713,15 +57676,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000025
+--- !u!33 &14000000000023
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000022}
+  m_GameObject: {fileID: 14000000000020}
   m_Mesh: {fileID: 4300000, guid: 5739ad19c992047c8a671af50526e28c, type: 2}
---- !u!1 &14000000000026
+--- !u!1 &14000000000024
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57729,99 +57692,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 14000000000025}
   - component: {fileID: 14000000000027}
-  - component: {fileID: 14000000000029}
-  - component: {fileID: 14000000000028}
-  m_Layer: 0
-  m_Name: Coastal Workshop cross rim
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &14000000000027
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000026}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.64, z: 0.005}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 14000000000035}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000028
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000026}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000029
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000026}
-  m_Mesh: {fileID: 4300000, guid: cb676ff2403414644a78486e0db68fbe, type: 2}
---- !u!1 &14000000000030
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 14000000000031}
-  - component: {fileID: 14000000000033}
-  - component: {fileID: 14000000000032}
+  - component: {fileID: 14000000000026}
   m_Layer: 0
   m_Name: Coastal Workshop canvas pin
   m_TagString: Untagged
@@ -57829,28 +57702,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000031
+--- !u!4 &14000000000025
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000030}
+  m_GameObject: {fileID: 14000000000024}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.33, y: 1.99, z: 0.115}
+  m_LocalPosition: {x: -2.33, y: -1.5, z: 0.115}
   m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000032
+--- !u!23 &14000000000026
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000030}
+  m_GameObject: {fileID: 14000000000024}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -57893,15 +57766,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000033
+--- !u!33 &14000000000027
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000030}
+  m_GameObject: {fileID: 14000000000024}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000034
+--- !u!1 &14000000000028
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57909,43 +57782,178 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 14000000000035}
+  - component: {fileID: 14000000000029}
+  - component: {fileID: 14000000000031}
+  - component: {fileID: 14000000000030}
   m_Layer: 0
-  m_Name: Coastal Workshop frame
+  m_Name: Coastal Workshop canvas pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000035
+--- !u!4 &14000000000029
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000034}
+  m_GameObject: {fileID: 14000000000028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -2.33, y: 1.99, z: 0.115}
+  m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 14000000000061}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &14000000000030
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000028}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &14000000000031
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000028}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &14000000000032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 14000000000033}
+  - component: {fileID: 14000000000035}
+  - component: {fileID: 14000000000034}
+  m_Layer: 0
+  m_Name: Coastal Workshop tray screw
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &14000000000033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000032}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.52, y: 0.052, z: -0.5}
+  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 14000000000037}
-  - {fileID: 14000000000001}
-  - {fileID: 14000000000077}
-  - {fileID: 14000000000027}
-  - {fileID: 14000000000073}
-  - {fileID: 14000000000023}
-  - {fileID: 14000000000009}
-  - {fileID: 14000000000045}
-  - {fileID: 14000000000081}
-  - {fileID: 14000000000005}
-  - {fileID: 14000000000031}
-  - {fileID: 14000000000019}
-  - {fileID: 14000000000069}
-  - {fileID: 14000000000049}
-  m_Father: {fileID: 1414954584}
+  m_Children: []
+  m_Father: {fileID: 14000000000079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &14000000000034
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000032}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &14000000000035
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000032}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &14000000000036
 GameObject:
   m_ObjectHideFlags: 0
@@ -57958,7 +57966,7 @@ GameObject:
   - component: {fileID: 14000000000039}
   - component: {fileID: 14000000000038}
   m_Layer: 0
-  m_Name: Coastal Workshop canvas
+  m_Name: Coastal Workshop cross rim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57973,11 +57981,11 @@ Transform:
   m_GameObject: {fileID: 14000000000036}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.041}
+  m_LocalPosition: {x: 0, y: -1.64, z: 0.005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000038
 MeshRenderer:
@@ -58004,7 +58012,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0e2b9493b8bf743ee8baa5e1f0be6e48, type: 2}
+  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58035,7 +58043,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000036}
-  m_Mesh: {fileID: 4300000, guid: 94871975324514de5af3601352f5a1bd, type: 2}
+  m_Mesh: {fileID: 4300000, guid: cb676ff2403414644a78486e0db68fbe, type: 2}
 --- !u!1 &14000000000040
 GameObject:
   m_ObjectHideFlags: 0
@@ -58048,7 +58056,7 @@ GameObject:
   - component: {fileID: 14000000000043}
   - component: {fileID: 14000000000042}
   m_Layer: 0
-  m_Name: Coastal Workshop tray screw
+  m_Name: Coastal Workshop progress recess
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58063,11 +58071,11 @@ Transform:
   m_GameObject: {fileID: 14000000000040}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.52, y: 0.052, z: 0.5}
-  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
+  m_LocalPosition: {x: 0, y: -2.06, z: 0.115}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000042
 MeshRenderer:
@@ -58076,96 +58084,6 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000040}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000043
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000040}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000044
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 14000000000045}
-  - component: {fileID: 14000000000047}
-  - component: {fileID: 14000000000046}
-  m_Layer: 0
-  m_Name: Coastal Workshop progress recess
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &14000000000045
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000044}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.06, z: 0.115}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 14000000000035}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000046
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000044}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -58208,6 +58126,96 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &14000000000043
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000040}
+  m_Mesh: {fileID: 4300000, guid: 16e95835100f54400bbdb6c189a901ea, type: 2}
+--- !u!1 &14000000000044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 14000000000045}
+  - component: {fileID: 14000000000047}
+  - component: {fileID: 14000000000046}
+  m_Layer: 0
+  m_Name: Coastal Workshop tray screw
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &14000000000045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000044}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.52, y: 0.052, z: 0.5}
+  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 14000000000079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &14000000000046
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000044}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &14000000000047
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -58215,7 +58223,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000044}
-  m_Mesh: {fileID: 4300000, guid: 16e95835100f54400bbdb6c189a901ea, type: 2}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &14000000000048
 GameObject:
   m_ObjectHideFlags: 0
@@ -58228,7 +58236,7 @@ GameObject:
   - component: {fileID: 14000000000051}
   - component: {fileID: 14000000000050}
   m_Layer: 0
-  m_Name: Coastal Workshop canvas pin
+  m_Name: Coastal Workshop upright rim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58242,12 +58250,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.33, y: 1.99, z: 0.115}
-  m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.46, y: 0, z: 0.005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000050
 MeshRenderer:
@@ -58274,7 +58282,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58283,7 +58291,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -58305,7 +58313,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000048}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 2dd2bf5c7c46f4416a70cb7b294c39bf, type: 2}
 --- !u!1 &14000000000052
 GameObject:
   m_ObjectHideFlags: 0
@@ -58318,7 +58326,7 @@ GameObject:
   - component: {fileID: 14000000000055}
   - component: {fileID: 14000000000054}
   m_Layer: 0
-  m_Name: Coastal Workshop tray end
+  m_Name: Coastal Workshop tray screw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58333,11 +58341,11 @@ Transform:
   m_GameObject: {fileID: 14000000000052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.603, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.52, y: 0.052, z: -0.5}
+  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000054
 MeshRenderer:
@@ -58364,7 +58372,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
+  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58373,7 +58381,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 0
+  m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -58395,7 +58403,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000052}
-  m_Mesh: {fileID: 4300000, guid: 1d10cc5c6de2441d2aaa7c429aa41c66, type: 2}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &14000000000056
 GameObject:
   m_ObjectHideFlags: 0
@@ -58408,7 +58416,7 @@ GameObject:
   - component: {fileID: 14000000000059}
   - component: {fileID: 14000000000058}
   m_Layer: 0
-  m_Name: Coastal Workshop tray screw
+  m_Name: Coastal Workshop tray end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58423,11 +58431,11 @@ Transform:
   m_GameObject: {fileID: 14000000000056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.52, y: 0.052, z: -0.5}
-  m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
+  m_LocalPosition: {x: -0.603, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000058
 MeshRenderer:
@@ -58454,7 +58462,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58463,7 +58471,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -58485,7 +58493,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000056}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 1d10cc5c6de2441d2aaa7c429aa41c66, type: 2}
 --- !u!1 &14000000000060
 GameObject:
   m_ObjectHideFlags: 0
@@ -58495,10 +58503,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 14000000000061}
-  - component: {fileID: 14000000000063}
-  - component: {fileID: 14000000000062}
   m_Layer: 0
-  m_Name: Coastal Workshop tray end
+  m_Name: Coastal Workshop frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58513,19 +58519,66 @@ Transform:
   m_GameObject: {fileID: 14000000000060}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.603, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 14000000000063}
+  - {fileID: 14000000000013}
+  - {fileID: 14000000000049}
+  - {fileID: 14000000000037}
+  - {fileID: 14000000000081}
+  - {fileID: 14000000000021}
+  - {fileID: 14000000000009}
+  - {fileID: 14000000000041}
+  - {fileID: 14000000000025}
+  - {fileID: 14000000000017}
+  - {fileID: 14000000000029}
+  - {fileID: 14000000000005}
+  - {fileID: 14000000000001}
+  - {fileID: 14000000000071}
+  m_Father: {fileID: 1414954584}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &14000000000062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 14000000000063}
+  - component: {fileID: 14000000000065}
+  - component: {fileID: 14000000000064}
+  m_Layer: 0
+  m_Name: Coastal Workshop canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &14000000000063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14000000000062}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.041}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000062
+--- !u!23 &14000000000064
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000060}
+  m_GameObject: {fileID: 14000000000062}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -58544,7 +58597,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
+  - {fileID: 2100000, guid: 0e2b9493b8bf743ee8baa5e1f0be6e48, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -58568,15 +58621,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000063
+--- !u!33 &14000000000065
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000060}
-  m_Mesh: {fileID: 4300000, guid: 1d10cc5c6de2441d2aaa7c429aa41c66, type: 2}
---- !u!1 &14000000000064
+  m_GameObject: {fileID: 14000000000062}
+  m_Mesh: {fileID: 4300000, guid: 94871975324514de5af3601352f5a1bd, type: 2}
+--- !u!1 &14000000000066
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58584,9 +58637,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 14000000000065}
   - component: {fileID: 14000000000067}
-  - component: {fileID: 14000000000066}
+  - component: {fileID: 14000000000069}
+  - component: {fileID: 14000000000068}
   m_Layer: 0
   m_Name: Coastal Workshop tray screw
   m_TagString: Untagged
@@ -58594,28 +58647,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000065
+--- !u!4 &14000000000067
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000064}
+  m_GameObject: {fileID: 14000000000066}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.52, y: 0.052, z: -0.5}
+  m_LocalPosition: {x: -0.52, y: 0.052, z: 0.5}
   m_LocalScale: {x: 0.025, y: 0.004, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000013}
+  m_Father: {fileID: 14000000000079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000066
+--- !u!23 &14000000000068
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000064}
+  m_GameObject: {fileID: 14000000000066}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -58658,15 +58711,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000067
+--- !u!33 &14000000000069
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000064}
+  m_GameObject: {fileID: 14000000000066}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000068
+--- !u!1 &14000000000070
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58674,9 +58727,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 14000000000069}
   - component: {fileID: 14000000000071}
-  - component: {fileID: 14000000000070}
+  - component: {fileID: 14000000000073}
+  - component: {fileID: 14000000000072}
   m_Layer: 0
   m_Name: Coastal Workshop canvas pin
   m_TagString: Untagged
@@ -58684,28 +58737,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000069
+--- !u!4 &14000000000071
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000068}
+  m_GameObject: {fileID: 14000000000070}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.33, y: 1.5, z: 0.115}
+  m_LocalPosition: {x: 2.33, y: 1.99, z: 0.115}
   m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000070
+--- !u!23 &14000000000072
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000068}
+  m_GameObject: {fileID: 14000000000070}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -58748,15 +58801,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000071
+--- !u!33 &14000000000073
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000068}
+  m_GameObject: {fileID: 14000000000070}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &14000000000072
+--- !u!1 &14000000000074
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58764,38 +58817,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 14000000000073}
   - component: {fileID: 14000000000075}
-  - component: {fileID: 14000000000074}
+  - component: {fileID: 14000000000077}
+  - component: {fileID: 14000000000076}
   m_Layer: 0
-  m_Name: Coastal Workshop cross rim
+  m_Name: Coastal Workshop tray end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000073
+--- !u!4 &14000000000075
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000072}
+  m_GameObject: {fileID: 14000000000074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.64, z: 0.005}
+  m_LocalPosition: {x: 0.603, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000074
+--- !u!23 &14000000000076
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000072}
+  m_GameObject: {fileID: 14000000000074}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -58838,15 +58891,15 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000075
+--- !u!33 &14000000000077
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000072}
-  m_Mesh: {fileID: 4300000, guid: cb676ff2403414644a78486e0db68fbe, type: 2}
---- !u!1 &14000000000076
+  m_GameObject: {fileID: 14000000000074}
+  m_Mesh: {fileID: 4300000, guid: 1d10cc5c6de2441d2aaa7c429aa41c66, type: 2}
+--- !u!1 &14000000000078
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58854,88 +58907,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 14000000000077}
   - component: {fileID: 14000000000079}
-  - component: {fileID: 14000000000078}
   m_Layer: 0
-  m_Name: Coastal Workshop upright rim
+  m_Name: Coastal Workshop receiving tray trim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &14000000000077
+--- !u!4 &14000000000079
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000076}
+  m_GameObject: {fileID: 14000000000078}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.46, y: 0, z: 0.005}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.723263, y: 0.39999998, z: 51.80929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Children:
+  - {fileID: 14000000000057}
+  - {fileID: 14000000000075}
+  - {fileID: 14000000000053}
+  - {fileID: 14000000000067}
+  - {fileID: 14000000000033}
+  - {fileID: 14000000000045}
+  m_Father: {fileID: 609724521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &14000000000078
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000076}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &14000000000079
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14000000000076}
-  m_Mesh: {fileID: 4300000, guid: 2dd2bf5c7c46f4416a70cb7b294c39bf, type: 2}
 --- !u!1 &14000000000080
 GameObject:
   m_ObjectHideFlags: 0
@@ -58948,7 +58948,7 @@ GameObject:
   - component: {fileID: 14000000000083}
   - component: {fileID: 14000000000082}
   m_Layer: 0
-  m_Name: Coastal Workshop canvas pin
+  m_Name: Coastal Workshop cross rim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58962,12 +58962,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000080}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.33, y: -1.5, z: 0.115}
-  m_LocalScale: {x: 0.065, y: 0.015, z: 0.065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.64, z: 0.005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 14000000000035}
+  m_Father: {fileID: 14000000000061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &14000000000082
 MeshRenderer:
@@ -58994,7 +58994,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a8934c5bde4bf41efa4deb4e9a881038, type: 2}
+  - {fileID: 2100000, guid: d49cae19b3e974d6f9e9c3fc08ecc785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -59003,7 +59003,7 @@ MeshRenderer:
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
@@ -59025,7 +59025,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14000000000080}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: cb676ff2403414644a78486e0db68fbe, type: 2}
 --- !u!1 &1972528
 GameObject:
   m_ObjectHideFlags: 0
@@ -112201,7 +112201,7 @@ Transform:
   - {fileID: 1172968464}
   - {fileID: 1948701156}
   - {fileID: 104099250}
-  - {fileID: 14000000000013}
+  - {fileID: 14000000000079}
   m_Father: {fileID: 1104105559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &610711545
@@ -187426,7 +187426,7 @@ Transform:
   - {fileID: 1345082389}
   - {fileID: 2020423520}
   - {fileID: 166171344}
-  - {fileID: 14000000000035}
+  - {fileID: 14000000000061}
   m_Father: {fileID: 609724521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415166320
@@ -245604,7 +245604,7 @@ Transform:
   m_GameObject: {fileID: 2065746055}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.3, y: 3.3, z: 47.9}
+  m_LocalPosition: {x: 9.3, y: 3.3, z: 48.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
