@@ -1,0 +1,32 @@
+{
+  "source": "https://assetstore.unity.com/packages/2d/textures-materials/water/simple-water-shader-urp-191449",
+  "publisher": "IgniteCoders",
+  "version": "1.0.0",
+  "acquired": "2026-11-08",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "a81c6fe71cc1945c6b5ca3af59d9b3180a723f33d93915b825ce673198d43307",
+  "integration": "Original textures and 50 m water mesh with Built-in depth, ripple refraction and specular reflection. Selected B appearance uses vertical water thickness for RGB absorption (0.55, 0.24, 0.14 per metre) and muted teal scattering (0.045, 0.19, 0.21), retaining a nearly neutral low-opacity base tint. Texture RG channels are sampled as linear signed ripple slopes; mip bias corrected to zero and anisotropy raised to 8. Only the boat channel scrolls slowly forward. Optional experimental planar reflection remains disabled.",
+  "files": [
+    {
+      "originalPath": "Assets/IgniteCoders/Simple Water Shader/Resources/WaterSurface_single.tif",
+      "file": "Resources/ParallaxSimpleWater/WaterSurface_single.tif",
+      "sha256": "0dd0126e4a3a9a12c5f6c628382bd55096bf728ec52d5850ca576f735579af9e"
+    },
+    {
+      "originalPath": "Assets/IgniteCoders/Simple Water Shader/Resources/WaterSurface_atlas.tif",
+      "file": "Resources/ParallaxSimpleWater/WaterSurface_atlas.tif",
+      "sha256": "a039c64f7ef68d13e28fb542e2471bdfdac45a09971b1ddefa043d6d50a7806a"
+    },
+    {
+      "originalPath": "Assets/IgniteCoders/Simple Water Shader/Resources/WaterBlock_50m.mesh",
+      "file": "Resources/ParallaxSimpleWater/WaterBlock_50m.mesh",
+      "sha256": "fd00d77486400d5d39d74ce2933ac1f7312c4f1e49a8ed73c4c4685a43ba94ee"
+    },
+    {
+      "originalPath": "Assets/IgniteCoders/Simple Water Shader/Resources/WaterShader.shadergraph",
+      "file": "WaterShader.shadergraph.txt",
+      "sha256": "bfc7e7eefc0bd3fcb4fd27831090465733a777302cdefbc72f47e76729738b9f"
+    }
+  ]
+}

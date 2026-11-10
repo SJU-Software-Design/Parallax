@@ -80,18 +80,31 @@ namespace ShadeLink
         {
             supportCollider=null;supportProp=null;water=WaterSupport!=null&&WaterSupport();if(water)return true;
             if(attached&&AtHome())return true;
-            // Sample actual collider surfaces, not a large compound bounding box.
+            // Sweep each box's full footprint so diagonal end contacts are not missed.
             foreach(var shape in shapes)
             {
-                if(shape==null||!shape.enabled||!shape.gameObject.activeInHierarchy||shape.isTrigger)continue;var b=shape.bounds;
-                for(int i=0;i<5;i++)
+                if(shape==null||!shape.enabled||!shape.gameObject.activeInHierarchy||shape.isTrigger)continue;
+                var b=shape.bounds;var box=shape as BoxCollider;
+                for(int i=0;i<(box!=null?1:5);i++)
                 {
-                    var below=new Vector3(b.center.x,b.min.y-.08f,b.center.z);
-                    if(i>0){below.x+=(i==1||i==3?-1:1)*b.extents.x*.9f;below.z+=(i<3?-1:1)*b.extents.z*.9f;}
-                    var point=shape.ClosestPoint(below);int count=Physics.RaycastNonAlloc(point+Vector3.up*.025f,Vector3.down,hits,.13f,~(1<<30),QueryTriggerInteraction.Ignore);
+                    int count;
+                    if(box!=null)
+                    {
+                        var half=Vector3.Scale(box.size,box.transform.lossyScale)*.5f;
+                        half=new Vector3(Mathf.Abs(half.x),Mathf.Abs(half.y),Mathf.Abs(half.z));
+                        count=Physics.BoxCastNonAlloc(box.transform.TransformPoint(box.center)+Vector3.up*.025f,
+                            Vector3.Max(Vector3.one*.001f,half-Vector3.one*.001f),Vector3.down,hits,box.transform.rotation,.13f,~(1<<30),QueryTriggerInteraction.Ignore);
+                    }
+                    else
+                    {
+                        var below=new Vector3(b.center.x,b.min.y-.08f,b.center.z);
+                        if(i>0){below.x+=(i==1||i==3?-1:1)*b.extents.x*.9f;below.z+=(i<3?-1:1)*b.extents.z*.9f;}
+                        var point=shape.ClosestPoint(below);count=Physics.RaycastNonAlloc(point+Vector3.up*.025f,Vector3.down,hits,.13f,~(1<<30),QueryTriggerInteraction.Ignore);
+                    }
                     for(int h=0;h<count;h++)
                     {
                         var hit=hits[h];if(hit.collider==null||hit.collider==player||hit.collider.GetComponent<CharacterController>()!=null||hit.normal.y<.5f)continue;
+                        if(box!=null&&hit.distance<=0)continue; // Initial overlaps have no reliable support normal.
                         var other=hit.collider.GetComponentInParent<PlacementSupport>();if(other==this||(other!=null&&!other.Ready))continue;
                         if(hit.collider.attachedRigidbody==body)continue;
                         supportCollider=hit.collider;supportProp=other;supportPosition=supportCollider.transform.position;supportRotation=supportCollider.transform.rotation;supportScale=supportCollider.transform.lossyScale;return true;

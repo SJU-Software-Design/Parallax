@@ -63,3 +63,36 @@ The beach sand shader uses a consistent world-space repeat of approximately
 sections. It retains the existing blue placement-shadow preview. BeachBuild
 reapplies this setup when preparing the scene. Ground geometry and collision
 are unchanged; the ripples are surface shading rather than raised geometry.
+Water surface — 2026-11-08
+
+Source: Simple Water Shader URP 1.0.0, IgniteCoders
+https://assetstore.unity.com/packages/2d/textures-materials/water/simple-water-shader-urp-191449
+License shown by Unity: Standard Unity Asset Store EULA
+https://unity.com/legal/as-terms
+
+The project uses Built-in rendering; the original URP graph cannot run directly.
+BeachSimpleWater ports the source graph's scene-depth color/alpha blend, two
+scrolling water textures, normal-strength control and gradient-noise displacement.
+The original textures and 1951-vertex WaterBlock_50m mesh are used without changing
+their source bytes. The graph is archived as text for provenance without importing
+URP dependencies. Optional experimental planar reflection stays disabled, matching
+the supplied material defaults. The Built-in lighting model provides sky reflection.
+
+Source paths, hashes and integration notes are recorded under
+Assets/ThirdParty/SimpleWaterShaderURP/source.json. Texture sampling uses mipmaps,
+zero mip bias and anisotropic filtering rather than the source's -100 mip bias.
+The sea, puddles and channels receive the appearance at runtime. Original renderers
+are restored when the appearance is disabled. Water regions, hazard checks, buoyancy,
+flow and scene collision are unchanged. Visual water is stationary outside the boat
+channel; that channel alone scrolls forward at 0.12 m/s with reduced ripple strength
+and displacement. The boat's physical travel speed is independent of this shading.
+The surface uses a nearly neutral low-opacity tint instead of blue depth coloring.
+Depth is measured vertically to avoid view-angle-driven opacity changes, while
+premultiplied specular lighting preserves the water's reflection and ripples.
+A named Built-in screen grab supplies subtle ripple refraction of the visible
+sand and objects, fading at shallow edges to keep the shoreline clean.
+Ripple textures are sampled as linear surface data; their RG slopes are centered
+around zero so the reflection does not lean in one direction across the whole sea.
+The selected B appearance adds depth-dependent RGB absorption (0.55, 0.24, 0.14
+per metre) and muted teal scattering (0.045, 0.19, 0.21). Shallow water stays clear;
+deeper water gently subdues the warm sand color and detail beneath the ripples.
