@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-10",
+  "unity": "6000.3.24f1",
+  "branch": "codex/beach-coastal-rope-boundaries",
+  "code_head_before_evidence_commit": "85a5bdff1b0bc90f4ea07490ef5de825d237e55f",
+  "base_branch": "codex/beach-coastal-base",
+  "base_sha": "caed3560b83411ada740bebaa9eebf0100ea223c",
+  "runtime_evidence": "Reused implementation-time native Unity Play Mode validation; not rerun for documentation publication.",
+  "integration_preview_sha": "a9dbeb20d755b632b3493d58abcfc5ba9501db3a",
+  "native_checks_passed": 5,
+  "native_scene_unchanged": true,
+  "images": {
+    "before.png": "3acbd1dc97df263d6e7a3c72d70c778ad3a1f12d198d159c3c2d3308d169646b",
+    "after.png": "b391d232d14c8316d5fa2f50cff3ff7356f4bada16e7b3c37b2d1cc9e8c084a6"
+  },
+  "image_dimensions": [
+    1600,
+    900
+  ],
+  "image_context": "Original native game camera renders. Before: pre-coastal baseline. After: six-feature integrated preview; surrounding features may also differ. No generated concept images or image edits.",
+  "publication_checks": [
+    "six source diffs passed git diff --check",
+    "PNG dimensions and original file hashes checked",
+    "integrated scene hash matches captured implementation state"
+  ],
+  "not_run": [
+    "standalone build",
+    "full unassisted walkthrough",
+    "new GPU performance measurement"
+  ]
+}
