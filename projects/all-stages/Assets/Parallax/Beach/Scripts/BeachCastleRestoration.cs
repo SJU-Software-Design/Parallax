@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace ShadeLink.Beach
 {
-    // Two missing front wall sections, each restored once. The original castle
+    // Two missing front wall sections with reusable fragments. The original castle
     // is the route; no external climbing loop or duplicated replacement exists.
     public sealed class BeachCastleRestoration : MonoBehaviour
     {
+        public const float EntranceCanopyLift=2f;
         public static readonly Vector3 LowerStart=new Vector3(0,1.1f,89.0f),Midpoint=new Vector3(0,3.44f,91.7f);
         public static readonly Vector3 UpperStart=Midpoint,Summit=new Vector3(0,6.7f,95.4f);
         public static readonly Vector3 LowerPose=new Vector3(0,2.27f,90.5f),UpperPose=new Vector3(0,5.07f,93.55f);
@@ -34,11 +35,20 @@ namespace ShadeLink.Beach
                 return FirstRestored?"평평한 성벽 위에 파라솔을 놓고, 두 번째 조각으로 정상까지":"정면의 빠진 성벽을 작은 계단 조각으로 복구하세요";
             }
         }
-        public bool IsFixed(BeachProp prop)=>(prop==LowerFragment&&FirstRestored)||(prop==UpperFragment&&SecondRestored);
-        public void PiecePickedUp(BeachProp prop)
+        public System.Action PiecePickedUp(BeachProp prop)
         {
-            if(prop==LowerFragment&&!FirstRestored)walkedLower=false;
-            if(prop==UpperFragment&&!SecondRestored)walkedUpper=false;
+            if(prop!=LowerFragment&&prop!=UpperFragment)return null;
+            bool first=FirstRestored,second=SecondRestored,midpoint=AtMidpoint,rest=game.castleRest;
+            // Unfinished traversal still needs fresh stair contact after a regrab.
+            bool lower=first&&walkedLower,upper=second&&walkedUpper;
+            if(prop==LowerFragment)
+            {
+                FirstRestored=SecondRestored=AtMidpoint=walkedLower=walkedUpper=false;
+                game.castleRest=false;
+            }
+            else SecondRestored=walkedUpper=false;
+            // Cancelling puts the installed piece back, including its restoration/checkpoint state.
+            return ()=>{FirstRestored=first;SecondRestored=second;AtMidpoint=midpoint;game.castleRest=rest;walkedLower=lower;walkedUpper=upper;};
         }
         public void Restore()
         {
@@ -115,7 +125,7 @@ namespace ShadeLink.Beach
                     FirstRestored=ReachedEntrance=true;Fix(LowerFragment);
                     AtMidpoint=game.castleRest=game.FootSafe(Midpoint+Vector3.up*.025f);
                     Debug.Log("BEACH_CASTLE_FIRST_TRAVERSED feet="+feet+" idealPose="+LowerConnected);
-                    game.Tell("첫 성벽 복구 · 이 조각은 연결한 자리에 고정됩니다. 평평한 곳에 파라솔을 놓아 위쪽 그늘을 만드세요.",8);
+                    game.Tell("첫 성벽 복구 · 다른 발판에서 다시 잡아 조정할 수 있습니다. 평평한 곳에 파라솔을 놓아 위쪽 그늘을 만드세요.",8);
                 }
                 if(FirstRestored&&Released(UpperFragment)&&supportedProp==UpperFragment&&Mathf.Abs(feet.x)<2.8f&&feet.z>93&&feet.z<95.4f)walkedUpper=true;
                 if(FirstRestored&&!AtMidpoint&&upperCourse&&game.FootSafe(Midpoint+Vector3.up*.025f))AtMidpoint=game.castleRest=true;

@@ -25,11 +25,16 @@ namespace ShadeLink.Editor
         }
         static void PersistCoastalDetails(BeachGame game)
         {
-            foreach(var filter in game.GetComponentsInChildren<MeshFilter>(true))
+            var filters=game.GetComponentsInChildren<MeshFilter>(true);
+            foreach(var filter in filters)
             {
                 var mesh=filter.sharedMesh;if(mesh==null||AssetDatabase.Contains(mesh))continue;
-                var saved=Save(mesh,Generated+mesh.name.Replace('/','_')+".asset");filter.sharedMesh=saved;
-                foreach(var collider in filter.GetComponents<MeshCollider>())collider.sharedMesh=saved;
+                // Save replaces the transient mesh; every shared user must move with it.
+                var users=filters.Where(f=>f.sharedMesh==mesh).ToArray();
+                var colliders=game.GetComponentsInChildren<MeshCollider>(true).Where(c=>c.sharedMesh==mesh).ToArray();
+                var saved=Save(mesh,Generated+mesh.name.Replace('/','_')+".asset");
+                foreach(var user in users)user.sharedMesh=saved;
+                foreach(var collider in colliders)collider.sharedMesh=saved;
             }
             var renderers=game.GetComponentsInChildren<Renderer>(true);
             var materials=renderers.SelectMany(r=>r.sharedMaterials).Where(m=>m!=null&&!AssetDatabase.Contains(m)).Distinct().ToArray();

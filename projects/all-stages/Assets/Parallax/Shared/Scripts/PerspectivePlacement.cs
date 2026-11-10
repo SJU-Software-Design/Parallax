@@ -11,7 +11,7 @@ namespace ShadeLink
         const int MaximumRasterSamples=2048;
         const float PixelSpacing=4,ContactSkin=.002f;
         struct Shape { public Vector3 center,half;public Quaternion rotation; }
-        struct ProjectedShape { public Shape shape;public Quaternion inverse;public Vector3 origin; }
+        struct ProjectedShape { public Shape shape;public Quaternion inverse;public Vector3 origin;public Vector2 minimum,maximum; }
         struct Sample { public Vector3 direction;public float backDistance; }
         public enum LimitKind { Surface, Boundary, Size, Intent, Fallback, Minimum, Volume, OriginInside }
         public struct Result
@@ -33,6 +33,7 @@ namespace ShadeLink
         readonly Vector3 grab;
         readonly float ratio;
         readonly List<Sample> samples=new List<Sample>();
+        readonly HashSet<Vector2> sampleDirections=new HashSet<Vector2>();
         readonly List<ProjectedShape> projected=new List<ProjectedShape>();
         RaycastHit[] hits=new RaycastHit[64];
         Collider[] overlaps=new Collider[32];
@@ -137,7 +138,7 @@ namespace ShadeLink
             if(cached&&Vector3.Angle(cachedDirection,direction)<.01f&&Quaternion.Angle(cachedRotation,rotation)<.01f&&Mathf.Abs(cachedFov-camera.fieldOfView)<.001f&&
                 Mathf.Abs(cachedAspect-camera.aspect)<.001f&&cachedWidth==width&&cachedHeight==height)return;
             cached=true;cachedDirection=direction;cachedRotation=rotation;cachedFov=camera.fieldOfView;cachedAspect=camera.aspect;cachedWidth=width;cachedHeight=height;
-            samples.Clear();projected.Clear();
+            samples.Clear();sampleDirections.Clear();projected.Clear();
             float halfHeight=Mathf.Tan(camera.fieldOfView*Mathf.Deg2Rad*.5f),halfWidth=halfHeight*camera.aspect;
             Vector2 lower=Vector2.one*float.PositiveInfinity,upper=Vector2.one*float.NegativeInfinity;
             foreach(var shape in shapes)
@@ -145,7 +146,14 @@ namespace ShadeLink
                 var projection=new Shape {center=direction+rotation*((shape.center-grab)*ratio),
                     half=shape.half*ratio,rotation=rotation*shape.rotation};
                 Quaternion inverse=Quaternion.Inverse(projection.rotation);
-                projected.Add(new ProjectedShape {shape=projection,inverse=inverse,origin=inverse*(-projection.center)});
+                var min=Vector2.one*float.PositiveInfinity;var max=-min;
+                for(int k=0;k<8;k++)
+                {
+                    var p=projection.center+projection.rotation*Vector3.Scale(projection.half,new Vector3((k&1)==0?-1:1,(k&2)==0?-1:1,(k&4)==0?-1:1));
+                    if(p.z<=.00001f){min=Vector2.one*float.NegativeInfinity;max=-min;break;}
+                    var screen=new Vector2(p.x/p.z,p.y/p.z);min=Vector2.Min(min,screen);max=Vector2.Max(max,screen);
+                }
+                projected.Add(new ProjectedShape {shape=projection,inverse=inverse,origin=inverse*(-projection.center),minimum=min,maximum=max});
             }
             foreach(var point in corners)
             {
@@ -177,9 +185,15 @@ namespace ShadeLink
         void AddSample(Vector3 direction)
         {
             if(direction.z<=.00001f)return;
+            var screen=new Vector2(direction.x/direction.z,direction.y/direction.z);
+            // Shared panel edges must not repeat the same subpixel ray query.
+            var key=new Vector2(Mathf.Round(screen.x*1e6f),Mathf.Round(screen.y*1e6f));if(sampleDirections.Contains(key))return;
             direction.Normalize();float back=0;
             foreach(var projection in projected)
             {
+                // Most thin compound panels cannot intersect this screen ray.
+                if(screen.x<projection.minimum.x-.00001f||screen.x>projection.maximum.x+.00001f||
+                    screen.y<projection.minimum.y-.00001f||screen.y>projection.maximum.y+.00001f)continue;
                 var shape=projection.shape;
                 Vector3 origin=projection.origin,ray=projection.inverse*direction;
                 float lo=0,hi=float.PositiveInfinity;
@@ -188,7 +202,7 @@ namespace ShadeLink
                 InteractionRaycast.ClipDepth(origin.z,ray.z,-shape.half.z,shape.half.z,ref lo,ref hi);
                 if(lo<=hi&&hi>0)back=Mathf.Max(back,hi);
             }
-            if(back>0)samples.Add(new Sample {direction=direction,backDistance=back});
+            if(back>0){sampleDirections.Add(key);samples.Add(new Sample {direction=direction,backDistance=back});}
         }
 
         bool OriginBlocked(Vector3 eye,Collider player,int mask)

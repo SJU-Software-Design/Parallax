@@ -120,7 +120,7 @@ namespace ShadeLink
             { host.Tell("서 있는 사물은 잡을 수 없습니다. 먼저 바닥이나 다른 발판으로 이동하세요."); return; }
             foreach (var prop in host.Props)
             {
-                if (prop == host.Aimed) continue;
+                if (prop == null || prop == host.Aimed || !prop.gameObject.activeInHierarchy) continue;
                 var bounds = prop.WorldBounds;
                 if (Physics.Raycast(new Vector3(bounds.center.x, bounds.min.y + .04f, bounds.center.z), Vector3.down,
                     out var below, .14f, host.InteractionMask, QueryTriggerInteraction.Ignore) &&

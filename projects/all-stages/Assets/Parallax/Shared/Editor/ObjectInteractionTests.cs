@@ -271,6 +271,18 @@ namespace ShadeLink.Editor
             });
             foreach (string stage in new[] { "Gallery", "Library", "Beach", "Starship" })
             {
+                Check(result,stage,"inactive props do not block pickup but an active supported prop does",()=>
+                {
+                    using(var f=new Fixture(stage))
+                    {
+                        var top=f.New("Consumed inactive prop");top.transform.position=new Vector3(0,3.02f,5);top.AddComponent<BoxCollider>();
+                        var prop=top.AddComponent(f.prop.GetType());Call(prop,"Remember");Call(prop,"InitializePhysics");
+                        var props=Array.CreateInstance(f.prop.GetType(),2);props.SetValue(f.prop,0);props.SetValue(prop,1);Set(f.game,"props",props);
+                        top.SetActive(false);Physics.SyncTransforms();f.Grab();Call(f.game,"Cancel",true);
+                        top.SetActive(true);Physics.SyncTransforms();Call(f.game,"Interact");
+                        Require(Get(f.game,"held")==null,"An active supported object no longer prevents its base from being picked up.");
+                    }
+                });
                 Check(result, stage, "tilted pickup and cancel preserve the original world rotation", () =>
                 {
                     using (var f = new Fixture(stage))

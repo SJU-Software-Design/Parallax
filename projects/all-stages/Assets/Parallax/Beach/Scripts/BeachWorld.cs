@@ -109,8 +109,8 @@ namespace ShadeLink.Beach
         static void Decoration(BeachProp prop)
         {
             prop.gameObject.name="장식 · "+prop.title;
-            // Preserve the visible furniture and its real static colliders;
-            // only puzzle objects enter the grab/physics registry.
+            foreach(var collider in prop.GetComponentsInChildren<Collider>())UnityEngine.Object.DestroyImmediate(collider);
+            foreach(var filter in prop.GetComponentsInChildren<MeshFilter>())filter.gameObject.AddComponent<MeshCollider>().sharedMesh=filter.sharedMesh;
             UnityEngine.Object.DestroyImmediate(prop);
         }
         static BeachLightGate Gate(BeachGame game,float z,bool flowing)
@@ -303,7 +303,7 @@ namespace ShadeLink.Beach
             Water("그늘 배 항로",new Vector2(-14,55),new Vector2(14,69),new Vector3(0,0,.9f));
             foreach(var checkpoint in Checkpoints)Shelter(checkpoint);
             var props=new List<BeachProp>();
-            var mirrorRoot=new GameObject("01 · 작은 해변 거울");mirrorRoot.transform.SetParent(root,false);mirrorRoot.transform.position=new Vector3(-3,.04f,7.5f);mirrorRoot.transform.localScale=Vector3.one*.45f;
+            var mirrorRoot=new GameObject("01 · 작은 해변 거울");mirrorRoot.transform.SetParent(root,false);mirrorRoot.transform.position=new Vector3(-3,.04f,7.5f);mirrorRoot.transform.localScale=Vector3.one*.6f;
             var mirrorProp=mirrorRoot.AddComponent<BeachProp>();mirrorProp.title="작은 거울 · 잡아서 확대";mirrorProp.zone=0;mirrorProp.minScale=.3f;mirrorProp.maxScale=3.8f;mirrorProp.upright=true;
             Box("거울 받침",new Vector3(0,.08f,0),new Vector3(1.25f,.16f,.9f),navy,mirrorRoot.transform);Box("거울 기둥",new Vector3(0,.7f,0),new Vector3(.13f,1.3f,.13f),timber,mirrorRoot.transform);
             var head=new GameObject("움직이는 반사면");head.transform.SetParent(mirrorRoot.transform,false);head.transform.localPosition=new Vector3(0,1.4f,0);
@@ -330,7 +330,8 @@ namespace ShadeLink.Beach
             var upperParasol=Prop("umbrella","04 · 성벽 파라솔",3,new Vector3(2,3.44f,91.7f),.65f,3.2f);
             foreach(Transform child in upperParasol.transform)child.localPosition-=Vector3.up*2.15f;
             upperParasol.transform.position+=Vector3.up*(2.15f*.65f);upperParasol.Remember();
-            var lowerParasol=Model("umbrella",root,new Vector3(2.4f,1.1f,89.05f),2.4f,true);
+            var canopyOffset=BeachLighting.ToSun*(BeachCastleRestoration.EntranceCanopyLift/BeachLighting.ToSun.y);canopyOffset.y=0;
+            var lowerParasol=Model("umbrella",root,new Vector3(2.4f,1.1f,89.05f)+canopyOffset,2.4f,true);
             game.castleRoute=BeachCastleRestoration.Build(root,game,castle.transform,upperParasol,lowerParasol.transform);
             props.Add(game.castleRoute.LowerFragment);props.Add(game.castleRoute.UpperFragment);props.Add(upperParasol);
             // Unreachable shoreline dressing establishes the resort silhouette.

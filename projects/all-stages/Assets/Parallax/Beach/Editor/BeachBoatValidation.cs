@@ -372,13 +372,14 @@ namespace ShadeLink.Editor
             var calm=waters.Single(w=>w.name=="판자 횡단 수로");Require(calm.flow==Vector3.zero,"Earlier diagonal bridge water must remain calm.");
             foreach(float z in new[]{56.5f,60,64,68})
                 Require(!Physics.Raycast(new Vector3(8.8f,.5f,z),Vector3.down,1,Beach.BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore),"The old right-hand dry bypass still exists at z="+z);
-            var ball=game.props.First(p=>p.isBall);
-            ball.Restore();ball.transform.SetPositionAndRotation(new Vector3(0,.10f,56.8f),Quaternion.identity);ball.transform.localScale=Vector3.one*1.2f;
-            ball.body.position=ball.transform.position;ball.body.rotation=ball.transform.rotation;Physics.SyncTransforms();ball.Release();
-            float start=ball.transform.position.z;Idle(900);
-            Require(ball.transform.position.z-start>6.5f,"Ordinary cargo probe must actually drift far enough to test the removed arrival shortcut.");
+            // Beach balls are fixed scenery; use registered movable cargo for the bypass probe.
+            var cargo=game.props.First(p=>p.buoyant&&p!=boat.Prop);
+            cargo.Restore();cargo.transform.SetPositionAndRotation(new Vector3(0,.10f,56.8f),Quaternion.identity);cargo.transform.localScale=Vector3.one*1.2f;
+            cargo.body.position=cargo.transform.position;cargo.body.rotation=cargo.transform.rotation;Physics.SyncTransforms();cargo.Release();
+            float start=cargo.transform.position.z;Idle(900);
+            Require(cargo.transform.position.z-start>6.5f,"Ordinary cargo probe must actually drift far enough to test the removed arrival shortcut.");
             Require(!game.waterGate.unlocked&&!boat.Arrived,"Floating ordinary cargo must not substitute for a player boat crossing.");
-            Detail("Declared physical ordinary-ball probe (not a legal cross-zone placement claim), drift="+(ball.transform.position.z-start));
+            Detail("Declared physical ordinary-cargo probe (not a legal cross-zone placement claim), drift="+(cargo.transform.position.z-start));
         }
         static void Travel(Vector3 target,bool jump=false,int limit=360)
         {
