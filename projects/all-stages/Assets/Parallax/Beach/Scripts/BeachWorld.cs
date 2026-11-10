@@ -330,7 +330,7 @@ namespace ShadeLink.Beach
             var upperParasol=Prop("umbrella","04 · 성벽 파라솔",3,new Vector3(2,3.44f,91.7f),.65f,3.2f);
             foreach(Transform child in upperParasol.transform)child.localPosition-=Vector3.up*2.15f;
             upperParasol.transform.position+=Vector3.up*(2.15f*.65f);upperParasol.Remember();
-            var lowerParasol=Model("umbrella",root,new Vector3(3.4f,1.1f,88.45f),2.4f,true);
+            var lowerParasol=Model("umbrella",root,new Vector3(2.4f,1.1f,89.05f),2.4f,true);
             game.castleRoute=BeachCastleRestoration.Build(root,game,castle.transform,upperParasol,lowerParasol.transform);
             props.Add(game.castleRoute.LowerFragment);props.Add(game.castleRoute.UpperFragment);props.Add(upperParasol);
             // Unreachable shoreline dressing establishes the resort silhouette.

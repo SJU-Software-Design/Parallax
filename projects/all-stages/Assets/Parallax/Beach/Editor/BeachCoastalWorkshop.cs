@@ -14,18 +14,22 @@ namespace ShadeLink.Editor
             if(harbor==null||harbor.target.Find("Coastal Workshop frame")!=null)return;
             var samples=harbor.samples.Select(s=>(s.point,s.inside,s.region)).ToArray();
             var colliders=harbor.GetComponentsInChildren<Collider>(true);
+            // Keep the boat pickup under real C fabric without shading the upright canvas.
+            var shelter=harbor.GetComponentsInChildren<Transform>().Single(t=>t.name.StartsWith("Beach resort parasol · 그림자 제작소 작업 쉼터")&&t.position.x>9);
+            shelter.position=new Vector3(9.3f,3.3f,48.3f);
             var wood=CoastalWood("Coastal Workshop weathered oak",new Color(.87f,.82f,.70f));
             var teal=CoastalWood("Coastal Workshop painted legs",new Color(.13f,.31f,.31f),true);
             var linen=CoastalLinen("Coastal Workshop stretched canvas",new Color(.96f,.91f,.76f));
             var brass=CoastalMaterial("Coastal Workshop brass fasteners",new Color(.58f,.43f,.20f),.7f,.42f);
-            var ink=CoastalMaterial("Coastal Workshop printed terracotta",new Color(.70f,.27f,.12f));
+            var ink=new Material(Shader.Find("ShadeLink/Flat")){name="Coastal Workshop printed terracotta",color=new Color(.70f,.27f,.12f)};
+            var channel=CoastalMaterial("Coastal Workshop progress channel",new Color(.035f,.10f,.11f));
             var frame=new GameObject("Coastal Workshop frame").transform;frame.SetParent(harbor.target,false);
             string[] replaced={"그림자 보드 바탕","그림자 보드 옆틀","그림자 보드 가로틀","제작 보드 머리글","게시판 모서리 고정핀","제작 진행판"};
             foreach(var renderer in harbor.target.GetComponentsInChildren<Renderer>(true))
             {
                 if(replaced.Contains(renderer.name)){renderer.enabled=false;renderer.shadowCastingMode=ShadowCastingMode.Off;}
                 if(renderer is LineRenderer line)
-                {line.sharedMaterial=ink;line.startWidth=line.endWidth=.021f;line.alignment=LineAlignment.TransformZ;}
+                {line.sharedMaterial=ink;line.startWidth=line.endWidth=.021f;line.alignment=LineAlignment.View;}
             }
             foreach(var sample in harbor.samples)if(sample.indicator!=null)sample.indicator.enabled=false;
             CoastalBox(frame,"Coastal Workshop canvas",new Vector3(0,0,-.041f),new Vector3(4.8f,3.2f,.08f),linen,.024f);
@@ -35,13 +39,14 @@ namespace ShadeLink.Editor
                 CoastalBox(frame,"Coastal Workshop cross rim",new Vector3(0,y,.005f),new Vector3(5.04f,.18f,.17f),wood,.035f);
             CoastalBox(frame,"Coastal Workshop carved header",new Vector3(0,1.99f,-.015f),new Vector3(5.04f,.5f,.16f),wood,.035f);
             CoastalBox(frame,"Coastal Workshop progress housing",new Vector3(0,-1.94f,.03f),new Vector3(5.04f,.44f,.15f),teal,.025f);
-            CoastalBox(frame,"Coastal Workshop progress recess",new Vector3(0,-2.06f,.115f),new Vector3(4.08f,.11f,.025f),brass,.01f);
+            CoastalBox(frame,"Coastal Workshop progress recess",new Vector3(0,-2.06f,.115f),new Vector3(4.08f,.11f,.025f),channel,.01f);
             foreach(float x in new[]{-2.33f,2.33f})foreach(float y in new[]{-1.50f,1.50f,1.99f})
                 CoastalCylinder(frame,"Coastal Workshop canvas pin",new Vector3(x,y,.115f),new Vector3(.065f,.03f,.065f),brass,Quaternion.Euler(90,0,0));
             foreach(var label in harbor.target.GetComponentsInChildren<BeachLabel>(true))
             {
                 label.style=FontStyle.Bold;
                 label.color=label.caption=="그림자 배 제작소"?new Color(.98f,.93f,.78f):new Color(.12f,.28f,.29f);
+                if(label.caption=="그림자 배 제작소")label.transform.localPosition=new Vector3(0,1.99f,.11f);
             }
             // The HUD keeps detailed percentages; the physical board uses one quiet progress strip.
             harbor.statusAnchor.gameObject.SetActive(false);
