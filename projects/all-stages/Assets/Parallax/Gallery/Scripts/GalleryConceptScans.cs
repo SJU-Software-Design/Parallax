@@ -35,10 +35,12 @@ namespace ShadeLink.Gallery
             var pedestal=plinth.gameObject.AddComponent<BoxCollider>();pedestal.size=plinthSize;
             var sculpture=new GameObject("Nike · original scanned geometry");sculpture.transform.SetParent(parent,false);
             sculpture.transform.localPosition=Vector3.up*baseHeight;sculpture.transform.localScale=Vector3.one*displayHeight;
-            sculpture.AddComponent<MeshFilter>().sharedMesh=mesh;
+            Mesh displayMesh=Resources.Load<Mesh>("MuseumScans/NikeDisplay50k");
+            if(displayMesh==null)throw new InvalidOperationException("Optimized Nike display mesh is missing.");
+            sculpture.AddComponent<MeshFilter>().sharedMesh=displayMesh;
             var renderer=sculpture.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;
             renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;
-            // The movable rigidbody uses fitted boxes. The original mesh casts the visible shadow.
+            // The movable rigidbody uses fitted boxes. The optimized display mesh casts the visible shadow.
             const int slices=10;
             var shape=new Bounds[slices];var used=new bool[slices];
             foreach(var vertex in vertices)
