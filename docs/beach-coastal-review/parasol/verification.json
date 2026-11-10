@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-10",
+  "unity": "6000.3.24f1",
+  "branch": "codex/beach-coastal-castle-parasol-position",
+  "code_head_before_evidence_commit": "20577157eb2da34b39db71b0f2342194232ae72c",
+  "base_branch": "codex/beach-coastal-base",
+  "base_sha": "caed3560b83411ada740bebaa9eebf0100ea223c",
+  "runtime_evidence": "Reused implementation-time native Unity Play Mode validation; not rerun for documentation publication.",
+  "integration_preview_sha": "a9dbeb20d755b632b3493d58abcfc5ba9501db3a",
+  "native_checks_passed": 3,
+  "native_scene_unchanged": true,
+  "images": {
+    "before.png": "c73f6ac237cc84d459cbf73b04ed21663155f84059bb9a792b679ae97eb8e518",
+    "after.png": "715842676c0e0a4326beb6ed98597ec0201c5bf63f37cc4e6f3301b98f22daa7"
+  },
+  "image_dimensions": [
+    1600,
+    900
+  ],
+  "image_context": "Original native game camera renders. Before: pre-coastal baseline. After: six-feature integrated preview; surrounding features may also differ. No generated concept images or image edits.",
+  "publication_checks": [
+    "six source diffs passed git diff --check",
+    "PNG dimensions and original file hashes checked",
+    "integrated scene hash matches captured implementation state"
+  ],
+  "not_run": [
+    "standalone build",
+    "full unassisted walkthrough",
+    "new GPU performance measurement"
+  ],
+  "known_limit": "기존 전체 자동 집기·배치 스크립트는 변경 전 C 차양에서도 집기 좌표가 차양 충돌체 안으로 들어가 실패합니다. 이 실패를 숨기거나 통과로 세지 않았으며, 해당 테스트 좌표 수정은 되돌렸습니다. 준비 배치 검증은 처음 물체 배치를 지정하므로 전체 수동 클리어를 증명하지 않습니다."
+}
