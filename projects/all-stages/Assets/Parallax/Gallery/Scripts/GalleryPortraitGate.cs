@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,6 +14,12 @@ namespace ShadeLink.Gallery
         public const float AbsorbSeconds=2.5f,RedSeconds=2f,SmileSeconds=3f,OpenSeconds=4.5f;
         public const float TotalPerformanceSeconds=AbsorbSeconds+RedSeconds+SmileSeconds+OpenSeconds;
         public enum RevealStage { Waiting, Absorbing, Reddening, Smiling, Opening, Open }
+        // These describe actual visual milestones; the museum audio controller
+        // decides what to play without changing the portrait's puzzle rules.
+        public event Action AbsorptionStarted;
+        public event Action ReddeningStarted;
+        public event Action SmileStarted;
+        public event Action PerformanceReset;
         public GalleryGame game;
         public GalleryConceptPerspective portrait;
         public Transform leftCurtain,rightCurtain;
@@ -31,7 +38,7 @@ namespace ShadeLink.Gallery
         public float PerformanceElapsed=>performanceTime;
         float opening,missedTime,performanceTime;
         GalleryConceptLighting conceptLighting;
-        bool wasAtPoint,wasMatching;
+        bool wasAtPoint,wasMatching,redNotified,smileNotified;
 
         public bool CanUnlock=>Stage==RevealStage.Waiting&&game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.CanObserve;
         public string Status=>Opened?"커튼이 열렸어요. 다음 전시실로 이동하세요.":
@@ -44,10 +51,11 @@ namespace ShadeLink.Gallery
         public void ResetGate()
         {
             if(performance!=null)performance.ResetPerformance();
-            Stage=RevealStage.Waiting;Opened=false;Progress=opening=missedTime=performanceTime=0;wasAtPoint=wasMatching=false;
+            Stage=RevealStage.Waiting;Opened=false;Progress=opening=missedTime=performanceTime=0;wasAtPoint=wasMatching=redNotified=smileNotified=false;
             MoodRed01=Smile01=0;SetMood(0);
             if(barrier!=null)barrier.enabled=true;
             portrait?.ResetEvaluation();PositionCurtains();Physics.SyncTransforms();
+            PerformanceReset?.Invoke();
         }
         public void Tick(float dt)
         {
@@ -70,7 +78,8 @@ namespace ShadeLink.Gallery
                 {
                     if(performance==null)performance=gameObject.AddComponent<GalleryPortraitPerformance>();
                     performance.Begin(this,portrait);
-                    Stage=RevealStage.Absorbing;performanceTime=0;
+                    Stage=RevealStage.Absorbing;performanceTime=0;redNotified=smileNotified=false;
+                    AbsorptionStarted?.Invoke();
                     if(game.active)game.Tell("하나의 초상이 완성되었습니다. 커튼을 바라봐 주세요.",5);
                 }
             }
@@ -103,6 +112,16 @@ namespace ShadeLink.Gallery
             if(performance!=null)performance.SetExpression(Smile01,Opening01,MoodRed01);
             Progress=1;Opened=Stage==RevealStage.Open;
             if(barrier!=null)barrier.enabled=!Opened;
+            if(!redNotified&&performanceTime>=AbsorbSeconds)
+            {
+                redNotified=true;ReddeningStarted?.Invoke();
+            }
+            // A long frame may skip the Smiling enum value entirely. Crossing
+            // the visual timeline still emits its cue once, never every tick.
+            if(!smileNotified&&performanceTime>=AbsorbSeconds+RedSeconds)
+            {
+                smileNotified=true;SmileStarted?.Invoke();
+            }
             if(Opened&&!alreadyOpen&&game.active)game.Tell("초상이 길을 열었어요. 열린 커튼 사이로 이동하세요.",7);
         }
         void SetMood(float red)

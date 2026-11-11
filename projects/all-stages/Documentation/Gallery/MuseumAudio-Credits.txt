@@ -1,0 +1,172 @@
+PARALLAX MUSEUM - SELECTED EXTERNAL AUDIO
+2026-11-12
+
+Bundled playback recordings and edits are listed below with original authors, source URLs and licenses.
+
+5 가벼운 목재
+Impact Sounds - Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/WoodLight5.ogg
+
+8 중간 목재
+Impact Sounds - Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/WoodMedium8.ogg
+
+11 가벼운 금속
+Impact Sounds - Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/MetalLight11.ogg
+
+14 중간 금속
+Impact Sounds - Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/MetalMedium14.ogg
+
+42 UI 선택·확인
+Interface Sounds - Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/UIConfirm42.ogg
+
+53 니케 그림자 조건 충족
+Atmospheric Interaction Sound Pack - legoluft (krank game sounds); qubodup (OpenGameArt submission)
+https://opengameart.org/content/atmospheric-interaction-sound-pack
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/NikeShadow53.wav
+
+58 손이 벌어지는 석재 마찰
+Stone Door - bonebrah
+https://opengameart.org/content/stone-door
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/HandsOpen58.ogg
+
+72 미술관 실내 착지
+Footsteps - Essentials / Essentials Series - Nox Sound Design
+https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/Land72.wav
+
+81 미술관 실내 걷기
+Footsteps - Essentials / Essentials Series - Nox Sound Design
+https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/Footstep81.wav
+
+128 사물 잡기
+Wood Grab 1 - CJspellsfish
+https://freesound.org/people/CJspellsfish/sounds/669472/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: Decode official public MP3 preview to PCM16 WAV with Windows MediaTranscoder; no synthesis, gain, pitch, reverb or mixing.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/PropGrab128.wav
+
+132 무거운 목재
+Wooden Thud (Mono) - Breviceps
+https://freesound.org/people/Breviceps/sounds/449955/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: Decode official public MP3 preview to PCM16 WAV with Windows MediaTranscoder; no synthesis, gain, pitch, reverb or mixing.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/WoodHeavy132.wav
+
+139 돌·조각상 무거운 낙하
+two large cobblestone blocks - jobel0092
+https://freesound.org/people/jobel0092/sounds/268055/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: Decode official public MP3 preview to PCM16 WAV with Windows MediaTranscoder; no synthesis, gain, pitch, reverb or mixing. Copy sample range only; no added sound.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/StoneHeavy139.wav
+
+142 UI 취소
+UI Audio (UI SFX Set) - Kenney Vleugels (Kenney.nl)
+https://kenney.nl/assets/ui-audio
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/UICancel142.ogg
+
+145 UI 불가
+Interface Sounds - Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/UIError145.ogg
+
+146 니케 그림 변환 붓질
+Paint Brush 2 - BenDrain
+https://freesound.org/people/BenDrain/sounds/487809/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: {'type': 'trim_and_edge_fades', 'startSeconds': 0, 'endSeconds': 2.6, 'fadeMilliseconds': 40, 'decodedSha256': '77b39f633a0795142fa0f96299bffe332640117c1ae0362027f8575af074095f'}
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/NikePaint146.wav
+
+151 얼굴이 웃는 순간
+Phantom - Beast_Toil
+https://freesound.org/people/Beast_Toil/sounds/249413/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: Original 151 onset retained for 0.12s; pitch-preserving time stretch to 9.5s, 0.06s crossfade and 0.32s ending fade. No replacement recording.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/FaceSmile151.wav
+
+156 사물 놓기
+Put down item - qubodup
+https://freesound.org/people/qubodup/sounds/792930/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: decoded the official source preview to PCM and applied -6 dB gain.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/PropRelease156.wav
+
+157 무거운 금속
+Heavy Metal Thud on Ground - 7of9Designs
+https://freesound.org/people/7of9Designs/sounds/640204/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: decoded the official source preview to PCM and applied -3 dB gain.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/MetalHeavy157.wav
+
+161 니케 문 개방
+Door Creak - coosemek
+https://freesound.org/people/coosemek/sounds/460542/
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+
+Changes: unmodified playback copy
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/NikeDoor161.mp3
+
+166 손 움직임 마지막 쿵
+Thuds - NeoSpica
+https://freesound.org/people/NeoSpica/sounds/512244/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Changes: Decode official public MP3 preview with Windows MediaTranscoder; copy second impact samples only, 1.18 seconds to decoded end. No synthesis, pitch change, reverb, gain or mixing.
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/HandsSettle166.wav
+
+C01 Hard Boiled
+Hard Boiled - Kevin MacLeod
+https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700076
+CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+Hard Boiled Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0. https://creativecommons.org/licenses/by/4.0/
+Changes: unmodified full source; playback crossfades at loop boundary
+Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/MuseumBgmC01.mp3

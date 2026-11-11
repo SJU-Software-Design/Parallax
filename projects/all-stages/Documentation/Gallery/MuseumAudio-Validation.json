@@ -1,0 +1,60 @@
+{
+  "baseCommit": "91787ed595d8bd7bc19085344a1ffa8e193ef94e",
+  "buildId": "20261111T180750Z-615e9fb3",
+  "finishedUtc": "2026-11-11T18:08:36.7381185Z",
+  "unityVersion": "6000.3.24f1",
+  "target": "StandaloneWindows64 / D3D11",
+  "buildSucceeded": true,
+  "buildErrors": 0,
+  "buildWarnings": 7,
+  "warningSummary": [
+    "'AnimationClip' is not supported because the module Animation is disabled in the build.",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(273) (on d3d11)",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(274) (on d3d11)",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(283) (on d3d11)",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(284) (on d3d11)",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(285) (on d3d11)",
+    "Shader warning in 'Parallax/MuseumSurface': gradient instruction used in a loop with varying iteration; partial derivatives may have undefined value at Assets/Parallax/Gallery/Resources/MuseumSurface.shader(286) (on d3d11)"
+  ],
+  "bank": {
+    "sfx": 20,
+    "bgm": 1,
+    "hashesVerified": true
+  },
+  "editorChecks": [
+    "Selected audio default and Standalone import settings: DecompressOnLoad, preload, Vorbis 0.8",
+    "All 20 required SFX and C01 BGM resolve from the runtime Resources bank",
+    "PlayerMovementAudioTests.Run",
+    "ReleasePhysicsTests.Run",
+    "PlayerControlsTests.Run",
+    "MuseumSelectedAudioMovementTests.Run (9 timing + 11 routing assertions)",
+    "GalleryGimmickAudioTests.Run"
+  ],
+  "audioRuntimePassed": true,
+  "runtimeChecks": [
+    "C01 BGM starts and advances through the real game Resume hook",
+    "Actual movement cue routing and prop grab overlap the brush without changing its source, pitch or cursor",
+    "Pause freezes and Resume continues music and the same brush voice; its one-shot then finishes naturally",
+    "Production BGM fades over two gameplay seconds, holds half a second of quiet, then 151 plays once from reddening at 2.5 seconds through full curtain opening at 12 seconds; the visual smile at 4.5 seconds does not restart it",
+    "Real CharacterController traversal reaches checkpoint 3 and resumes the preserved BGM cursor",
+    "Public room reset cancels pending and playing portrait audio and restores ordinary music",
+    "End seek observes two audible-gain loop sources share the fade, pause both cursors at zero, and resume the preserved next voice after the seam"
+  ],
+  "runtimeMetrics": {
+    "fadeOutSeconds": 1.9779952764511108,
+    "quietSimulationSeconds": 0.5222276449203491,
+    "absorptionToRedSeconds": 2.50022292137146,
+    "visualSmileCueCursor": 2.026643991470337,
+    "faceSeconds": 9.5,
+    "faceLastPlayingCursor": 9.493310928344727,
+    "faceEndWallSeconds": 9.530120849609375,
+    "faceEndSkewSeconds": 0.030120849609375,
+    "maximumVoices": 4,
+    "outputPeak": 0.26423409581184387,
+    "outputSampleFrames": 2137
+  },
+  "handsRuntimePassed": true,
+  "fixtureScope": "Real saved museum, production audio service, AudioSources and wall-clock playback. Explicit published portrait solution poses and a movement-cue state fixture avoid pretending this is input-only puzzle solving. The complete portrait timeline runs through normal game Tick in real time, including a disclosed menu pause during its two-second BGM fade. The selected 151 derivative begins at the 2.5-second reddening milestone, survives the separate 4.5-second visual smile without retriggering, and naturally completes its 9.5-second playback at the 12-second full curtain opening; the final crossing uses its actual CharacterController. A separate disclosed fast-forward fixture checks reset cancellation. A disclosed BGM seek to 1.7 seconds before its end checks real two-source crossfade, a portrait-envelope request during that overlap, and advancing playback after silence and the seam, without waiting the whole song. Clip identity, pitch, playback cursor, natural completion, overlap, pause, fade gains, silence and cue counts are asserted. Per-frame listener peak and first-second brush PCM peak are diagnostics, not human listening, loudness balance or hardware-independent audible output.",
+  "humanListeningPerformed": false,
+  "preservedSceneAndSettingsFiles": 46
+}

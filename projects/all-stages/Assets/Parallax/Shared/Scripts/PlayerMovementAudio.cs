@@ -32,6 +32,9 @@ namespace ShadeLink
         }
         void Play(Cue cue,float impact)
         {
+            // The museum owns independent one-shot voices. In particular,
+            // changing from a step to a landing must not retune a step's tail.
+            if(MuseumAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(source==null)
             {
                 source=gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=false;
