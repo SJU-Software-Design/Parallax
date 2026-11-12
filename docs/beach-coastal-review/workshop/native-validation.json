@@ -1,0 +1,718 @@
+{
+    "passed": true,
+    "sceneUnchanged": true,
+    "scope": "Saved Beach scene, real GPU and native Physics. Prior optical completion and matching source-piece poses are explicit fixtures. Both source pieces additionally use untouched home poses for native operator approach, camera pickup at their visible plate centres, real held perspective enlargement/reduction and cancel/shadow restoration. Real upright-board shadow-mesh positive/exterior rays, source Ready/held state, the same boat shrinking from the board, actual Rigidbody gravity and supported landing, ordinary camera pickup, native operator motion and mid-reveal reset are tested. No unassisted full-stage completion is claimed.",
+    "unity": "6000.3.24f1",
+    "gpu": "Apple M4 Pro",
+    "failure": "",
+    "sceneHashBefore": "d9b3b55d812075a8a8e75af63c676aa18b780d26b8fdbe6b38782779e02c8865",
+    "sceneHashAfter": "d9b3b55d812075a8a8e75af63c676aa18b780d26b8fdbe6b38782779e02c8865",
+    "checks": [
+        {
+            "name": "Upright board, hidden boat and native shaded operator approach",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (9.64, 0.13, 49.30); safe=True",
+                "Native walk reached (9.80, 0.05, 50.58); safe=True"
+            ]
+        },
+        {
+            "name": "Both source plates stay centred during native pickup and perspective scaling",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (7.24, 0.13, 49.30); safe=True",
+                "선체 그림자 조각 native pickup: feet=(7.37, 0.13, 49.28) home=(7.40, 0.87, 50.20) scale=0.5439312 referenceDistance=1.218812",
+                "선체 그림자 조각 enlarge look=(0.00, 1.20, 2.00) actualScale=1.076542 viewport=(0.50, 0.50, 2.39) blocked=False reason=",
+                "선체 그림자 조각 reduce look=(0.00, -0.25, 1.50) actualScale=0.8514704 viewport=(0.50, 0.50, 1.89) blocked=False reason=",
+                "선체 그림자 조각 reduce look=(0.00, -0.65, 1.50) actualScale=0.67313 viewport=(0.50, 0.50, 1.49) blocked=False reason=",
+                "선체 그림자 조각 reduce look=(0.00, -1.20, 1.00) actualScale=0.5050013 viewport=(0.50, 0.50, 1.12) blocked=False reason=",
+                "선체 그림자 조각 native cancellation restored pose, Ready and actual shadow; no direct source transform assignment was used.",
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (10.24, 0.13, 49.30); safe=True",
+                "차양 그림자 조각 native pickup: feet=(10.32, 0.13, 49.20) home=(11.90, 1.56, 50.20) scale=0.5440651 referenceDistance=1.889061",
+                "차양 그림자 조각 enlarge look=(0.00, 1.20, 2.00) actualScale=0.9477515 viewport=(0.50, 0.50, 3.26) blocked=False reason=",
+                "차양 그림자 조각 reduce look=(0.00, -0.25, 1.50) actualScale=0.4897389 viewport=(0.50, 0.50, 1.68) blocked=False reason=",
+                "차양 그림자 조각 native cancellation restored pose, Ready and actual shadow; no direct source transform assignment was used."
+            ]
+        },
+        {
+            "name": "Drop-only assistance supports a native home-to-board shadow solve",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (7.24, 0.13, 49.30); safe=True",
+                "Native near-match input source=0 intendedScale=0.95 lookOffset=(0.00, 0.00, 0.00) feet=(9.64, 0.12, 49.93) actualRoot=(9.64, 2.05, 52.11) scale=0.9995727 angle=2.999705 near=True blocked=False reason= limiter=Surface hit=보드 앞 작은 배 받침 point=(9.23, 0.45, 51.87)",
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (7.24, 0.13, 49.30); safe=True",
+                "Native near-match input source=0 intendedScale=0.95 lookOffset=(0.00, 0.00, 0.00) feet=(9.64, 0.12, 49.93) actualRoot=(9.64, 2.05, 52.11) scale=0.9995727 angle=2.999705 near=True blocked=False reason= limiter=Surface hit=보드 앞 작은 배 받침 point=(9.23, 0.45, 51.87)",
+                "Successful native assisted release source=0 actualRoot=(9.60, 2.04, 52.03) scale=1 counter=1",
+                "Native walk reached (9.64, 0.13, 49.44); safe=True",
+                "Native walk reached (10.24, 0.13, 49.31); safe=True",
+                "Native near-match input source=1 intendedScale=0.95 lookOffset=(0.00, 0.00, 0.00) feet=(9.61, 0.13, 48.90) actualRoot=(9.61, 2.56, 50.46) scale=0.5224746 angle=2.999705 near=False blocked=False reason= limiter=Surface hit=ToonTastic Umbrella C shelter canopy point=(9.25, 2.70, 50.27)",
+                "Native near-match input source=1 intendedScale=0.95 lookOffset=(0.00, 0.04, 0.00) feet=(9.61, 0.13, 48.90) actualRoot=(9.63, 3.38, 51.98) scale=1.02665 angle=2.999705 near=False blocked=False reason= limiter=Volume hit=선체 그림자 조각 point=(9.65, 1.88, 52.01)",
+                "Native near-match input source=1 intendedScale=0.95 lookOffset=(0.00, -0.04, 0.00) feet=(9.61, 0.13, 48.90) actualRoot=(9.63, 3.24, 51.88) scale=0.9826332 angle=2.999705 near=True blocked=False reason= limiter=Surface hit=보드 앞 작은 배 받침 point=(9.57, 0.45, 51.83)",
+                "Successful native assisted release source=1 actualRoot=(9.67, 3.28, 51.90) scale=1 counter=2",
+                "Both pieces were picked from untouched homes and placed through real walking, camera aiming, RotateHeld and game.Drop; no held source transform was assigned."
+            ]
+        },
+        {
+            "name": "Disabled, distant, wrong, undersized and blocked assistance is rejected",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (7.24, 0.13, 49.30); safe=True",
+                "Native near-match input source=0 intendedScale=0.95 lookOffset=(0.00, 0.00, 0.00) feet=(9.64, 0.12, 49.93) actualRoot=(9.64, 2.05, 52.11) scale=0.9995727 angle=2.999705 near=True blocked=False reason= limiter=Surface hit=보드 앞 작은 배 받침 point=(9.23, 0.45, 51.87)",
+                "Declared negative geometry rejected without mutation: wrong rotation source 0",
+                "Declared negative geometry rejected without mutation: distant placement source 0",
+                "Declared negative geometry rejected without mutation: undersized source 0",
+                "Declared negative geometry rejected without mutation: wrong rotation source 1",
+                "Declared negative geometry rejected without mutation: distant placement source 1",
+                "Declared negative geometry rejected without mutation: undersized source 1",
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (7.24, 0.13, 49.30); safe=True",
+                "Native near-match input source=0 intendedScale=0.95 lookOffset=(0.00, 0.00, 0.00) feet=(9.64, 0.12, 49.93) actualRoot=(9.64, 2.05, 52.11) scale=0.9995727 angle=2.999705 near=True blocked=False reason= limiter=Surface hit=보드 앞 작은 배 받침 point=(9.23, 0.45, 51.87)",
+                "Actual candidate collision refused at (8.61, 2.18, 51.46) while preserving the valid held pose."
+            ]
+        },
+        {
+            "name": "Held previews, wrong silhouettes and blanket shade are rejected",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Prepared source poses; native Ready settling and shadow matching remain active. held=True wrong=False",
+                "Prepared source poses; native Ready settling and shadow matching remain active. held=False wrong=True",
+                "Blanket rejected with coverage=0 exteriorClear=0"
+            ]
+        },
+        {
+            "name": "Real board silhouette shrinks and drops the same grabbable boat",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Native walk reached (0.00, 0.13, 49.46); safe=True",
+                "Native walk reached (9.64, 0.13, 49.30); safe=True",
+                "Native walk reached (9.80, 0.05, 50.58); safe=True",
+                "Prepared source poses; native Ready settling and shadow matching remain active. held=False wrong=False",
+                "Real upright-board silhouette; native source Ready; same boat board emergence, visible shrink, actual gravity drop and supported tray landing; normal camera-ray pickup/cancel."
+            ]
+        },
+        {
+            "name": "Mid-reveal and completed-zone reset reuse the same boat",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Prepared source poses; native Ready settling and shadow matching remain active. held=False wrong=False",
+                "Prepared source poses; native Ready settling and shadow matching remain active. held=False wrong=False",
+                "Mid-reveal and completed-zone resets restored both source homes, hidden mini boat and unsolved challenge, with no duplicated boat or lingering reveal."
+            ]
+        }
+    ],
+    "matchingRays": [
+        {
+            "point": {
+                "x": -1.0499999523162842,
+                "y": -0.550000011920929
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -0.5,
+                "y": -0.550000011920929
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.550000011920929
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.5,
+                "y": -0.550000011920929
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 1.0499999523162842,
+                "y": -0.550000011920929
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -1.0499999523162842,
+                "y": -0.7300000190734863
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -0.5,
+                "y": -0.7300000190734863
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.7300000190734863
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.5,
+                "y": -0.7300000190734863
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 1.0499999523162842,
+                "y": -0.7300000190734863
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -1.0499999523162842,
+                "y": -0.8399999737739563
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -0.5,
+                "y": -0.8399999737739563
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.8399999737739563
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 0.5,
+                "y": -0.8399999737739563
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": 1.0499999523162842,
+                "y": -0.8399999737739563
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -1.0499999523162842,
+                "y": 0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": -0.550000011920929,
+                "y": 0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": 0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.550000011920929,
+                "y": 0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 1.0499999523162842,
+                "y": 0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": -0.6499999761581421,
+                "y": 0.6200000047683716
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": 0.6200000047683716
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.6499999761581421,
+                "y": 0.6200000047683716
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": -0.18000000715255738,
+                "y": 0.8600000143051148
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.18000000715255738,
+                "y": 0.8600000143051148
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": 0.15000000596046449
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.05000000074505806
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.25
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -0.4000000059604645
+            },
+            "expectedShadow": true,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 A · 선체"
+        },
+        {
+            "point": {
+                "x": -1.9500000476837159,
+                "y": -1.2000000476837159
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.9500000476837159,
+                "y": -0.6000000238418579
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.9500000476837159,
+                "y": 0.0
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.9500000476837159,
+                "y": 0.6000000238418579
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.9500000476837159,
+                "y": 1.2000000476837159
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.9500000476837159,
+                "y": -1.2000000476837159
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.9500000476837159,
+                "y": -0.6000000238418579
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.9500000476837159,
+                "y": 0.0
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.9500000476837159,
+                "y": 0.6000000238418579
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.9500000476837159,
+                "y": 1.2000000476837159
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.399999976158142,
+                "y": -1.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -0.699999988079071,
+                "y": -1.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": -1.25
+            },
+            "expectedShadow": false,
+            "blocked": true,
+            "caster": "03 · 그림자 조각 B · 차양"
+        },
+        {
+            "point": {
+                "x": 0.699999988079071,
+                "y": -1.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.399999976158142,
+                "y": -1.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.399999976158142,
+                "y": 1.350000023841858
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -0.699999988079071,
+                "y": 1.350000023841858
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 0.0,
+                "y": 1.350000023841858
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 0.699999988079071,
+                "y": 1.350000023841858
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.399999976158142,
+                "y": 1.350000023841858
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -0.550000011920929,
+                "y": -0.05000000074505806
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -0.550000011920929,
+                "y": -0.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 0.550000011920929,
+                "y": -0.05000000074505806
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 0.550000011920929,
+                "y": -0.25
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.5499999523162842,
+                "y": -0.8600000143051148
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.5499999523162842,
+                "y": -0.8600000143051148
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": -1.350000023841858,
+                "y": 0.8299999833106995
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        },
+        {
+            "point": {
+                "x": 1.350000023841858,
+                "y": 0.8299999833106995
+            },
+            "expectedShadow": false,
+            "blocked": false,
+            "caster": "fixed/none"
+        }
+    ],
+    "revealFrames": [
+        {
+            "phase": "Completed board becomes the same boat",
+            "position": {
+                "x": 9.597243309020996,
+                "y": 1.623999834060669,
+                "z": 52.029823303222659
+            },
+            "scale": {
+                "x": 0.07999999821186066,
+                "y": 0.550000011920929,
+                "z": 1.2000000476837159
+            },
+            "kinematic": true,
+            "gravity": false,
+            "ready": false,
+            "verticalVelocity": 0.0
+        },
+        {
+            "phase": "Shrinking off the upright board",
+            "position": {
+                "x": 9.678302764892579,
+                "y": 1.5827538967132569,
+                "z": 51.88800048828125
+            },
+            "scale": {
+                "x": 0.22961802780628205,
+                "y": 0.5095626711845398,
+                "z": 0.8967202305793762
+            },
+            "kinematic": true,
+            "gravity": false,
+            "ready": false,
+            "verticalVelocity": 0.0
+        },
+        {
+            "phase": "Released to native Rigidbody gravity",
+            "position": {
+                "x": 9.797699928283692,
+                "y": 1.5192744731903077,
+                "z": 51.679100036621097
+            },
+            "scale": {
+                "x": 0.44999998807907107,
+                "y": 0.44999998807907107,
+                "z": 0.44999998807907107
+            },
+            "kinematic": false,
+            "gravity": true,
+            "ready": false,
+            "verticalVelocity": -0.16350001096725465
+        },
+        {
+            "phase": "Native supported catch-tray landing",
+            "position": {
+                "x": 9.797699928283692,
+                "y": 0.5219998359680176,
+                "z": 51.679100036621097
+            },
+            "scale": {
+                "x": 0.44999998807907107,
+                "y": 0.44999998807907107,
+                "z": 0.44999998807907107
+            },
+            "kinematic": false,
+            "gravity": true,
+            "ready": true,
+            "verticalVelocity": 0.0
+        }
+    ],
+    "images": [
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/HarborOverview.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/HarborPlayerEye.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/HullSourceEnlargedAtCentre.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/HullSourceReducedAtCentre.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/CanopySourceEnlargedAtCentre.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/CanopySourceReducedAtCentre.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/NativeHullNearMatchBeforeDrop.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/NativeCanopyNearMatchBeforeDrop.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/NativeAssistedBoardSolveAndBoat.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/MatchingBoatSilhouette.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/BoardBoatEmergence.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/BoardBoatShrinking.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/BoardBoatGravityDrop.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/harbor/MaterializedMiniBoat.png"
+    ],
+    "errors": []
+}
