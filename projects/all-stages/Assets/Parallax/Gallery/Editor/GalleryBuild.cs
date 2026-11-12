@@ -20,7 +20,7 @@ namespace ShadeLink.Editor
             Directory.CreateDirectory(outputDirectory);
             File.WriteAllText(Path.Combine(outputDirectory,"Museum-Credits.txt"),
                 "PARALLAX MUSEUM - THIRD-PARTY ART\n\n"+
-                "Winged Victory of Samothrace - 3D scan by Cosmo Wenman, Skulpturhalle Basel plaster cast. CC BY 3.0. Converted, shaded and scaled for Parallax.\n"+
+                "Winged Victory of Samothrace - 3D scan by Cosmo Wenman, Skulpturhalle Basel plaster cast. CC BY 3.0. Converted, shaded, scaled and mesh simplified for Parallax.\n"+
                 "Source: https://www.thingiverse.com/thing:196038\n"+
                 "Creator: https://cosmowenman.com/2013/12/28/winged-victory-published-update-12282013/\n"+
                 "License: https://creativecommons.org/licenses/by/3.0/\n\n"+
