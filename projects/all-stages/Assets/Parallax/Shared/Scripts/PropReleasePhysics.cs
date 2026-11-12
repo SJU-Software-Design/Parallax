@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ShadeLink.Tutorial;
 
 namespace ShadeLink
 {
@@ -63,6 +64,8 @@ namespace ShadeLink
             if (ccdRemaining <= 0 && !body.isKinematic) previousDynamicMode = body.collisionDetectionMode;
             CancelPendingRelease();
             HeldCollisionState.Attach(body).Begin();
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            { TutorialAudio.Play("prop.grab", this, body.position); return; }
             PlayCue(1.18f, .75f);
         }
 
@@ -73,6 +76,8 @@ namespace ShadeLink
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
             body.WakeUp(); ccdRemaining = 2f;
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            { TutorialAudio.Play("prop.release", this, body.position); return; }
             PlayCue(.9f, 1f);
         }
 
@@ -127,7 +132,18 @@ namespace ShadeLink
 
         public bool PlayImpact(float relativeSpeed)
         {
-            if (body == null || body.isKinematic || relativeSpeed < .25f || impactCooldown > 0) return false;
+            if (body == null || body.isKinematic || impactCooldown > 0) return false;
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            {
+                if (relativeSpeed < .15f) return false;
+                // Keep this below one fixed step so distinct rebounds remain audible.
+                impactCooldown = .01f;
+                string cue = transform.localScale.x < 2f ? "impact.small" : "impact.large";
+                float massPitch = Mathf.Clamp(1.04f - Mathf.Log(Mathf.Max(.25f, body.mass) / 8f, 2) * .035f, .72f, 1.25f);
+                float impactGain = Mathf.Clamp(.4f + relativeSpeed * .15f, .4f, 1.15f);
+                return TutorialAudio.Play(cue, this, body.position, impactGain, massPitch);
+            }
+            if (relativeSpeed < .25f) return false;
             impactCooldown = .1f;
             PlayCue(.8f, Mathf.Clamp(relativeSpeed * .12f, .4f, 1.25f));
             return true;

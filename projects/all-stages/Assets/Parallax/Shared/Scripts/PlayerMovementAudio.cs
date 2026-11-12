@@ -32,6 +32,7 @@ namespace ShadeLink
         }
         void Play(Cue cue,float impact)
         {
+            if (ShadeLink.Tutorial.TutorialAudio.TryPlayMovement(cue,impact,transform.position)) return;
             if(source==null)
             {
                 source=gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=false;

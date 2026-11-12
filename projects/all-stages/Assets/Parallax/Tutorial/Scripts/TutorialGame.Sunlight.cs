@@ -308,6 +308,7 @@ namespace ShadeLink.Tutorial
             {
                 sunlightComplete = true;
                 sunlightExposure = 0;
+                TutorialAudio.Play("puzzle.complete", this, feet);
                 Debug.Log("TUTORIAL_SUNLIGHT_COMPLETE");
             }
         }

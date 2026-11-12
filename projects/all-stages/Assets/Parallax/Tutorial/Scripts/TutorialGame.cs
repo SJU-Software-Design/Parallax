@@ -39,6 +39,8 @@ namespace ShadeLink.Tutorial
 
         readonly FirstPersonMotor motor = new FirstPersonMotor();
         readonly PlayerControls controls = new PlayerControls();
+        PlayerMovementAudio movementAudio;
+        TutorialAudio tutorialAudio;
         ObjectInteraction<GalleryProp> interaction;
         TutorialLandingShake landingShake;
         GalleryProp die;
@@ -51,6 +53,7 @@ namespace ShadeLink.Tutorial
         Renderer doorLamp;
         Material unlockedLamp;
         bool exitUnlocked;
+        bool doorSoundPlayed;
         Font font;
         Vector2 referenceViewportSize;
         float yaw, pitch, messageUntil, firstSize;
@@ -93,6 +96,8 @@ namespace ShadeLink.Tutorial
             Camera = new GameObject("Tutorial camera").AddComponent<Camera>();
             Camera.transform.SetParent(player.transform, false);
             Camera.gameObject.AddComponent<AudioListener>();
+            tutorialAudio = TutorialAudio.Install(gameObject);
+            movementAudio = PlayerMovementAudio.Attach(Controller);
             Camera.clearFlags = CameraClearFlags.SolidColor;
             Camera.backgroundColor = steel.color;
             FirstPersonMotor.Configure(Controller, Camera);
@@ -211,11 +216,18 @@ namespace ShadeLink.Tutorial
                     Mathf.Abs(feet.z - DoorCenter) < DoorWidth * .5f)
                 {
                     climbComplete = true;
+                    TutorialAudio.Play("puzzle.complete", this, feet);
                     EnterSunlightRoom();
                 }
                 return;
             }
             if (!exitUnlocked) return;
+
+            if (!doorSoundPlayed)
+            {
+                doorSoundPlayed = true;
+                TutorialAudio.Play("door.open", this, door.position);
+            }
 
             Vector3 position = door.position;
             position.y = Mathf.MoveTowards(position.y, DoorHeight * 1.5f + .12f, dt * 3.3f);
@@ -477,12 +489,14 @@ namespace ShadeLink.Tutorial
             Controller.transform.position = PlayerStart;
             Controller.enabled = true;
             motor.Reset();
+            movementAudio?.Reset();
             controls.Reset();
             yaw = 0;
             pitch = -.23f;
             SyncView();
             messageUntil = 0;
             exitUnlocked = false;
+            doorSoundPlayed = false;
             door.position = new Vector3(Room.max.x + .1f, DoorHeight * .5f, DoorCenter);
             doorLamp.sharedMaterial = orange;
         }
@@ -493,6 +507,7 @@ namespace ShadeLink.Tutorial
         {
             paused = value;
             if (paused) landingShake?.Clear();
+            tutorialAudio?.SetGameplayRunning(!paused);
             motor.ClearInput();
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = value;
@@ -566,10 +581,15 @@ namespace ShadeLink.Tutorial
 
         void Update()
         {
-            if (PlayerControls.PausePressed) { SetPaused(!paused); return; }
+            if (PlayerControls.PausePressed)
+            {
+                TutorialAudio.Play("ui.cancel", this, Controller.transform.position);
+                SetPaused(!paused); return;
+            }
             if (paused) return;
             if (Input.GetKeyDown(KeyCode.R))
             {
+                TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                 RestartLesson();
                 return;
             }
@@ -583,6 +603,7 @@ namespace ShadeLink.Tutorial
             }
             else PlayerControls.ApplyLook(ref yaw, ref pitch, frame.Look);
             motor.Step(Controller, frame.Move, yaw, frame.JumpPressed, frame.JumpHeld, Time.deltaTime);
+            movementAudio?.Tick(motor.Velocity, motor.Grounded, frame.Move.sqrMagnitude > .0001f, Time.deltaTime);
             SyncView();
             UpdateExit(Time.deltaTime);
             if (inSunlightRoom) TickSunlight(Time.deltaTime);
@@ -590,7 +611,11 @@ namespace ShadeLink.Tutorial
 
             if (Held != null)
             {
-                if (frame.CancelPressed) { interaction.Cancel(); return; }
+                if (frame.CancelPressed)
+                {
+                    TutorialAudio.Play("ui.cancel", this, Controller.transform.position);
+                    interaction.Cancel(); return;
+                }
                 interaction.Advance(Time.deltaTime);
                 UpdateProjection();
             }
@@ -709,6 +734,7 @@ namespace ShadeLink.Tutorial
                 exitUnlocked = true;
                 doorLamp.sharedMaterial = unlockedLamp;
                 messageUntil = 0;
+                TutorialAudio.Play("puzzle.complete", this, door.position);
             }
         }
 
@@ -731,6 +757,7 @@ namespace ShadeLink.Tutorial
             die.homeScale = Vector3.one * checkpointSize;
             die.homeRotation = Quaternion.identity;
             step++;
+            TutorialAudio.Play("puzzle.complete", this, Controller.transform.position);
             RefreshLesson();
             Tell(instruction, 8);
         }
@@ -796,17 +823,32 @@ namespace ShadeLink.Tutorial
                 GUI.Box(menu, GUIContent.none);
                 GUI.Label(new Rect(menu.x + 20, menu.y + 12, menu.width - 40, 32), "튜토리얼 일시정지", style);
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 56, menu.width - 40, 48), "계속하기", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     SetPaused(false);
+                }
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 116, menu.width - 40, 48), "처음부터 다시 시작", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(1);
+                }
                 GUI.Label(new Rect(menu.x + 20, menu.y + 176, menu.width - 40, 28), "스테이지 바로가기", style);
                 float stageWidth = (menu.width - 52) / 2;
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 216, stageWidth, 64), "1스테이지\n크기 조절", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(1);
+                }
                 if (GUI.Button(new Rect(menu.x + 32 + stageWidth, menu.y + 216, stageWidth, 64), "2스테이지\n주사위 발판", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(2);
+                }
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 292, menu.width - 40, 64), "3스테이지 · 햇빛과 그늘", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(3);
+                }
             }
         }
 
