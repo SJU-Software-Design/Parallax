@@ -1,0 +1,54 @@
+PARALLAX TUTORIAL - SELECTED AUDIO
+2026-11-12
+
+B23 Contemplation - bart
+https://opengameart.org/content/contemplation
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+Contemplation by bart, licensed under CC BY 3.0.
+
+026 Door - 100 CC0 metal and wood SFX, rubberduck
+https://opengameart.org/content/100-cc0-metal-and-wood-sfx
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified library playback file.
+
+036 Puzzle complete - Interface Sounds, Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified library playback file.
+
+072 Landing and 081 footsteps - Footsteps - Essentials Series, Nox Sound Design
+https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+CC0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified assets reused from the museum integration.
+
+128 grab - Wood Grab 1, CJspellsfish
+https://freesound.org/people/CJspellsfish/sounds/669472/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration.
+
+142 cancel - UI Audio (UI SFX Set), Kenney Vleugels
+https://kenney.nl/assets/ui-audio
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified asset reused from the museum integration.
+
+145 error and 042 confirm - Interface Sounds, Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified assets reused from the museum integration.
+
+156 release - Put down item, qubodup
+https://freesound.org/people/qubodup/sounds/792930/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration.
+
+014 small die impact - Impact Sounds, Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified asset reused from the museum integration. Used for dice with side length below 2.0 m.
+
+157 large die impact - Heavy Metal Thud on Ground, 7of9Designs
+https://freesound.org/people/7of9Designs/sounds/640204/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration. Used for dice with side length 2.0 m or larger.
+
+All listed selected audio is stored under Assets/Parallax/Tutorial/Resources/TutorialAudio/Selected.
