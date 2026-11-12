@@ -25,7 +25,8 @@ namespace ShadeLink.Gallery
         float phaseTime;
         Vector3 statueStart, statueScale;
         Quaternion statueRotation;
-        AudioClip fusionClip;
+        AudioClip fusionClip, ejectBurstClip;
+        bool selectedFusionAudio, localFusionPaused;
         MaterialPropertyBlock fusionProperties;
 
         float SafeBrushSeconds => Mathf.Max(.1f, BrushSeconds);
@@ -87,6 +88,7 @@ namespace ShadeLink.Gallery
 
         public void ResetPuzzle(GalleryGame game)
         {
+            StopFusionAudio();
             if (portablePainting == null) { SetComplete(false); return; }
             if (fusionPhase != FusionPhase.Waiting)
             {
@@ -104,7 +106,6 @@ namespace ShadeLink.Gallery
             portablePainting.gameObject.SetActive(false);
             fusionGlow.gameObject.SetActive(false);
             wallBacking.gameObject.SetActive(false);
-            fusionAudio.Stop();
             SetArtworkReveal(0);
             SetComplete(false);
         }
@@ -125,8 +126,17 @@ namespace ShadeLink.Gallery
             SetGlow(0, -1);
             fusionGlow.transform.localPosition = Vector3.back * .17f;
             fusionGlow.gameObject.SetActive(true);
-            if (fusionClip == null) fusionClip = MakeFusionClip(SafeBrushSeconds);
-            fusionAudio.PlayOneShot(fusionClip, .58f);
+            selectedFusionAudio = MuseumAudio.Available;
+            if (selectedFusionAudio)
+            {
+                if (ejectBurstClip == null) ejectBurstClip = MakeEjectBurstClip(SafeBrushSeconds);
+                MuseumAudio.TryPlay("nike.shadow_fit", this, transform.position, .58f);
+            }
+            else
+            {
+                if (fusionClip == null) fusionClip = MakeFusionClip(SafeBrushSeconds);
+                fusionAudio.PlayOneShot(fusionClip, .58f);
+            }
         }
 
         public void TickFusion(float dt, GalleryGame game)
@@ -151,6 +161,8 @@ namespace ShadeLink.Gallery
                 fusionGlow.gameObject.SetActive(false);
                 fusionPhase = FusionPhase.Painting;
                 phaseTime -= AbsorbSeconds;
+                if (selectedFusionAudio)
+                    MuseumAudio.TryPlay("nike.paint", this, transform.position, .52f);
                 game.Tell("그림자가 붓결을 따라 그림으로 남습니다.", SafeBrushSeconds + 1);
             }
 
@@ -171,6 +183,12 @@ namespace ShadeLink.Gallery
                 fusionGlow.gameObject.SetActive(true);
                 fusionPhase = FusionPhase.Ejecting;
                 phaseTime -= SafeBrushSeconds;
+                if (selectedFusionAudio)
+                {
+                    // Keep the exact previously approved frame-ejection timbre;
+                    // the old inward-charge part is no longer played in this profile.
+                    fusionAudio.PlayOneShot(ejectBurstClip, .58f);
+                }
             }
 
             float flight = Mathf.Clamp01(phaseTime / EjectSeconds);
@@ -276,9 +294,48 @@ namespace ShadeLink.Gallery
             return clip;
         }
 
+        static AudioClip MakeEjectBurstClip(float brushSeconds)
+        {
+            // Extract the original generator's tail instead of recreating its
+            // noise/phase state, so the user's retained "poong" is sample-identical.
+            var original = MakeFusionClip(brushSeconds);
+            var whole = new float[original.samples];
+            original.GetData(whole, 0);
+            int start = Mathf.Clamp(Mathf.CeilToInt((AbsorbSeconds + brushSeconds) * original.frequency), 0, whole.Length - 1);
+            int count = Mathf.Min(Mathf.CeilToInt(EjectSeconds * original.frequency), whole.Length - start);
+            var samples = new float[count];
+            Array.Copy(whole, start, samples, 0, count);
+            var burst = AudioClip.Create("Nike canvas · retained frame ejection", count, 1, original.frequency, false);
+            burst.SetData(samples, 0);
+            if (Application.isPlaying) Destroy(original); else DestroyImmediate(original);
+            return burst;
+        }
+
+        void StopFusionAudio()
+        {
+            MuseumAudio.StopOwner(this);
+            if (fusionAudio != null) fusionAudio.Stop();
+            selectedFusionAudio = localFusionPaused = false;
+        }
+
+        void LateUpdate()
+        {
+            // The preserved frame burst uses the original local source. Match
+            // the selected bank's pause policy without restarting its samples.
+            if (!selectedFusionAudio || !MuseumAudio.Available || fusionAudio == null) return;
+            if (!MuseumAudio.Instance.GameplayRunning && fusionAudio.isPlaying)
+            { fusionAudio.Pause(); localFusionPaused = true; }
+            else if (MuseumAudio.Instance.GameplayRunning && localFusionPaused)
+            { fusionAudio.UnPause(); localFusionPaused = false; }
+        }
+
+        void OnDisable() { StopFusionAudio(); }
+
         void OnDestroy()
         {
+            StopFusionAudio();
             if (fusionClip != null) Destroy(fusionClip);
+            if (ejectBurstClip != null) Destroy(ejectBurstClip);
         }
     }
 }

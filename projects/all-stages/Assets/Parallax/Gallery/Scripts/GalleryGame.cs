@@ -90,6 +90,7 @@ namespace ShadeLink.Gallery
         readonly List<HoldShape> holdShapes=new List<HoldShape>();
         bool initialPlacement;
         PlayerMovementAudio movementAudio;
+        MuseumAudio museumAudio;
         readonly FirstPersonMotor motor=new FirstPersonMotor { GroundFilter=PlacementSupport.IsUsableGround };
         readonly PlayerControls controls=new PlayerControls();
         bool gameJumpHeld, pendingDrop;
@@ -97,6 +98,7 @@ namespace ShadeLink.Gallery
         void Awake()
         {
             FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
+            museumAudio=MuseumAudio.Install(gameObject,view.transform);
             var arguments=Environment.GetCommandLineArgs();
             bool mirrorTest=Array.IndexOf(arguments,"-gallery-mirror-test")>=0;
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
@@ -107,10 +109,11 @@ namespace ShadeLink.Gallery
             bool comfortTest=Array.IndexOf(arguments,"-gallery-comfort-test")>=0;
             bool shadowGameplayTest=Array.IndexOf(arguments,"-gallery-shadow-gameplay-test")>=0;
             bool portraitPerformanceTest=Array.IndexOf(arguments,"-gallery-portrait-performance-test")>=0;
+            bool selectedAudioTest=Array.IndexOf(arguments,"-gallery-selected-audio-test")>=0;
             bool cathedralRumbleTest=Array.IndexOf(arguments,"-gallery-cathedral-rumble-test")>=0;
             bool nikeDiscoveryTest=Array.IndexOf(arguments,"-gallery-nike-discovery-test")>=0;
             conceptCapture=Array.IndexOf(arguments,"-gallery-concept-capture")>=0;
-            automated=nikeDiscoveryTest||cathedralRumbleTest||portraitPerformanceTest||shadowGameplayTest||comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
+            automated=selectedAudioTest||nikeDiscoveryTest||cathedralRumbleTest||portraitPerformanceTest||shadowGameplayTest||comfortTest||cathedralTest||mechanicsTest||conceptCapture||conceptInteractionTest||placementTest||mirrorTest||museumTest||Array.IndexOf(arguments,"-gallery-perspective-test")>=0;
             Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
@@ -120,18 +123,25 @@ namespace ShadeLink.Gallery
 #endif
             player=new Player(new Vector2(controller.transform.position.x,controller.transform.position.z));
             player.feet=controller.transform.position;
-            foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
+            foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);museumAudio.RegisterProp(prop.body,prop.title);}
             foreach(var prop in props)prop.placement.ResetPlaced();
             nikeLight=GetComponent<GalleryNikeLight>();lighting.Rebuild();SyncView();
             orcusExit=GetComponentInChildren<GalleryOrcusExit>();
             shadowCourse=GetComponentInChildren<GalleryMuseumShadowCourse>();portraitGate=GetComponentInChildren<GalleryPortraitGate>();
+            if(portraitGate!=null)
+            {
+                portraitGate.AbsorptionStarted+=OnPortraitAbsorption;
+                portraitGate.ReddeningStarted+=OnPortraitReddening;
+                portraitGate.PerformanceReset+=OnPortraitReset;
+            }
             if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
             gameObject.AddComponent<GalleryHud>().game=this;
             gameObject.AddComponent<HeldPlacementDiagnosticsOverlay>().game=this;
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint==0),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
-            if(nikeDiscoveryTest)new GameObject("Nike light discovery validation").AddComponent<GalleryNikeDiscoveryValidation>().game=this;
+            if(selectedAudioTest)new GameObject("Museum selected audio validation").AddComponent<GallerySelectedAudioValidation>().game=this;
+            else if(nikeDiscoveryTest)new GameObject("Nike light discovery validation").AddComponent<GalleryNikeDiscoveryValidation>().game=this;
             else if(cathedralRumbleTest)new GameObject("Cathedral hand opening and rumble validation").AddComponent<GalleryCathedralRumbleValidation>().game=this;
             else if(portraitPerformanceTest)new GameObject("Portrait curtain performance validation").AddComponent<GalleryPortraitPerformanceValidation>().game=this;
             else if(shadowGameplayTest)new GameObject("Museum shadow gameplay validation").AddComponent<GalleryShadowGameplayValidation>().game=this;
@@ -145,16 +155,30 @@ namespace ShadeLink.Gallery
             else if(museumTest)new GameObject("Museum runtime validation").AddComponent<GalleryMuseumValidation>().game=this;
             else if(automated)gameObject.AddComponent<GalleryPerspectiveValidation>().game=this;
         }
-        void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
-        void OnDestroy() { Time.timeScale=1; }
+        void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true);museumAudio?.SetGameplayRunning(false); }
+        void OnDestroy()
+        {
+            if(portraitGate!=null)
+            {
+                portraitGate.AbsorptionStarted-=OnPortraitAbsorption;
+                portraitGate.ReddeningStarted-=OnPortraitReddening;
+                portraitGate.PerformanceReset-=OnPortraitReset;
+            }
+            Time.timeScale=1;
+        }
+        void OnPortraitAbsorption(){museumAudio?.SetPortraitSilence(true);}
+        void OnPortraitReddening(){MuseumAudio.TryPlay("face.smile",portraitGate,portraitGate.transform.position);}
+        void OnPortraitReset(){MuseumAudio.StopOwner(portraitGate);museumAudio?.SetPortraitSilence(false);}
         public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
         public void Resume()
         {
             if(Transitioning)return;
             if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
+            museumAudio?.SetCheckpoint(checkpoint);museumAudio?.SetGameplayRunning(true);
+            if(!automated)MuseumAudio.TryPlay("ui.confirm",this,view.transform.position);
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { if(Transitioning)return;ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { if(Transitioning)return;ClearControlInput();active=false;Time.timeScale=0;museumAudio?.SetGameplayRunning(false);Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
         void ClearControlInput()
         {
             motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
@@ -173,6 +197,7 @@ namespace ShadeLink.Gallery
             orcusExit?.cathedralActivation?.ResetToRest();
             PlacePlayer(SpawnPoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
             shadowCourse?.ResetProgress();portraitGate?.ResetGate();nikeLight?.ResetLight();
+            museumAudio?.ResetPlayback();
         }
         public void ResetZone()
         {
@@ -220,6 +245,7 @@ namespace ShadeLink.Gallery
                 Tell("도서관 연결을 준비할 수 없습니다. 미술관 최신 실행본을 다시 빌드해 주세요.",8);return;
             }
             active=false;won=true;Time.timeScale=1;
+            museumAudio?.SetGameplayRunning(false);
         }
         public void PlacePlayer(Vector3 point)
         {
@@ -261,7 +287,7 @@ namespace ShadeLink.Gallery
         {
             if(Transitioning)return;
             if(automated)return;
-            if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
+            if(PlayerControls.PausePressed){if(active){MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Pause();}else Resume();return;}
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
             if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
@@ -275,7 +301,7 @@ namespace ShadeLink.Gallery
             }
             else PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);
             SyncView();UpdateAim();
-            if(frame.CancelPressed)Cancel();
+            if(frame.CancelPressed){if(held!=null)MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Cancel();}
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
             if(held!=null)
             {
@@ -560,7 +586,7 @@ namespace ShadeLink.Gallery
                 if(checkpoint==1&&shadowCourse!=null&&!shadowCourse.NikeCleared)next=Mathf.Min(next,1);
                 if(portraitGate!=null&&!portraitGate.Opened)next=Mathf.Min(next,2);
             }
-            if(next>checkpoint&&safe&&player.grounded){checkpoint=next;Tell("0"+(checkpoint+1)+" 구역 저장 · R로 이 구역만 다시 시작할 수 있습니다.",6);}
+            if(next>checkpoint&&safe&&player.grounded){checkpoint=next;museumAudio?.SetCheckpoint(checkpoint);Tell("0"+(checkpoint+1)+" 구역 저장 · R로 이 구역만 다시 시작할 수 있습니다.",6);}
             if(!conceptLayout&&orcusExit==null&&checkpoint==3&&visitedUpper&&player.feet.z>53.05f&&Mathf.Abs(player.feet.x)<1.4f&&player.feet.y>4.15f&&player.feet.y<4.35f&&player.grounded&&safe)
             {won=true;Pause();}
             SyncView();
@@ -613,7 +639,7 @@ namespace ShadeLink.Gallery
         void IObjectInteractionHost<GalleryProp>.PrepareRelease() { UpdateHeldPose(); }
         bool IObjectInteractionHost<GalleryProp>.ValidatePreview(out string reason) => ValidatePlacement(held,out reason,true);
         bool IObjectInteractionHost<GalleryProp>.ValidateRelease(out string reason)
-        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;return !invalid; }
+        { invalid=!ValidPlacement(held,out invalidReason);reason=invalidReason;if(invalid)MuseumAudio.TryPlay("ui.error",this,view.transform.position);return !invalid; }
         bool IObjectInteractionHost<GalleryProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
         void IObjectInteractionHost<GalleryProp>.FinishInteraction(bool released) { invalid=false;if(released)drops++;lighting.Synchronize(); }
 

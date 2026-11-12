@@ -31,6 +31,7 @@ namespace ShadeLink.Gallery
         bool havePreviousFeet;
         bool tutorialCrossed,nikeCrossed;
         float gateOpening;
+        bool gateOpeningAudioPlayed;
 
         public static GalleryMuseumShadowCourse Install(GalleryGame owner,GalleryProp statue)
         {
@@ -190,6 +191,7 @@ namespace ShadeLink.Gallery
             if(zone<0||zone==0){TutorialCleared=false;tutorialCrossed=false;}
             if(zone<0||zone==1)
             {
+                MuseumAudio.StopOwner(this);gateOpeningAudioPlayed=false;
                 NikeCleared=false;nikeCrossed=false;NikeUnlocked=false;
                 nikeSocket?.ResetSocket();
                 nikeLight?.canvas?.ResetPuzzle(game);
@@ -258,6 +260,7 @@ namespace ShadeLink.Gallery
             else if(!NikeUnlocked&&nikeLight!=null&&nikeLight.SolutionReady)
             {
                 NikeUnlocked=true;
+                MuseumAudio.TryPlay("nike.shadow_fit",this,NikeGatePosition,.58f);
                 canvas?.SetComplete(true);
                 nikeLight.ResetLight();
                 game.Tell(nikeLight.canvas!=null?"그림이 완성됐어요. 발자국을 따라 그늘로 걸어가세요.":
@@ -266,8 +269,18 @@ namespace ShadeLink.Gallery
             float next=gateOpening;
             if(NikeUnlocked)next=Mathf.MoveTowards(next,1,Mathf.Max(0,dt)/.8f);
             else if(CanCloseGate())next=Mathf.MoveTowards(next,0,Mathf.Max(0,dt)/.8f);
-            if(!Mathf.Approximately(next,gateOpening)){gateOpening=next;ApplyGatePose();}
+            if(!Mathf.Approximately(next,gateOpening))
+            {
+                if(next>gateOpening&&!gateOpeningAudioPlayed)
+                {
+                    gateOpeningAudioPlayed=true;
+                    MuseumAudio.TryPlay("nike.door_open",this,NikeGatePosition+Vector3.up*1.8f,.58f);
+                }
+                gateOpening=next;ApplyGatePose();
+            }
         }
+
+        void OnDisable(){MuseumAudio.StopOwner(this);gateOpeningAudioPlayed=false;}
 
         public void Tick(float dt)
         {

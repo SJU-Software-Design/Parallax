@@ -137,8 +137,11 @@ namespace ShadeLink.Gallery
                 docking = null;
                 foreach (var half in splitPainting) half.SetActive(true);
                 splitFlash.gameObject.SetActive(true);
-                if (latchClip == null) latchClip = MakeLatchClip();
-                latchAudio.PlayOneShot(latchClip, .64f);
+                if (!MuseumAudio.TryPlay("nike.unlock", this, Center, .48f) && !MuseumAudio.Available)
+                {
+                    if (latchClip == null) latchClip = MakeLatchClip();
+                    latchAudio.PlayOneShot(latchClip, .64f);
+                }
                 seated = true;
             }
             float remaining = 1 - Mathf.Clamp01((time - SeatSeconds) / SplitSeconds);
@@ -157,6 +160,7 @@ namespace ShadeLink.Gallery
 
         public void ResetSocket()
         {
+            MuseumAudio.StopOwner(this);
             docking = null;
             seated = false;
             time = 0;
@@ -223,7 +227,14 @@ namespace ShadeLink.Gallery
 
         void OnDestroy()
         {
+            MuseumAudio.StopOwner(this);
             if (latchClip != null) Destroy(latchClip);
+        }
+
+        void OnDisable()
+        {
+            MuseumAudio.StopOwner(this);
+            if (latchAudio != null) latchAudio.Stop();
         }
     }
 }

@@ -63,7 +63,7 @@ namespace ShadeLink
             if (ccdRemaining <= 0 && !body.isKinematic) previousDynamicMode = body.collisionDetectionMode;
             CancelPendingRelease();
             HeldCollisionState.Attach(body).Begin();
-            PlayCue(1.18f, .75f);
+            if (!MuseumAudio.TryPlayPropGrab(body)) PlayCue(1.18f, .75f);
         }
 
         public void Release()
@@ -73,12 +73,14 @@ namespace ShadeLink
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
             body.WakeUp(); ccdRemaining = 2f;
-            PlayCue(.9f, 1f);
+            if (!MuseumAudio.TryPlayPropRelease(body)) PlayCue(.9f, 1f);
         }
 
         public void CancelPendingRelease()
         {
             ccdRemaining = 0; impactCooldown = 0;
+            // Museum one-shots belong to MuseumAudio, so a re-grab only
+            // stops this component's legacy fallback, never an impact tail.
             if (source != null && Application.isPlaying) source.Stop();
         }
 
@@ -129,7 +131,8 @@ namespace ShadeLink
         {
             if (body == null || body.isKinematic || relativeSpeed < .25f || impactCooldown > 0) return false;
             impactCooldown = .1f;
-            PlayCue(.8f, Mathf.Clamp(relativeSpeed * .12f, .4f, 1.25f));
+            if (!MuseumAudio.TryPlayPropImpact(body, relativeSpeed))
+                PlayCue(.8f, Mathf.Clamp(relativeSpeed * .12f, .4f, 1.25f));
             return true;
         }
         void OnCollisionEnter(Collision collision) { PlayImpact(collision.relativeVelocity.magnitude); }
