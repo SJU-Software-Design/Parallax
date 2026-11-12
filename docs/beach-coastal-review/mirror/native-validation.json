@@ -1,0 +1,132 @@
+{
+    "passed": true,
+    "sceneUnchanged": true,
+    "scope": "Saved Beach scene in real PlayMode and native Physics. Entrance visibility, receiver geometry, prepared closed/open gate collision, actual reflected-light charging and downstream layout regression. Images are explicit camera renders; IMGUI readability and an unassisted full-stage playthrough are outside this check.",
+    "scene": "Assets/Parallax/Beach/Scenes/Beach.unity",
+    "unity": "6000.3.24f1",
+    "gpu": "Apple M4 Pro",
+    "failure": "",
+    "sceneHashBefore": "d9b3b55d812075a8a8e75af63c676aa18b780d26b8fdbe6b38782779e02c8865",
+    "sceneHashAfter": "d9b3b55d812075a8a8e75af63c676aa18b780d26b8fdbe6b38782779e02c8865",
+    "checks": [
+        {
+            "name": "Start shelter and original mirror interaction",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "11 essential props including two castle fragments and one movable castle parasol; actual start shade; original camera-ray mirror pickup and cancel passed."
+            ]
+        },
+        {
+            "name": "Spawn goal visibility and three camera views",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Castle exit viewport=(0.54, 0.60, 90.70) clear=True firstHit=PARALLAX / 마지막 해변/04 · 정면 성벽 복구/정상 탑 받침",
+                "Beach goal flag viewport=(0.55, 0.64, 91.89) clear=True firstHit=none"
+            ]
+        },
+        {
+            "name": "Readable receivers and closed/open gate collision",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Closed-gate controller fixture x=0, first jump frame=0, firstYaw=0, presses=4, maxY=1.450, maxZ=23.260, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=0, first jump frame=24, firstYaw=0, presses=4, maxY=1.450, maxZ=23.260, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=0, first jump frame=48, firstYaw=0, presses=4, maxY=1.450, maxZ=23.260, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-4, first jump frame=0, firstYaw=0, presses=4, maxY=1.493, maxZ=23.382, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-4, first jump frame=24, firstYaw=0, presses=4, maxY=1.482, maxZ=23.375, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-4, first jump frame=48, firstYaw=0, presses=4, maxY=1.493, maxZ=23.383, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=4, first jump frame=0, firstYaw=0, presses=4, maxY=1.493, maxZ=23.382, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=4, first jump frame=24, firstYaw=0, presses=4, maxY=1.482, maxZ=23.375, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=4, first jump frame=48, firstYaw=0, presses=4, maxY=1.493, maxZ=23.383, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-8, first jump frame=0, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-8, first jump frame=24, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-8, first jump frame=48, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=8, first jump frame=0, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=8, first jump frame=24, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=8, first jump frame=48, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-12, first jump frame=0, firstYaw=0, presses=4, maxY=1.493, maxZ=23.382, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-12, first jump frame=24, firstYaw=0, presses=4, maxY=1.482, maxZ=23.375, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-12, first jump frame=48, firstYaw=0, presses=4, maxY=1.493, maxZ=23.383, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=12, first jump frame=0, firstYaw=0, presses=4, maxY=1.493, maxZ=23.382, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=12, first jump frame=24, firstYaw=0, presses=4, maxY=1.482, maxZ=23.375, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=12, first jump frame=48, firstYaw=0, presses=4, maxY=1.493, maxZ=23.383, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=0, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=0, firstYaw=-0.35, presses=4, maxY=1.687, maxZ=23.320, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=24, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=24, firstYaw=-0.35, presses=4, maxY=1.690, maxZ=23.323, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=48, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=-13.4, first jump frame=48, firstYaw=-0.35, presses=4, maxY=1.657, maxZ=23.321, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=0, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=0, firstYaw=0.35, presses=4, maxY=1.687, maxZ=23.320, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=24, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=24, firstYaw=0.35, presses=4, maxY=1.690, maxZ=23.325, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=48, firstYaw=0, presses=4, maxY=1.450, maxZ=23.290, mantle=False, fellOutside=False; remained on entrance side.",
+                "Closed-gate controller fixture x=13.4, first jump frame=48, firstYaw=0.35, presses=4, maxY=1.657, maxZ=23.323, mantle=False, fellOutside=False; remained on entrance side.",
+                "Prepared closed/open collision fixture; opening was driven through BeachLightGate.Tick, not a transform write."
+            ]
+        },
+        {
+            "name": "Real sensor hits, held/misaligned rejection and charge timing",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Existing enlarged-mirror fixture: width=3.500m, actual hits=2, LitSensors=2, unlock after 49 ticks.",
+                "Both-hit mirror below former 2.35m threshold: width=2.100m, actual hits=2, LitSensors=2, unlock after 49 ticks."
+            ]
+        },
+        {
+            "name": "Water channels, checkpoints and castle restoration layout",
+            "failure": "",
+            "passed": true,
+            "details": [
+                "Four checkpoints, calm first crossing, full-width boat gap and six essential bridge/harbor prop homes preserved; separate lower/upper miniatures, movable upper parasol, compact front refuge and fixed castle art transform/exit support verified."
+            ]
+        }
+    ],
+    "visibility": [
+        {
+            "target": "Castle exit",
+            "occluder": "PARALLAX / 마지막 해변/04 · 정면 성벽 복구/정상 탑 받침",
+            "position": {
+                "x": 0.0,
+                "y": 6.699999809265137,
+                "z": 95.4000015258789
+            },
+            "viewport": {
+                "x": 0.5354288816452026,
+                "y": 0.5977271199226379,
+                "z": 90.69810485839844
+            },
+            "inViewport": true,
+            "clear": true,
+            "targetSurface": true,
+            "occluderDistance": 91.3385009765625
+        },
+        {
+            "target": "Beach goal flag",
+            "occluder": "none",
+            "position": {
+                "x": 3.3499999046325685,
+                "y": 11.800000190734864,
+                "z": 97.0
+            },
+            "viewport": {
+                "x": 0.5544965863227844,
+                "y": 0.6369650959968567,
+                "z": 91.88542175292969
+            },
+            "inViewport": true,
+            "clear": true,
+            "targetSurface": false,
+            "occluderDistance": 0.0
+        }
+    ],
+    "images": [
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/entrance/Spawn.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/entrance/Overview.png",
+        "/Users/seob/.codex/visualizations/2026/10/31/01a191b4-3eb0-7731-bef6-3c278c12a5de/beach-coastal-development-2026-11-10/verification/final/entrance/SensorPuzzle.png"
+    ],
+    "errors": []
+}
