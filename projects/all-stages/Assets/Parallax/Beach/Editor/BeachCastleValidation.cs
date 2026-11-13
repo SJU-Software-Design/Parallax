@@ -79,7 +79,7 @@ namespace ShadeLink.Editor
                 {
                     started=true;output=SessionState.GetString(Key+"Output","");
                     report=new Report{scene=ScenePath,unity=Application.unityVersion,gpu=SystemInfo.graphicsDeviceName,sceneHashBefore=SessionState.GetString(Key+"Hash",""),
-                        scope="Saved Beach scene in real GPU PlayMode with native controller, Script physics, release-CCD clock and actual mesh shadows. Earlier stages and a local starting landing are declared fixtures. The canonical continuous solve uses actual home-camera pickup, perspective resizing and native release for both separate stairs and the movable parasol, without held/player transform or size fixtures after its start. Practical traversal variants declare physical prop pose fixtures, release and settle them natively, then use actual motor inputs and legal jumps. Isolated summit-region/contact-rejection probes explicitly declare their physical-source and standing setup fixtures. No route proof flags, Ready state, safety or heat values are assigned. Flat-deck, real shade, missing/incorrect stairs, checkpoint recovery and reset remain separately checked. Camera renders omit IMGUI."};
+                        scope="Saved Beach scene in real GPU PlayMode with native controller, Script physics, release-CCD clock and actual mesh shadows. Earlier stages and a local starting landing are declared fixtures. The canonical continuous solve uses actual home-camera pickup, perspective resizing and native release for both separate stairs and the movable parasol, without held/player transform or size fixtures after its start. Practical traversal variants declare physical prop pose fixtures, release and settle them natively, then use actual motor inputs and legal jumps. Isolated summit-region/contact-rejection probes explicitly declare their physical-source and standing setup fixtures. The isolated upper-stair regrab check declares completed upper restoration before the victory menu; traversal checks never assign route proof flags, Ready state, safety or heat values. Flat-deck, real shade, missing/incorrect stairs, checkpoint recovery and reset remain separately checked. Camera renders omit IMGUI."};
                     report.errors.AddRange(bootErrors);SessionState.SetString(Key+"Phase","running");sequence=Sequence();
                 }
                 if(!sequence.MoveNext())Finish(null);
@@ -101,6 +101,18 @@ namespace ShadeLink.Editor
             bool practical=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-practical-only")>=0;
             bool variants=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-variants-only")>=0;
             bool summit=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-summit-only")>=0;
+            bool pickup=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-pickup-only")>=0;
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-entrance-only")>=0)
+            {
+                BeginCheck("Fixed castle canopy keeps its shadow and clears the full jump headroom");yield return null;yield return null;RunCheck(CheckEntranceCanopy);yield return null;yield break;
+            }
+            if(pickup||(!quick&&!practical&&!variants&&!summit))
+            {
+                BeginCheck("Both original stair sources remain grabbable");yield return null;yield return null;RunCheck(CheckSourcePickup);yield return null;
+                BeginCheck("Restored lower stair can be regrabbed and cancellation restores its checkpoint");yield return null;yield return null;RunCheck(CheckLowerRegrab);yield return null;
+                BeginCheck("Upper stair regrab preserves lower progress and cancellation restores completion");yield return null;yield return null;RunCheck(CheckUpperRegrab);yield return null;
+                if(pickup)yield break;
+            }
             if(practical||variants||summit)
             {
                 if(practical||variants){BeginCheck("Native shorter, offset and rotated released stair placements reach the summit");yield return null;yield return null;RunCheck(CheckPracticalStairs);yield return null;}
@@ -108,7 +120,7 @@ namespace ShadeLink.Editor
                 if(practical){BeginCheck("Bare summit, held source and home-only or kinematic contact cannot grant completion");yield return null;yield return null;RunCheck(CheckContactEligibility);yield return null;}
                 yield break;
             }
-            if(!quick){BeginCheck("Native front approach reaches the fixed lower parasol landing");yield return null;yield return null;RunCheck(CheckApproach);yield return null;}
+            if(!quick){BeginCheck("Native front approach retains shade and clears fixed-canopy jump headroom");yield return null;yield return null;RunCheck(CheckEntranceCanopy);yield return null;}
             BeginCheck("Continuous native first stair, movable parasol, separate upper stair and summit victory");yield return null;yield return null;RunCheck(CheckNativeSolve);yield return null;
             if(quick)yield break;
             BeginCheck("Each missing front stair physically blocks native jump access");yield return null;yield return null;RunCheck(CheckMissingStairs);yield return null;
@@ -228,6 +240,43 @@ namespace ShadeLink.Editor
             Require(game.aimed==prop,label+" camera selected "+(game.aimed==null?"none":game.aimed.title));
             game.Interact();Require(game.held==prop,label+" actual pickup failed.");Snapshot(label);
         }
+        static void CheckSourcePickup()
+        {
+            foreach(bool upper in new[]{false,true})
+            {
+                game.PlacePlayer(upper?Mid:Start);Idle(2);
+                GrabActual(upper?route.UpperFragment:route.LowerFragment,upper?"Original upper source":"Original lower source");
+                game.Cancel(true);
+                Require(!route.FirstRestored&&!route.SecondRestored,"Picking an untouched source granted completion.");
+            }
+        }
+        static void CheckLowerRegrab()
+        {
+            FixtureFirstLanding();game.PlacePlayer(Start);Idle(2);
+            var position=route.LowerFragment.transform.position;
+            GrabActual(route.LowerFragment,"Restored lower stair");
+            Require(!route.FirstRestored&&!route.SecondRestored&&!route.AtMidpoint&&!game.castleRest,
+                "Removing the lower stair retained stale restoration/checkpoint state.");
+            game.Cancel(true);
+            Require(route.FirstRestored&&route.AtMidpoint&&game.castleRest&&route.LowerFragment.body.isKinematic&&
+                Vector3.Distance(position,route.LowerFragment.transform.position)<.001f,
+                "Cancelling lower stair pickup did not restore its installed pose and checkpoint.");
+            GrabActual(route.LowerFragment,"Repeated restored lower stair pickup");game.Cancel(true);
+        }
+        static void CheckUpperRegrab()
+        {
+            FixtureFirstLanding();game.PlacePlayer(Mid);Idle(2);
+            // Isolate the completed-piece interaction before the whole-stage victory menu.
+            route.SecondRestored=true;route.UpperFragment.body.isKinematic=true;
+            var position=route.UpperFragment.transform.position;
+            GrabActual(route.UpperFragment,"Restored upper stair");
+            Require(route.FirstRestored&&route.AtMidpoint&&game.castleRest&&!route.SecondRestored,
+                "Upper stair pickup either retained its completion or discarded the lower checkpoint.");
+            game.Cancel(true);
+            Require(route.FirstRestored&&route.SecondRestored&&route.AtMidpoint&&game.castleRest&&
+                route.UpperFragment.body.isKinematic&&Vector3.Distance(position,route.UpperFragment.transform.position)<.001f,
+                "Cancelling upper stair pickup did not restore its original pose and restoration state.");
+        }
         static void RotateForward(){game.RotateHeld(Vector3.SignedAngle(fragment.transform.forward,Vector3.forward,Vector3.up),0);Idle(2);}
         static void CheckApproach()
         {
@@ -236,6 +285,29 @@ namespace ShadeLink.Editor
             foreach(var point in route.ApproachRoute.Skip(1)){Detail("Native approach segment from="+game.player.feet+" target="+point+" safe="+game.safe+" exposure="+game.exposure);Travel(point);}
             Travel(Start);Require(game.player.grounded&&game.safe,"Front lower parasol landing is not actually shaded and grounded.");
             Capture("FrontCastleApproachPlayerEye",game.view.transform.position,LowerPose);Snapshot("Actual front approach");
+        }
+        static void CheckEntranceCanopy()
+        {
+            CheckApproach();
+            var filter=route.FixedParasol.GetComponent<MeshFilter>();
+            var original=AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Parallax/Beach/Generated/Art_Umbrella.asset");
+            var cloth=AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Parallax/Beach/Generated/Art_Umbrella_Canopy.asset");
+            var before=original.vertices;var after=filter.sharedMesh.vertices;
+            foreach(int i in cloth.triangles.Distinct())
+            {
+                var delta=filter.transform.TransformPoint(after[i])-(new Vector3(2.4f,1.1f,89.05f)+before[i]*2.4f);
+                var projected=delta-Beach.BeachLighting.ToSun*(delta.y/Beach.BeachLighting.ToSun.y);
+                Require(projected.magnitude<.001f,"The fixed canopy moved its original sun shadow.");
+            }
+            Require(Mathf.Abs(filter.GetComponent<Renderer>().bounds.min.y-1.1f)<.01f,"The raised canopy left its mast floating above the landing.");
+            float radius=game.controller.radius,height=game.controller.height+FirstPersonMotor.JumpHeight+FirstPersonMotor.AdditionalJumpHeight;
+            foreach(float x in new[]{-.8f,0,.8f})for(int step=0;step<=12;step++)
+            {
+                float t=step/12f;var feet=new Vector3(x,1.1f+2.34f*t,89.5f+2*t);
+                var overlaps=Physics.OverlapCapsule(feet+Vector3.up*radius,feet+Vector3.up*(height-radius),radius+.05f,Beach.BeachWorld.PhysicalMask,QueryTriggerInteraction.Ignore);
+                Require(!overlaps.Any(c=>c.transform==route.FixedParasol||c.transform.IsChildOf(route.FixedParasol)),"The entrance canopy blocks jump headroom above stair feet="+feet);
+            }
+            Detail("Actual cloth shadow projection retained within 1 mm; grounded mast; central and side lanes clear the controller plus full held-jump height.");
         }
         static void CheckNativeSolve()
         {
@@ -601,9 +673,11 @@ namespace ShadeLink.Editor
             try
             {
                 report.sceneHashAfter=Hash(SceneFile());report.sceneUnchanged=report.sceneHashBefore==report.sceneHashAfter;
-                int expected=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-solve-only")>=0?1:
+                int expected=Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-entrance-only")>=0?1:
+                    Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-pickup-only")>=0?3:
+                    Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-solve-only")>=0?1:
                     Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-practical-only")>=0?3:
-                    Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-variants-only")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-summit-only")>=0?1:10;
+                    Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-variants-only")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"-castle-summit-only")>=0?1:13;
                 report.passed=failure==null&&report.checks.Count==expected&&report.checks.All(c=>c.passed)&&report.errors.Count==0&&report.sceneUnchanged;
                 if(!outputWritable&&!SessionState.GetBool(Key+"Writable",false))throw new InvalidOperationException("Fresh validation output was not established.");
                 Directory.CreateDirectory(output);File.WriteAllText(Path.Combine(output,"castle-results.json"),JsonUtility.ToJson(report,true));

@@ -1,0 +1,12 @@
+DEMO: Low Poly Flower Pack 1.0 — Emilulz
+https://assetstore.unity.com/packages/3d/vegetation/flowers/demo-low-poly-flower-pack-325074
+Five original models and the demo atlas provide daisy, hyacinth, dandelion,
+red rose and black rose. The existing six beds receive 452 upright flowers.
+Decorative flowers have no physical colliders and do not create safety shadows.
+No third-party scripts or demo scenes are imported.
+
+Acquired 2026-11-09. Standard Unity Asset Store EULA:
+https://unity.com/legal/as-terms
+Original asset hashes and source paths are recorded in the imported package's
+source.json. Source asset bytes are retained; Unity import settings and generated
+rendering assets are adapted for Built-in rendering.

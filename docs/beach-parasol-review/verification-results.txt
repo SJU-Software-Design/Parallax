@@ -1,0 +1,8 @@
+ART_PR_CAPTURE_OK parasol before
+ART_PR_PLAY_OK parasol props=11 water=4 checkpoints=4 shaders=OK
+ART_PR_CAPTURE_OK parasol after
+ART_PR_REGENERATE_OK parasol
+Saved scene reloaded in a fresh Unity Editor:
+ART_PR_PLAY_OK parasol props=11 water=4 checkpoints=4 shaders=OK
+ART_PR_CAPTURE_OK parasol after
+ART_PR_REGENERATE_OK parasol

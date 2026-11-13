@@ -21,7 +21,7 @@ namespace ShadeLink.Beach
         public void Remember()
         {
             homePosition = transform.position; homeRotation = transform.rotation; homeScale = transform.localScale;
-            parts = GetComponentsInChildren<BoxCollider>(); renderers = GetComponentsInChildren<Renderer>();
+            parts = Array.FindAll(GetComponentsInChildren<BoxCollider>(),part=>part.enabled&&!part.isTrigger); renderers = GetComponentsInChildren<Renderer>();
         }
         public void Restore()
         {
@@ -44,7 +44,7 @@ namespace ShadeLink.Beach
             bool createdBody = body == null;
             if (createdBody) body = gameObject.AddComponent<Rigidbody>();
             if (parts == null) parts = GetComponentsInChildren<BoxCollider>();
-            parts = Array.FindAll(parts, part => part != null && part.GetComponentInParent<Rigidbody>(true) == body);
+            parts = Array.FindAll(parts, part => part != null && !part.isTrigger && part.GetComponentInParent<Rigidbody>(true) == body);
             if (renderers == null) renderers = GetComponentsInChildren<Renderer>();
             // Capture original CCD and mass before the temporary home/held modes.
             var physics = PropReleasePhysics.Attach(body);

@@ -37,6 +37,24 @@ namespace ShadeLink.Beach
                 if(polygon.Count<3)yield break;
             }
         }
+        static void FitRoundFoundation(Mesh source,Vector3[] vertices,Vector3[] normals)
+        {
+            const float height=.120029f,bottomRadius=1,topRadius=8.3f/9;
+            // The imported mound shares a mesh with the towers; only its three circular rings move.
+            foreach(int index in new HashSet<int>(source.GetTriangles(0)))
+            {
+                var point=vertices[index];float radius=new Vector2(point.x,point.z).magnitude;
+                bool ring=(Mathf.Abs(point.y)<.00001f&&Mathf.Abs(radius-.95f)<.0002f)||
+                    (Mathf.Abs(point.y-.059957f)<.00001f&&Mathf.Abs(radius-.9f)<.0002f)||
+                    (Mathf.Abs(point.y-height)<.00001f&&Mathf.Abs(radius-.75f)<.0002f);
+                if(!ring)continue;
+                float scale=Mathf.Lerp(bottomRadius,topRadius,point.y/height)/radius;
+                vertices[index]=new Vector3(point.x*scale,point.y,point.z*scale);
+                var horizontal=new Vector3(normals[index].x,0,normals[index].z);
+                if(horizontal.sqrMagnitude>.001f)
+                    normals[index]=(horizontal.normalized+Vector3.up*((bottomRadius-topRadius)/height)).normalized;
+            }
+        }
         public static void Apply(Transform castle)
         {
             var worldCuts=new[]{new Bounds(new Vector3(0,2.605f,91.425f),new Vector3(2.8f,3.09f,1.75f)),
@@ -44,6 +62,7 @@ namespace ShadeLink.Beach
             foreach(var filter in castle.GetComponentsInChildren<MeshFilter>())
             {
                 var original=filter.sharedMesh;var vertices=original.vertices;var normals=original.normals;
+                FitRoundFoundation(original,vertices,normals);
                 var cuts=new List<Bounds>();foreach(var cut in worldCuts)
                 {Vector3 lo=filter.transform.InverseTransformPoint(cut.min),hi=filter.transform.InverseTransformPoint(cut.max);cuts.Add(new Bounds((lo+hi)*.5f,hi-lo));}
                 var points=new List<Vector3>();var smooth=new List<Vector3>();var submeshes=new List<int[]>();

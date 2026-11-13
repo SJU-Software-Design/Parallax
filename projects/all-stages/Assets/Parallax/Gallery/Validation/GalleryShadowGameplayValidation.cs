@@ -49,7 +49,7 @@ namespace ShadeLink.Gallery
         {
             public bool passed, initialSevenTools, homeStatueRejected, closedDoorSolid, heldStatueRejected, unsettledStatueRejected;
             public bool bronzeInputReleased, bronzePhysicallySettled, bronzeCourseWalk;
-            public bool statueInputReleased, statuePhysicallySettled, fixedLightStillIlluminates, originalScanShadowMesh, physicalDoorOpened, nikeCourseWalk;
+            public bool statueInputReleased, statuePhysicallySettled, fixedLightStillIlluminates, optimizedNikeShadowMesh, physicalDoorOpened, nikeCourseWalk;
             public bool shadeOnlyRejected, wrongKeySizeRejected, keyDocked, keyReset;
             public bool brushStarted, partialBrushReveal, completedBrushReveal, drawingKeepsDoorClosed;
             public bool frameUnavailableWhileDrawing, paintingTextureRetained, brushReset;
@@ -104,7 +104,7 @@ namespace ShadeLink.Gallery
             report.passed = report.failure == null && errors.Count == 0 && report.initialSevenTools &&
                 report.homeStatueRejected && report.closedDoorSolid && report.heldStatueRejected && report.unsettledStatueRejected &&
                 report.bronzeInputReleased && report.bronzePhysicallySettled && report.bronzeCourseWalk &&
-                report.statueInputReleased && report.statuePhysicallySettled && report.fixedLightStillIlluminates && report.originalScanShadowMesh &&
+                report.statueInputReleased && report.statuePhysicallySettled && report.fixedLightStillIlluminates && report.optimizedNikeShadowMesh &&
                 report.shadeOnlyRejected && report.wrongKeySizeRejected && report.keyDocked && report.physicalDoorOpened &&
                 report.nikeCourseWalk && report.keyReset && report.physicsRestored && report.brushStarted &&
                 report.partialBrushReveal && report.completedBrushReveal && report.drawingKeepsDoorClosed &&
@@ -202,12 +202,12 @@ namespace ShadeLink.Gallery
                 Quaternion.Angle(sourceRotation, emitter.rotation) < .01f, "The spotlight moved while carrying Nike");
             game.nikeLight.SyncPose();
             report.shadeReadiness = game.nikeLight.ShadeReadiness;
-            Mesh original = Resources.Load<Mesh>("MuseumScans/NikeMesh");
-            Require(Array.Exists(course.statue.GetComponentsInChildren<MeshFilter>(), filter => filter.sharedMesh == original),
-                "The movable statue must keep the original Nike render mesh");
+            Mesh displayMesh = Resources.Load<Mesh>("MuseumScans/NikeDisplay50k");
+            Require(displayMesh != null && Array.Exists(course.statue.GetComponentsInChildren<MeshFilter>(), filter => filter.sharedMesh == displayMesh),
+                "The movable statue must use the optimized Nike render mesh");
             Require(canvas.Fusing && report.shadeReadiness >= canvas.RequiredMatch,
                 "A settled, contained shadow must start the fusion");
-            report.originalScanShadowMesh = true;
+            report.optimizedNikeShadowMesh = true;
             var suppliedPainting = Resources.Load<Texture2D>("MuseumArt/NikeShadowStudy");
             Require(suppliedPainting != null && canvas.painting.sharedMaterial.mainTexture == suppliedPainting,
                 "The brush reveal must use the teammate's supplied Nike painting texture");

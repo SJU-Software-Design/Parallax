@@ -49,10 +49,12 @@ namespace ShadeLink.Beach
         readonly PlayerControls controls=new PlayerControls();
         bool gameJumpHeld, pendingDrop,assistedDrop;
         BeachProp assistedPiece;
+        Action restoreCastlePickup;
 
         void Awake()
         {
             FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
+            gameObject.AddComponent<BeachWaterAppearance>();
             var arguments=Environment.GetCommandLineArgs();
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
             bool waterTest=Array.IndexOf(arguments,"-beach-water-test")>=0;
@@ -534,8 +536,6 @@ namespace ShadeLink.Beach
         }
         bool IObjectInteractionHost<BeachProp>.TrySpecialInteraction()
         {
-            if(castleRoute!=null&&castleRoute.IsFixed(aimed))
-            {Tell("복구한 성벽입니다 · 연결한 자리에 고정되어 있습니다.");return true;}
             if(aimedMirror!=null)
             {
                 adjustingMirror=!adjustingMirror;
@@ -549,7 +549,7 @@ namespace ShadeLink.Beach
         {
             assistedDrop=false;assistedPiece=null;
             invalid=false;CachePlacementSamples();initialPlacement=true;PlacementBlocked=false;held.BeginHold();
-            if(castleRoute!=null)castleRoute.PiecePickedUp(held);
+            restoreCastlePickup=castleRoute?.PiecePickedUp(held);
             UpdateHeldPose();
             grabs++;Tell("WASD로 들고 이동 · 시선으로 크기 조절 · 클릭으로 놓기",6);
         }
@@ -564,6 +564,7 @@ namespace ShadeLink.Beach
         bool IObjectInteractionHost<BeachProp>.IntersectsPlayer(BoxCollider part) => IntersectsPlayer(part);
         void IObjectInteractionHost<BeachProp>.FinishInteraction(bool released)
         {
+            if(!released)restoreCastlePickup?.Invoke();restoreCastlePickup=null;
             invalid=false;if(released)drops++;
             if(released&&assistedDrop&&shadowHarbor!=null)
             {

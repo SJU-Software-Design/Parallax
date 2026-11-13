@@ -1,0 +1,4 @@
+# Preserve original package data byte-for-byte.
+Resources/ParallaxSimpleWater/*.tif binary
+Resources/ParallaxSimpleWater/*.mesh binary
+WaterShader.shadergraph.txt binary

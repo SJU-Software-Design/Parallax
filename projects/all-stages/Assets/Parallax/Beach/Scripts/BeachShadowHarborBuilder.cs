@@ -54,6 +54,23 @@ namespace ShadeLink.Beach
             var mesh=ExtrudedProfile(name+" mesh",profile,height,.075f);item.AddComponent<MeshFilter>().sharedMesh=mesh;
             var renderer=item.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.TwoSided;
             var bounds=mesh.bounds;var collider=item.AddComponent<BoxCollider>();collider.center=bounds.center;collider.size=bounds.size;
+            if(profile==Mast)return;
+            // Keep the full plate only as the drop-assistance reference, not a solid rectangle.
+            collider.isTrigger=true;
+            const int slices=24;float step=bounds.size.y/slices;
+            for(int row=0;row<slices;row++)
+            {
+                float y=bounds.min.y+(row+.5f)*step,left=float.PositiveInfinity,right=float.NegativeInfinity;
+                for(int edge=0;edge<profile.Length;edge++)
+                {
+                    var a=profile[edge]*BoardScale;var b=profile[(edge+1)%profile.Length]*BoardScale;a.y+=height;b.y+=height;
+                    if((a.y>y)==(b.y>y))continue;
+                    float x=Mathf.Lerp(a.x,b.x,(y-a.y)/(b.y-a.y));left=Mathf.Min(left,x);right=Mathf.Max(right,x);
+                }
+                if(right<=left)continue;
+                var band=new GameObject(name+" · 윤곽 충돌 "+(row+1));band.transform.SetParent(item.transform,false);
+                var solid=band.AddComponent<BoxCollider>();solid.center=new Vector3((left+right)*.5f,y,0);solid.size=new Vector3(right-left,step,.075f);
+            }
         }
         static Vector3 ShapePivot(bool canopy,float height)
         {

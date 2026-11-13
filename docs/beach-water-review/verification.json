@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-08",
+  "unity": "6000.3.24f1",
+  "platform": "macOS / Metal",
+  "prBase": "91787ed595d8bd7bc19085344a1ffa8e193ef94e",
+  "selectedWater": "B",
+  "absorption": [
+    0.55,
+    0.24,
+    0.14
+  ],
+  "scatter": [
+    0.045,
+    0.19,
+    0.21
+  ],
+  "BPreviewMeanRGBDifference": [
+    0,
+    0,
+    0
+  ],
+  "freshResults": [
+    "PLACEMENT_SUPPORT_TESTS_OK",
+    "BEACH_TEAL_B_OK",
+    "BEACH_CALM_WATER_OK",
+    "BEACH_SIMPLE_WATER_OK",
+    "BEACH_PLANK_BEFORE_OK",
+    "BEACH_PLANK_AFTER_OK",
+    "BEACH_WATER_MAC_BUILD_OK errors=0"
+  ],
+  "plankBefore": "Physical rest on both islands, Ready=false, placement ghost visible, player passes through.",
+  "plankAfter": "Same pose and water, Ready=true, original material and collision restored, native Beach player stands.",
+  "unchanged": [
+    "Beach scene bytes",
+    "Sunlight direction",
+    "BeachWater physical flow and buoyancy",
+    "Colliders: 673"
+  ],
+  "scope": "Only water integration, B styling and common box footprint support. Sand feature and local README/project settings are excluded.",
+  "screenshotProvenance": "Matched actual Play Mode camera PNGs. Sand appearance is held constant from the separate sand work. No generated or retouched imagery.",
+  "notChecked": [
+    "Full stage walkthrough",
+    "Other maps full playthrough",
+    "GPU performance profiling"
+  ],
+  "codeSha256": {
+    "projects/all-stages/Assets/Parallax/Beach/Scripts/BeachGame.cs": "40526f70b0dff8384cabc4f69407d8838c3e67762e60430c2322aacf6c929b4f",
+    "projects/all-stages/Assets/Parallax/Beach/Scripts/BeachWaterAppearance.cs": "f0660c43b0b92361d8004226d856672bbde246a3840e7f8f0d774723cbe243d1",
+    "projects/all-stages/Assets/Parallax/Beach/Resources/BeachSimpleWater.shader": "1c3b29bd51c9ee127de730c8ea68397a073069953368e83fe703586bc99fc477",
+    "projects/all-stages/Assets/Parallax/Shared/Scripts/PlacementSupport.cs": "d46959a8b41aa255ff8432f1ce12c96f1c4f85c108b1209ed405ac0116997c92",
+    "projects/all-stages/Assets/Parallax/Shared/Editor/PlacementSupportTests.cs": "ff196d9174c9de4f7141af7b5e89f053e9fc0a28db29de05090cd248a84aa9ca"
+  },
+  "imageSha256": {
+    "water-before.png": "4126615230a2db1ae0cc7cc0120cac8ff9a17b6607f5d1145e35299907074cf7",
+    "water-after.png": "397c8b9a3530149b0046190f2aaae767523cacc7c0c733c5a0333b6b6b2e386a",
+    "plank-before.png": "17a6cb56976b37e715e92e3844ae0a930a7127d0cf835ac8bdedffda096b6d92",
+    "plank-after.png": "e21a12b7eed186fb9e68d809dfcc2543ff4cbe0cee55d53dab8d44bb5bde5d35"
+  },
+  "waterBefore": "Initial pre-asset BeachWaterRefresh surface; intermediate clear-water drafts excluded."
+}

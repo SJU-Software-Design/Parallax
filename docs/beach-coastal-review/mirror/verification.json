@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-10",
+  "unity": "6000.3.24f1",
+  "branch": "codex/beach-coastal-mirror",
+  "code_head_before_evidence_commit": "fbe92da8f339165183d5835e0c958c5713287cb6",
+  "base_branch": "codex/beach-coastal-base",
+  "base_sha": "caed3560b83411ada740bebaa9eebf0100ea223c",
+  "runtime_evidence": "Reused implementation-time native Unity Play Mode validation; not rerun for documentation publication.",
+  "integration_preview_sha": "a9dbeb20d755b632b3493d58abcfc5ba9501db3a",
+  "native_checks_passed": 5,
+  "native_scene_unchanged": true,
+  "images": {
+    "before.png": "c47d045f7ce58387bf06804923feefd8d3042ba8d1b594c9ef5b84b9396de3e0",
+    "after.png": "375762c00e04698730957d205235f08a613b87823cf8da3b56d6c64675302883"
+  },
+  "image_dimensions": [
+    1600,
+    900
+  ],
+  "image_context": "Original native game camera renders. Before: pre-coastal baseline. After: six-feature integrated preview; surrounding features may also differ. No generated concept images or image edits.",
+  "publication_checks": [
+    "six source diffs passed git diff --check",
+    "PNG dimensions and original file hashes checked",
+    "integrated scene hash matches captured implementation state"
+  ],
+  "not_run": [
+    "standalone build",
+    "full unassisted walkthrough",
+    "new GPU performance measurement"
+  ]
+}

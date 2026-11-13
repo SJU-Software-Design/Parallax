@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-10",
+  "unity": "6000.3.24f1",
+  "branch": "codex/beach-coastal-workshop-board",
+  "code_head_before_evidence_commit": "c94da4e2ad0dce4090e07939ba25749be5aec166",
+  "base_branch": "codex/beach-coastal-base",
+  "base_sha": "caed3560b83411ada740bebaa9eebf0100ea223c",
+  "runtime_evidence": "Reused implementation-time native Unity Play Mode validation; not rerun for documentation publication.",
+  "integration_preview_sha": "a9dbeb20d755b632b3493d58abcfc5ba9501db3a",
+  "native_checks_passed": 7,
+  "native_scene_unchanged": true,
+  "images": {
+    "before.png": "8f6cb2ebe2cd633b5fc6dab5bccfbe8a7f7a9e894310e6de5dc243df772b43f6",
+    "after.png": "f4e795ca6c1413d88572a7822a110e83a64bcdf38a5260f9b0a2fc3aad8f76f0"
+  },
+  "image_dimensions": [
+    1600,
+    900
+  ],
+  "image_context": "Original native game camera renders. Before: pre-coastal baseline. After: six-feature integrated preview; surrounding features may also differ. No generated concept images or image edits.",
+  "publication_checks": [
+    "six source diffs passed git diff --check",
+    "PNG dimensions and original file hashes checked",
+    "integrated scene hash matches captured implementation state"
+  ],
+  "not_run": [
+    "standalone build",
+    "full unassisted walkthrough",
+    "new GPU performance measurement"
+  ]
+}

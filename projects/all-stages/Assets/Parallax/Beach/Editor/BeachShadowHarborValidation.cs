@@ -214,7 +214,7 @@ namespace ShadeLink.Editor
             {
                 Reset();var piece=harbor.Pieces[index];
                 string plateName=index==0?"선체 그림자 조각":"차양 그림자 조각";
-                var plate=piece.parts.Single(part=>part.name==plateName);
+                var plate=harbor.assistPlates[index];
                 Vector3 originalPosition=piece.transform.position,originalScale=piece.transform.localScale;
                 Quaternion originalRotation=piece.transform.rotation;
                 Require(Vector3.Distance(plate.bounds.center,piece.transform.position)<.003f,"The visible "+plateName+" centre must be the actual pickup root, not the stand foot.");
@@ -460,7 +460,8 @@ namespace ShadeLink.Editor
             bool grabbed=false;
             foreach(var part in boat.Prop.parts)
             {
-                if(!part.enabled)continue;Look(part.bounds.center);game.UpdateAim();game.Interact();
+                if(!part.enabled)continue;Look(part.bounds.center);game.UpdateAim();var aimed=game.aimed;game.Interact();
+                Detail("Boat pickup part="+part.name+" aimed="+(aimed==null?"none":aimed.title)+" notice="+game.notice);
                 if(game.held==boat.Prop){grabbed=true;break;}
             }
             Require(grabbed&&boat.Prop.placement.Held,"Materialized miniature boat must be selectable with the ordinary camera-ray interaction.");

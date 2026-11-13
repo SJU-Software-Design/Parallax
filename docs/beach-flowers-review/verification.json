@@ -1,0 +1,19 @@
+{
+  "unity": "6000.3.24f1",
+  "base": "91787ed595d8bd7bc19085344a1ffa8e193ef94e",
+  "feature": "flowers",
+  "independentPlayMode": true,
+  "props": 11,
+  "waterRegions": 4,
+  "safeCheckpoints": 4,
+  "sceneRegeneration": true,
+  "capture": [
+    1920,
+    1080
+  ],
+  "fullWalkthrough": false,
+  "performanceProfiled": false,
+  "combinedMergeWithoutConflicts": true,
+  "combinedSavedScenePlayMode": true,
+  "combinedSceneRegeneration": true
+}

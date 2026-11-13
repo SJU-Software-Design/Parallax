@@ -90,11 +90,21 @@ namespace ShadeLink.Beach
             MeshPart("Rounded navy gunwale",go.transform,edge.Mesh("Shadow boat · gunwale"),navy);
             for(int i=0;i<12;i++)
                 BeachWorld.Box("Boat deck plank gap",new Vector3(0,.126f,-.93f+i*.133f),new Vector3(1.20f,.006f,.015f),navy,go.transform,false,false);
-            boat.HullColliders=new[]{
-                Collision("Boat broad hull and deck",go.transform,new Vector3(0,-.02f,-.125f),new Vector3(1.3f,.28f,1.75f)),
-                Collision("Boat narrowing bow",go.transform,new Vector3(0,-.02f,.85f),new Vector3(.80f,.28f,.20f)),
-                Collision("Boat bow tip",go.transform,new Vector3(0,-.02f,1.02f),new Vector3(.32f,.28f,.14f))
-            };
+            var hullParts=new List<BoxCollider>();
+            // Horizontal bands follow the same narrowing loft as the visible hull.
+            const int layers=4,bowSlices=6;const float layerHeight=.28f/layers;
+            for(int layer=0;layer<layers;layer++)
+            {
+                float t=(layer+.5f)/layers,xScale=Mathf.Lerp(.78f,1,t),zScale=Mathf.Lerp(.90f,1,t),y=-.16f+(layer+.5f)*layerHeight;
+                hullParts.Add(Collision("Boat hull band "+layer,go.transform,new Vector3(0,y,-.2f*zScale),new Vector3(1.3f*xScale,layerHeight,1.6f*zScale)));
+                for(int slice=0;slice<bowSlices;slice++)
+                {
+                    float z=.6f+(slice+.5f)*.5f/bowSlices;
+                    float halfWidth=z<.9f?Mathf.Lerp(.65f,.42f,(z-.6f)/.3f):Mathf.Lerp(.42f,0,(z-.9f)/.2f);
+                    hullParts.Add(Collision("Boat bow band "+layer+" · "+slice,go.transform,new Vector3(0,y,z*zScale),new Vector3(halfWidth*2*xScale,layerHeight,.5f/bowSlices*zScale)));
+                }
+            }
+            boat.HullColliders=hullParts.ToArray();
 
             // The canopy is offset toward the actual sun. Its shadow, rather
             // than an invisible safety volume, covers the forward boarding mark.

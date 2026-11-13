@@ -51,6 +51,7 @@ namespace ShadeLink.Gallery
         }
         Vector3[] probeCenters;
         bool openingApproved;
+        bool openingAudioStarted, settleAudioPlayed;
         float assistanceTime, retryDelay;
         Vector3 assistancePosition, assistanceStartScale, assistanceTargetScale, lastAppliedScale;
         Quaternion assistanceStartRotation, assistanceTargetRotation, lastAppliedRotation;
@@ -75,7 +76,7 @@ namespace ShadeLink.Gallery
         public void Tick(float dt)
         {
             if (entrance == null || entrance.game == null || entrance.game.Transitioning)
-            { ClearRumble(); DisableEntryBarrier(); return; }
+            { CancelHandAudio(); ClearRumble(); DisableEntryBarrier(); return; }
             dt = Mathf.Clamp(dt, 0, .1f);
             if (Assisting)
             {
@@ -106,12 +107,29 @@ namespace ShadeLink.Gallery
             float target = eligible && !OpeningBlocked ? 1 : 0;
             float next = Mathf.MoveTowards(Progress, target, dt / duration);
             if (target == 1 && next >= .999f) next = 1;
-            if (target < 1) ClearRumble();
+            if (target < 1) { CancelHandAudio(); ClearRumble(); }
             else if (next > Progress)
             {
+                if (!openingAudioStarted)
+                {
+                    openingAudioStarted = true;
+                    // One lowered-pitch stone pass covers the unchanged 2.2s
+                    // animation; no hard loop seam or repeated Update trigger.
+                    float length = MuseumAudio.Duration("hands.open");
+                    float pitch = length > 0 ? Mathf.Clamp(length / Mathf.Max(.1f, duration), .5f, 1.5f) : .74f;
+                    MuseumAudio.TryPlay("hands.open", this, transform.position, .876f, pitch);
+                }
                 RumbleTime += dt;
                 Rumble01 = Mathf.SmoothStep(0, 1, Mathf.Clamp01(RumbleTime / RumbleAttackSeconds));
-                if (next >= 1) AftershockRemaining = AftershockSeconds;
+                if (next >= 1)
+                {
+                    AftershockRemaining = AftershockSeconds;
+                    if (!settleAudioPlayed)
+                    {
+                        settleAudioPlayed = true;
+                        MuseumAudio.TryPlay("hands.settle", this, transform.position, .58f);
+                    }
+                }
             }
             else if (Opened && AftershockRemaining > 0)
             {
@@ -126,6 +144,7 @@ namespace ShadeLink.Gallery
 
         public void ResetToRest()
         {
+            CancelHandAudio();
             if (Assisting) CancelAssistance(false, PoseStillOwned());
             openingApproved = false; OpeningBlocked = AssistanceBlocked = false; AssistanceReason = null;
             retryDelay = 0; SetProgress(0); RestorePreviewPolicy();
@@ -216,6 +235,7 @@ namespace ShadeLink.Gallery
 
         void BeginAssistance()
         {
+            CancelHandAudio();
             ClearRumble();
             var prop = entrance.prop; var body = prop.body;
             assistancePosition = transform.position; assistanceStartScale = transform.localScale; assistanceStartRotation = transform.rotation;
@@ -316,7 +336,13 @@ namespace ShadeLink.Gallery
             { entrance.prop.placement.PreviewUntilSettled = oldPreviewUntilSettled; ownsPreviewPolicy = false; }
         }
 
-        void OnDisable() { if (Assisting) CancelAssistance(false, true); RestorePreviewPolicy(); ClearRumble(); DisableEntryBarrier(); }
+        void CancelHandAudio()
+        {
+            if (openingAudioStarted || settleAudioPlayed) MuseumAudio.StopOwner(this);
+            openingAudioStarted = settleAudioPlayed = false;
+        }
+
+        void OnDisable() { CancelHandAudio(); if (Assisting) CancelAssistance(false, true); RestorePreviewPolicy(); ClearRumble(); DisableEntryBarrier(); }
 
         public bool CanOpenAtCurrentPlacement()
         {
