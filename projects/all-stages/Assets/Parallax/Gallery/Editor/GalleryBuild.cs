@@ -29,7 +29,7 @@ namespace ShadeLink.Editor
                 "Archive: https://zenodo.org/records/10364942\n"+
                 "License: https://creativecommons.org/licenses/by/4.0/\n"+
                 "Changes: removed scanned display support and detached artifacts; reoriented, scaled, shaded and adapted for the traversable portal in Parallax.\n\n"+
-                "Medieval Library Kit - Rinku Choudhary. The portal reuses furniture and books from the destination Library stage.\n"+
+                "Medieval Library Kit - Rinku Choudhary. Legacy Library resources are preserved; the current museum portal leads to the Beach stage.\n"+
                 "Source: https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604\n"+
                 "License: Free Standard (NoAI), as recorded for the existing Library assets. This asset is not CC BY.\n\n"+
                 "Marble Bust 01 - Rico Cilliers / Poly Haven, CC0.\nhttps://polyhaven.com/a/marble_bust_01\n\n"+
@@ -45,6 +45,44 @@ namespace ShadeLink.Editor
             {
                 string source=Path.Combine("Documentation/Gallery",name);
                 if(File.Exists(source))File.Copy(source,Path.Combine(outputDirectory,name),true);
+            }
+            // Every museum build entry point shares the exhibition and destination
+            // credits, including the source assets bundled in Resources.
+            foreach(var credit in new[]
+            {
+                new[]{"Documentation/Gallery/MuseumAudio-Credits.txt","MuseumAudio-Credits.txt"},
+                new[]{"Documentation/Gallery/MuseumBottleBalance-Credits.txt","MuseumBottleBalance-Credits.txt"},
+                new[]{"Documentation/Gallery/MuseumDikeAudio-Credits.txt","MuseumDikeAudio-Credits.txt"},
+                new[]{"Documentation/Gallery/MuseumDike-assets.md","MuseumDike-assets.md"},
+                new[]{"Documentation/Gallery/BottleBalanceKeyReward-assets.md","BottleBalanceKeyReward-assets.md"},
+                new[]{"Assets/Parallax/Gallery/ThirdParty/BottleBalanceKeyReward/CREDITS.txt","MuseumKey-CREDITS.txt"},
+                new[]{"Assets/Parallax/Gallery/Resources/MuseumBalanceArt/CREDITS.txt","MuseumBalanceArt-CREDITS.txt"},
+                new[]{"Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/CREDITS.txt","DikeStatue-CREDITS.txt"},
+                new[]{"Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/CREDITS.txt","DikeProps-CREDITS.txt"},
+                new[]{"Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeSword/CREDITS.txt","DikeSword-CREDITS.txt"},
+                new[]{"Assets/Parallax/Gallery/ThirdParty/DikePedestalP02/CREDITS.txt","DikePedestalP02-CREDITS.txt"}
+            })
+            {
+                if(!File.Exists(credit[0]))throw new FileNotFoundException("Required museum asset credits are missing.",credit[0]);
+                File.Copy(credit[0],Path.Combine(outputDirectory,credit[1]),true);
+            }
+            WriteBeachCredits(outputDirectory);
+        }
+        static void WriteBeachCredits(string outputDirectory)
+        {
+            string target=Path.Combine(outputDirectory,"Beach-Credits");
+            foreach(string folder in new[]{"Assets/ThirdParty/3DAssetsBeach","Assets/ThirdParty/LowPolyFlowerDemo",
+                "Assets/ThirdParty/PlankTexturesPBR","Assets/ThirdParty/ToonTasticBeachProps","Assets/ThirdParty/YughuesCastleSand",
+                "Assets/ThirdParty/YughuesFreeSandMaterials","Assets/ThirdParty/SimpleWaterShaderURP"})
+            {
+                if(!Directory.Exists(folder))continue;
+                foreach(string path in Directory.GetFiles(folder,"*",SearchOption.AllDirectories))
+                {
+                    string name=Path.GetFileName(path).ToLowerInvariant();
+                    if(name.EndsWith(".meta")||!(name.Contains("license")||name.Contains("credit")||name.Contains("notice")||name=="source.json"))continue;
+                    string destination=Path.Combine(target,Path.GetFileName(folder),path.Substring(folder.Length+1));
+                    Directory.CreateDirectory(Path.GetDirectoryName(destination));File.Copy(path,destination,true);
+                }
             }
         }
         static void Integrate(GalleryGame game)
@@ -162,11 +200,11 @@ namespace ShadeLink.Editor
         public static void Prepare()
         {
             GalleryCathedralImport.Ensure();
-            GalleryPortalLibraryAssets.Prepare();
+            GalleryPortalBeachAssets.Prepare();
             Directory.CreateDirectory(Generated);Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
             Scene scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
             GalleryScanCollision.Ensure();
-            GalleryGame game=GalleryConceptWorld.Build();Integrate(game);
+            GalleryGame game=GalleryConceptWorld.Build();game.bottleBalanceEnabled=true;Integrate(game);
             SaveMuseumMeshes(game);
             foreach(var m in GalleryWorld.Materials)
             {
@@ -194,19 +232,25 @@ namespace ShadeLink.Editor
                     foreach(var message in ShaderUtil.GetShaderMessages(asset))Debug.LogError(shader+" line "+message.line+": "+message.message);
                 if(asset==null||ShaderUtil.ShaderHasError(asset))throw new Exception("Concept shader invalid: "+shader);
             }
+            // The freshly generated museum, rather than the older saved scene,
+            // supplies the exact surfaces used by runtime scenery colliders.
+            GalleryBottleBalanceReadableArchitecture.Prepare(game);
+            GalleryStaticExhibitCollisionAssets.Prepare(game);
             EditorSceneManager.SaveScene(scene,ScenePath);
-            PlayerSettings.productName="Parallax - Museum Gallery v"+GalleryGame.Version;PlayerSettings.bundleVersion=GalleryGame.Version;
+            PlayerSettings.productName="Parallax - Museum Bottle and Balance v"+GalleryGame.Version;PlayerSettings.bundleVersion=GalleryGame.Version;
             PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
-            EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true),new EditorBuildSettingsScene(LibraryBuild.ScenePath,true)};
+            EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true),
+                new EditorBuildSettingsScene(GalleryPortalBeachAssets.SourceScenePath,true),
+                new EditorBuildSettingsScene(LibraryBuild.ScenePath,false)};
             AssetDatabase.SaveAssets();Debug.Log("GALLERY_PREPARE_OK casters="+game.lighting.Count);
         }
         [MenuItem("Parallax/미술관 Windows 빌드")]
         public static void Build()
         {
-            // This museum update ships the already-authored Library scene.
+            // This museum update ships the already-authored Beach scene.
             // Regenerating another stage here would overwrite its saved work.
-            if(AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath)==null)
-                throw new FileNotFoundException("The existing destination Library scene is missing.",LibraryBuild.ScenePath);
+            if(AssetDatabase.LoadAssetAtPath<SceneAsset>(GalleryPortalBeachAssets.SourceScenePath)==null)
+                throw new FileNotFoundException("The existing destination Beach scene is missing.",GalleryPortalBeachAssets.SourceScenePath);
             Prepare();
             GalleryBakedLightingBuild.Bake();
             foreach(string shader in new[]{"Parallax/GallerySurface","Parallax/MuseumSurface","Parallax/GalleryMirror","Parallax/GalleryGlass","Parallax/GalleryOrcusPortal"})
@@ -217,7 +261,7 @@ namespace ShadeLink.Editor
                     throw new Exception(shader+" has compilation errors; build stopped.");
                 }
             string output=Parallax.Editor.BuildPaths.Output("Parallax_Unity_v"+GalleryGame.Version+"_MuseumGallery/Parallax.exe");Directory.CreateDirectory(Path.GetDirectoryName(output));
-            var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath,LibraryBuild.ScenePath},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
+            var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath,GalleryPortalBeachAssets.SourceScenePath},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.None});
             Directory.CreateDirectory("Validation/Gallery");
             File.WriteAllText("Validation/Gallery/build-result.txt","Result: "+report.summary.result+"\nErrors: "+report.summary.totalErrors+"\nWarnings: "+report.summary.totalWarnings+"\nOutput: "+output+"\nUnity: "+Application.unityVersion);
             if(report.summary.result!=BuildResult.Succeeded)throw new Exception("Gallery build failed");

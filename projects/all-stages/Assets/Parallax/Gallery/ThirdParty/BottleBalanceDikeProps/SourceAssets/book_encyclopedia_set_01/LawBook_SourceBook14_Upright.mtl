@@ -1,0 +1,15 @@
+newmtl book_encyclopedia_set_01_cover
+Ka 0.05 0.05 0.05
+Kd 1 1 1
+Ks 0.05 0.05 0.05
+Ns 40
+map_Kd textures/book_encyclopedia_set_01_cover_diff_2k.jpg
+map_Bump textures/book_encyclopedia_set_01_cover_nor_gl_2k.jpg
+
+newmtl book_encyclopedia_set_01_paper
+Ka 0.05 0.05 0.05
+Kd 1 1 1
+Ks 0.05 0.05 0.05
+Ns 40
+map_Kd textures/book_encyclopedia_set_01_paper_diff_2k.jpg
+map_Bump textures/book_encyclopedia_set_01_paper_nor_gl_2k.jpg

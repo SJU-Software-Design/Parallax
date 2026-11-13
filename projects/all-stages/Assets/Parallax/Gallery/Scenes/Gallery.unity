@@ -11069,6 +11069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryGame
   conceptLayout: 1
+  bottleBalanceEnabled: 1
   exhibitionPreview: 0
   conceptCapture: 0
   controller: {fileID: 762999756}

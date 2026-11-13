@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 namespace ShadeLink.Gallery
 {
     // Migg's real Rodin scan is the exhibit. The game adds a stepped approach
-    // and a view-dependent library window inside its existing negative space.
+    // and a view-dependent coastal window inside its existing negative space.
     public static class GalleryConceptExit
     {
         const string CollectionName = "Concept museum · Rodin cathedral exit alcove";
@@ -111,9 +111,9 @@ namespace ShadeLink.Gallery
             }
             BuildApproach(root.transform, stepStone, bronze);
 
-            var portalMaterial = new Material(Shader.Find("Parallax/MuseumLibraryPortal")) { name = "Cathedral · warm library window" };
+            var portalMaterial = new Material(Shader.Find("Parallax/MuseumLibraryPortal")) { name = "Cathedral · coastal window" };
             GalleryWorld.Materials.Add(portalMaterial);
-            var membrane = Skinned(root.transform, "Two hands · live library opening", aperture, portalMaterial);
+            var membrane = Skinned(root.transform, "Two hands · live beach opening", aperture, portalMaterial);
             membrane.shadowCastingMode = ShadowCastingMode.Off; membrane.receiveShadows = false;
             var exit = root.AddComponent<GalleryOrcusExit>();
             exit.game = game; exit.prop = prop; exit.portal = membrane; exit.windEnabled = false;

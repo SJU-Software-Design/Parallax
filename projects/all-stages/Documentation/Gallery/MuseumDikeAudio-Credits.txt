@@ -1,0 +1,94 @@
+디케 전시실 선정 효과음 편집본 · 2026-11-14
+사용자 선정 승인. 선택한 12개 편집 WAV와 G01 원음 MP3를 검증한 디케 실행본에 적용했습니다. 공개 HQ MP3 preview에서 검증한 PCM16 기반 편집이며 원본 변경 없음.
+
+D02 glass jar_tap_knuckle.wav — ekfink
+https://freesound.org/people/ekfink/sounds/235496/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D02_BookInsideBottle_Tap.wav
+SHA256 b0e1452c89a93cebbbf5f4033431ae7f585a082517317565eda3c1ae2742cd47
+단일 관절 타격을 법전-유리 접촉에 사용. 매우 작은 원음에 +22dB; 실제 법전 녹음은 아님.
+
+D04 Small_Glass_Bottle_Wood_Floor.wav — tcrocker68
+https://freesound.org/people/tcrocker68/sounds/235602/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D04_BottleFloor_SmallMedium_Short.wav
+SHA256 ddff7bde250c9e636c51c5506a455c668ea36e4a0cd6c29dd26efc7ff59edf23
+초기 무음과 긴 꼬리를 제외한 첫 낙하/짧은 바운스. 작은병·중간병에 같은 파일 사용.
+
+D09 Large_GlassBottle_Fall_WoodFloor.wav — tcrocker68
+https://freesound.org/people/tcrocker68/sounds/235596/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D09_BottleFloor_Large.wav
+SHA256 c99300ab4fb21589d17a6ddce35cec4f4ec7cde1d7a5ff879a3819093f7e35d4
+앞 무음을 제외하고 큰 유리병의 첫 충돌과 바운스를 보존.
+
+D14 book hits floor.wav — buzbe20
+https://freesound.org/people/buzbe20/sounds/389757/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D14_BookFloor_Small.wav
+SHA256 73d6a99278879cb86e82c7583cc0dc6e9540b35c30eaf021a9da6204837c06eb
+원음의 두 타격 중 첫 타격만 발췌. 사용자 요청에 따라 작은 법전에 배정.
+
+D11 Book Drop - 3 — SpaceJoe
+https://freesound.org/people/SpaceJoe/sounds/484899/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D11_BookFloor_MediumLarge.wav
+SHA256 4ddd0366cc8963761cb34bfaf79901c6f893b6b6bdf323fe2aaee227e6dcdcd8
+충돌 시작 전 무음을 제거. 사용자 요청에 따라 중간·큰 법전에 같은 파일. 원음 최대피크 근처에 -3dB 여유 확보.
+
+D21 Metal Creak 1.wav — ingudios
+https://freesound.org/people/ingudios/sounds/119465/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D21_ScalePivot.wav
+SHA256 8dce3d6df06618ffc9a430b2cd9e49daf1f878f3e3b09cca6261357172fe1577
+금속 축 마찰의 전체 동작을 보존. 체인 추가 레이어 없음.
+
+D28 Metal Object Dropping 03.wav — Tim_Verberne
+https://freesound.org/people/Tim_Verberne/sounds/537758/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D28_SwordFirstLanding_OneHit.wav
+SHA256 695f6d376616fc363ca17cdafb692a5c6625cdf4f25bfafbca83ab8a00c8295e
+약17.65초의 반복 금속 낙하에서 강한 단일 타격과 꼬리 발췌; 다음 별도 타격 직전 종료.
+
+D30 knife_pick_up 01.wav — ShadowSilhouette
+https://freesound.org/people/ShadowSilhouette/sounds/489756/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D30_SwordPickup.wav
+SHA256 cccb61aa6667ebff6f2f5f27cc2010692c752bd738e906aa501bcc5817f8906c
+집는 동작 앞뒤 무음을 줄이고 조용한 원음에 +10dB.
+
+D33 Metal Scrape Slide on Metal — steprock
+https://freesound.org/people/steprock/sounds/860672/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D33_SwordInsert_Scrape.wav
+SHA256 117e931d4a9c661e2bca9733cef7b027e3591119625047165b2b4a65b901b4f4
+반복 마찰 중 한 번의 마찰과 자연 꼬리를 1.17초 발췌. 삽입 동작 길이와 맞춤; 루프나 새 합성 없음.
+
+D36 metal-click.wav — newagesoup
+https://freesound.org/people/newagesoup/sounds/337865/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D36_SwordSeat.wav
+SHA256 4747b5ced47801b93a55ee847ab5554cd2b500a2a055bca198307ed9e1116ad5
+마지막 작은 금속 고정점. 파생 원작 EpicWizard264889 크레딧 유지.
+파생 원녹음: SFX Metal Shed Door - Hits, Clangs, Rattle — EpicWizard; https://freesound.org/people/EpicWizard/sounds/264889/ ; CC0 1.0. newagesoup의 원본 설명에 기재된 원제작자이며 양쪽 공식 페이지를 보존했습니다.
+
+D37 Heavy Stone Push — msavioti
+https://freesound.org/people/msavioti/sounds/558254/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/D37_SocketRumble_Slow.wav
+SHA256 f41d510888e6e111cc21689f11b80d1826f5d90e4cc98a03ca00ee7a58cf16fb
+전체 석재 울림을 1.60초로 느리게 재생한 PCM. 약0.728배속으로 길이와 낮은 음색이 함께 변함. 런타임 pitch=1로 재생.
+
+D42 Door Creak — coosemek
+https://freesound.org/people/coosemek/sounds/460542/
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+UnityReady/D42_DoorOpen_Existing161.wav
+SHA256 791bbf974e46e31b5f3be43bcf7fec94d7c96786fd55277a495eeebf12bbbe54
+기존161번 문 개방음과 같은 공개 원음. PCM 변환과 아주 짧은 경계 페이드 외 구간/속도/게인 유지.
+
+G01 Magic Whoosh — DustyWind
+https://freesound.org/people/DustyWind/sounds/715784/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+UnityReady/G01_StatueGlow.mp3
+SHA256 6b58e5398290fc83b7b7d5166d942abb59831f977b44a11e51e712cb37bb1c76
+공식 공개 HQ MP3 전체 사본. 자르기·게인·속도 변경 없음. 수평 확정과 동상 발광 시작에 1회 재생.

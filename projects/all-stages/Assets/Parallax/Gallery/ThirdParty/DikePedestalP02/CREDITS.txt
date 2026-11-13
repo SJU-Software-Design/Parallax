@@ -1,0 +1,7 @@
+P02 — Pedestal — Treleau
+https://sketchfab.com/3d-models/pedestal-39c98c97598547d9951be09a1d8fb2fb
+Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Pink marble pedestal from the Palace of Versailles, described by the author as 17th or 18th century.
+Acquired official original OBJ archive through the normal Sketchfab download UI.
+Changes: excluded separate ground scan; preserved original body geometry/UVs/normals except clipping a real custom sword slot; mirrored Z for Unity; uniformly normalized body to 1.20m high; resized original 8K body textures to 4K; packed original specular RGB and inverse roughness into alpha. Custom brass socket liner/cavity and collision setup are game additions. No endorsement implied.

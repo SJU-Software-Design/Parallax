@@ -7,6 +7,7 @@ namespace ShadeLink
     // window. Puzzle, support, collider and buoyancy rules stay with each prop.
     public sealed class PropReleasePhysics : MonoBehaviour
     {
+        public bool SuppressImpactAudio;
         Rigidbody body;
         CollisionDetectionMode previousDynamicMode;
         bool profileInitialized;
@@ -129,6 +130,7 @@ namespace ShadeLink
 
         public bool PlayImpact(float relativeSpeed)
         {
+            if(SuppressImpactAudio)return false;
             if (body == null || body.isKinematic || relativeSpeed < .25f || impactCooldown > 0) return false;
             impactCooldown = .1f;
             if (!MuseumAudio.TryPlayPropImpact(body, relativeSpeed))

@@ -8,6 +8,51 @@ namespace ShadeLink.Gallery
         GUIStyle text,title,small,button;
         readonly Color mint=new Color(.32f,.95f,.79f), paper=new Color(.94f,.93f,.86f);
         void Panel(Rect rect,Color color){GUI.color=color;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
+        void Line(Vector2 a,Vector2 b,Color color,float width=2)
+        {
+            Matrix4x4 previous=GUI.matrix;
+            GUIUtility.RotateAroundPivot(Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg,a);
+            Panel(new Rect(a.x,a.y-width*.5f,Vector2.Distance(a,b),width),color);
+            GUI.matrix=previous;
+        }
+        void BottleSizeComparison(Rect area,float size,bool contained)
+        {
+            GUI.BeginGroup(area);
+            GUI.Label(new Rect(0,0,area.width,24),"실제 크기 비교",small);
+            // A fixed drawing scale is essential here. Fitting each new size to
+            // the panel would repeat the screen-size illusion of perspective.
+            Vector2 origin=new Vector2(85,86);
+            float[] x={-.62f,-.49f,-.22f,.10f,.39f,.60f,.78f,.96f,1.05f};
+            float[] r={0,.379f,.580f,.612f,.482f,.285f,.215f,.215f,.236f};
+            float shown=Mathf.Min(size,3.4f);
+            for(int pass=0;pass<2;pass++)
+            {
+                float scale=pass==0?1:shown;
+                Color color=pass==0?new Color(.75f,.77f,.76f,.6f):mint;
+                for(int side=-1;side<=1;side+=2)
+                    for(int i=1;i<x.Length;i++)
+                        Line(origin+new Vector2(x[i-1],side*r[i-1])*25*scale,
+                            origin+new Vector2(x[i],side*r[i])*25*scale,color,pass==0?1:2);
+            }
+            if(contained)
+            {
+                Vector2 centre=origin+new Vector2(-.05f*shown,Mathf.Max(0,.55f*shown-.30f))*25;
+                // The book uses the same fixed drawing scale at every bottle
+                // size, matching the independent physical contents.
+                Color bronze=new Color(1,.71f,.22f);
+                Vector2 topLeft=centre+new Vector2(-7,-3);
+                Vector2 topRight=centre+new Vector2(7,-3);
+                Vector2 bottomLeft=centre+new Vector2(-7,3);
+                Vector2 bottomRight=centre+new Vector2(7,3);
+                Line(topLeft,topRight,bronze,1.5f);
+                Line(topRight,bottomRight,bronze,1.5f);
+                Line(bottomRight,bottomLeft,bronze,1.5f);
+                Line(bottomLeft,topLeft,bronze,2);
+                Line(centre+new Vector2(-5,0),centre+new Vector2(6,0),paper,1);
+            }
+            GUI.Label(new Rect(0,151,area.width,40),size>3.4f?"도식 최대 ×3.4":"회색: 처음 · 초록: 현재",small);
+            GUI.EndGroup();
+        }
         void OnGUI()
         {
             if(game==null||game.Transitioning||game.conceptCapture)return;
@@ -26,36 +71,59 @@ namespace ShadeLink.Gallery
             if(game.checkpoint==1&&game.lightGate!=null)GUI.Label(new Rect(48,112,510,34),game.lightGate.illuminated?"센서: 빛 감지 · 문 열림 · 그림자로 이동하세요":"센서: 빛 없음 · 거울의 각도를 바꾸세요",small);
             if(game.active&&!game.won)
             {
-                PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null,game.held!=null,game.invalid||game.PlacementBlocked,mint,paper);
+                bool bottleHeld=game.bottleBalance!=null&&game.bottleBalance.Manipulating;
+                bool bottleAim=game.bottleBalance!=null&&game.bottleBalance.Targeted;
+                var reward=game.bottleBalance?.Reward;
+                PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null||bottleAim||reward?.Targeted==true,game.held!=null||bottleHeld||reward?.Carrying==true,game.invalid||game.PlacementBlocked,mint,paper);
                 Panel(new Rect(1195,25,377,104),new Color(.035f,.065f,.08f,.9f));
-                string status=game.exhibitionPreview?"자유 관람":game.conceptLayout&&game.checkpoint>=2?
+                string status=game.bottleBalance!=null&&game.bottleBalance.InRoom?game.bottleBalance.Status:game.exhibitionPreview?"자유 관람":game.conceptLayout&&game.checkpoint>=2?
                     (game.checkpoint==2?(game.portraitGate==null?"눈·코·입을 얼굴처럼 놓아 보세요":game.portraitGate.Status):
-                        game.orcusExit!=null&&game.orcusExit.cathedralActivation!=null?game.orcusExit.cathedralActivation.Status:"두 손 사이로 도서관이 보입니다"):
+                        game.orcusExit!=null&&game.orcusExit.cathedralActivation!=null?game.orcusExit.cathedralActivation.Status:"두 손 사이로 해변이 보입니다"):
                     game.conceptLayout&&game.checkpoint==1&&game.nikeLight!=null?
                         (!game.safe?"빛에 노출 중 · 그늘로 이동하세요":game.nikeLight.Status):
                     game.safe?"그늘 · 안전":"빛에 노출 중 · 그늘로 이동하세요";
                 GUI.Label(new Rect(1215,34,338,61),status,small);
                 Panel(new Rect(1215,110,333,9),new Color(.14f,.22f,.25f));
-                float progress=game.conceptLayout&&game.checkpoint==2&&game.portraitGate!=null?
+                float progress=game.bottleBalance!=null&&game.bottleBalance.InRoom?game.bottleBalance.BalanceProgress:game.conceptLayout&&game.checkpoint==2&&game.portraitGate!=null?
                     (game.portraitGate.Opened?1:game.portraitGate.Performing?game.portraitGate.RevealProgress:game.portraitGate.portrait.Alignment01*.65f+game.portraitGate.Progress*.35f):
                     game.conceptLayout&&game.checkpoint==3&&game.orcusExit!=null?
                         Mathf.Clamp01(game.orcusExit.transform.lossyScale.x/(game.orcusExit.RequiredScale*.9f)):
                     game.conceptLayout&&game.checkpoint==1&&game.nikeLight!=null&&game.safe?
                         (game.NikeCanvasPuzzle&&game.nikeLight.canvas.Fusing?game.nikeLight.canvas.FusionProgress:game.nikeLight.ShadeReadiness):game.exposure;
                 Panel(new Rect(1215,110,333*progress,9),game.checkpoint>=2||game.checkpoint==1&&game.safe?mint:new Color(1,.56f,.25f));
-                if(game.held!=null)
+                if(reward!=null&&(reward.Carrying||reward.Busy))
+                {
+                    Panel(new Rect(405,622,790,135),new Color(.035f,.065f,.08f,.94f));
+                    GUI.Label(new Rect(427,635,746,34),reward.Status,text);
+                    GUI.Label(new Rect(427,678,746,64),reward.Hint,small);
+                }
+                else if(bottleHeld)
+                {
+                    var course=game.bottleBalance;
+                    Panel(new Rect(405,555,790,230),new Color(.035f,.065f,.08f,.94f));
+                    GUI.Label(new Rect(427,568,526,32),"유리병 실제 크기 ×"+course.BottleSize.ToString("0.00")+" · 입구 "+(GalleryBottleBalanceVessel.MouthRadius(course.Bottle)*2).ToString("0.00")+"m",text);
+                    GUI.Label(new Rect(427,608,526,60),"들고 있을 때 병의 화면 크기는 유지돼요.\n병의 실제 크기만 변하고, 안의 법전 크기는 고정돼요.",small);
+                    GUI.Label(new Rect(427,672,526,54),"먼 표면으로 키우기 · 우클릭+마우스: 기울이고 흔들기\n넓어진 입구를 아래로 향하면 법전이 미끄러져 나와요.",small);
+                    GUI.Label(new Rect(427,736,526,40),course.Placement.Hint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 빈 공간으로 방향을 바꿔 주세요":"왼쪽 클릭: 놓기 · Backspace: 잡기 취소"),small);
+                    BottleSizeComparison(new Rect(970,570,205,200),course.BottleSize,!course.Extracted);
+                }
+                else if(game.held!=null)
                 {
                     Panel(new Rect(405,590,790,175),new Color(.035f,.065f,.08f,.94f));
                     GUI.Label(new Rect(427,605,746,32),game.held.title+"  ·  거리 "+game.holdDistance.ToString("0.00")+"m  ·  크기 ×"+game.RequestedScale.ToString("0.00"),text);
-                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 회전\nQ/E: 회전  ·  Z/X: 기울기  ·  C: 바로 세우기",small);
-                    GUI.Label(new Rect(427,711,746,40),game.NikeSocketHint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 방향을 바꾸거나 Backspace로 취소":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  Backspace: 잡기 취소"),small);
+                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 상하좌우 회전\n시선으로 크기 조절 · 잡을 때 자동 바로 세우기",small);
+                    GUI.Label(new Rect(427,711,746,40),game.NikeSocketHint??game.bottleBalance?.Placement.Hint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 방향을 바꾸거나 Backspace로 취소":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  Backspace: 잡기 취소"),small);
                 }
                 else if(game.adjustingMirror&&game.mirror!=null)
                 {
                     Panel(new Rect(405,622,790,135),new Color(.035f,.065f,.08f,.94f));
                     GUI.Label(new Rect(427,635,746,34),"거울 조작 · 각도 "+game.mirror.angle.ToString("0.0")+"°",text);
-                    GUI.Label(new Rect(427,678,746,64),"Q/E: 천천히 회전 · WASD: 이동 · 클릭 / 오른쪽 클릭: 종료\n센서가 초록색이면 문이 열립니다. 통로의 반사광은 차광판으로 가리세요.",small);
+                    GUI.Label(new Rect(427,678,746,64),"오른쪽 버튼 + 마우스 좌우: 회전 · 클릭 / Backspace: 종료\n센서가 초록색이면 문이 열립니다. 통로의 반사광은 차광판으로 가리세요.",small);
                 }
+                else if(reward!=null&&reward.Targeted)
+                    GUI.Label(new Rect(470,475,760,64),reward.Hint,text);
+                else if(bottleAim)
+                    GUI.Label(new Rect(520,475,650,42),"[왼쪽 클릭] 유리병 잡기 · 다른 사물처럼 옮길 수 있어요",text);
                 else if(game.aimedMirror!=null)
                     GUI.Label(new Rect(550,475,570,42),"[왼쪽 클릭]  거울 각도 조절",text);
                 else if(game.aimed!=null)
@@ -89,17 +157,28 @@ namespace ShadeLink.Gallery
                 if(GUI.Button(new Rect(812,615,370,62),"종료",button))Application.Quit();
                 if(game.conceptLayout)
                 {
-                    if(GUI.Button(new Rect(412,691,179,48),"청동판 체험",button))game.StartConceptDemo(0);
-                    if(GUI.Button(new Rect(609,691,179,48),game.MovableNike?"니케 그림자 체험":"니케 조명 체험",button))game.StartConceptDemo(1);
-                    if(GUI.Button(new Rect(806,691,179,48),"시점의 방 체험",button))game.StartConceptDemo(2);
-                    if(GUI.Button(new Rect(1003,691,179,48),"출구 체험",button))game.StartConceptDemo(3);
+                    if(game.bottleBalance!=null)
+                    {
+                        if(GUI.Button(new Rect(412,691,145,48),"청동판",button))game.StartConceptDemo(0);
+                        if(GUI.Button(new Rect(568,691,145,48),"니케",button))game.StartConceptDemo(1);
+                        if(GUI.Button(new Rect(724,691,145,48),"병 속의 추",button))game.StartBottleBalanceDemo();
+                        if(GUI.Button(new Rect(880,691,145,48),"눈코입",button))game.StartConceptDemo(2);
+                        if(GUI.Button(new Rect(1036,691,145,48),"출구",button))game.StartConceptDemo(3);
+                    }
+                    else
+                    {
+                        if(GUI.Button(new Rect(412,691,179,48),"청동판 체험",button))game.StartConceptDemo(0);
+                        if(GUI.Button(new Rect(609,691,179,48),game.MovableNike?"니케 그림자 체험":"니케 조명 체험",button))game.StartConceptDemo(1);
+                        if(GUI.Button(new Rect(806,691,179,48),"시점의 방 체험",button))game.StartConceptDemo(2);
+                        if(GUI.Button(new Rect(1003,691,179,48),"출구 체험",button))game.StartConceptDemo(3);
+                    }
                 }
                 else if(game.exhibitionPreview)
                 {
                     if(GUI.Button(new Rect(812,691,370,48),"시점의 방으로 이동",button)){game.ResetAll();game.checkpoint=2;game.PlacePlayer(game.SpawnPoints[2]);game.Resume();}
                 }
                 else if(GUI.Button(new Rect(812,691,370,48),"오르쿠스 전시 바로 체험",button))game.StartOrcusDemo();
-                GUI.Label(new Rect(412,760,770,30),game.conceptLayout?"청동판의 그늘 · 니케와 조명 · 시점의 초상 · 성당 출구": "명화 5점 · 원근 체험 · 오르쿠스 → 도서관 · 최신 공통 조작",small);
+                GUI.Label(new Rect(412,760,770,30),game.conceptLayout?"청동판의 그늘 · 니케와 조명 · 시점의 초상 · 성당 출구": "명화 5점 · 원근 체험 · 오르쿠스 → 해변 · 최신 공통 조작",small);
                 GUI.Label(new Rect(412,794,770,28),game.conceptLayout?"니케: Cosmo Wenman / CC BY 3.0 · 성당 스캔: Migg / CC BY 4.0":"명화: Public domain 자료 / 조각: 게임용 재해석",small);
             }
         }

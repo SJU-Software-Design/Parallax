@@ -45,6 +45,7 @@ namespace ShadeLink.Gallery
         {
             if(depthCamera==null)return;
             float z=game.view.transform.position.z;
+            if(game.bottleBalance!=null)z=GalleryBottleBalanceCourse.LegacyZ(z);
             int room=z<14?0:z<29?1:z<44?2:3;
             bool moving=game.held!=null||room==2&&game.portraitGate!=null&&game.portraitGate.Performing||
                 room==3&&game.orcusExit!=null&&game.orcusExit.cathedralActivation!=null&&

@@ -46,20 +46,23 @@ namespace Parallax.StageLauncher.Editor
 
                     string scene = "Assets/Parallax/" + stage + "/Scenes/" + stage + ".unity";
                     // Generate the museum from current source and include its next
-                    // stage so the mouth passage works inside the same executable.
+                    // stage so the cathedral passage works inside the same executable.
                     if(stage=="Gallery")
                     {
+                        // Prepare also extracts the actual Beach preview and
+                        // prepares collision copies from the newly generated museum.
                         ShadeLink.Editor.GalleryBuild.Prepare();
                     }
                     string[] scenes=stage=="Gallery"
-                        ?new[]{scene,"Assets/Parallax/Library/Scenes/Library.unity"}
+                        ?new[]{scene,"Assets/Parallax/Beach/Scenes/Beach.unity"}
                         :new[]{scene};
-                    if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scene) == null)
-                        throw new FileNotFoundException("Saved stage scene is missing", scene);
+                    foreach(string includedScene in scenes)
+                        if (AssetDatabase.LoadAssetAtPath<SceneAsset>(includedScene) == null)
+                            throw new FileNotFoundException("Saved stage scene is missing", includedScene);
                     string outputDir = Path.Combine(outputRoot, stage);
                     Directory.CreateDirectory(outputDir);
                     string outputExe = Path.Combine(outputDir, "Parallax.exe");
-                    PlayerSettings.productName = stage=="Gallery"?"Parallax - Museum "+ShadeLink.Gallery.GalleryGame.Version:"Parallax - " + stage;
+                    PlayerSettings.productName = stage=="Gallery"?"Parallax - Museum Bottle and Balance "+ShadeLink.Gallery.GalleryGame.Version:"Parallax - " + stage;
                     if(stage=="Gallery")PlayerSettings.bundleVersion=ShadeLink.Gallery.GalleryGame.Version;
                     Debug.Log("STAGE_BUILD_START " + stage + " scene=" + scene);
                     var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions

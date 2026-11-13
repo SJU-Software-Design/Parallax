@@ -105,18 +105,21 @@ namespace ShadeLink.Editor
                 // Fixtures can dirty the editor's in-memory scene. Discard them;
                 // the build must consume the existing scene, never a saved fixture.
                 EditorSceneManager.OpenScene(GalleryScene, OpenSceneMode.Single);
+                result.phase = "prepare-destination-and-collision";
+                Require(AssetDatabase.LoadAssetAtPath<SceneAsset>(GalleryPortalBeachAssets.SourceScenePath) != null,
+                    "The saved museum's existing Beach portal destination is missing.");
+                GalleryPortalBeachAssets.Prepare();
+                GalleryBottleBalanceReadableArchitecture.PrepareSavedScene();
+                GalleryStaticExhibitCollisionAssets.PrepareSavedScene();
+                result.checks.Add("Actual saved Beach preview and exact saved-museum collision copies prepared without regenerating either stage");
                 var scenes = new List<string> { GalleryScene };
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath) != null)
-                    scenes.Add(LibraryBuild.ScenePath);
-                else
-                    throw new FileNotFoundException("The saved museum's existing Library portal destination is missing.", LibraryBuild.ScenePath);
+                scenes.Add(GalleryPortalBeachAssets.SourceScenePath);
                 result.scenes = scenes.ToArray();
                 GalleryBuild.WriteCredits(Path.GetDirectoryName(output));
-                File.Copy(AudioCredits, Path.Combine(Path.GetDirectoryName(output), Path.GetFileName(AudioCredits)), true);
 
                 result.phase = "build";
                 settingsChanged = true;
-                PlayerSettings.productName = "Parallax - Museum Selected Audio";
+                PlayerSettings.productName = "Parallax - Museum Bottle and Balance - Selected Audio";
                 PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
                 PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { GraphicsDeviceType.Direct3D11 });
                 BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions

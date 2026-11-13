@@ -24,7 +24,7 @@ namespace ShadeLink.Beach
                 if(game.held!=null)
                 {
                     Panel(new Rect(360,611,880,154),ink);GUI.Label(new Rect(381,624,840,33),game.held.title+"  ·  크기 ×"+game.RequestedScale.ToString("0.00")+"  ·  거리 "+game.holdDistance.ToString("0.0")+"m",text);
-                    GUI.Label(new Rect(381,664,840,60),"WASD 들고 이동 · 오른쪽 버튼 + 마우스 회전 · Backspace 취소\n시선으로 크기 조절 · Q/E 회전 · Z/X 기울기 · C 바로 세우기",small);
+                    GUI.Label(new Rect(381,664,840,60),"WASD 들고 이동 · 오른쪽 버튼 + 마우스 상하좌우 회전 · Backspace 취소\n시선으로 크기 조절 · 잡을 때 자동 바로 세우기",small);
                     GUI.Label(new Rect(381,725,840,31),game.invalid?game.invalidReason:game.PlacementBlocked?"충돌 때문에 멈췄습니다 · 방향을 바꾸거나 취소할 수 있습니다":"왼쪽 클릭으로 놓기 · 놓은 뒤 물리와 부력 적용",small);
                 }
                 else if(game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
