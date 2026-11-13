@@ -58,6 +58,15 @@ Shader "Parallax/MuseumSurface"
             float _MuseumUseUnityShadows,_MuseumSunIntensity;
             float _MuseumUseRoomEnvironment,_MuseumProbeReady;
             float _MuseumBakedGI;
+            // The optional bottle gallery is inserted after the Nike room.
+            // This is a global, not a material property; legacy builds publish 0.
+            float _MuseumInsertedGalleryLength;
+            float _MuseumBalanceProbeReady;
+            UNITY_DECLARE_TEXCUBE_NOSAMPLER(_MuseumBalanceEnvironment);
+            float4 _MuseumBalanceEnvironmentHDR, _MuseumBalanceProbePosition;
+            float4 _MuseumBalanceProbeBoxMin, _MuseumBalanceProbeBoxMax;
+            int _MuseumBalanceLightCount;
+            float4 _MuseumBalanceLightPositionRange[8], _MuseumBalanceLightColorIntensity[8], _MuseumBalanceLightDirectionCone[8];
             UNITY_DECLARE_TEX2D(_MuseumExhibitShadow0);
             UNITY_DECLARE_TEX2D_NOSAMPLER(_MuseumExhibitShadow1);
             UNITY_DECLARE_TEX2D_NOSAMPLER(_MuseumExhibitShadow2);
@@ -106,8 +115,13 @@ Shader "Parallax/MuseumSurface"
                 o.lightmapUV=v.uv1*unity_LightmapST.xy+unity_LightmapST.zw;
                 TRANSFER_SHADOW(o);return o;
             }
+            float museumLegacyZ(float z) {
+                if(_MuseumInsertedGalleryLength<=0)return z;
+                return z>=29+_MuseumInsertedGalleryLength?z-_MuseumInsertedGalleryLength:(z>=29?28.95:z);
+            }
             bool windowLit(float3 location) {
-                if(_GalleryPortraitNoSun>.5 && location.z>=29 && location.z<44)return false;
+                float legacyZ=museumLegacyZ(location.z);
+                if(_GalleryPortraitNoSun>.5 && legacyZ>=29 && legacyZ<44)return false;
                 float3 aperture = location + _GalleryToSun * ((_GalleryRoof-location.y)/_GalleryToSun.y);
                 bool inWindow = false;
                 [unroll] for(int w=0;w<4;w++) {
@@ -137,7 +151,8 @@ Shader "Parallax/MuseumSurface"
                 return blocked(surfacePosition+normal*.012,_GalleryToSun,1e20,false,false)?0:1;
             }
             float reflectedLit(float3 surfacePosition,float3 normal) {
-                if(_GalleryPortraitNoSun>.5 && surfacePosition.z>=29 && surfacePosition.z<44)return 0;
+                float legacyZ=museumLegacyZ(surfacePosition.z);
+                if(_GalleryPortraitNoSun>.5 && legacyZ>=29 && legacyZ<44)return 0;
                 if(_GalleryMirrorActive<.5)return 0;
                 float denominator=dot(_GalleryReflectedDirection,_GalleryMirrorNormal);
                 if(dot(_GalleryMirrorNormal,_GalleryToSun)<=.015 || denominator<=.015)return 0;
@@ -208,8 +223,18 @@ Shader "Parallax/MuseumSurface"
                 Unity_GlossyEnvironmentData glossy=UnityGlossyEnvironmentSetup(1-roughness,view,n,f0);
                 float3 originalDirection=glossy.reflUVW;
                 float3 environment;
-                if(_MuseumUseRoomEnvironment>.5 && _MuseumProbeReady>.5) {
-                    int room=position.z<14?0:(position.z<29?1:(position.z<44?2:3));
+                bool balanceRoom=_MuseumInsertedGalleryLength>0 && position.z>=29 && position.z<29+_MuseumInsertedGalleryLength;
+                if(balanceRoom && _MuseumBalanceProbeReady>.5) {
+                    glossy.reflUVW=BoxProjectedCubemapDirection(originalDirection,position,
+                        _MuseumBalanceProbePosition,_MuseumBalanceProbeBoxMin,_MuseumBalanceProbeBoxMax);
+                    environment=Unity_GlossyEnvironment(UNITY_PASS_TEXCUBE_SAMPLER(_MuseumBalanceEnvironment,_MuseumRoomEnvironment0),_MuseumBalanceEnvironmentHDR,glossy);
+                } else if(balanceRoom) {
+                    // During its first capture the new room must not inherit
+                    // a reflected Nike room from the legacy coordinate remap.
+                    environment=lerp(ground,sky,saturate(originalDirection.y*.5+.5));
+                } else if(_MuseumUseRoomEnvironment>.5 && _MuseumProbeReady>.5) {
+                    float legacyZ=museumLegacyZ(position.z);
+                    int room=legacyZ<14?0:(legacyZ<29?1:(legacyZ<44?2:3));
                     glossy.reflUVW=BoxProjectedCubemapDirection(originalDirection,position,
                         _MuseumRoomProbePosition[room],_MuseumRoomProbeBoxMin[room],_MuseumRoomProbeBoxMax[room]);
                     // Keep each texture/sampler pair explicit on all Built-in
@@ -295,7 +320,9 @@ Shader "Parallax/MuseumSurface"
                 // The roofed Nike room uses its movable lamp. Other rooms keep
                 // their original sunlight, mirror and material lighting.
                 bool nikeRoom=_NikeLightEnabled>.5 && i.world.z>=14 && i.world.z<29;
-                bool portraitRoom=_GalleryPortraitNoSun>.5 && i.world.z>=29 && i.world.z<44;
+                float legacyZ=museumLegacyZ(i.world.z);
+                bool portraitRoom=_GalleryPortraitNoSun>.5 && legacyZ>=29 && legacyZ<44;
+                bool insertedGallery=_MuseumInsertedGalleryLength>0 && i.world.z>=29 && i.world.z<29+_MuseumInsertedGalleryLength;
                 float3 geometric=normalize(i.normal);
                 float sunlight=nikeRoom?0:directLit(i.world,geometric),reflection=nikeRoom?0:reflectedLit(i.world,geometric);float lit=max(sunlight,reflection);
                 if(_Diagnostic>.5) {
@@ -337,6 +364,9 @@ Shader "Parallax/MuseumSurface"
                     #endif
                     ambient=ambient*.08+bounced;
                 }
+                // The inserted exhibition is roofed and has no baked lightmap.
+                // Keep its indirect bounce independent of the legacy Nike probe.
+                if(insertedGallery)ambient=max(ambient,float3(.30,.275,.235));
                 ao*=contactOcclusion(i.world);
                 // Conductors receive indirect light through their coloured
                 // specular response rather than an extra diffuse ambient term.
@@ -376,7 +406,7 @@ Shader "Parallax/MuseumSurface"
                 [loop] for(int source=0;source<min(_MuseumLightCount,8);source++) {
                     if(portraitRoom)continue;
                     // Exhibition fills stop at their room's partition.
-                    if((source<4 && i.world.z>=14) || (source>=4 && source<6 && !nikeRoom) || (source>=6 && i.world.z<44))continue;
+                    if((source<4 && legacyZ>=14) || (source>=4 && source<6 && !nikeRoom) || (source>=6 && legacyZ<44))continue;
                     float4 lamp=_MuseumLightPositionRange[source];
                     if(i.world.y>lamp.y)continue;
                     float3 delta=lamp.xyz-i.world;float distance=length(delta);
@@ -390,6 +420,23 @@ Shader "Parallax/MuseumSurface"
                     float floorSpill=lerp(1,.25,saturate(geometric.y));
                     float visibility=source==0?exhibitShadow(i.world,geometric,0):source==4?exhibitShadow(i.world,geometric,1):source==6?exhibitShadow(i.world,geometric,3):1;
                     col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*floorSpill*visibility;
+                }
+                if(insertedGallery) {
+                    // Eight room-owned fixtures follow the inserted exhibition;
+                    // legacy light arrays remain unchanged.
+                    [loop] for(int display=0;display<min(_MuseumBalanceLightCount,8);display++) {
+                        float4 lamp=_MuseumBalanceLightPositionRange[display];
+                        if(i.world.y>lamp.y)continue;
+                        float3 delta=lamp.xyz-i.world;
+                        float distance=length(delta);
+                        float3 direction=delta/max(distance,.001);
+                        float attenuation=pow(saturate(1-distance/max(lamp.w,.01)),2);
+                        float4 cone=_MuseumBalanceLightDirectionCone[display];
+                        attenuation*=smoothstep(cone.w,min(.999,cone.w+.14),dot(-direction,normalize(cone.xyz)));
+                        float4 radiance=_MuseumBalanceLightColorIntensity[display];
+                        float floorSpill=lerp(1,.32,saturate(geometric.y));
+                        col+=brdf(n,view,direction,albedo,roughness,_Metallic)*radiance.rgb*radiance.w*attenuation*floorSpill;
+                    }
                 }
                 if(portraitRoom) {
                     [loop] for(int source=0;source<min(_MuseumPortraitLightCount,4);source++) {
@@ -422,9 +469,17 @@ Shader "Parallax/MuseumSurface"
                 col=lerp(col,max(col,albedo*.78),saturate(_ExhibitLight)*(1-visibleLit));
                 // A continuous cornice bounce, confined to upper walls/ceiling.
                 // The portrait's protected walking floor returns before this.
-                float roomStart=i.world.z<14?0:(i.world.z<29?14:(i.world.z<44?29:44));
-                float roomEnd=i.world.z<14?14:(i.world.z<29?29:(i.world.z<44?44:56));
-                float wallDistance=max(0,min(7.74-abs(i.world.x),min(i.world.z-roomStart,roomEnd-i.world.z)-.30));
+                float roomStart=legacyZ<14?0:(legacyZ<29?14:(legacyZ<44?29:44));
+                float roomEnd=legacyZ<14?14:(legacyZ<29?29:(legacyZ<44?44:56));
+                if(_MuseumInsertedGalleryLength>0) {
+                    if(insertedGallery) {
+                        roomStart=29;roomEnd=29+_MuseumInsertedGalleryLength;
+                    } else if(i.world.z>=29+_MuseumInsertedGalleryLength) {
+                        roomStart+=_MuseumInsertedGalleryLength;roomEnd+=_MuseumInsertedGalleryLength;
+                    }
+                }
+                float roomHalfWidth=insertedGallery?10.74:7.74;
+                float wallDistance=max(0,min(roomHalfWidth-abs(i.world.x),min(i.world.z-roomStart,roomEnd-i.world.z)-.30));
                 float coveDistance=length(float2(wallDistance,i.world.y-6.47));
                 float cove=exp2(-coveDistance*2.6)*(.55+.45*saturate(-geometric.y));
                 col+=albedo*(1-_Metallic)*_MuseumCoveRadiance.rgb*cove*(1-saturate(_MuseumBakedGI));

@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "base": "ace80a2c1c9323147bf5809a7d25dad34cbc4dc3",
+  "buildId": "20261113T182024Z-22bd5db8",
+  "unity": "6000.3.24f1",
+  "platform": "Windows x64 / D3D11",
+  "buildErrors": 0,
+  "buildWarnings": 10,
+  "protectedBuildFiles": 50,
+  "editorChecks": {
+    "playerControls": 8,
+    "objectInteraction": 85,
+    "releasePhysics": 36,
+    "movementTimingAndRouting": true,
+    "stageBuilderCompilation": true
+  },
+  "dike": {
+    "passed": true,
+    "checks": [
+      "Saved room contains the flat law book and an actual separately verified sword/statue",
+      "Bottle resizing preserves the law-book mesh size; public held tilt produces actual containment exit and gravity",
+      "One emission pulse releases only the sword into real gravity; pause freezes it and first settle needs no recovery while the door remains locked",
+      "Public pickup/cancel work for the long sword, and full-length carry collision prevents drawing it through a close wall",
+      "The enlarged left sword fits its pan; 1.5s insertion seats before one reduced camera pulse, a 0.4s delay and a 3s door swing, with pause restoration",
+      "Selected D02/D21 and physical sword events fire once at their actions; six real floor drops use the requested D04/D09/D14/D11 size mapping",
+      "Reset restores the original sequence; missing independent-sword proof fails closed"
+    ]
+  },
+  "integration": {
+    "passed": true,
+    "checks": [
+      "Actual CharacterController movement is blocked by bench and P02; exact added surfaces pass PhysX ray checks.",
+      "The actual visitor's ControllerColliderHit identifies the newly added exact Dike body MeshCollider itself.",
+      "Actual bottle drops remain audible; five rapid physical bounce impulses are suppressed; a separated strike and fresh hold/drop remain audible.",
+      "Render-only actual coastal scene has landmarks and water; live portal pixels and camera-dependent parallax are present.",
+      "Actual CharacterController crossing started the production async Beach load; initial spawn and production movement are restored.",
+      "After the production fade runner finished, the actual Beach view camera rendered non-black varied destination pixels without lighting/fade changes."
+    ],
+    "collisions": 293,
+    "actualSurfaceHits": 293,
+    "bottleMinRepeatInterval": 1.2799994945526123,
+    "beachCameraRenderVisible": true
+  },
+  "portal": {
+    "passed": true,
+    "realScan": true,
+    "livePreview": true,
+    "beachGeometry": true,
+    "beachPalette": true,
+    "parallax": true,
+    "backgroundOccluded": true,
+    "runtimeCleanup": true,
+    "runtimeReenabled": true
+  },
+  "preservedMainOptimizations": true,
+  "originalWorktreeUnchanged": true,
+  "scope": "Fresh main-based isolated Unity checkout and executable; actual automatic FixedUpdate/PhysX, audio event routing, camera rendering and asynchronous scene handoff with disclosed fixture poses. Not continuous manual completion or subjective art/audio approval. Raw scan assets automatically rewritten by Unity were restored to exact main bytes and excluded."
+}

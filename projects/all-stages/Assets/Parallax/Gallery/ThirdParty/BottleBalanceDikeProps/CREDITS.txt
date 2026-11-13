@@ -1,0 +1,11 @@
+Book Encyclopedia Set 01 — John Malcolm
+Source: https://polyhaven.com/a/book_encyclopedia_set_01
+License: CC0 1.0 / https://polyhaven.com/license
+Changes: source volume14 extraction, flat rotation/centering/uniform normalization, OBJ export, source PBR channel packing for Unity Standard.
+
+Rock 09 — Jenelle van Heerden
+Source: https://polyhaven.com/a/rock_09
+License: CC0 1.0 / https://polyhaven.com/license
+Changes: representative LOD geometry extraction, centering/uniform normalization, floor-base alignment by editor preparation, PBR channel packing for Unity Standard.
+
+No paid content, account-gated preview extraction, synthesized source textures, or model reconstruction used.

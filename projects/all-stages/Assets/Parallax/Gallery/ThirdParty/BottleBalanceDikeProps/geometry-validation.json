@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-13",
+  "pass": true,
+  "derived": [
+    {
+      "file": "book_encyclopedia_set_01/LawBook_SourceBook14_Flat.obj",
+      "vertices": 3388,
+      "uv": 3388,
+      "normals": 3388,
+      "triangles": 3364,
+      "invalidIndices": 0
+    },
+    {
+      "file": "book_encyclopedia_set_01/LawBook_SourceBook14_Upright.obj",
+      "vertices": 3388,
+      "uv": 3388,
+      "normals": 3388,
+      "triangles": 3364,
+      "invalidIndices": 0
+    },
+    {
+      "file": "rock_07/rock_07_Centered.obj",
+      "vertices": 7914,
+      "uv": 7914,
+      "normals": 7914,
+      "triangles": 14844,
+      "invalidIndices": 0
+    },
+    {
+      "file": "rock_09/rock_09_Centered.obj",
+      "vertices": 6628,
+      "uv": 6628,
+      "normals": 6628,
+      "triangles": 12416,
+      "invalidIndices": 0
+    }
+  ]
+}

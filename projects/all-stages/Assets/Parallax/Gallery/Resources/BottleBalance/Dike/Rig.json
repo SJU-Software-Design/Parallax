@@ -1,0 +1,38 @@
+{
+    "bodyMin": {
+        "x": -0.47038018703460696,
+        "y": -0.6568701863288879,
+        "z": -0.413166880607605
+    },
+    "bodyMax": {
+        "x": 0.1512874811887741,
+        "y": 0.5803746581077576,
+        "z": 0.2203570306301117
+    },
+    "beamPivot": {
+        "x": -0.44109076261520388,
+        "y": 0.255117803812027,
+        "z": -0.38990530371665957
+    },
+    "swordCenter": {
+        "x": -0.007413915824145079,
+        "y": -0.271424263715744,
+        "z": -0.12600532174110413
+    },
+    "swordGrip": {
+        "x": 0.11795782297849655,
+        "y": -0.0342935174703598,
+        "z": -0.09575165808200836
+    },
+    "swordRotation": {
+        "x": 0.05447615683078766,
+        "y": -0.013514556922018528,
+        "z": -0.2404036521911621,
+        "w": 0.9690489172935486
+    },
+    "swordOriginalLength": 0.7498165369033814,
+    "independentSwordVerified": true,
+    "coordinates": "Unity left-handed Y-up; mirrored source Z",
+    "verificationScope": "Independent sword geometry verified by removal; Unity gravity test performed separately by the game validation",
+    "sourceManifest": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/game-parts-manifest.json"
+}

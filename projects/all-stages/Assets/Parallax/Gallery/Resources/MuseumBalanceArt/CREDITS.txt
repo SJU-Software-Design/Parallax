@@ -1,0 +1,43 @@
+Museum Balance Gallery — artwork image credits
+Integrated 2026-11-13 from the already downloaded official museum images.
+Original files are copied byte-for-byte. Display titles in Korean are descriptive translations.
+No AI-generated concept paintings are used as the in-game artwork.
+
+‘The First Knot’. Interlaced Roundel with an Oblong Panel in its Center
+Albrecht Dürer; before 1521
+The Metropolitan Museum of Art; George Khuner Collection, Bequest of Marianne Khuner, 1984
+Rights: Public Domain / CC0 Open Access
+Object: https://www.metmuseum.org/art/collection/search/388788
+Image policy: https://www.metmuseum.org/hubs/open-access
+Resource: MuseumBalanceArt/DurerFirst
+SHA256: 6763C3C89B0264D024376E22194B6621F24559830C1FCE634F636A3649B10D58
+
+‘The Sixth Knot’. Interlaced Roundel with Seven Wreaths
+Albrecht Dürer; before 1521
+The Metropolitan Museum of Art; Rogers Fund, 1918
+Rights: Public Domain / CC0 Open Access
+Object: https://www.metmuseum.org/art/collection/search/388375
+Image policy: https://www.metmuseum.org/hubs/open-access
+Resource: MuseumBalanceArt/DurerSixth
+SHA256: 3D4BF1AB667305D28E98A411F14AC6A9A9672B164BA810E337594CEDD978522D
+
+Woman Holding a Balance
+Johannes Vermeer; c. 1664
+National Gallery of Art; Widener Collection
+Rights: This object’s media is free and in the public domain / Open access images free for any commercial or non-commercial use
+Object: https://www.nga.gov/artworks/1236-woman-holding-balance
+Image policy: https://www.nga.gov/artworks/free-images-and-open-access
+Resource: MuseumBalanceArt/VermeerBalance
+SHA256: D5B54E4B041C2C9945170CF39007618CE5DC8BD8161860EC595FB98D6E133D4E
+
+A Goldsmith in his Shop
+Petrus Christus; 1449
+The Metropolitan Museum of Art; Robert Lehman Collection, 1975
+Rights: Public Domain / CC0 Open Access
+Object: https://www.metmuseum.org/art/collection/search/459052
+Image policy: https://www.metmuseum.org/hubs/open-access
+Resource: MuseumBalanceArt/ChristusGoldsmith
+SHA256: 44ED801E6304B3721C28A69D07BAE67749166AEB2B42DF9962344771D817B4F4
+
+Interpretation: Durer knot woodcuts are decorative interlaced patterns, not verified diagrams of the exact 3D trefoil knot.
+Use the current museum title A Goldsmith in his Shop; do not identify the depicted person as Saint Eligius as an established fact.

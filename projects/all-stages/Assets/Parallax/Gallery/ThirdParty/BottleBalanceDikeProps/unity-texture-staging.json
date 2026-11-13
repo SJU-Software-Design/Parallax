@@ -1,0 +1,67 @@
+[
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_roughness_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookCover_Roughness",
+    "sha256": "027ee5965aa46766b6ed1f3a9e8b7e2d912c7056b950bcde09f956cc7b6fc8b5"
+  },
+  {
+    "source": "rock_09/textures/rock_09_diff_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/SwordStone_Albedo",
+    "sha256": "1a6300ec3d4ed414f83a13078b857ba7a0acaa7d15f5d63cb53a13c395579c1b"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_arm_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookPaper_ARM",
+    "sha256": "6992ba26a5dfecd3a78b9c90219d48e82471511514620841e5458c69f2e5e222"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_arm_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookCover_ARM",
+    "sha256": "bc2903264c40fdc9b31aaf5370a0e19508129fb4b4bd1ecec834804f0fdc774a"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_roughness_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookPaper_Roughness",
+    "sha256": "034cb60d6a3b75a9ffafd12522837ada345f3a5c9eb189b7414819a6be088982"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_metallic_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookCover_Metallic",
+    "sha256": "d1f9aca3d619f3e7b1b824c6709cc566fc7dd70469442c6dac57b4c8b3655a59"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_nor_gl_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookPaper_NormalGL",
+    "sha256": "fc467eb9a4ea4ffc0222513594768c881dbf147cd7a2294814c9cd8deb3c8d3f"
+  },
+  {
+    "source": "rock_09/textures/rock_09_nor_gl_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/SwordStone_NormalGL",
+    "sha256": "336230ec8b5c0efd635158e86ab1e90f850665246f9395d7ab065c45264a630d"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_diff_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookPaper_Albedo",
+    "sha256": "9ef4c115773d0b3a403b5c887b29cc39277ea7b045608d1343a736dba9a38d91"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_nor_gl_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookCover_NormalGL",
+    "sha256": "a734f1dd24a262f29486433469fb1c8d38066ccfe1a2095ac94c19f4c541e519"
+  },
+  {
+    "source": "rock_09/textures/rock_09_rough_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/SwordStone_Roughness",
+    "sha256": "020cb6128cfdc65151101d3c7f0e1b071244af875d1124bbed3780dedd9c060c"
+  },
+  {
+    "source": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_diff_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/BookCover_Albedo",
+    "sha256": "9f93800db579470c7ab2f198890d191973b94593a8c797ed825aaa10bc030ad0"
+  },
+  {
+    "source": "rock_09/textures/rock_09_ao_2k.png",
+    "unityResource": "BottleBalance/Dike/Props/Textures/SwordStone_AO",
+    "sha256": "f85542fde3a023d952354ffdb4169b707469b278f5454aa511606352687a1e0b"
+  }
+]

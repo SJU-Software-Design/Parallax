@@ -1,0 +1,27 @@
+{
+    "source": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeSword/Original/sword.fbx",
+    "license": "CC0 1.0",
+    "sourceAuthor": "Izkeas",
+    "sourcePage": "https://izkeas.itch.io/realistic-medieval-long-sword",
+    "reference": "기획안/미술관_디케의저울_20261113/01_맵과기믹_도안.png (lower-right concept)",
+    "changes": "Preserved source blade and leather grip geometry, UVs and PBR maps with one uniform normalization. Replaced original straight guard and faceted pommel with project-authored beveled curled gold guard, circular medallion, wheel pommel and rings.",
+    "sourceBladeTriangles": 214,
+    "sourceGripTriangles": 1246,
+    "outputTriangles": 25568,
+    "outputRenderers": 36,
+    "gripY": 0.36909711360931399,
+    "sourceLength": 2.8147497177124025,
+    "normalizedBoundsMin": {
+        "x": -0.1349271535873413,
+        "y": -0.5,
+        "z": -0.019592931494116784
+    },
+    "normalizedBoundsMax": {
+        "x": 0.1349271535873413,
+        "y": 0.5,
+        "z": 0.019443655386567117
+    },
+    "runtimeChanged": false,
+    "oldRewardSwordOverwritten": false,
+    "normalConvention": "Original extracted normal PNGs preserved. Author does not label GL/DX; preview review required."
+}

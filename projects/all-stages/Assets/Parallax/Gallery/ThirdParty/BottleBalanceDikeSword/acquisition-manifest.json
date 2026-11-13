@@ -1,0 +1,24 @@
+[
+  {
+    "name": "sword.blend.bytes",
+    "officialPage": "https://izkeas.itch.io/realistic-medieval-long-sword",
+    "uploadId": 9051697,
+    "bytes": 1605996,
+    "sha256": "682781d8cc2b6de52392f225c17ed78837f3cb78c9976bd16b17a4c09c78c816",
+    "license": "CC0 1.0",
+    "sourceAuthor": "Izkeas",
+    "downloadMethod": "Official free itch.io download button route, no account or purchase",
+    "originalDownloadName": "sword.blend",
+    "evidenceOriginal": "artifacts/museum-dike-implementation-20261113/sword-candidates/izkeas-original/sword.blend"
+  },
+  {
+    "name": "sword.fbx",
+    "officialPage": "https://izkeas.itch.io/realistic-medieval-long-sword",
+    "uploadId": 9051693,
+    "bytes": 18160556,
+    "sha256": "dc94d6513c34385e1b1c99c139ee72a318169ed9989e8cf2896f208b052e9ebd",
+    "license": "CC0 1.0",
+    "sourceAuthor": "Izkeas",
+    "downloadMethod": "Official free itch.io download button route, no account or purchase"
+  }
+]

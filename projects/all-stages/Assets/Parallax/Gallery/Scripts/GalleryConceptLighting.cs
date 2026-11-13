@@ -39,6 +39,8 @@ namespace ShadeLink.Gallery
             int index=room==0?0:room==1?4:room==2?3:6;
             Vector4 source=room==2?PortraitPositions[index]:Positions[index];
             position=source;target=room==2?PortraitTargets[index]:Targets[index];range=source.w;
+            if(GalleryBottleBalanceCourse.Requested())
+            {position=GalleryBottleBalanceCourse.ShiftLegacy(position);target=GalleryBottleBalanceCourse.ShiftLegacy(target);}
             fov=room==0?92:room==2?96:116;
         }
         public static void Configure(GalleryGame game)
@@ -166,7 +168,9 @@ namespace ShadeLink.Gallery
             colors[5].w=4.2f;
             colors[6].w=8;
             Shader.SetGlobalInt("_MuseumLightCount",8);
-            Shader.SetGlobalVectorArray("_MuseumLightPositionRange",Positions);
+            var effectivePositions=(Vector4[])Positions.Clone();
+            if(game!=null&&game.bottleBalance!=null)for(int i=6;i<effectivePositions.Length;i++)effectivePositions[i].z+=GalleryBottleBalanceLayout.AddedLength;
+            Shader.SetGlobalVectorArray("_MuseumLightPositionRange",effectivePositions);
             Shader.SetGlobalVectorArray("_MuseumLightColorIntensity",colors);
             Shader.SetGlobalVectorArray("_MuseumLightDirectionCone",directions);
             var portraitDirections=new Vector4[PortraitPositions.Length];
@@ -177,7 +181,9 @@ namespace ShadeLink.Gallery
                 portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(48*Mathf.Deg2Rad));
                 portraitColors[i]=new Vector4(1,.65f,.32f,i<2?5.0f:7.0f);
             }
-            Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",PortraitPositions);
+            var effectivePortrait=(Vector4[])PortraitPositions.Clone();
+            if(game!=null&&game.bottleBalance!=null)for(int i=2;i<effectivePortrait.Length;i++)effectivePortrait[i].z+=GalleryBottleBalanceLayout.AddedLength;
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",effectivePortrait);
             Shader.SetGlobalVectorArray("_MuseumPortraitLightDirectionCone",portraitDirections);
             Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitColors);
             Shader.SetGlobalInt("_MuseumPortraitLightCount",PortraitPositions.Length);

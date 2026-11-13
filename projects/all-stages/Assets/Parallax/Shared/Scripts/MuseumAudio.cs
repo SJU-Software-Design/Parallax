@@ -40,7 +40,22 @@ namespace ShadeLink
             {"hands.settle",new Definition("HandsSettle166",.32f)},
             {"ui.confirm",new Definition("UIConfirm42",.22f,true)},
             {"ui.cancel",new Definition("UICancel142",.22f,true)},
-            {"ui.error",new Definition("UIError145",.20f,true)}
+            {"ui.error",new Definition("UIError145",.20f,true)},
+            {"dike.glass.contact",new Definition("Dike/D02_BookInsideBottle_Tap",.70f)},
+            {"dike.bottle.small",new Definition("Dike/D04_BottleFloor_SmallMedium_Short",.38f)},
+            {"dike.bottle.medium",new Definition("Dike/D04_BottleFloor_SmallMedium_Short",.38f)},
+            {"dike.bottle.large",new Definition("Dike/D09_BottleFloor_Large",.44f)},
+            {"dike.book.small",new Definition("Dike/D14_BookFloor_Small",.38f)},
+            {"dike.book.medium",new Definition("Dike/D11_BookFloor_MediumLarge",.40f)},
+            {"dike.book.large",new Definition("Dike/D11_BookFloor_MediumLarge",.40f)},
+            {"dike.scale.motion",new Definition("Dike/D21_ScalePivot",.25f)},
+            {"dike.glow",new Definition("Dike/G01_StatueGlow",.40f)},
+            {"dike.sword.land",new Definition("Dike/D28_SwordFirstLanding_OneHit",.45f)},
+            {"dike.sword.pickup",new Definition("Dike/D30_SwordPickup",.50f)},
+            {"dike.sword.insert",new Definition("Dike/D33_SwordInsert_Scrape",.32f)},
+            {"dike.sword.seat",new Definition("Dike/D36_SwordSeat",.42f)},
+            {"dike.socket.rumble",new Definition("Dike/D37_SocketRumble_Slow",.38f)},
+            {"dike.door.open",new Definition("Dike/D42_DoorOpen_Existing161",.32f)}
         };
         readonly Dictionary<string,AudioClip> clips=new Dictionary<string,AudioClip>();
         readonly Dictionary<Rigidbody,string> materials=new Dictionary<Rigidbody,string>();
@@ -147,10 +162,10 @@ namespace ShadeLink
             reverb.decayHFRatio=.65f;reverb.reflectionsLevel=-2200;reverb.reverbLevel=-2300;reverb.enabled=false;
             var voice=new Voice{source=source,reverb=reverb};voices.Add(voice);return voice;
         }
-        public static void StopOwner(Component owner)
+        public static void StopOwner(Component owner,string cue=null)
         {
             if(!Available||owner==null)return;
-            foreach(var voice in Instance.voices)if(voice.owner==owner)
+            foreach(var voice in Instance.voices)if(voice.owner==owner&&(cue==null||voice.cue==cue))
             {voice.source.Stop();voice.cue=null;voice.owner=null;voice.paused=false;}
         }
         public void SetGameplayRunning(bool value)

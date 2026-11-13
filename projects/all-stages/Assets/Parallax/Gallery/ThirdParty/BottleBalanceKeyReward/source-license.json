@@ -1,0 +1,48 @@
+{
+  "recordDate": "2026-11-13",
+  "purpose": "Approved museum balance reward key and door keyhole; no new sound playback",
+  "externalKey": {
+    "title": "Antique key",
+    "author": "Savino",
+    "license": "CC0 1.0 Universal",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sourcePage": "https://opengameart.org/content/antique-key",
+    "sourcePageAccessibleMirror": "https://lpc.opengameart.org/content/antique-key",
+    "downloadUrl": "https://lpc.opengameart.org/sites/default/files/low_2.obj",
+    "originalFileName": "low_2.obj",
+    "projectFile": "Assets/Parallax/Gallery/Resources/BottleBalance/Models/RewardAntiqueKey.obj",
+    "sha256": "b8b62e4cda17c18bf5066a689d17cc4981b4046d4aecb8fe64babcb28ebf4d2a",
+    "sourceFaces": 304,
+    "sourceVertices": 304,
+    "sourceHasTextures": false,
+    "meshModified": false,
+    "runtimeAdaptation": "Original model normalized to 0.18m length, bow/bit handedness aligned, existing museum brass material substituted. No synthetic replacement.",
+    "evidence": ["savino-antique-key-source.html", "cc0-1.0-source.html"],
+    "credit": "Antique key — Savino — CC0 1.0 — https://opengameart.org/content/antique-key"
+  },
+  "previouslyShownCandidate": {
+    "title": "CC0 - Keys - low poly PBR 3d model",
+    "author": "plaggy",
+    "sourcePage": "https://plaggy.sellfy.store/p/cc0-keys-3d/",
+    "listedPriceUSD": 0,
+    "listedLicense": "CC0 1.0 Universal",
+    "notAcquired": true,
+    "reason": "The official Download now button submits product epazoy to a Sellfy freebie checkout. No anonymous original-file URL was exposed. No email, form submission, checkout or purchase was performed.",
+    "usedInGame": false,
+    "selectionChangeDisclosureRequired": true
+  },
+  "originalKeyholePlate": {
+    "title": "Original oval brass keyhole plate",
+    "origin": "Project-authored geometry from the approved 2026-11-13 planning prototype; not a third-party stock asset",
+    "projectFile": "Assets/Parallax/Gallery/Resources/BottleBalance/Models/original_oval_brass_keyhole_plate.obj",
+    "sha256": "a45d7893d0c270a2104da872b344de6a01536e01b515ad72ef3875b4fb06e5b9",
+    "plateDimensionsMetres": [0.08, 0.18, 0.006],
+    "geometry": "Genuine through hole: upper circle plus tapered vertical slot; two slotted mounting screws",
+    "materialAdaptation": "Existing museum brass and dark brass materials"
+  },
+  "sounds": {
+    "clipsAdded": false,
+    "clipsPlayed": false,
+    "hooksOnly": ["HatchOpened", "TrayExtended", "KeyTaken", "KeyInserted", "KeyTurned", "LockReleased"]
+  }
+}

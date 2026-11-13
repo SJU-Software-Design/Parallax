@@ -1,0 +1,1135 @@
+{
+  "source": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeSword/Original/sword.fbx",
+  "version": 7400,
+  "sourceSha256": "dc94d6513c34385e1b1c99c139ee72a318169ed9989e8cf2896f208b052e9ebd",
+  "globalSettings": [
+    [
+      "UpAxis",
+      "int",
+      "Integer",
+      "",
+      1
+    ],
+    [
+      "UpAxisSign",
+      "int",
+      "Integer",
+      "",
+      1
+    ],
+    [
+      "FrontAxis",
+      "int",
+      "Integer",
+      "",
+      2
+    ],
+    [
+      "FrontAxisSign",
+      "int",
+      "Integer",
+      "",
+      1
+    ],
+    [
+      "CoordAxis",
+      "int",
+      "Integer",
+      "",
+      0
+    ],
+    [
+      "CoordAxisSign",
+      "int",
+      "Integer",
+      "",
+      1
+    ],
+    [
+      "OriginalUpAxis",
+      "int",
+      "Integer",
+      "",
+      -1
+    ],
+    [
+      "OriginalUpAxisSign",
+      "int",
+      "Integer",
+      "",
+      1
+    ],
+    [
+      "UnitScaleFactor",
+      "double",
+      "Number",
+      "",
+      1
+    ],
+    [
+      "OriginalUnitScaleFactor",
+      "double",
+      "Number",
+      "",
+      1
+    ],
+    [
+      "AmbientColor",
+      "ColorRGB",
+      "Color",
+      "",
+      0,
+      0,
+      0
+    ],
+    [
+      "DefaultCamera",
+      "KString",
+      "",
+      "",
+      "Producer Perspective"
+    ],
+    [
+      "TimeMode",
+      "enum",
+      "",
+      "",
+      11
+    ],
+    [
+      "TimeSpanStart",
+      "KTime",
+      "Time",
+      "",
+      0
+    ],
+    [
+      "TimeSpanStop",
+      "KTime",
+      "Time",
+      "",
+      46186158000
+    ],
+    [
+      "CustomFrameRate",
+      "double",
+      "Number",
+      "",
+      24
+    ]
+  ],
+  "geometry": [
+    {
+      "id": 490985266,
+      "name": "Plane.001\u0000\u0001Geometry",
+      "kind": "Mesh",
+      "vertices": 111,
+      "triangleCount": 218,
+      "bounds": {
+        "min": [
+          -2.2448768615722656,
+          -0.09824606776237488,
+          -0.019460607320070267
+        ],
+        "max": [
+          2.107916831970215,
+          0.11237994581460953,
+          0.019460607320070267
+        ],
+        "size": [
+          4.3527936935424805,
+          0.2106260135769844,
+          0.03892121464014053
+        ]
+      },
+      "layers": [
+        {
+          "type": "LayerElementNormal",
+          "name": "",
+          "mapping": "ByPolygonVertex",
+          "reference": "Direct"
+        },
+        {
+          "type": "LayerElementUV",
+          "name": "UVMap",
+          "mapping": "ByPolygonVertex",
+          "reference": "IndexToDirect"
+        },
+        {
+          "type": "LayerElementMaterial",
+          "name": "",
+          "mapping": "AllSame",
+          "reference": "IndexToDirect"
+        }
+      ]
+    },
+    {
+      "id": 887163259,
+      "name": "Cylinder\u0000\u0001Geometry",
+      "kind": "Mesh",
+      "vertices": 640,
+      "triangleCount": 1246,
+      "bounds": {
+        "min": [
+          -1.2811442613601685,
+          -0.7163175940513611,
+          -8.863866806030273
+        ],
+        "max": [
+          1.2811442613601685,
+          0.7163175940513611,
+          5.054111003875732
+        ],
+        "size": [
+          2.562288522720337,
+          1.4326351881027222,
+          13.917977809906006
+        ]
+      },
+      "layers": [
+        {
+          "type": "LayerElementNormal",
+          "name": "",
+          "mapping": "ByPolygonVertex",
+          "reference": "Direct"
+        },
+        {
+          "type": "LayerElementUV",
+          "name": "UVMap",
+          "mapping": "ByPolygonVertex",
+          "reference": "IndexToDirect"
+        },
+        {
+          "type": "LayerElementMaterial",
+          "name": "",
+          "mapping": "AllSame",
+          "reference": "IndexToDirect"
+        }
+      ]
+    },
+    {
+      "id": 750672604,
+      "name": "Cube.005\u0000\u0001Geometry",
+      "kind": "Mesh",
+      "vertices": 93,
+      "triangleCount": 182,
+      "bounds": {
+        "min": [
+          -1.606947898864746,
+          -0.8977301716804504,
+          -0.982463002204895
+        ],
+        "max": [
+          0.8880661725997925,
+          0.898835301399231,
+          0.9821988940238953
+        ],
+        "size": [
+          2.4950140714645386,
+          1.7965654730796814,
+          1.9646618962287903
+        ]
+      },
+      "layers": [
+        {
+          "type": "LayerElementNormal",
+          "name": "",
+          "mapping": "ByPolygonVertex",
+          "reference": "Direct"
+        },
+        {
+          "type": "LayerElementUV",
+          "name": "UVMap",
+          "mapping": "ByPolygonVertex",
+          "reference": "IndexToDirect"
+        },
+        {
+          "type": "LayerElementMaterial",
+          "name": "",
+          "mapping": "AllSame",
+          "reference": "IndexToDirect"
+        }
+      ]
+    },
+    {
+      "id": 829993434,
+      "name": "Cube.001\u0000\u0001Geometry",
+      "kind": "Mesh",
+      "vertices": 197,
+      "triangleCount": 390,
+      "bounds": {
+        "min": [
+          -0.6856811046600342,
+          -0.658374011516571,
+          -8.368911743164062
+        ],
+        "max": [
+          0.5847220420837402,
+          0.658374011516571,
+          7.560690879821777
+        ],
+        "size": [
+          1.2704031467437744,
+          1.316748023033142,
+          15.92960262298584
+        ]
+      },
+      "layers": [
+        {
+          "type": "LayerElementNormal",
+          "name": "",
+          "mapping": "ByPolygonVertex",
+          "reference": "Direct"
+        },
+        {
+          "type": "LayerElementUV",
+          "name": "UVMap",
+          "mapping": "ByPolygonVertex",
+          "reference": "IndexToDirect"
+        },
+        {
+          "type": "LayerElementMaterial",
+          "name": "",
+          "mapping": "AllSame",
+          "reference": "IndexToDirect"
+        }
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": 937641884,
+      "name": "blade\u0000\u0001Model",
+      "kind": "Mesh",
+      "properties": [
+        [
+          "Lcl Translation",
+          "Lcl Translation",
+          "",
+          "A",
+          0.018259381875395775,
+          -1.0542336448260414e-10,
+          -0.005161577370017767
+        ],
+        [
+          "Lcl Rotation",
+          "Lcl Rotation",
+          "",
+          "A",
+          89.999995674289,
+          89.999995674289,
+          0
+        ],
+        [
+          "Lcl Scaling",
+          "Lcl Scaling",
+          "",
+          "A",
+          0.45278993248939514,
+          0.45278990268707275,
+          0.45278990268707275
+        ],
+        [
+          "DefaultAttributeIndex",
+          "int",
+          "Integer",
+          "",
+          0
+        ],
+        [
+          "InheritType",
+          "enum",
+          "",
+          "",
+          1
+        ]
+      ]
+    },
+    {
+      "id": 325400037,
+      "name": "hilt\u0000\u0001Model",
+      "kind": "Mesh",
+      "properties": [
+        [
+          "Lcl Translation",
+          "Lcl Translation",
+          "",
+          "A",
+          0.024350792169570923,
+          -1.0542337142149805e-10,
+          -0.7846761345863342
+        ],
+        [
+          "Lcl Rotation",
+          "Lcl Rotation",
+          "",
+          "A",
+          0,
+          179.999991348578,
+          0
+        ],
+        [
+          "Lcl Scaling",
+          "Lcl Scaling",
+          "",
+          "A",
+          0.025520045310258865,
+          0.03571084514260292,
+          0.025520045310258865
+        ],
+        [
+          "DefaultAttributeIndex",
+          "int",
+          "Integer",
+          "",
+          0
+        ],
+        [
+          "InheritType",
+          "enum",
+          "",
+          "",
+          1
+        ]
+      ]
+    },
+    {
+      "id": 808173737,
+      "name": "pommel\u0000\u0001Model",
+      "kind": "Mesh",
+      "properties": [
+        [
+          "Lcl Translation",
+          "Lcl Translation",
+          "",
+          "A",
+          0.024418562650680542,
+          0.00012663123197853565,
+          -0.9615979790687561
+        ],
+        [
+          "Lcl Rotation",
+          "Lcl Rotation",
+          "",
+          "A",
+          0,
+          89.999995674289,
+          0
+        ],
+        [
+          "Lcl Scaling",
+          "Lcl Scaling",
+          "",
+          "A",
+          0.04240540415048599,
+          0.04240540415048599,
+          0.04240540415048599
+        ],
+        [
+          "DefaultAttributeIndex",
+          "int",
+          "Integer",
+          "",
+          0
+        ],
+        [
+          "InheritType",
+          "enum",
+          "",
+          "",
+          1
+        ]
+      ]
+    },
+    {
+      "id": 520142753,
+      "name": "Cube\u0000\u0001Model",
+      "kind": "Mesh",
+      "properties": [
+        [
+          "Lcl Translation",
+          "Lcl Translation",
+          "",
+          "A",
+          0.03032187931239605,
+          -1.0542337142149805e-10,
+          -0.5456971526145935
+        ],
+        [
+          "Lcl Rotation",
+          "Lcl Rotation",
+          "",
+          "A",
+          0,
+          89.999995674289,
+          0
+        ],
+        [
+          "Lcl Scaling",
+          "Lcl Scaling",
+          "",
+          "A",
+          0.029227104038000107,
+          0.029227104038000107,
+          0.029227104038000107
+        ],
+        [
+          "DefaultAttributeIndex",
+          "int",
+          "Integer",
+          "",
+          0
+        ],
+        [
+          "InheritType",
+          "enum",
+          "",
+          "",
+          1
+        ]
+      ]
+    },
+    {
+      "id": 929014097,
+      "name": "Empty.001\u0000\u0001Model",
+      "kind": "Null",
+      "properties": [
+        [
+          "Lcl Rotation",
+          "Lcl Rotation",
+          "",
+          "A",
+          -90.00000250447816,
+          0,
+          0
+        ],
+        [
+          "Lcl Scaling",
+          "Lcl Scaling",
+          "",
+          "A",
+          140,
+          140,
+          139.99998474121094
+        ],
+        [
+          "DefaultAttributeIndex",
+          "int",
+          "Integer",
+          "",
+          0
+        ],
+        [
+          "InheritType",
+          "enum",
+          "",
+          "",
+          1
+        ]
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": 715545707,
+      "name": "SwordBlade\u0000\u0001Material",
+      "properties": [
+        [
+          "DiffuseColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "AmbientColor",
+          "Color",
+          "",
+          "A",
+          0.006370251066982746,
+          0.006370251066982746,
+          0.006370251066982746
+        ],
+        [
+          "AmbientFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "BumpFactor",
+          "double",
+          "Number",
+          "",
+          2
+        ],
+        [
+          "SpecularColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "SpecularFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "Shininess",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ShininessExponent",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ReflectionColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ]
+      ]
+    },
+    {
+      "id": 194275302,
+      "name": "HiltMaterial\u0000\u0001Material",
+      "properties": [
+        [
+          "DiffuseColor",
+          "Color",
+          "",
+          "A",
+          0,
+          0,
+          0
+        ],
+        [
+          "AmbientColor",
+          "Color",
+          "",
+          "A",
+          0.006370251066982746,
+          0.006370251066982746,
+          0.006370251066982746
+        ],
+        [
+          "AmbientFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "SpecularColor",
+          "Color",
+          "",
+          "A",
+          0,
+          0,
+          0
+        ],
+        [
+          "SpecularFactor",
+          "Number",
+          "",
+          "A",
+          0.07954546064138412
+        ],
+        [
+          "Shininess",
+          "Number",
+          "",
+          "A",
+          17.487599861523506
+        ],
+        [
+          "ShininessExponent",
+          "Number",
+          "",
+          "A",
+          17.487599861523506
+        ],
+        [
+          "ReflectionFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ]
+      ]
+    },
+    {
+      "id": 210459473,
+      "name": "Pommel\u0000\u0001Material",
+      "properties": [
+        [
+          "DiffuseColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "AmbientColor",
+          "Color",
+          "",
+          "A",
+          0.006370251066982746,
+          0.006370251066982746,
+          0.006370251066982746
+        ],
+        [
+          "AmbientFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "BumpFactor",
+          "double",
+          "Number",
+          "",
+          0
+        ],
+        [
+          "SpecularColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "SpecularFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "Shininess",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ShininessExponent",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ReflectionColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ]
+      ]
+    },
+    {
+      "id": 881376666,
+      "name": "SwordGuard\u0000\u0001Material",
+      "properties": [
+        [
+          "DiffuseColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "AmbientColor",
+          "Color",
+          "",
+          "A",
+          0.006370251066982746,
+          0.006370251066982746,
+          0.006370251066982746
+        ],
+        [
+          "AmbientFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "SpecularColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ],
+        [
+          "SpecularFactor",
+          "Number",
+          "",
+          "A",
+          0
+        ],
+        [
+          "Shininess",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ShininessExponent",
+          "Number",
+          "",
+          "A",
+          20.661160965596537
+        ],
+        [
+          "ReflectionColor",
+          "Color",
+          "",
+          "A",
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929
+        ]
+      ]
+    }
+  ],
+  "embeddedTextures": [
+    {
+      "name": "BladeColorTexture.png",
+      "sourceVideo": "BladeColorTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/BladeColorTexture.png",
+      "bytes": 422384,
+      "sha256": "0f6d92b25ff43634e6058da83fb51ea9e27d15579a8b658c163f8ae6b3c22510",
+      "pngDimensions": [
+        2048,
+        6144
+      ]
+    },
+    {
+      "name": "BladeNormalsTexture.png",
+      "sourceVideo": "BladeNormalsTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/BladeNormalsTexture.png",
+      "bytes": 458151,
+      "sha256": "16a708c5fa14898ea7ddd9c2d4fe898ae79f208860d874e711f1558a84a4363d",
+      "pngDimensions": [
+        2048,
+        6144
+      ]
+    },
+    {
+      "name": "BladeRoughnessTexture.png",
+      "sourceVideo": "BladeRoughnessTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/BladeRoughnessTexture.png",
+      "bytes": 5055678,
+      "sha256": "eec7d09c938f3af50cd6d6c7578134b8a75fa139875947008a810bf0348ebc60",
+      "pngDimensions": [
+        2048,
+        6144
+      ]
+    },
+    {
+      "name": "hiltColorTexture.png",
+      "sourceVideo": "hiltColorTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/hiltColorTexture.png",
+      "bytes": 85727,
+      "sha256": "164e830ced1382a6b31fce62e219d216b619e068009d502235afd3b64d28251c",
+      "pngDimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "hiltNormalTexture.png",
+      "sourceVideo": "hiltNormalTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/hiltNormalTexture.png",
+      "bytes": 3579487,
+      "sha256": "60b83d3d252f90d83567d71c1af635ac2e9b2bf569e9c4eae11992be69c0c190",
+      "pngDimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": "PommelTexture.png",
+      "sourceVideo": "PommelTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/PommelTexture.png",
+      "bytes": 483393,
+      "sha256": "d9ab30d1b319568a65dd71cfb5e2b5960568a153259872425da432cb069cbb77",
+      "pngDimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "PommelRoughnessTexture.png",
+      "sourceVideo": "PommelRoughnessTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/PommelRoughnessTexture.png",
+      "bytes": 672493,
+      "sha256": "f7e307156e6d2d6e070fea223dfbcead54d8877484234bf1d35746aa16afceac",
+      "pngDimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "GuardColorTexture.png",
+      "sourceVideo": "GuardColorTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/GuardColorTexture.png",
+      "bytes": 1664923,
+      "sha256": "e8c42322fd17f8b6eba334c58d75fe24bd2a5083de93322b8fcb4e3bf7f58ee6",
+      "pngDimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "GuardNormalTexture.png",
+      "sourceVideo": "GuardNormalTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/GuardNormalTexture.png",
+      "bytes": 571704,
+      "sha256": "a5f7fa2c7cfd44403619d04351133424d80fe8da83b79b900c4737eefbe66405",
+      "pngDimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": "GuardRoughnessTexture.png",
+      "sourceVideo": "GuardRoughnessTexture\u0000\u0001Video",
+      "sourceRelativeFilename": "sword.fbm/GuardRoughnessTexture.png",
+      "bytes": 5067580,
+      "sha256": "5aaf1787efda0b6ff6d849129503c1252153ae519307ced159eb9332e09ee132",
+      "pngDimensions": [
+        4096,
+        4096
+      ]
+    }
+  ],
+  "connections": [
+    [
+      "OO",
+      937641884,
+      929014097
+    ],
+    [
+      "OO",
+      325400037,
+      929014097
+    ],
+    [
+      "OO",
+      808173737,
+      929014097
+    ],
+    [
+      "OO",
+      520142753,
+      929014097
+    ],
+    [
+      "OO",
+      929014097,
+      0
+    ],
+    [
+      "OO",
+      490985266,
+      937641884
+    ],
+    [
+      "OO",
+      887163259,
+      325400037
+    ],
+    [
+      "OO",
+      750672604,
+      808173737
+    ],
+    [
+      "OO",
+      829993434,
+      520142753
+    ],
+    [
+      "OO",
+      467636013,
+      929014097
+    ],
+    [
+      "OO",
+      715545707,
+      937641884
+    ],
+    [
+      "OO",
+      194275302,
+      325400037
+    ],
+    [
+      "OO",
+      210459473,
+      808173737
+    ],
+    [
+      "OO",
+      881376666,
+      520142753
+    ],
+    [
+      "OP",
+      103767509,
+      715545707,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      662264225,
+      715545707,
+      "NormalMap"
+    ],
+    [
+      "OP",
+      269437917,
+      715545707,
+      "ShininessExponent"
+    ],
+    [
+      "OP",
+      287015151,
+      194275302,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      880572849,
+      194275302,
+      "NormalMap"
+    ],
+    [
+      "OP",
+      113558799,
+      210459473,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      436484312,
+      210459473,
+      "ShininessExponent"
+    ],
+    [
+      "OP",
+      449892487,
+      881376666,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      845496482,
+      881376666,
+      "NormalMap"
+    ],
+    [
+      "OP",
+      399693825,
+      881376666,
+      "ShininessExponent"
+    ],
+    [
+      "OO",
+      868844669,
+      103767509
+    ],
+    [
+      "OO",
+      750524526,
+      662264225
+    ],
+    [
+      "OO",
+      684571504,
+      269437917
+    ],
+    [
+      "OO",
+      684571504,
+      269437917
+    ],
+    [
+      "OO",
+      722487956,
+      287015151
+    ],
+    [
+      "OO",
+      140849159,
+      880572849
+    ],
+    [
+      "OO",
+      978638018,
+      113558799
+    ],
+    [
+      "OO",
+      528781119,
+      436484312
+    ],
+    [
+      "OO",
+      528781119,
+      436484312
+    ],
+    [
+      "OO",
+      12075094,
+      449892487
+    ],
+    [
+      "OO",
+      130259414,
+      845496482
+    ],
+    [
+      "OO",
+      781476108,
+      399693825
+    ],
+    [
+      "OO",
+      781476108,
+      399693825
+    ]
+  ]
+}

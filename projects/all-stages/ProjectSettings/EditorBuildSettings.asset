@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Parallax/Gallery/Scenes/Gallery.unity
     guid: 774882fea5996c24fb378977048db17e
   - enabled: 1
+    path: Assets/Parallax/Beach/Scenes/Beach.unity
+    guid: f16d1765311651246a135fdefc7b62b1
+  - enabled: 0
     path: Assets/Parallax/Library/Scenes/Library.unity
     guid: aebdc6feb567c734b8141ba520cda23a
   m_configObjects: {}

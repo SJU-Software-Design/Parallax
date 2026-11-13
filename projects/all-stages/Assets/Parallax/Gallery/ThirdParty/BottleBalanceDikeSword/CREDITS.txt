@@ -1,0 +1,8 @@
+Realistic Medieval Long Sword / Brescia Spadona — Izkeas
+Official source: https://izkeas.itch.io/realistic-medieval-long-sword
+Original author marks this work CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+Official description: a realistic model of the Brescia Spadona from the 1400s, with 4K textures.
+Acquisition: public official itch.io free download route, no account, registration, purchase, or payment.
+Original sword.fbx retained unchanged. Blender original bytes retained as sword.blend.bytes to avoid Unity Blender importer dependency; original .blend extension is preserved in artifacts evidence.
+Source geometry/material adaptation for the project is recorded by the ConceptSword preparation and its manifests. The source steel blade and wrapped grip retain their UVs and PBR textures; their original geometry is uniformly normalized. The original guard and faceted pommel are replaced with project-authored beveled gold crossguard, round medallion, wheel pommel and grip rings. These additions and the generated concept are not unmodified external source assets.
+Official preview images are source-linked research reference, separate from the model package license claim.
