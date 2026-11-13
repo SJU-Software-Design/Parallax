@@ -18,6 +18,7 @@ namespace ShadeLink.Beach
         public BeachLightGate lightGate, waterGate;
         public BeachShadowHarbor shadowHarbor;
         public BeachBoat boat;
+        public BeachSkyShip skyShip;
         public BeachCastleRestoration castleRoute;
         public bool castleRest;
         public bool adjustingMirror;
@@ -53,6 +54,7 @@ namespace ShadeLink.Beach
 
         void Awake()
         {
+            if(skyShip!=null)skyShip.Initialize(this);
             FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
             gameObject.AddComponent<BeachWaterAppearance>();
             var arguments=Environment.GetCommandLineArgs();
@@ -74,7 +76,7 @@ namespace ShadeLink.Beach
             foreach(var prop in props)prop.placement.ResetPlaced();
             lighting.Rebuild();SyncView();
             gameObject.AddComponent<BeachHud>().game=this;
-            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won,()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,BeachLighting.ToSun);
+            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(skyShip==null||!skyShip.Departing),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,BeachLighting.ToSun);
             foreach(var prop in props){var floatingProp=prop;prop.placement.WaterSupport=()=>BeachWater.Supports(floatingProp);}
             gameObject.AddComponent<BeachPlacementPreview>().game=this;
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
@@ -110,6 +112,7 @@ namespace ShadeLink.Beach
             adjustingMirror=false;if(lightGate!=null)lightGate.Restore();if(waterGate!=null)waterGate.Restore();castleRest=false;
             if(shadowHarbor!=null)shadowHarbor.Restore();
             if(castleRoute!=null)castleRoute.Restore();
+            if(skyShip!=null)skyShip.ResetFlight();
             checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;lesson?.Restart();
             PlacePlayer(BeachWorld.Checkpoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
         }
@@ -120,6 +123,7 @@ namespace ShadeLink.Beach
             adjustingMirror=false;if(checkpoint==0&&lightGate!=null)lightGate.Restore();if(checkpoint==2&&waterGate!=null)waterGate.Restore();if(checkpoint==3)castleRest=false;
             if(checkpoint==2&&shadowHarbor!=null)shadowHarbor.Restore();
             if(checkpoint==3&&castleRoute!=null)castleRoute.Restore();
+            if(checkpoint==3&&skyShip!=null)skyShip.ResetFlight();
             PlacePlayer(BeachWorld.Checkpoints[checkpoint]);exposure=0;lighting.Synchronize();
             Tell("현재 구역의 사물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
         }
@@ -191,6 +195,12 @@ namespace ShadeLink.Beach
         {
             view.transform.position=controller.transform.position+Vector3.up*1.55f;
             view.transform.rotation=Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
+            if(skyShip!=null&&skyShip.Flying)
+            {
+                view.transform.position=controller.transform.position+skyShip.transform.up*1.55f;
+                view.transform.rotation=skyShip.ViewRotation*view.transform.rotation;
+                skyShip.ApplyDepartureView(view);
+            }
             if(player!=null)player.feet=controller.transform.position;
         }
         void Update()
@@ -202,6 +212,11 @@ namespace ShadeLink.Beach
             if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
             var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
+            if(checkpoint==3&&held==null&&skyShip!=null&&Input.GetKeyDown(KeyCode.E))skyShip.TryLaunch();
+            if(skyShip!=null&&skyShip.Flying)
+            {
+                PlayerControls.ApplyLook(ref yaw,ref pitch,frame.Look);Tick(Time.deltaTime,Vector2.zero);return;
+            }
             if(checkpoint==2&&held==null&&boat!=null&&Input.GetKeyDown(KeyCode.E))boat.TryLaunch();
             motor.SmoothKeyboardInput=!controls.UsingGamepad;
             Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
@@ -235,6 +250,7 @@ namespace ShadeLink.Beach
         {
             if(automated||!active||won)return;
             SyncView();AdvanceHeld(Time.deltaTime);
+            if(skyShip!=null&&skyShip.Flying)return;
             if(pendingDrop){pendingDrop=false;Drop();}
             if(held==null)UpdateAim();
         }
@@ -490,6 +506,7 @@ namespace ShadeLink.Beach
         public void Tick(float dt,Vector2 move,bool jump=false)
         {
             if(!active||won)return;dt=Mathf.Clamp(dt,0,.05f);elapsed+=dt;
+            if(skyShip!=null&&skyShip.Flying){skyShip.Tick(dt);SyncView();return;}
             foreach(var prop in props)prop.placement.Tick(dt);
             lighting.Synchronize();if(lightGate!=null)lightGate.Tick(dt,lighting,controller);if(waterGate!=null)waterGate.Tick(dt,lighting,controller);
             if(shadowHarbor!=null)shadowHarbor.Tick(dt);
@@ -509,7 +526,7 @@ namespace ShadeLink.Beach
             int next=player.feet.z>73&&waterGate.unlocked?3:player.feet.z>48?2:player.feet.z>24&&lightGate.unlocked?1:0;
             if(next>checkpoint&&safe&&player.grounded){checkpoint=next;Tell("0"+(checkpoint+1)+" 구역 저장 · R 구역 재시도",6);}
             if(castleRoute!=null)castleRoute.Tick(dt);
-            if(checkpoint==3&&lightGate.unlocked&&waterGate.unlocked&&castleRoute!=null&&castleRoute.SecondRestored&&castleRoute.IsAtSummit(player.feet)&&player.grounded&&safe)
+            if(skyShip==null&&checkpoint==3&&lightGate.unlocked&&waterGate.unlocked&&castleRoute!=null&&castleRoute.SecondRestored&&castleRoute.IsAtSummit(player.feet)&&player.grounded&&safe)
             {won=true;Debug.Log("BEACH_CLEAR v"+Version+" feet="+player.feet);Pause();}
             SyncView();
         }
@@ -527,7 +544,7 @@ namespace ShadeLink.Beach
         BeachProp IObjectInteractionHost<BeachProp>.Held { get => held; set => held=value; }
         BeachProp IObjectInteractionHost<BeachProp>.Aimed { get => aimed; set => aimed=value; }
         int IObjectInteractionHost<BeachProp>.InteractionMask => BeachWorld.PhysicalMask;
-        bool IObjectInteractionHost<BeachProp>.CanInteract => active&&!won&&(shadowHarbor==null||!shadowHarbor.Materializing);
+        bool IObjectInteractionHost<BeachProp>.CanInteract => active&&!won&&(skyShip==null||!skyShip.Flying)&&(shadowHarbor==null||!shadowHarbor.Materializing);
         void IObjectInteractionHost<BeachProp>.AimChanged(RaycastHit hit)
         {
             // Beach mirrors are movable props; aiming at their head must pick up

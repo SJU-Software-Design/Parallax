@@ -75,6 +75,8 @@ namespace ShadeLink.Editor
             }
             ConfigureWood(game);ConfigureFlowers(game);ConfigureCastleSurface(game);ConfigureParasols(game);
             ConfigureCoastalDetails(game);
+            ConfigureSpawnPirateShip(game);
+            ConfigureSkyHarbor(game);
             EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
             PlayerSettings.productName="Parallax - Last Beach v"+BeachGame.Version;PlayerSettings.bundleVersion=BeachGame.Version;PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true)};

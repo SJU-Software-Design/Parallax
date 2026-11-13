@@ -96,3 +96,43 @@ around zero so the reflection does not lean in one direction across the whole se
 The selected B appearance adds depth-dependent RGB absorption (0.55, 0.24, 0.14
 per metre) and muted teal scattering (0.045, 0.19, 0.21). Shallow water stays clear;
 deeper water gently subdues the warm sand color and detail beneath the ripples.
+
+Spawn-side pirate ship — 2026-11-13
+
+Source: Stylized Pirate Ship 1.0, Comeback
+https://assetstore.unity.com/packages/3d/vehicles/sea/stylized-pirate-ship-200192
+License: Standard Unity Asset Store EULA
+https://unity.com/legal/as-terms
+
+The original ship prefab, FBX, Standard materials and textures are retained under
+Assets/ThirdParty/StylizedPirateShip. Source paths and SHA256 hashes are recorded
+in source.json. The vendor demonstration scene and separate prop prefabs are not
+imported. The ship is fixed scenery offshore to the left of the starting area;
+it does not replace the playable shadow boat or add a movable puzzle object.
+BeachBuild reapplies its placement when preparing the scene.
+The FBX importer keeps mesh data readable for the runtime BeachLighting shadow
+query colliders; the original model, texture and material bytes are unchanged.
+
+Sky-ship ending — 2026-11-14
+
+A second instance of the same original pirate-ship prefab is docked behind the
+castle. The stern rail is opened and the upper deck has an actual mesh collider
+connected to a timber gangway. The original shadow-boat puzzle remains separate.
+Scene preparation recreates both the offshore decoration and the sky harbor.
+
+Boarding and E start a 24-second flight: a gradual launch acceleration, a wide
+half-turn, then a straight climbing departure. The camera eases from the rider
+to a lower exterior view over four seconds. The sky ship grows to 1.8 times its
+docked scale during this exterior shot. Far clipping, horizon size and fog are
+adjusted for that shot and restored on reset. The ending fades to black with
+centered Parallax / -The END- text. Pause freezes all timed effects.
+
+The beach keeps its original clear sky and sun direction. Experimental cloud
+renderers and their dependencies are not included. The temporary castle-wide
+ceiling and its four supports are removed completely; ordinary sunlight damage
+and real placed-object shade remain active on the harbor approach.
+
+Verification scope: BeachSkyShipValidation declares the final gangway as its
+approach fixture, then checks real deck boarding, rejected off-ship launch,
+acceleration, the half-turn and straight departure, camera framing, pause/reset,
+and ending fade/title. Earlier shade and castle puzzles are separate fixtures.
