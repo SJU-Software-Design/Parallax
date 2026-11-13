@@ -90,6 +90,12 @@ namespace ShadeLink.Editor
         {
             yield return null;yield return null;yield return null;
             game=UnityEngine.Object.FindFirstObjectByType<Beach.BeachGame>();Require(game!=null,"Saved BeachGame missing.");
+            // This suite isolates the original shade-dependent climbing lesson.
+            if(game.skyShip!=null)
+            {
+                game.skyShip.gameObject.SetActive(false);game.skyShip=null;game.lighting.Rebuild();
+                report.scope+=" Sky-ship ending is disabled in this legacy climbing fixture.";
+            }
             route=game.castleRoute;Require(route!=null,"Saved front castle restoration route missing.");fragment=route.LowerFragment;
             Require(route.LowerFragment!=null&&route.UpperFragment!=null&&route.Parasol!=null,"Both separate front fragments and the movable parasol are required.");
             Require(JumpHeld!=null,"Native held-jump input unavailable.");

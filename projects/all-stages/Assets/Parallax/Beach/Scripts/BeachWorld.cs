@@ -9,7 +9,7 @@ namespace ShadeLink.Beach
     {
         public const int PhysicalMask=~(1<<BeachLighting.ShadowLayer);
         public const float WaterBedY=-2f, PropMinimumY=WaterBedY-.03f;
-        public static readonly float[] ZoneNear={.18f,24.1f,48.1f,72.1f},ZoneFar={23.8f,47.8f,71.8f,107.8f};
+        public static readonly float[] ZoneNear={.18f,24.1f,48.1f,72.1f},ZoneFar={23.8f,47.8f,71.8f,129.8f};
         public static readonly Vector3[] Checkpoints={new Vector3(-6,0,4),new Vector3(0,0,27),new Vector3(0,0,51),new Vector3(0,0,75)};
         public static readonly Vector3 CastleRest=new Vector3(0,3.44f,91.7f),Exit=new Vector3(0,6.7f,95.4f);
         public static readonly string[] Titles={"01  태양광 산책로를 열다","02  두 섬을 잇는 비치 가든","03  그림자에서 꺼낸 그늘 배","04  원근으로 복구하는 모래성"};
