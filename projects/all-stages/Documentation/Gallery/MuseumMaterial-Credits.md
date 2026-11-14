@@ -43,3 +43,9 @@ All nine images were opened successfully and measured at **1024 × 1024 pixels**
 - Texture wrapping repeats, mipmaps are enabled and anisotropic filtering is set to 8.
 
 These material images describe surface appearance. The museum's gameplay light and safe-shadow rules are defined separately by its gameplay implementation.
+
+## Satin bronze artwork plaques
+
+`MuseumMaterials/PlaqueBronzeAlbedo` is an image generated for Parallax with the built-in `image_gen` tool, using the user-approved **A / matte bronze** plaque concept as the material reference. It is a flat base-colour image with fine horizontal brushing; the bevels, ivory lettering and rule are separate geometry/text. The museum's existing PBR shader and room environment provide the live metallic highlights. This image is not one of the Poly Haven textures above and is not attributed to a third-party asset pack.
+
+The generation prompt, target concept and final in-game renders are retained in `docs/museum-bronze-labels-review/`. The new texture's hash and provenance are recorded in `MuseumMaterials/sources.json`.

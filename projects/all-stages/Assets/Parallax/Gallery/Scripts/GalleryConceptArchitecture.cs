@@ -11,7 +11,7 @@ namespace ShadeLink.Gallery
     {
         public sealed class Palette
         {
-            public Material plaster, wall, ceiling, stone, floor, bronze, gold, wood, paper, ink;
+            public Material plaster, wall, ceiling, stone, floor, bronze, gold, wood, paper, ink, plaque, plaqueEdge, plaqueLetter;
             public IList<Material> assets;
         }
 
@@ -84,10 +84,40 @@ namespace ShadeLink.Gallery
             Vector2[] inset={new Vector2(-.025f,-.012f),new Vector2(0,-.035f)};
             Geometry("Dark linen rabbet",parent,FrameMesh(canvas,inset),p.ink,Vector3.zero);
         }
-        static void Label(Transform parent,string words,Vector3 at,float size,Color color)
+        static void PlaqueLabel(Transform parent,string words,Vector3 at,float size,bool title)
         {
             var go=new GameObject("Wall label · "+words.Replace('\n',' '));go.transform.SetParent(parent,false);go.transform.localPosition=at;
-            var label=go.AddComponent<GalleryLabel>();label.caption=words;label.size=size;label.color=color;
+            var label=go.AddComponent<GalleryLabel>();label.caption=words;label.size=size;
+            label.color=title?new Color(.96f,.87f,.68f):new Color(.85f,.76f,.58f);
+            label.fontOverride=Resources.Load<Font>("MuseumTypography/NanumMyeongjo-"+(title?"Bold":"Regular"));
+            if(label.fontOverride==null)throw new InvalidOperationException("Museum plaque font missing");
+            label.anchor=TextAnchor.MiddleLeft;label.alignment=TextAlignment.Left;label.maximumWidth=1.10f;
+        }
+        public static Transform CataloguePlaque(Transform painting,float canvasHeight,string title,string credit,string medium,Palette p)
+        {
+            var root=Group("Bronze artwork catalogue plaque",painting,new Vector3(0,-canvasHeight/2-.59f,.015f),Quaternion.identity);
+            Block(root,"Brushed bronze face",Vector3.zero,new Vector3(1.38f,.52f,.018f),p.plaque,.003f);
+            Geometry("Fine bevelled bronze rim",root,FrameMesh(new Vector2(1.36f,.50f),new[]{
+                new Vector2(0,-.010f),new Vector2(.005f,-.014f),new Vector2(.010f,-.006f),new Vector2(.010f,.009f)}),p.plaqueEdge,Vector3.zero);
+            Block(root,"Recessed inscription rule",new Vector3(0,.008f,-.012f),new Vector3(1.10f,.002f,.001f),p.plaqueLetter,.0002f);
+            PlaqueLabel(root,title,new Vector3(-.55f,.125f,-.016f),.12f,true);
+            PlaqueLabel(root,credit,new Vector3(-.55f,-.075f,-.016f),.066f,false);
+            PlaqueLabel(root,medium,new Vector3(-.55f,-.174f,-.016f),.057f,false);
+            return root;
+        }
+        public static string ArtworkMedium(string key)
+        {
+            switch(key)
+            {
+                case "Ambassadors":return "목판에 유채";
+                case "GirlWithPearlEarring":
+                case "StarryNight":
+                case "WaterLilyBridge":return "캔버스에 유채";
+                case "Scream":return "판지에 유채·템페라·파스텔";
+                case "MaeWestFace":return "종이에 구아슈·콜라주";
+                case "MaeWestRoom":return "설치 작품 · 기록 사진";
+                default:throw new ArgumentException("Museum artwork medium missing: "+key,nameof(key));
+            }
         }
         public static Transform FramedArtwork(Transform parent,string key,string title,string credit,Vector3 at,Quaternion turn,
             float maximumWidth,float maximumHeight,Palette p)
@@ -103,10 +133,7 @@ namespace ShadeLink.Gallery
             var vertices=new List<Vector3>{new Vector3(-w/2,-h/2,-.043f),new Vector3(w/2,-h/2,-.043f),new Vector3(w/2,h/2,-.043f),new Vector3(-w/2,h/2,-.043f)};
             Geometry("Original artwork reproduction",root,Finish("Canvas · "+key,vertices,new List<int>{0,2,1,0,3,2},new List<Vector2>{Vector2.zero,Vector2.right,Vector2.one,Vector2.up}),material,Vector3.zero);
             PictureFrame(root,new Vector2(w+.035f,h+.035f),p);
-            float plateWidth=Mathf.Min(2.0f,Mathf.Max(1.3f,w*.65f));
-            Block(root,"Museum catalogue plaque",new Vector3(w/2-plateWidth/2,-h/2-.43f,.015f),new Vector3(plateWidth,.29f,.035f),p.paper,.008f);
-            Label(root,title,new Vector3(w/2-plateWidth/2,-h/2-.38f,-.012f),.065f,new Color(.15f,.13f,.10f));
-            Label(root,credit,new Vector3(w/2-plateWidth/2,-h/2-.48f,-.012f),.045f,new Color(.25f,.23f,.19f));
+            CataloguePlaque(root,h,title,credit,ArtworkMedium(key),p);
             return root;
         }
 
@@ -218,8 +245,22 @@ namespace ShadeLink.Gallery
             p.wood=Material(p,"Wood","Concept museum · walnut",new Color(.38f,.23f,.12f));
             p.wood.color=new Color(.42f,.28f,.17f);
             p.bronze.color=new Color(.72f,.48f,.18f);p.bronze.SetFloat("_AmbientStrength",1.25f);
+            PlaqueMaterials(p);
             p.paper=Material(p,"Paper","Concept museum · archival board",new Color(.96f,.94f,.87f));
             p.ink=Material(p,"Ink","Concept museum · charcoal linen",new Color(.065f,.060f,.050f));return p;
+        }
+        public static void PlaqueMaterials(Palette p)
+        {
+            p.plaque=Material(p,"Bronze","Museum plaque · satin brushed bronze",new Color(1.65f,1.95f,2.30f));
+            p.plaque.mainTexture=Resources.Load<Texture2D>("MuseumMaterials/PlaqueBronzeAlbedo");
+            if(p.plaque.mainTexture==null)throw new InvalidOperationException("Museum plaque bronze texture missing");
+            p.plaque.SetFloat("_Metallic",.82f);p.plaque.SetFloat("_Roughness",.58f);
+            p.plaque.SetFloat("_ReflectionStrength",.80f);p.plaque.SetFloat("_AmbientStrength",1.20f);
+            p.plaque.SetFloat("_ExhibitLight",.10f);
+            p.plaqueEdge=Material(p,"Bronze","Museum plaque · cut bronze bevel",new Color(.80f,.62f,.36f));
+            p.plaqueEdge.SetFloat("_Roughness",.40f);
+            p.plaqueLetter=Material(p,"Paper","Museum plaque · ivory inlay",new Color(.75f,.63f,.42f));
+            p.plaqueLetter.SetFloat("_ExhibitLight",.80f);
         }
         static void Track(Transform parent,Vector3 at,float length,Palette p)
         {
