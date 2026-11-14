@@ -89,9 +89,9 @@ namespace ShadeLink.Gallery
                 new Shot{file="07-nike-rear.png",cameraPosition=new Vector3(-2,2.1f,28),lookTarget=new Vector3(-2,2.5f,24)},
                 new Shot{file="08-nike-side.png",cameraPosition=new Vector3(-6.1f,2.1f,22),lookTarget=new Vector3(-2,2.5f,24)},
                 new Shot{file="09-paintings-oblique.png",cameraPosition=new Vector3(-4.8f,1.7f,3.3f),lookTarget=new Vector3(1.3f,2.65f,12.8f)},
-                new Shot{file="11-bronze-plaque-context.png",cameraPosition=new Vector3(-1.4f,1.65f,23.1f),lookTarget=new Vector3(-7.78f,2.10f,23.1f),fieldOfView=46},
-                new Shot{file="12-bronze-plaque-closeup.png",cameraPosition=new Vector3(-5.65f,1.05f,23.1f),lookTarget=new Vector3(-7.78f,.76f,23.1f),fieldOfView=32},
-                new Shot{file="13-bronze-plaque-oblique.png",cameraPosition=new Vector3(-5.9f,1.1f,24.25f),lookTarget=new Vector3(-7.78f,.76f,23.1f),fieldOfView=35},
+                new Shot{file="11-bronze-plaque-context.png",cameraPosition=new Vector3(-1.4f,1.65f,23.8f),lookTarget=new Vector3(-7.78f,2.10f,23.8f),fieldOfView=46},
+                new Shot{file="12-bronze-plaque-closeup.png",cameraPosition=new Vector3(-5.95f,1.65f,25.45f),lookTarget=new Vector3(-7.78f,1.43f,25.45f),fieldOfView=32},
+                new Shot{file="13-bronze-plaque-oblique.png",cameraPosition=new Vector3(-5.95f,1.65f,26.6f),lookTarget=new Vector3(-7.78f,1.43f,25.45f),fieldOfView=32},
                 new Shot{file="10-through-the-arch.png",cameraPosition=new Vector3(1.8f,1.7f,8),lookTarget=new Vector3(-2,2.6f,24)}
             };
             float gameplayFov=game.view.fieldOfView;
@@ -111,6 +111,24 @@ namespace ShadeLink.Gallery
             if(plaques.Length!=12)throw new InvalidOperationException("Expected twelve bronze artwork plaques");
             foreach(var plaque in plaques)
             {
+                var frame=plaque.parent.Find("Layered gilded frame").GetComponent<MeshFilter>().sharedMesh.bounds;
+                var face=plaque.Find("Brushed bronze face").GetComponent<MeshFilter>();
+                float halfWidth=face.sharedMesh.bounds.extents.x*plaque.localScale.x,halfHeight=face.sharedMesh.bounds.extents.y*plaque.localScale.y;
+                if(halfWidth*2<.95f||halfHeight*2<.35f)
+                    throw new InvalidOperationException("Museum plaque became too small to read: "+plaque.parent.name);
+                if(Mathf.Abs(plaque.localPosition.y-halfHeight-frame.min.y)>.001f||
+                    Mathf.Abs(plaque.localPosition.x-halfWidth-frame.max.x-.12f)>.001f)
+                    throw new InvalidOperationException("Plaque is not right of and bottom-aligned with its frame: "+plaque.parent.name);
+                foreach(var other in plaques)
+                {
+                    if(other==plaque||Vector3.Dot(other.parent.forward,plaque.parent.forward)<.99f)continue;
+                    var otherFrame=other.parent.Find("Layered gilded frame").GetComponent<MeshFilter>();
+                    Bounds bounds=GeometryUtility.CalculateBounds(otherFrame.sharedMesh.vertices,plaque.parent.worldToLocalMatrix*otherFrame.transform.localToWorldMatrix);
+                    if(Mathf.Abs(bounds.center.z)>.1f)continue;
+                    if(bounds.min.x<plaque.localPosition.x+halfWidth&&bounds.max.x>plaque.localPosition.x-halfWidth&&
+                        bounds.min.y<plaque.localPosition.y+halfHeight&&bounds.max.y>plaque.localPosition.y-halfHeight)
+                        throw new InvalidOperationException("Plaque overlaps another painting: "+plaque.parent.name+" / "+other.parent.name);
+                }
                 var material=plaque.Find("Brushed bronze face").GetComponent<Renderer>().sharedMaterial;
                 if(material.mainTexture==null||material.GetFloat("_Metallic")<.8f||material.GetFloat("_Roughness")<.4f)
                     throw new InvalidOperationException("Plaque lost its satin-metal surface: "+plaque.parent.name);

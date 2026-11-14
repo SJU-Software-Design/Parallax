@@ -115,7 +115,7 @@ namespace ShadeLink.Editor
                     if(old!=null)UnityEngine.Object.DestroyImmediate(old.gameObject);
                 }
                 string medium=GalleryConceptArchitecture.ArtworkMedium(artwork.sharedMaterial.mainTexture.name);
-                GalleryConceptArchitecture.CataloguePlaque(painting,artwork.GetComponent<MeshFilter>().sharedMesh.bounds.size.y,title,credit,medium,palette);
+                GalleryConceptArchitecture.CataloguePlaque(painting,title,credit,medium,palette);
                 count++;
             }
             if(count!=12)throw new InvalidOperationException("Expected twelve museum artwork plaques, found "+count);
@@ -137,6 +137,27 @@ namespace ShadeLink.Editor
                 throw new InvalidOperationException("Plaque upgrade unexpectedly changed baked museum lighting");
             EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
             Debug.Log("MUSEUM_PLAQUES_UPGRADE_OK count="+count+" retainedLightmaps="+lightmaps);
+        }
+        public static void AlignBronzePlaques()
+        {
+            Scene scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var game=UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
+            int count=0;
+            foreach(var plaque in game.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Bronze artwork catalogue plaque"))
+            {
+                Transform painting=plaque.parent;Vector3 at=painting.localPosition;
+                if(Mathf.Abs(at.x)>7&&at.z>2&&at.z<13)
+                {
+                    int index=Mathf.Clamp(Mathf.RoundToInt((at.z-3f)/4f),0,2);
+                    at.z=(at.x<0?GalleryConceptArchitecture.FirstRoomLeftArtworkZ:GalleryConceptArchitecture.FirstRoomRightArtworkZ)[index];
+                }
+                else if(Mathf.Abs(at.z-13.74f)<.01f)at.x=at.x<0?-5.3f:4.6f;
+                painting.localPosition=at;
+                GalleryConceptArchitecture.AlignCataloguePlaque(painting,plaque);count++;
+            }
+            if(count!=12)throw new InvalidOperationException("Expected twelve museum artwork plaques, found "+count);
+            EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene,ScenePath);
+            Debug.Log("MUSEUM_PLAQUES_ALIGNMENT_OK count="+count);
         }
         // Upgrade only the moving Nike exhibits. Keep the saved architecture,
         // lightmap UVs, lighting data and authored probes intact.

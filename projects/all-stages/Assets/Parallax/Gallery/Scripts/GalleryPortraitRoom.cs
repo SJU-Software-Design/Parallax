@@ -23,10 +23,10 @@ namespace ShadeLink.Gallery
             var room=root.AddComponent<GalleryPortraitRoom>();room.game=game;
             room.originalArtwork=GalleryConceptArchitecture.FramedArtwork(root.transform,"MaeWestFace",
                 "메이 웨스트의 얼굴","살바도르 달리 · 1934–35",
-                new Vector3(-7.78f,2.9f,36),Quaternion.Euler(0,-90,0),3.2f,3.5f,palette);
+                new Vector3(-7.78f,3.215f,36),Quaternion.Euler(0,-90,0),3.2f,3.5f,palette);
             room.installationArtwork=GalleryConceptArchitecture.FramedArtwork(root.transform,"MaeWestRoom",
                 "메이 웨스트의 방","달리 · 오스카르 투스케츠 / 설치 사진",
-                new Vector3(7.78f,2.9f,36),Quaternion.Euler(0,90,0),3.8f,2.8f,palette);
+                new Vector3(7.78f,3.02f,36),Quaternion.Euler(0,90,0),3.8f,2.8f,palette);
             var outline=new GameObject("Portrait doorway · forehead cheek and jaw contour").transform;
             outline.SetParent(root.transform,false);outline.localPosition=new Vector3(0,0,43.15f);
             room.headOutline=outline;

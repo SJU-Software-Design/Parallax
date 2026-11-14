@@ -9,6 +9,8 @@ namespace ShadeLink.Gallery
     // walls, roof apertures and sun/shade rules; these parts sit on those walls.
     public static class GalleryConceptArchitecture
     {
+        public static readonly float[] FirstRoomLeftArtworkZ={2.35f,6.25f,10.45f};
+        public static readonly float[] FirstRoomRightArtworkZ={3.5f,7.7f,11.65f};
         public sealed class Palette
         {
             public Material plaster, wall, ceiling, stone, floor, bronze, gold, wood, paper, ink, plaque, plaqueEdge, plaqueLetter;
@@ -93,9 +95,17 @@ namespace ShadeLink.Gallery
             if(label.fontOverride==null)throw new InvalidOperationException("Museum plaque font missing");
             label.anchor=TextAnchor.MiddleLeft;label.alignment=TextAlignment.Left;label.maximumWidth=1.10f;
         }
-        public static Transform CataloguePlaque(Transform painting,float canvasHeight,string title,string credit,string medium,Palette p)
+        public static void AlignCataloguePlaque(Transform painting,Transform plaque)
         {
-            var root=Group("Bronze artwork catalogue plaque",painting,new Vector3(0,-canvasHeight/2-.59f,.015f),Quaternion.identity);
+            Bounds frame=painting.Find("Layered gilded frame").GetComponent<MeshFilter>().sharedMesh.bounds;
+            const float scale=.7f;
+            plaque.localScale=Vector3.one*scale;
+            plaque.localPosition=new Vector3(frame.max.x+.12f+.69f*scale,frame.min.y+.26f*scale,.015f);
+        }
+        public static Transform CataloguePlaque(Transform painting,string title,string credit,string medium,Palette p)
+        {
+            var root=Group("Bronze artwork catalogue plaque",painting,Vector3.zero,Quaternion.identity);
+            AlignCataloguePlaque(painting,root);
             Block(root,"Brushed bronze face",Vector3.zero,new Vector3(1.38f,.52f,.018f),p.plaque,.003f);
             Geometry("Fine bevelled bronze rim",root,FrameMesh(new Vector2(1.36f,.50f),new[]{
                 new Vector2(0,-.010f),new Vector2(.005f,-.014f),new Vector2(.010f,-.006f),new Vector2(.010f,.009f)}),p.plaqueEdge,Vector3.zero);
@@ -133,7 +143,7 @@ namespace ShadeLink.Gallery
             var vertices=new List<Vector3>{new Vector3(-w/2,-h/2,-.043f),new Vector3(w/2,-h/2,-.043f),new Vector3(w/2,h/2,-.043f),new Vector3(-w/2,h/2,-.043f)};
             Geometry("Original artwork reproduction",root,Finish("Canvas · "+key,vertices,new List<int>{0,2,1,0,3,2},new List<Vector2>{Vector2.zero,Vector2.right,Vector2.one,Vector2.up}),material,Vector3.zero);
             PictureFrame(root,new Vector2(w+.035f,h+.035f),p);
-            CataloguePlaque(root,h,title,credit,ArtworkMedium(key),p);
+            CataloguePlaque(root,title,credit,ArtworkMedium(key),p);
             return root;
         }
 
@@ -308,15 +318,16 @@ namespace ShadeLink.Gallery
 
             // Tall, quiet wall-mounted works replace the previous billboard-like
             // blocks. A clear central axis leads through the first stone portal.
-            FramedArtwork(root,"StarryNight","별이 빛나는 밤","빈센트 반 고흐 · 1889",new Vector3(-4.95f,2.85f,13.74f),Quaternion.identity,3.5f,3.0f,p);
-            FramedArtwork(root,"WaterLilyBridge","수련 연못 위의 다리","클로드 모네 · 1899",new Vector3(4.95f,2.85f,13.74f),Quaternion.identity,2.5f,3.0f,p);
+            FramedArtwork(root,"StarryNight","별이 빛나는 밤","빈센트 반 고흐 · 1889",new Vector3(-5.3f,2.97f,13.74f),Quaternion.identity,3.5f,3.0f,p);
+            FramedArtwork(root,"WaterLilyBridge","수련 연못 위의 다리","클로드 모네 · 1899",new Vector3(4.6f,2.97f,13.74f),Quaternion.identity,2.5f,3.0f,p);
             string[] keys={"Scream","GirlWithPearlEarring","Ambassadors"};
             string[] titles={"절규","진주 귀걸이를 한 소녀","대사들"};
             string[] credits={"에드바르 뭉크 · 1893","요하네스 페르메이르 · 약 1665","한스 홀바인 · 1533"};
             for(int side=-1;side<=1;side+=2)for(int i=0;i<3;i++)
             {
                 int index=(i+(side>0?1:0))%3;
-                FramedArtwork(root,keys[index],titles[index],credits[index],new Vector3(side*7.78f,2.8f,3.5f+i*3.9f),Quaternion.Euler(0,side*90,0),2.6f,2.8f,p);
+                float z=(side<0?FirstRoomLeftArtworkZ:FirstRoomRightArtworkZ)[i];
+                FramedArtwork(root,keys[index],titles[index],credits[index],new Vector3(side*7.78f,2.92f,z),Quaternion.Euler(0,side*90,0),2.6f,2.8f,p);
             }
             Bench(root,new Vector3(-4.9f,0,7.0f),Quaternion.Euler(0,90,0),2.5f,p);
             Bench(root,new Vector3(4.9f,0,7.0f),Quaternion.Euler(0,90,0),2.5f,p);
@@ -327,9 +338,9 @@ namespace ShadeLink.Gallery
                 Track(rail,Vector3.zero,10,p);
             }
             // The left wall painting frames the open Nike projection area.
-            FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(-7.78f,2.85f,23.1f),Quaternion.Euler(0,-90,0),3.5f,3.0f,p);
+            FramedArtwork(root,"Ambassadors","대사들","한스 홀바인 · 1533",new Vector3(-7.78f,2.97f,23.1f),Quaternion.Euler(0,-90,0),3.5f,3.0f,p);
             Track(root,new Vector3(0,6.1f,27.5f),12,p);
-            FramedArtwork(root,"Scream","절규","에드바르 뭉크 · 1893",new Vector3(-7.78f,2.75f,48.4f),Quaternion.Euler(0,-90,0),2.2f,2.9f,p);
+            FramedArtwork(root,"Scream","절규","에드바르 뭉크 · 1893",new Vector3(-7.78f,2.915f,48.4f),Quaternion.Euler(0,-90,0),2.2f,2.9f,p);
             GalleryPortraitRoom.Install(game,p);
         }
     }
