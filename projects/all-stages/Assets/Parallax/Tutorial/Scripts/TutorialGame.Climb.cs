@@ -169,10 +169,13 @@ namespace ShadeLink.Tutorial
             var prop = climbDice[nextClimbDrop++];
             prop.Release();
             prop.GetComponent<TutorialLandingFeedback>().RecordPlacementResult(true, prop.transform.localScale.x);
-            // Keep the shared size-dependent contact sound audible from the entrance.
+            // Legacy playback owns a source on the prop; TutorialAudio uses pooled voices.
             var audio = prop.GetComponent<AudioSource>();
-            audio.minDistance = nextClimbDrop == 1 ? 6f : 8f;
-            audio.maxDistance = 45f;
+            if (audio != null)
+            {
+                audio.minDistance = nextClimbDrop == 1 ? 6f : 8f;
+                audio.maxDistance = 45f;
+            }
             climbDropDelay = .2f;
         }
 

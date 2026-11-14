@@ -1,0 +1,488 @@
+{
+    "sourceScene": "Assets/Parallax/Gallery/Scenes/Gallery.unity",
+    "entries": [
+        {
+            "key": "architecture-7bf52b6ae482a9af",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Museum limestone floor@0,-150,28000",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_000_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 8.0,
+                    "y": 0.15000000596046449,
+                    "z": 28.0
+                }
+            }
+        },
+        {
+            "key": "architecture-1a51c3d0b364c970",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Museum outer left wall@-8160,3300,28000",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_001_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 0.1599999964237213,
+                    "y": 3.299999952316284,
+                    "z": 28.25
+                }
+            }
+        },
+        {
+            "key": "architecture-0c25c02321ffc15f",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum right window wall@8160,0,28000/Solid exterior wall between windows@-8000,3300,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_017_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 13.299999237060547,
+                    "y": 3.299999952316284,
+                    "z": 0.1599999964237213
+                }
+            }
+        },
+        {
+            "key": "architecture-9bc31c927ad6fb04",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Museum room partition@-4900,3300,29000",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_038_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 3.0999999046325685,
+                    "y": 3.299999952316284,
+                    "z": 0.1599999964237213
+                }
+            }
+        },
+        {
+            "key": "architecture-0b79fb9cbb3b31c3",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Museum room partition@4900,3300,29000",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_039_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 3.0999999046325685,
+                    "y": 3.299999952316284,
+                    "z": 0.1599999964237213
+                }
+            }
+        },
+        {
+            "key": "architecture-8324523f3eae8c0c",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Curved doorway · real open arch@0,0,29000",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_040_True curved museum doorway header.asset",
+            "sourceMeshName": "True curved museum doorway header",
+            "sourceVertices": 404,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 5.25,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 1.7999999523162842,
+                    "y": 1.350000023841858,
+                    "z": 0.1599999964237213
+                }
+            }
+        },
+        {
+            "key": "architecture-b50f3612ac3436b6",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Solid museum roof@0,6720,26600",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_045_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 8.0,
+                    "y": 0.11999999731779099,
+                    "z": 20.399999618530275
+                }
+            }
+        },
+        {
+            "key": "architecture-1bfbdc97cd67aac2",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Limestone skirting@0,160,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_068_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.1599999964237213,
+                    "z": 0.06000000238418579
+                }
+            }
+        },
+        {
+            "key": "architecture-92733c95d00c8fe5",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Skirting crown@0,350,-35",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_069_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 182,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.03500000014901161,
+                    "z": 0.07500000298023224
+                }
+            }
+        },
+        {
+            "key": "architecture-e83f759361db75c9",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Wainscot chair rail@0,1150,-15",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_070_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999836087227,
+                    "z": 0.05999999865889549
+                }
+            }
+        },
+        {
+            "key": "architecture-2757463e6c111973",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Cornice profile 0@0,6300,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_071_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.04999999701976776
+                }
+            }
+        },
+        {
+            "key": "architecture-7003cb1e2d029ce8",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Cornice profile 1@0,6385,-28",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_072_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.07250000536441803
+                }
+            }
+        },
+        {
+            "key": "architecture-5026b3c76cab68c3",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Cornice profile 2@0,6470,-56",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_073_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.0949999988079071
+                }
+            }
+        },
+        {
+            "key": "architecture-97fcc35cbb0acf87",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Cornice profile 3@0,6555,-84",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_074_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.11750000715255737
+                }
+            }
+        },
+        {
+            "key": "architecture-c8109fddd442e5a2",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@-7880,0,28000/Recessed wall panel@0,720,-35/Wainscot fine moulding@0,0,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_085_Mitered layered picture frame.asset",
+            "sourceMeshName": "Mitered layered picture frame",
+            "sourceVertices": 12,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": -0.013500000350177288
+                },
+                "m_Extent": {
+                    "x": 1.2288095951080323,
+                    "y": 0.3050000071525574,
+                    "z": 0.013500000350177288
+                }
+            }
+        },
+        {
+            "key": "architecture-64e911b1641c3fc5",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Limestone skirting@0,160,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_120_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.1599999964237213,
+                    "z": 0.06000000238418579
+                }
+            }
+        },
+        {
+            "key": "architecture-3588f819d64686fe",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Skirting crown@0,350,-35",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_121_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 182,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.03500000014901161,
+                    "z": 0.07500000298023224
+                }
+            }
+        },
+        {
+            "key": "architecture-798dc6f4cc0b57fa",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Wainscot chair rail@0,1150,-15",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_122_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999836087227,
+                    "z": 0.05999999865889549
+                }
+            }
+        },
+        {
+            "key": "architecture-8caad5e2ab7e848c",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Cornice profile 0@0,6300,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_123_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.04999999701976776
+                }
+            }
+        },
+        {
+            "key": "architecture-7c8fba882a0a887f",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Cornice profile 1@0,6385,-28",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_124_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.07250000536441803
+                }
+            }
+        },
+        {
+            "key": "architecture-4ebac873d9bfbd74",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Cornice profile 2@0,6470,-56",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_125_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.0949999988079071
+                }
+            }
+        },
+        {
+            "key": "architecture-370314a7bc257df4",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Cornice profile 3@0,6555,-84",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_126_Chamfered architectural block.asset",
+            "sourceMeshName": "Chamfered architectural block",
+            "sourceVertices": 150,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "m_Extent": {
+                    "x": 27.799999237060548,
+                    "y": 0.05249999463558197,
+                    "z": 0.11750000715255737
+                }
+            }
+        },
+        {
+            "key": "architecture-39852550cc236a21",
+            "identity": "PARALLAX · four-room concept museum@0,0,0/Concept museum architectural collection@0,0,0/Layered museum wall finish@7880,0,28000/Recessed wall panel@0,720,-35/Wainscot fine moulding@0,0,0",
+            "sourceAssetPath": "Assets/Parallax/Gallery/Generated/MuseumMesh_137_Mitered layered picture frame.asset",
+            "sourceMeshName": "Mitered layered picture frame",
+            "sourceVertices": 12,
+            "sourceSubmeshes": 1,
+            "sourceReadable": true,
+            "sourceBounds": {
+                "m_Center": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": -0.013500000350177288
+                },
+                "m_Extent": {
+                    "x": 1.2288095951080323,
+                    "y": 0.3050000071525574,
+                    "z": 0.013500000350177288
+                }
+            }
+        }
+    ]
+}

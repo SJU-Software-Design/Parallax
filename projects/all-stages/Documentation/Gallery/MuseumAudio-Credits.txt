@@ -1,7 +1,7 @@
 PARALLAX MUSEUM - SELECTED EXTERNAL AUDIO
 2026-11-12
 
-Bundled playback recordings and edits are listed below with original authors, source URLs and licenses.
+Original recordings and licenses are retained in the project workspace asset collection.
 
 5 가벼운 목재
 Impact Sounds - Kenney
@@ -136,7 +136,7 @@ Put down item - qubodup
 https://freesound.org/people/qubodup/sounds/792930/
 CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-Changes: decoded the official source preview to PCM and applied -6 dB gain.
+Changes: {'type': 'gain', 'gainDb': -6, 'sourcePCM': '에셋/Audio_External_20261111/PropsReview2/decoded/792930_71257-hq.wav', 'sourcePCMSha256': '2fad3622b10e4c0a7f92ef83a8a0119fc3d91f2039e0bbcb36953866cb8199a5'}
 Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/PropRelease156.wav
 
 157 무거운 금속
@@ -144,7 +144,7 @@ Heavy Metal Thud on Ground - 7of9Designs
 https://freesound.org/people/7of9Designs/sounds/640204/
 CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-Changes: decoded the official source preview to PCM and applied -3 dB gain.
+Changes: {'type': 'gain', 'gainDb': -3, 'sourcePCM': '에셋/Audio_External_20261111/PropsReview2/decoded/640204_12131847-hq.wav', 'sourcePCMSha256': 'c1593f8ec576b86d5c4f8dc7d89a9bdf9241435c41df1be94e10d54f256719c4'}
 Assets/Parallax/Gallery/Resources/MuseumAudio/Selected/MetalHeavy157.wav
 
 161 니케 문 개방

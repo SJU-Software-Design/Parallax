@@ -1,0 +1,193 @@
+Beach user-selected audio bank — 2026-11-14
+Prototype implementation; selected sources preserved. No solar charging/progress sound.
+Edits: PCM16 conversion; declared source intervals, linear boundary fades, level calibration; BE11 same-source loop seam overlap. No pitch/speed changes.
+
+005 — Impact Sounds
+Creator: Kenney
+Source: https://kenney.nl/assets/impact-sounds
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+008 — Impact Sounds
+Creator: Kenney
+Source: https://kenney.nl/assets/impact-sounds
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 15271dbe8e2872dbb0ff1aeb7b12b2d2b92b7c1951c88532b9ab9158c36dfc73
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+027 — 100 CC0 metal and wood SFX
+Creator: rubberduck
+Source: https://opengameart.org/content/100-cc0-metal-and-wood-sfx
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 58455b99af8f62b10559607435de0f72b9c798ebe085f49101df3c3d9ec043c7
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+036 — Interface Sounds
+Creator: Kenney
+Source: https://kenney.nl/assets/interface-sounds
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 3091bf0be0497f825769ee0733ca7bdc3bcd59bd6c6e8f2ba8f93d580ff38022
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+083 — Footsteps - Essentials / Essentials Series
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 3282e56dd2468cbed03e4fda182b312155c1c6e5dca258ee703db10fc400037a
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+085 — Footsteps - Essentials / Essentials Series
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 4f890100b5f3091be5d5a25a198e294965dd98b57156288e64e634fc7be44086
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+091 — Footsteps - Essentials / Essentials Series
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: b00a71afe160b3ff730d8c09eed9b3b517c7fe3cf2c9531bfef48d1cb39b18ef
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+097 — Footsteps - Essentials / Essentials Series
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 46c68d6c758e52db3dc504a92e3aedfaf7500d5c0db77681e62055bd21cd6f3a
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+102 — Footsteps - Essentials / Essentials Series
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 4bcf6de1df635bd025a0574b9216bcc05ffb50e87403015322d0570059618354
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+115 — Nature - Essentials / Iceland - Flows
+Creator: Nox Sound Design
+Source: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 79c1d039beafd379a09590eae0b0175f940f3714b2d28934ed645564e7dffd1f
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+124 — Water Splash and sand footsteps
+Creator: Peludo
+Source: https://opengameart.org/content/water-splash-and-sand-footsteps
+License: CC0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: e45d466f7e63e5d566f8a822a7a1a3f7d5131319d17ca0436dcc615b251e9277
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+128 — Wood Grab 1
+Creator: CJspellsfish
+Source: https://freesound.org/people/CJspellsfish/sounds/669472/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 82604d0446d3f3f8a410ce9cec22d19500c870162dcd52a8a628ed7c7b3238fa
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+132 — Wooden Thud (Mono)
+Creator: Breviceps
+Source: https://freesound.org/people/Breviceps/sounds/449955/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: cd14f24df6684cd667ceff48ee12c3e72cf7206519ef7fe3e24c9ab0d5d94cf9
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+156 — Put down item
+Creator: qubodup
+Source: https://freesound.org/people/qubodup/sounds/792930/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 5ed5ab0c4143dad5556cfbf411a582fd09c282639dfd3e34bdec4ef7b8329861
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BE06 — sfx-wood-1.wav
+Creator: davilca
+Source: https://freesound.org/people/davilca/sounds/159494/
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/
+Original SHA256: 08fe6f1aa42104f4b3d99b9aa3e0c1eb56b7994dcb14f608474471941240a8cf
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BE10 — Rock Splash
+Creator: Fission9
+Source: https://freesound.org/people/Fission9/sounds/583348/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: b782b47618a73a019ebc6a2925053e7cf8df70ce92eff3953667bb5c14971cbc
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BE11 — Motor Boat Sound Effect
+Creator: Legnalegna55
+Source: https://freesound.org/people/Legnalegna55/sounds/577425/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: c1d71ca880f320063e71367b7b243a5758f2054466d034a7a5b3b2c6c22f6fec
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BE12 — Lobster Boat Starting and Stopping
+Creator: bone666138
+Source: https://freesound.org/people/bone666138/sounds/398416/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: e0ed7fb06bffe2d037ec6fe24c9d0955a98ca654012e673060ad65df8b14796f
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BE13 — Footsteps over Wooden Bridge (WAV)
+Creator: OBXJohn
+Source: https://freesound.org/people/OBXJohn/sounds/253090/
+License: CC0 1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+Original SHA256: 0947e2759e30e1051bf189e43a8b3ca2f65f4ce8665da5f65ec907f13dc2133d
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+TEAM11 — (물에 중간거 빠짐2)enter1.wav
+Creator: User-provided; original creator not confirmed
+Source: User-provided (물에 중간거 빠짐2)enter1.wav
+License: UNCONFIRMED — user-authorized prototype reuse only
+Original license/source attribution pending; no CC0 claim
+Original SHA256: 98cb8048080538208e3aaff60390e7252fb24029529442d0961839f38a98f4a6
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+TEAM12 — (해변 작은거 떨굼2)break3.wav
+Creator: User-provided; original creator not confirmed
+Source: User-provided (해변 작은거 떨굼2)break3.wav
+License: UNCONFIRMED — user-authorized prototype reuse only
+Original license/source attribution pending; no CC0 claim
+Original SHA256: 513c2d7d46fdfeb9ac8b49a8a41ba906144a0010a4a10fd56450da088d5fe4e6
+Modified: PCM conversion, source trimming/fades/level as listed per output; full originals unchanged.
+
+BB01 — Bossa Antigua (whole music recording)
+Creator: Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700069
+Official MP3: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Bossa%20Antigua.mp3
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+Attribution: "Bossa Antigua" Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+Original and runtime source MP3 SHA256: 322103dd6ac5fae4872122f91d32cccd4d964b86d300585a5a0cdfaf7048af5d
+File edits: none; full official MP3 preserved byte-for-byte. Unity transcodes the streaming build asset to Vorbis; runtime uses a 1.5-second same-song end/start crossfade at original pitch/speed. No 179-second crop (that choice applies only to Tutorial TB01).
+
+BC02 — Level Up Bells (boat completion only)
+Creator: Qvantor
+Source: https://freesound.org/people/Qvantor/sounds/878595/
+Official whole HQ MP3 preview: https://cdn.freesound.org/previews/878/878595_19512113-hq.mp3
+License: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Original whole MP3 SHA256: af97de395d2385e943ef6ae6c36bde674730981a5cb98d7400fb307e620769e7
+Selected preview and runtime WAV SHA256: d19cd71c1f4a6a0c4dc58f6f4f2e3828a70f4e4d1d9ef160be5e0b2172fcd4a3
+Edits: user-approved source0.00–1.65s, PCM16 48000Hz stereo, linear4ms in/80ms out fades. No gain, pitch, speed, layering or additional editing during game integration; copied preview byte-for-byte. Original MP3 is preserved.
+Role: boat assembly completion; solar completion keeps036. No extracted Nintendo/Animal Crossing audio.

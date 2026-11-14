@@ -6,6 +6,7 @@ namespace ShadeLink.Beach
     {
         public BeachGame game;
         GUIStyle text,title,small,button,goal;
+        bool stageTravelTab;
         readonly Color paper=new Color(.98f,.97f,.91f),accent=new Color(.34f,.82f,1),ink=new Color(.035f,.12f,.17f,.94f);
         void Panel(Rect r,Color c){GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=Color.white;}
         void OnGUI()
@@ -24,7 +25,7 @@ namespace ShadeLink.Beach
                 if(game.held!=null)
                 {
                     Panel(new Rect(360,611,880,154),ink);GUI.Label(new Rect(381,624,840,33),game.held.title+"  ·  크기 ×"+game.RequestedScale.ToString("0.00")+"  ·  거리 "+game.holdDistance.ToString("0.0")+"m",text);
-                    GUI.Label(new Rect(381,664,840,60),"WASD 들고 이동 · 오른쪽 버튼 + 마우스 회전 · Backspace 취소\n시선으로 크기 조절 · Q/E 회전 · Z/X 기울기 · C 바로 세우기",small);
+                    GUI.Label(new Rect(381,664,840,60),"WASD 들고 이동 · 오른쪽 버튼 + 마우스 상하좌우 회전 · Backspace 취소\n시선으로 크기 조절 · 잡을 때 자동 바로 세우기",small);
                     GUI.Label(new Rect(381,725,840,31),game.invalid?game.invalidReason:game.PlacementBlocked?"충돌 때문에 멈췄습니다 · 방향을 바꾸거나 취소할 수 있습니다":"왼쪽 클릭으로 놓기 · 놓은 뒤 물리와 부력 적용",small);
                 }
                 else if(game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
@@ -35,6 +36,11 @@ namespace ShadeLink.Beach
             if(!game.active||game.won)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.07f,.10f,.52f));Panel(new Rect(320,55,960,790),ink);
+                if(StageTravelMenu.DrawPauseTabs(new Rect(320,15,960,34),game.font,ref stageTravelTab))
+                {
+                    StageTravelMenu.DrawDestinations(new Rect(366,160,865,570),game.font);
+                    return;
+                }
                 GUI.Label(new Rect(366,95,870,62),game.won?"모래성 정상에서 탈출했습니다":game.started?"잠시 쉬어 가기":"PARALLAX / 마지막 해변",title);
                 GUI.Label(new Rect(366,180,865,235),game.won?"원근·반사광·그늘·물살·점프를 연결해 마지막 스테이지를 완료했습니다.\n\n기록  "+System.TimeSpan.FromSeconds(game.elapsed).ToString(@"mm\:ss")+"  ·  복귀 "+game.respawns+"회\n\n3D 소품: Beach Surf and Paddle Kit / 3DAssets.dev / CC0":
                     "목표는 멀리 깃발이 보이는 모래성 정상입니다.\n한낮의 해변에서는 스스로 만든 그늘로 이동하세요.\n\n01  태양빛을 거울로 반사해 두 수신기를 연결하세요.\n02  판자로 물길을 잇고 파라솔로 그 위를 가리세요.\n03  그림자에서 배를 꺼내 키우고 그늘에 승선하세요.\n04  작은 성벽 조각을 키워 끊긴 성벽 두 곳을 복구하세요.\n\n배의 그늘 안에서 E 출항 · H로 구역별 힌트",text);

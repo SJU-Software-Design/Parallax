@@ -162,7 +162,7 @@ namespace ShadeLink.Beach
         }
         void RevealBoat()
         {
-            Solved=true;Charge=1;Matching=true;RevealCount++;
+            Solved=true;Charge=1;Matching=true;RevealCount++;game.Audio?.BoatCompleted();
             if(boat==null||boat.Prop==null)return;
             // The completed pieces become this boat, leaving no second hull
             // or support poles behind the emerging silhouette.

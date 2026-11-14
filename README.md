@@ -1,5 +1,28 @@
 # Parallax
 
+현재 통합 완성본은 **0.26.10 · Tutorial → E01 엘리베이터 → 미술관 → 해변**입니다. Unity **6000.3.24f1 / Built-in / Mono**, 원본 프로젝트는 **projects/all-stages**입니다. 미술관 출구는 해변으로 이어집니다.
+
+Windows에서는 루트의 **[run-complete.cmd](run-complete.cmd)**를 실행하세요. 첫 실행은 원본을 생성용 작업공간에 복사해 세 맵을 포함한 실행본을 빌드하고, 튜토리얼 첫 수업부터 시작합니다. 소스 내용이 같은 성공 빌드가 있으면 재사용합니다.
+
+    .\scripts\run-complete.ps1
+    .\scripts\run-complete.ps1 -BuildOnly
+    .\scripts\run-complete.ps1 -Rebuild -UnityEditor 'X:\Unity\6000.3.24f1\Editor\Unity.exe' -WorkspaceRoot 'X:\ParallaxBuilds'
+
+- 튜토리얼에는 원근 조작·발판·그늘 수업, 반투명 벽의 E01 엘리베이터와 1F→B1 표시·선정 사운드가 있습니다.
+- 미술관에는 니케 그림자/액자, 병·법전·디케 저울과 검·P02 받침, 눈코입 커튼, 손 출구, 브론즈 작품 명판이 연결됩니다.
+- 해변에는 태양광 수신기, 물길·그늘, 그림자로 조립한 배의 운반·항해, 모래성 퍼즐과 선정 BGM/효과음이 포함됩니다.
+- 세 맵에서 **Esc → 맵 이동**으로 **튜토리얼 / 미술관 / 해변** 중 하나의 시작점으로 이동할 수 있습니다. 같은 맵도 처음부터 새로 시작하며 기존 구역 체험은 일시정지 탭에 남아 있습니다.
+
+빌드는 원본 씬·설정을 바꾸지 않는 생성 프로젝트를 사용합니다. 생성 위치는 WorkspaceRoot 인수, PARALLAX_BUILD_ROOT 환경 변수, 비공개 Builds/build-workspace.json, 저장소의 Git 제외 Builds 순서로 선택합니다. Unity 에디터는 UnityEditor 인수 또는 UNITY_EDITOR_PATH로 지정할 수 있습니다. 실패한 후보는 실행하거나 기존 성공본을 교체하지 않습니다.
+
+상세 실행·캐시·검사 범위·음원 출처 상태는 **[통합 코스 안내](docs/CompleteCourse.md)**를 확인하세요. 빌드 자체와 fixture 기반 native 검증, 연속 수동 완주는 구분합니다. 팀 제공 TEAM11/TEAM12 음원의 원본 출처/라이선스는 아직 미확인으로 기록되어 있습니다.
+
+---
+
+## 이전 버전 기록 · 레거시 실행 경로
+
+아래는 과거 Gallery 단독판·Library/Starship 연결 및 당시 빌드/검증 이력입니다. 현재 세 맵 통합 실행은 위의 run-complete.cmd를 사용하세요. 기존 기록과 이전 명령은 보존합니다.
+
 미술관 최신 소스는 **v0.25.0**입니다. 마지막 성당 조형물의 손 사이 통로를 약 21% 넓히고, 손이 2.2초 동안 천천히 벌어지도록 바꿨습니다. 개방 초반 0.25초 동안 화면 진동이 커지고, 손이 멈춘 뒤에는 0.8초 동안 여진이 잦아듭니다. 기존 얼굴 커튼 연출·안전한 벽 조명·니케 그림과 액자 열쇠·도서관 연결을 유지합니다. 자세한 조작은 통합 프로젝트 README를 확인하세요.
 
 해변맵 최신 소스는 **v0.16.1**입니다. 모래성 목표가 보이는 열린 해변, 태양광 센서, 그림자 조립 보드와 직접 운반하는 그늘 배, 두 성벽 조각과 파라솔로 오르는 마지막 퍼즐을 포함합니다. Unity에서 `projects/all-stages/Assets/Parallax/Beach/Scenes/Beach.unity`를 열거나 Windows에서 `해변_실행.cmd`를 실행하세요. 첫 실행은 설치된 Unity 6000.3.24f1로 저장된 씬을 빌드합니다. [해변 플레이·검증 안내](projects/all-stages/README.md#해변-v0161).

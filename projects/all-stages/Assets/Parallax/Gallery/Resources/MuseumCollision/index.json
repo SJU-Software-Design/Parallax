@@ -1,0 +1,1669 @@
+{
+    "sourceScene": "Assets/Parallax/Gallery/Scenes/Gallery.unity",
+    "surfaces": [
+        {
+            "key": "surface-d0842c420290151b",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Continuous carved limestone architrave[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_005_Swept cyma and ovolo window surround.asset",
+            "vertices": 3576,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9ab13007f1e7f213",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Projecting rounded limestone sill[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_006_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a391627c258c2a1a",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bevelled bronze arched glazing frame[5]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_008_Continuous bronze window frame.asset",
+            "vertices": 1990,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9f441f1a2f4597f5",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bronze bottom glazing rail[6]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_009_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7a9d2ed85916cc45",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bronze vertical glazing mullion[7]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_010_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7a712ed858f1915a",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bronze vertical glazing mullion[8]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_011_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4b8e755b2f40967b",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bronze horizontal glazing transom[9]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_012_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5eb803f123ce0d0b",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[1]/Bronze horizontal glazing transom[10]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_013_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2653491ba894d7ed",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Continuous carved limestone architrave[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_020_Swept cyma and ovolo window surround.asset",
+            "vertices": 3576,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a63b6195ea10a205",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Projecting rounded limestone sill[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_021_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d389337cedfbf784",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bevelled bronze arched glazing frame[5]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_023_Continuous bronze window frame.asset",
+            "vertices": 1990,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2782b321ee348523",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bronze bottom glazing rail[6]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_024_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-da8d0a94584d9c43",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bronze vertical glazing mullion[7]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_025_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-daa4ca945861c164",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bronze vertical glazing mullion[8]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_026_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-72c8561309c65d25",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bronze horizontal glazing transom[9]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_027_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-8b85765974d87a91",
+            "hierarchy": "Concept museum right window wall[2]/Classical arched exterior window[3]/Bronze horizontal glazing transom[10]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_028_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4125ee18da087bce",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_068_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-0e6d8c9eaa27cea4",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_069_Chamfered architectural block.asset",
+            "vertices": 182,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-dea9d4fb09628adc",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_070_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-74336e077200937a",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_075_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1c818daa69222841",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_076_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d6d0fc8fa16d6440",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[9]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_077_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-861bb5e86f4d09e6",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[10]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_078_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1332fb66545f8e77",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[11]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_079_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-14c10e7fb8e912a8",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[12]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_080_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5e358c320f8f07e9",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[13]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_081_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c59604a86ebf728a",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[14]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_082_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-fde8a68767ef238b",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[15]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_083_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-20b6696e5d1ba2fc",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[16]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_084_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1af323defa688afd",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[17]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_085_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c5cc3194b6e0ae8e",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[18]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_086_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4580543cdc64cedf",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[19]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_087_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-08c726ca4eb66cbf",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[20]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_088_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2867157dabb56b6e",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[21]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_089_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f1664108e38d14b1",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[22]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_090_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4c945f4c767d3530",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[23]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_091_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-cc6430efb8d6c6d3",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[24]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_092_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f86c04e30f61fe52",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[25]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_093_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-32b8759c7719fd85",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[26]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_094_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-46fc4fc7f7a46644",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[0]/Recessed wall panel[27]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_095_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4b1390660f04fc7f",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_120_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1e6e39a4aab35ba9",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_121_Chamfered architectural block.asset",
+            "vertices": 182,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9aa697e1f23b8e03",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_122_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ef4000e0f014c3a5",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_127_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5f0043772fb64f66",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_128_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ec1788f514c8d3f7",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[9]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_129_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-6db8a0842766e407",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[10]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_130_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e1f1a025c6004476",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[11]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_131_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a4e6fde3f09079b9",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[12]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_132_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-49d3d513d57556b8",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[13]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_133_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ab1b19619031fe5b",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[14]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_134_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-09226276dddc209a",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[15]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_135_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b60a620855b6480d",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[16]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_136_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-bcd0127dfc0fc28c",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[17]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_137_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f2f529990f2dedaf",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[18]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_138_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-482c9a204d2e191e",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[19]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_139_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-125e288377a5b44e",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[20]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_140_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1fd967c9fc5a679f",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[21]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_141_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-8f62c1236840c390",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[22]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_142_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-88ee5e8d02b39211",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[23]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_143_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5421083142fbca32",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[24]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_144_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c51fdec246bc40b3",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[25]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_145_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-8933a61547898aa4",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[26]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_146_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9b3e2e43a0affde5",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[9]/Recessed wall panel[27]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_147_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-78bfad9e46f971a1",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[18]/Portal limestone pier[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_172_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-44454957e2e0325d",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[18]/Portal stepped foot[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_173_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-78bbad9e46f588ca",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[18]/Portal limestone pier[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_175_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-443b0557e2d76a4c",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[18]/Portal stepped foot[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_176_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1bc7f788e14e7816",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[19]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_180_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-522852911f6cb1dc",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[19]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_181_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-827fd90eb6ff1b54",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[19]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_182_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b9e2ac1dc10b73d2",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[19]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_187_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a9ecbb04ab779849",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[19]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_188_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-decbcbf536bacea6",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[20]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_189_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c8c4ec3467626fec",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[20]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_190_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-fe7f320b1fcf58c4",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[20]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_191_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-8001b871c9748f22",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[20]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_196_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a27eb8a034428159",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[20]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_197_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f7672ab9214ab901",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[21]/Portal limestone pier[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_198_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f988d9ee4ec793bd",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[21]/Portal stepped foot[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_199_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f7632ab92146d02a",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[21]/Portal limestone pier[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_201_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f97e15ee4ebdf22c",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[21]/Portal stepped foot[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_202_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-edf62964866e7738",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[22]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_206_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1b05dd08704b4d96",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[22]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_207_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e00cd385220d7dc6",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[22]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_208_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f50e9de6b5acbd94",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[22]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_213_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7c35bcd2065647a7",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[22]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_214_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1c33605992c43149",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[23]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_215_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f0e158c7b10a6283",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[23]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_216_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5de08b6206d2bb25",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[23]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_217_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-58e1a3be46efcd57",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[23]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_222_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-69bb985540340fc4",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[23]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_223_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e888bbce2e0e7eda",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[24]/Portal limestone pier[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_224_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-eff1327c26ccdc4a",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[24]/Portal stepped foot[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_225_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e88c7bce2e11faf1",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[24]/Portal limestone pier[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_227_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-effb6e7c26d596c3",
+            "hierarchy": "Concept museum architectural collection[42]/Classical stone portal[24]/Portal stepped foot[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_228_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-fc8500399b70235b",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[25]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_232_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-cba7bd756587ba05",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[25]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_233_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ec4b0ff1196c205f",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[25]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_234_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-05bc2128e36ea991",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[25]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_239_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7b64a25f9ca54fca",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[25]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_240_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5ca111171ef97b54",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[26]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_241_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-cf3c2fb9afd00272",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[26]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_242_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c40861e5cfb5e752",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[26]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_243_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-37414e475f4d7250",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[26]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_248_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5f955fd4af1ddd0b",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[26]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_249_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-02af18c15a93ea95",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_250_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-05fa1bc34f28efdf",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_251_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-040bb95769eebe71",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_252_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e1a40e7b68f2b563",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_257_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b85f3e52bb1d5e58",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_258_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9b03230ba4a47159",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[9]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_259_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f29e10f84e3ebfc5",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[10]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_260_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-77d959751bf6dc84",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[11]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_261_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-44b3b0ea1b86f213",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[27]/Recessed wall panel[12]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_262_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-001a6088228a18ae",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Limestone skirting[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_263_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1240c0b329b55b04",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Skirting crown[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_264_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4e6eed67f7d0aebc",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Wainscot chair rail[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_265_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-59bc94d65c134a1a",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[7]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_270_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a5f4a07b89561c61",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[8]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_271_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-962c5fee23778b60",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[9]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_272_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-72c196fffa3ddc06",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[10]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_273_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-3ca7d34a759a6a17",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[11]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_274_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a4225272bf4eadc8",
+            "hierarchy": "Concept museum architectural collection[42]/Layered museum wall finish[28]/Recessed wall panel[12]/Wainscot fine moulding[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_275_Mitered layered picture frame.asset",
+            "vertices": 12,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-04ae00b2aaf57903",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 별이 빛나는 밤[32]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_323_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-3cc025df76f3a8af",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 별이 빛나는 밤[32]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_324_Canvas · StarryNight.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-33e83d6d57f6e3eb",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 별이 빛나는 밤[32]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_325_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-55876af13ac91354",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 별이 빛나는 밤[32]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_326_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-af45cd2f8be3a31e",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 별이 빛나는 밤[32]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_327_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d0c6739c48f852ea",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 수련 연못 위의 다리[33]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_328_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5eea1289cedf8b80",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 수련 연못 위의 다리[33]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_329_Canvas · WaterLilyBridge.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1ed80ac5e93c5766",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 수련 연못 위의 다리[33]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_330_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-81defcc33e10415f",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 수련 연못 위의 다리[33]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_331_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-0985682d98ef85a9",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 수련 연못 위의 다리[33]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_332_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9c8f9bafa6f468a4",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[34]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_333_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5948d8b0875640e2",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[34]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_334_Canvas · Scream.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-666db364d9703dfc",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[34]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_335_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-3a487b932538210d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[34]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_336_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2b955371f99e79c7",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[34]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_337_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ea64b83695705659",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[35]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_338_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ea115efcf6353cdd",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[35]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_339_Canvas · GirlWithPearlEarring.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-db39d36d2a41b20d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[35]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_340_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c23ea7c21c6715b6",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[35]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_341_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1f085ce413451568",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[35]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_342_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4cea268c2cbe285e",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[36]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_343_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e0a40bedf54178ac",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[36]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_344_Canvas · Ambassadors.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-39e6369dfbe869da",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[36]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_345_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-14a62763293cc583",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[36]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_346_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-c94eb2ba01f3495d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[36]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_347_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-34fa77f2783ef46b",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[37]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_348_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7a9dd6c9fb7bbb57",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[37]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_349_Canvas · GirlWithPearlEarring.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4a38714dc2ac8f83",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[37]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_350_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-30a0ec40a05b3ddc",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[37]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_351_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d3a4b6bc3cb07226",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 진주 귀걸이를 한 소녀[37]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_352_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2b0be91da8ca85a0",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[38]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_353_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-06e704fdf8879156",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[38]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_354_Canvas · Ambassadors.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2b6042e1c6373a88",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[38]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_355_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-14b10bac5fcbfc89",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[38]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_356_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1b82fd44edda3233",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[38]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_357_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5c99a376ad495b19",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[39]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_358_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-84e2681b7e96231d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[39]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_359_Canvas · Scream.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2ef4af957da2cb4d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[39]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_360_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-0e43c4521c9825f6",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[39]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_361_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-35a7838ac78dbfa8",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[39]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_362_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b15a00f09f148cc0",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[52]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_425_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5bb9650d56095df6",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[52]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_426_Canvas · Ambassadors.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-330b53c35fce3f28",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[52]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_427_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-98163ec5ce26eaa9",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[52]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_428_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-ced5b8d16770ca53",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 대사들[52]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_429_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-5c225147e0b8d1ce",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[61]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_448_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-932284a04388abdc",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[61]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_449_Canvas · Scream.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-0d174146bad82d8a",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[61]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_450_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-f0b1314366102b93",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[61]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_451_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-3f49094a0d4b258d",
+            "hierarchy": "Concept museum architectural collection[42]/Collection · 절규[61]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_452_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-62c96330e5285855",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 얼굴[0]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_453_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-a52a61f7df971891",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 얼굴[0]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_454_Canvas · MaeWestFace.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-7b4bee7c1aa4e3f9",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 얼굴[0]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_455_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-e0d99655b4d857f2",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 얼굴[0]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_456_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4b7b646373d190e4",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 얼굴[0]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_457_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d24409bebfc2cde5",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 방[1]/Canvas stretcher[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_462_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b134450a85588421",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 방[1]/Original artwork reproduction[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_463_Canvas · MaeWestRoom.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b8f00dd1e06162c9",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 방[1]/Layered gilded frame[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_464_Mitered layered picture frame.asset",
+            "vertices": 98,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-3217083509ab0522",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 방[1]/Dark linen rabbet[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_465_Mitered layered picture frame.asset",
+            "vertices": 16,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-01d8028f9b1461f4",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Collection · 메이 웨스트의 방[1]/Museum catalogue plaque[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_466_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-bc362e13266e0010",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Portrait doorway · forehead cheek and jaw contour[2]/Continuous limestone face outline[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_471_Continuous limestone face outline.asset",
+            "vertices": 1787,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-d5328363a948a39c",
+            "hierarchy": "Portrait room · face references and safe wall fixtures[43]/Portrait doorway · forehead cheek and jaw contour[2]/Fine bronze face outline[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_472_Fine bronze face outline.asset",
+            "vertices": 1759,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-967f22dbc1325014",
+            "hierarchy": "Perspective gallery textile stage[48]/Teal stage wall textile[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_475_Teal backdrop with a true arched opening.asset",
+            "vertices": 164,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-60d95cad2bcfdf55",
+            "hierarchy": "Perspective gallery textile stage[48]/Decorative burgundy side curtain · left[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_476_Gathered velvet drape · -1.asset",
+            "vertices": 1739,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1939b1abc435f4db",
+            "hierarchy": "Perspective gallery textile stage[48]/Curtain bronze tie[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_477_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-48332fff714b8a24",
+            "hierarchy": "Perspective gallery textile stage[48]/Decorative burgundy side curtain · right[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_478_Gathered velvet drape · 1.asset",
+            "vertices": 1743,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-1932b5abc42fdcf9",
+            "hierarchy": "Perspective gallery textile stage[48]/Curtain bronze tie[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_479_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-6b711a41086c2115",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/02 · 고정 전시 조명[1]/Inset walnut base pad[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_506_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-57f2170d859a0daa",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/02 · 고정 전시 조명[1]/Floor spotlight swivel pedestal[2]",
+            "sourceAsset": "Library/unity default resources",
+            "vertices": 88,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b78fbd7fde111144",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Walnut outer frame[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_510_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b78cc17fde0ee239",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Walnut outer frame[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_511_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2db40408793643b2",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Gilded inner bead[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_512_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2db14008793473cf",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Gilded inner bead[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_513_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-b79dbd7fde1d4ea0",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Walnut outer frame[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_514_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2dc244087942edce",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Gilded inner bead[6]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_516_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-be5dd1786ae2bdf7",
+            "hierarchy": "Museum shadow course · bronze and Nike[50]/Nike · shadow alignment canvas[2]/Projected shadow guide[8]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_518_Nike canvas face.asset",
+            "vertices": 4,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-22580b12c462253d",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal limestone pier[0]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_581_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-151ad295fe5b35a9",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal stepped foot[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_582_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-9233e24c2b604e01",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal spring cornice[2]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_583_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-22540b12c45e3c66",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal limestone pier[3]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_584_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-152bce95fe69a210",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal stepped foot[4]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_585_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-923de24c2b68a286",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Portal spring cornice[5]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_586_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-2fc2a2f3f549ccee",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Classical stone portal[0]/Moulded arch crown[6]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_587_Portal arched moulding.asset",
+            "vertices": 453,
+            "submeshes": 1,
+            "sourceReadable": true
+        },
+        {
+            "key": "surface-4eb0af3ef3129d26",
+            "hierarchy": "Concept museum · Rodin cathedral exit alcove[52]/Stone exhibition alcove · floor remains at zero[0]/Recessed dark alcove backing[1]",
+            "sourceAsset": "Assets/Parallax/Gallery/Generated/MuseumMesh_589_Chamfered architectural block.asset",
+            "vertices": 150,
+            "submeshes": 1,
+            "sourceReadable": true
+        }
+    ]
+}

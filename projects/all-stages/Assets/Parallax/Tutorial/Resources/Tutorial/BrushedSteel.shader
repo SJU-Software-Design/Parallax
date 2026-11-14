@@ -7,18 +7,23 @@ Shader "Parallax/Tutorial Brushed Steel"
         _Glossiness ("Smoothness", Range(0, 1)) = .5
         _GrainScale ("Brush scale per meter", Vector) = (36, 5, 36, 0)
         _Wear ("Surface wear", Range(0, 1)) = .6
+        [HideInInspector] _TutorialShadowPreviewReceiver ("Shadow preview receiver", Float) = 0
     }
     SubShader
     {
         Tags { "RenderType" = "Opaque" }
         CGPROGRAM
-        #pragma surface surf Standard fullforwardshadows
+        #pragma surface surf Standard fullforwardshadows finalcolor:ShadowPreview
         #pragma target 3.0
 
         half4 _Color;
         half _Metallic, _Glossiness, _Wear;
         float4 _GrainScale;
-        struct Input { float3 worldPos; };
+        half _TutorialShadowPreviewReceiver;
+        sampler2D _TutorialShadowPreviewMap;
+        float4x4 _TutorialShadowPreviewVP, _TutorialShadowPreviewView;
+        float _TutorialShadowPreviewActive, _TutorialShadowPreviewFar;
+        struct Input { float3 worldPos; float3 worldNormal; };
 
         float Hash(float3 cell)
         {
@@ -51,6 +56,29 @@ Shader "Parallax/Tutorial Brushed Steel"
             output.Albedo = _Color.rgb * (1 + _Wear * (.10 * wear + .10 * finish + .14 * grain - .075 * scuff));
             output.Metallic = _Metallic;
             output.Smoothness = saturate(_Glossiness + _Wear * (.085 * finish + .11 * grain - .085 * scuff));
+        }
+
+        void ShadowPreview(Input input, SurfaceOutputStandard output, inout fixed4 color)
+        {
+            #ifndef UNITY_PASS_FORWARDADD
+            if (_TutorialShadowPreviewReceiver > .5 && _TutorialShadowPreviewActive > .5 && input.worldNormal.y > .8)
+            {
+                float4 clip = mul(_TutorialShadowPreviewVP, float4(input.worldPos, 1));
+                float2 uv = clip.xy / clip.w * .5 + .5;
+                #if UNITY_UV_STARTS_AT_TOP
+                uv.y = 1 - uv.y;
+                #endif
+                float depth = -mul(_TutorialShadowPreviewView, float4(input.worldPos, 1)).z / _TutorialShadowPreviewFar;
+                float nearest = tex2D(_TutorialShadowPreviewMap, uv).r;
+                if (all(uv > 0) && all(uv < 1) && nearest < .999 && depth > nearest + .00045)
+                {
+                    float stripePosition = (input.worldPos.x + input.worldPos.z) * 2.5;
+                    float antialias = min(.2, fwidth(stripePosition));
+                    float stripe = smoothstep(.76 - antialias, .76 + antialias, frac(stripePosition));
+                    color.rgb = lerp(color.rgb, float3(.08, .48, .68), .15 + stripe * .63);
+                }
+            }
+            #endif
         }
         ENDCG
     }

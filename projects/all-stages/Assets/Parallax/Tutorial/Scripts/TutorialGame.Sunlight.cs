@@ -58,7 +58,6 @@ namespace ShadeLink.Tutorial
             SunlightWall(new Vector3(24.75f, 0, 30), Vector3.back, 1.5f, steel);
             SunlightWall(new Vector3(33.25f, 0, 30), Vector3.back, 9.5f, steel);
             SunBox("Exit lintel wall", new Vector3(27, 4, 30), new Vector3(3, 2, .15f), steel);
-            SunBox("Exit passage back", new Vector3(27, 1.5f, 33.1f), new Vector3(3.3f, 3, .2f), frame);
             foreach (float x in new[] { 25.4f, 28.6f })
                 SunBox("Exit passage side", new Vector3(x, 1.5f, 31.5f), new Vector3(.2f, 3, 3), frame);
 
@@ -186,6 +185,7 @@ namespace ShadeLink.Tutorial
 
         void SetSunlightLighting(bool active)
         {
+            if (!active) ClearShadowPreview();
             if (sunlight == null) return;
             sunlight.enabled = active;
             foreach (var light in trainingLights) if (light != null) light.enabled = !active;
@@ -225,6 +225,7 @@ namespace ShadeLink.Tutorial
 
         void ResetSunlightCourse()
         {
+            ResetMuseumElevator();
             sunlightCheckpoint = 0;
             sunlightExposure = 0;
             sunlightComplete = false;
@@ -241,6 +242,7 @@ namespace ShadeLink.Tutorial
 
         void RespawnSunlight()
         {
+            ResetMuseumElevator();
             ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
             if (Aimed != null) Aimed.Highlight(false, false);
@@ -284,7 +286,7 @@ namespace ShadeLink.Tutorial
                     Tell("떨어진 주사위는 원래 받침대에 돌아왔어요.");
                 }
             if (local.y < -2.2f || local.x < -2.5f) { RespawnSunlight(); return; }
-            if (sunlightComplete) return;
+            if (sunlightComplete || (MuseumElevator != null && MuseumElevator.ContainsPlayer)) return;
             bool safe = SunlightSafe(feet);
             sunlightExposure = Mathf.Clamp01(sunlightExposure + Mathf.Min(dt, .05f) * (safe ? -2f : .92f));
             if (sunlightExposure > .28f && Time.time >= sunlightNextWarning)
@@ -304,12 +306,8 @@ namespace ShadeLink.Tutorial
                 sunlightCheckpoint = 2;
                 Tell("모퉁이 쉼터예요. 왼쪽으로 꺾인 길을 보고, 햇빛이 오는 쪽에 주사위를 놓아 보세요.", 7f);
             }
-            if (local.z > 30.8f && local.x > 25.5f && local.x < 28.5f)
-            {
-                sunlightComplete = true;
-                sunlightExposure = 0;
-                Debug.Log("TUTORIAL_SUNLIGHT_COMPLETE");
-            }
+            // Completion now belongs to the closed elevator departure. Merely
+            // entering the sheltered approach must not load the next scene.
         }
 
         void DrawSunlightExposure(float width, float height)

@@ -1,0 +1,24 @@
+Museum Bottle & Balance — external 3D assets
+
+All four collected original models are dedicated under CC0 1.0 Universal.
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Attribution is not required under CC0; the following voluntary credits preserve provenance.
+
+Trefoil / 3D knot — Nevit Dilmen (2018)
+https://commons.wikimedia.org/wiki/File:Knot-1-2-9-6-20-10-1_low.stl
+Original file: Knot-1-2-9-6-20-10-1 low.stl
+Local changes: STL to OBJ; exact coincident vertices welded; smooth normals and bronze preview material added; geometry retained.
+
+Abstract twisted-form sculpture — Innerscene Corp
+https://www.innerscene.com/tools/library/3d-parts/abstract-twisted-form-sculpture-6ec4135f
+Local changes: separate footing omitted; original bronze body geometry exported to OBJ; bronze preview material added.
+
+Abstract loop sculpture — Innerscene Corp
+https://www.innerscene.com/tools/library/3d-parts/abstract-loop-sculpture-6a4b97e1
+Local changes: separate footing omitted; original bronze loop geometry exported to OBJ; bronze preview material added.
+
+Round-bottom flask with stand — Innerscene Corp
+https://www.innerscene.com/tools/library/3d-parts/round-bottom-flask-with-stand-19d50771
+Local changes: only original glass flask body exported to OBJ; separate liquid/stand/clamps/socket omitted; glass preview material added.
+
+The puzzle design, expandable pivot cradle, scale mechanism, room integration and game rules are separate project work.

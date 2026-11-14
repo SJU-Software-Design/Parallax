@@ -149,3 +149,4 @@ InputManager:
     type: 2
     axis: 2
     joyNum: 1
+  m_UsePhysicalKeys: 1

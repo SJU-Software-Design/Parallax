@@ -747,7 +747,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 14494913}
 --- !u!1 &15215221
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC0B4\uBC14\uB3C4\uB974 \uB2EC\uB9AC \xB7 1934\u201335"
   size: 0.045
@@ -1343,7 +1343,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB300\uC0AC\uB4E4"
   size: 0.065
@@ -1391,7 +1391,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC694\uD558\uB124\uC2A4 \uD398\uB974\uBA54\uC774\uB974 \xB7 \uC57D 1665"
   size: 0.045
@@ -2807,7 +2807,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bd79d57566b78f43ad7463c946f235f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryConceptPerspective
   game: {fileID: 288351309}
   pieces:
@@ -3172,7 +3172,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 97766023}
 --- !u!65 &97766023
@@ -4035,7 +4035,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 127588451}
 --- !u!65 &127588451
@@ -4664,7 +4664,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 142718079}
 --- !u!1 &146293695
@@ -4821,7 +4821,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 149380912}
 --- !u!1 &150977751
@@ -5151,7 +5151,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 157415145}
 --- !u!1 &157745252
@@ -5182,7 +5182,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 576085074cdc4b5b96e1ffcd74ad3897, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryNikeCanvas
   BrushSeconds: 2.6
   portablePainting: {fileID: 460392631}
@@ -5535,7 +5535,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 161499793}
 --- !u!1 &163192140
@@ -8410,7 +8410,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 241980257}
 --- !u!65 &241980257
@@ -8712,7 +8712,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e646fb4f61bc5714cb56c7213bb034fd, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PlacementSupport
 --- !u!114 &243898796
 MonoBehaviour:
@@ -8724,7 +8724,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ecac1d98f841fb8696cfe8f670c751, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PropReleasePhysics
 --- !u!54 &243898797
 Rigidbody:
@@ -8763,7 +8763,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "01 \xB7 \uC811\uD78C \uCCAD\uB3D9 \xB7 \uADF8\uB9BC\uC790\uB97C \uB9CC\uB4DC\uB294
     \uC870\uAC01"
@@ -10870,7 +10870,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 623fb8a8acc784b08ba50d8959effc03, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryExhibitShadows
   game: {fileID: 288351309}
 --- !u!114 &288351305
@@ -10883,7 +10883,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d6c14524546b5a43a1e00c9daee6e4f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryConceptLighting
   game: {fileID: 288351309}
   galleryProbe: {fileID: 1192482212}
@@ -10903,7 +10903,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa7594ed2aff4be2858057c9e64b7877, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCathedralRumble
   game: {fileID: 288351309}
   activation: {fileID: 643683532}
@@ -10917,7 +10917,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cf1a354bf2045dbb234a3328afba843, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryNikeLight
   game: {fileID: 288351309}
   lamp: {fileID: 0}
@@ -10945,7 +10945,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 320976a41f90f0c43895ce62b5d10ba5, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLighting
   casters:
   - {fileID: 863227072}
@@ -11066,7 +11066,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad0d33274dc7784a9d813cb1a38d40d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryGame
   conceptLayout: 1
   exhibitionPreview: 0
@@ -11106,8 +11106,8 @@ MonoBehaviour:
   respawns: 0
   grabs: 0
   drops: 0
-  notice: 
-  invalidReason: 
+  notice:
+  invalidReason:
   noticeUntil: 0
   lesson: {fileID: 0}
   orcusExit: {fileID: 643683536}
@@ -11215,7 +11215,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d5dcdc7a63404c9eb2f26674f1850c4, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryBakedLighting
   bakeSources:
   - {fileID: 387755983}
@@ -12503,7 +12503,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 320730718}
 --- !u!1 &321998649
@@ -12908,7 +12908,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "03 \xB7 \uCD08\uC0C1\uC758 \uCF54 \uC870\uAC01"
   zone: 2
@@ -13424,7 +13424,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC808\uADDC"
   size: 0.065
@@ -13683,7 +13683,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 364387114}
 --- !u!1 &371533552
@@ -13731,7 +13731,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 371533555}
 --- !u!65 &371533555
@@ -15370,7 +15370,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 413888577}
 --- !u!65 &413888577
@@ -15839,7 +15839,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 420898608}
 --- !u!1 &421283100
@@ -16515,7 +16515,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB2EC\uB9AC \xB7 \uC624\uC2A4\uCE74\uB974 \uD22C\uC2A4\uCF00\uCE20 /
     \uC124\uCE58 \uC0AC\uC9C4"
@@ -17185,7 +17185,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uD074\uB85C\uB4DC \uBAA8\uB124 \xB7 1899"
   size: 0.045
@@ -17270,7 +17270,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2aabda59ee08bee469069b28d87e917f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryConceptPostFX
   EffectEnabled: 1
   DebugOcclusion: 0
@@ -17618,7 +17618,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uD55C\uC2A4 \uD640\uBC14\uC778 \xB7 1533"
   size: 0.045
@@ -17887,7 +17887,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e646fb4f61bc5714cb56c7213bb034fd, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PlacementSupport
 --- !u!114 &460392629
 MonoBehaviour:
@@ -17899,7 +17899,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ecac1d98f841fb8696cfe8f670c751, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PropReleasePhysics
 --- !u!54 &460392630
 Rigidbody:
@@ -17938,7 +17938,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "02 \xB7 \uC644\uC131\uB41C \uB2C8\uCF00 \uADF8\uB9BC"
   zone: 1
@@ -18176,7 +18176,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 466635221}
 --- !u!65 &466635221
@@ -18282,7 +18282,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 467918047}
 --- !u!1 &473755559
@@ -18777,7 +18777,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB300\uB9AC\uC11D \uD749\uC0C1\n\uB9AC\uCF54 \uC2E4\uB9AC\uC5B4\uC2A4
     \xB7 Poly Haven\nCC0 \xB7 \uC678\uBD80 \uC870\uAC01 \uBAA8\uB378"
@@ -18958,7 +18958,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 491114572}
 --- !u!65 &491114572
@@ -20034,7 +20034,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 503765211}
-  m_Mesh: {fileID: 4300000, guid: 097673d1c7faaec408a59a5230b3764d, type: 2}
+  m_Mesh: {fileID: 4300000, guid: d2f0ca1aac4d45949b547c0a03505bfb, type: 2}
 --- !u!1 &507474026
 GameObject:
   m_ObjectHideFlags: 0
@@ -20758,7 +20758,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 536744804}
 --- !u!65 &536744804
@@ -20915,7 +20915,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 548276794}
 --- !u!65 &548276794
@@ -21814,7 +21814,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 577187672}
 --- !u!65 &577187672
@@ -22053,7 +22053,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 580693511}
 --- !u!65 &580693511
@@ -23471,7 +23471,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 617260538}
 --- !u!1 &621942021
@@ -23702,7 +23702,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 531ed4ee3eeb448ba7ed6ed203b0e7b9, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryPortraitRoom
   game: {fileID: 288351309}
   originalArtwork: {fileID: 696077907}
@@ -23884,7 +23884,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d47d8267ce24ead9e58a7ed3551b899, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryNikeDoorSocket
   canvas: {fileID: 157745253}
   rails:
@@ -24154,7 +24154,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 634485736}
 --- !u!65 &634485736
@@ -24986,7 +24986,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38c8596883d95cf41987d03ce943bf01, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCathedralActivation
   entrance: {fileID: 643683536}
   portal: {fileID: 643683534}
@@ -25141,7 +25141,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e4247a7f2a3efd48a0d0f85853e496e, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCathedralPortal
   game: {fileID: 288351309}
   prop: {fileID: 643683535}
@@ -25165,7 +25165,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "04 \xB7 \uC131\uB2F9 \xB7 \uB450 \uC190 \uC0AC\uC774\uC758 \uBB38"
   zone: 3
@@ -25260,7 +25260,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8d96d9eb0434280a6f85249c0566eec, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryOrcusExit
   game: {fileID: 288351309}
   prop: {fileID: 643683535}
@@ -26323,7 +26323,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 680219685}
 --- !u!65 &680219685
@@ -26551,7 +26551,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 686986656}
 --- !u!1 &688289854
@@ -26711,7 +26711,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 689701841}
 --- !u!1 &691974543
@@ -28011,7 +28011,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 711008883}
 --- !u!1 &711162661
@@ -28077,7 +28077,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 711460113}
 --- !u!65 &711460113
@@ -28237,7 +28237,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 711500285}
 --- !u!1 &722044005
@@ -28359,7 +28359,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 723895572}
 --- !u!65 &723895572
@@ -28791,7 +28791,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 740684060}
 --- !u!1 &748831725
@@ -29579,7 +29579,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 778078528}
 --- !u!1 &779540627
@@ -30463,7 +30463,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC0AC\uBAA8\uD2B8\uB77C\uCF00\uC758 \uB2C8\uCF00\nSkulpturhalle Basel
     \uC11D\uACE0\uC0C1 \uC2A4\uCE94\nCosmo Wenman \xB7 CC BY 3.0"
@@ -31364,7 +31364,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 824341313}
 --- !u!65 &824341313
@@ -32420,7 +32420,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 848785876}
 --- !u!65 &848785876
@@ -32582,7 +32582,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 849783161}
 --- !u!1 &850089786
@@ -32717,7 +32717,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC9C4\uC8FC \uADC0\uAC78\uC774\uB97C \uD55C \uC18C\uB140"
   size: 0.065
@@ -32750,7 +32750,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 853065410}
 --- !u!65 &853065410
@@ -33036,7 +33036,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 858252265}
 --- !u!1 &859658928
@@ -33339,7 +33339,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 863227073}
 --- !u!65 &863227073
@@ -33653,7 +33653,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uBE48 \uCE94\uBC84\uC2A4\uC640 \uC8FC\uBCC0 \uC804\uC2DC\uBB3C\uC744
     \uC0B4\uD3B4\uBCF4\uC138\uC694"
@@ -33962,7 +33962,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 872099647}
 --- !u!1 &873497742
@@ -34126,7 +34126,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 874120521}
 --- !u!1 &874528945
@@ -34261,7 +34261,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB9C8\uB974\uCFE0\uC2A4 \uC544\uC6B0\uB810\uB9AC\uC6B0\uC2A4\nAurelius
     (PhotoScan) \xB7 ryanfb\nCC BY 4.0 \xB7 \uD06C\uAE30\uC640 \uC7AC\uC9C8 \uC870\uC815"
@@ -34902,7 +34902,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 897602193}
 --- !u!65 &897602193
@@ -35503,7 +35503,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC5D0\uB4DC\uBC14\uB974 \uBB49\uD06C \xB7 1893"
   size: 0.045
@@ -35733,7 +35733,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 915936867}
 --- !u!1 &918427554
@@ -36679,7 +36679,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 941460933}
 --- !u!1 &942410630
@@ -37111,7 +37111,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 952435133}
 --- !u!1 &955649301
@@ -37323,7 +37323,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 961542593}
 --- !u!65 &961542593
@@ -37969,7 +37969,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 970329432}
 --- !u!1 &975040307
@@ -39060,7 +39060,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1019774558}
 --- !u!65 &1019774558
@@ -39726,7 +39726,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1046867955}
 --- !u!1 &1050530473
@@ -40476,7 +40476,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1069727062}
 --- !u!1 &1070967489
@@ -40521,7 +40521,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC131\uB2F9 \xB7 \uB450 \uC190 \uC0AC\uC774\uC758 \uBB38\n\uC624\uADC0\uC2A4\uD2B8
     \uB85C\uB315"
@@ -42350,7 +42350,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1111855578}
 --- !u!65 &1111855578
@@ -43521,7 +43521,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1149324056}
 --- !u!65 &1149324056
@@ -43756,7 +43756,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1151935996}
 --- !u!1 &1152390694
@@ -43801,7 +43801,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC808\uADDC"
   size: 0.065
@@ -44457,7 +44457,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1162749041}
 --- !u!65 &1162749041
@@ -45375,7 +45375,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC5D0\uB4DC\uBC14\uB974 \uBB49\uD06C \xB7 1893"
   size: 0.045
@@ -45512,7 +45512,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uBA54\uC774 \uC6E8\uC2A4\uD2B8\uC758 \uC5BC\uAD74"
   size: 0.065
@@ -45706,7 +45706,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1187571551}
 --- !u!1 &1188460663
@@ -45737,7 +45737,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1188460665}
 --- !u!65 &1188460665
@@ -46064,7 +46064,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uCCAD\uB3D9 \uC870\uAC01\uC744 \uD0A4\uC6CC \uBE5B\uC744 \uAC00\uB824
     \uBCF4\uC138\uC694"
@@ -46134,7 +46134,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1202520203}
 --- !u!1 &1202536086
@@ -46201,7 +46201,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1202536088}
 --- !u!1 &1209927522
@@ -47356,7 +47356,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1228062352}
 --- !u!1 &1230008338
@@ -47701,7 +47701,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1235765984}
 --- !u!65 &1235765984
@@ -48149,7 +48149,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1247199379}
 --- !u!1 &1247883776
@@ -48770,7 +48770,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1257433018}
 --- !u!65 &1257433018
@@ -48944,7 +48944,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1260986563}
 --- !u!65 &1260986563
@@ -49067,7 +49067,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC9C4\uC8FC \uADC0\uAC78\uC774\uB97C \uD55C \uC18C\uB140"
   size: 0.065
@@ -49207,7 +49207,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1263417458}
 --- !u!65 &1263417458
@@ -49352,7 +49352,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1265087313}
 --- !u!1 &1270916449
@@ -49400,7 +49400,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1270916452}
 --- !u!65 &1270916452
@@ -49940,7 +49940,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1279427655}
 --- !u!65 &1279427655
@@ -49974,7 +49974,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98fd76624b38453c8c09002c630b890a, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryPortraitPerformance
 --- !u!114 &1279427657
 MonoBehaviour:
@@ -49986,7 +49986,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffdd54f18535e0142bd33b28fd018b86, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryPortraitGate
   game: {fileID: 288351309}
   portrait: {fileID: 87512958}
@@ -50170,7 +50170,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1282108871}
 --- !u!1 &1282306014
@@ -50691,7 +50691,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d4c0f43ee4c76c41838fcf0a87ab90c, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryMuseumShadowCourse
   game: {fileID: 288351309}
   bronze: {fileID: 243898798}
@@ -50953,7 +50953,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1306332332}
 --- !u!1 &1307527677
@@ -51004,7 +51004,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e646fb4f61bc5714cb56c7213bb034fd, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PlacementSupport
 --- !u!114 &1307527680
 MonoBehaviour:
@@ -51016,7 +51016,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ecac1d98f841fb8696cfe8f670c751, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PropReleasePhysics
 --- !u!54 &1307527681
 Rigidbody:
@@ -51055,7 +51055,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "02 \xB7 \uC0AC\uBAA8\uD2B8\uB77C\uCF00\uC758 \uB2C8\uCF00"
   zone: 1
@@ -51206,7 +51206,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1310092582}
 --- !u!1 &1310445689
@@ -51569,7 +51569,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1327476574}
 --- !u!65 &1327476574
@@ -51873,7 +51873,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1330022830}
 --- !u!65 &1330022830
@@ -52157,7 +52157,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "La Cath\xE9drale \xB7 Auguste Rodin\n\uBC15\uBB3C\uAD00 \uC804\uC2DC\uBB3C
     3D \uC2A4\uCE94: Migg \xB7 CC BY 4.0"
@@ -54910,7 +54910,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC2DC\uC810\uC758 \uCD08\uC0C1"
   size: 0.13
@@ -56017,7 +56017,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1430639089}
 --- !u!65 &1430639089
@@ -56098,7 +56098,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uBA54\uC774 \uC6E8\uC2A4\uD2B8\uC758 \uBC29"
   size: 0.065
@@ -56357,7 +56357,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB300\uC0AC\uB4E4"
   size: 0.065
@@ -56480,7 +56480,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1440645175}
 --- !u!65 &1440645175
@@ -57369,7 +57369,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1459035258}
 --- !u!1 &1465595413
@@ -57619,7 +57619,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1474001062}
 --- !u!1 &1476226427
@@ -57740,7 +57740,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1479570991}
 --- !u!65 &1479570991
@@ -57821,7 +57821,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC218\uB828 \uC5F0\uBABB \uC704\uC758 \uB2E4\uB9AC"
   size: 0.065
@@ -58607,7 +58607,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1491986329}
 --- !u!1 &1493241539
@@ -58674,7 +58674,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1493241541}
 --- !u!1 &1497503003
@@ -59065,7 +59065,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1503639548}
 --- !u!65 &1503639548
@@ -59583,7 +59583,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1515754290}
 --- !u!65 &1515754290
@@ -60132,7 +60132,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1525798471}
 --- !u!1 &1527494928
@@ -60292,7 +60292,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1529750852}
 --- !u!1 &1530348154
@@ -60537,7 +60537,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1535658091}
 --- !u!65 &1535658091
@@ -61493,7 +61493,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1563964782}
 --- !u!65 &1563964782
@@ -61930,7 +61930,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC808\uADDC"
   size: 0.065
@@ -62394,7 +62394,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1582886451}
 --- !u!1 &1591044089
@@ -62911,7 +62911,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1606123565}
 --- !u!1 &1607338016
@@ -62978,7 +62978,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1607338018}
 --- !u!1 &1608455257
@@ -64276,7 +64276,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1633482037}
 --- !u!65 &1633482037
@@ -64436,7 +64436,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1636074318}
 --- !u!1 &1638551353
@@ -64469,7 +64469,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1638551355}
 --- !u!65 &1638551355
@@ -64821,7 +64821,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB208\xB7\uCF54\xB7\uC785\uC744 \uC5BC\uAD74\uCC98\uB7FC \uC774\uC5B4
     \uB193\uACE0\n\uBCF4\uC774\uB294 \uC790\uB9AC\uC5D0\uC11C \uC7A0\uAE50 \uBC14\uB77C\uBCF4\uC138\uC694"
@@ -64964,7 +64964,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "03 \xB7 \uCD08\uC0C1\uC758 \uC785\uC220 \uC18C\uD30C"
   zone: 2
@@ -66277,7 +66277,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1673709189}
 --- !u!65 &1673709189
@@ -66386,7 +66386,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1674758549}
 --- !u!65 &1674758549
@@ -67030,7 +67030,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1682894717}
 --- !u!1 &1684463438
@@ -67870,7 +67870,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "03 \xB7 \uCD08\uC0C1\uC758 \uB208 \uC561\uC790"
   zone: 2
@@ -68774,7 +68774,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC131\uB2F9\n\uB450 \uC190 \uC0AC\uC774\uC5D0\uB294 \uB2E4\uB978 \uBC29\uC774
     \uC788\uC2B5\uB2C8\uB2E4.\n\uAC00\uAE4C\uC774\uC5D0\uC11C \uC7A1\uACE0, \uBA3C
@@ -68993,7 +68993,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1730713522}
 --- !u!65 &1730713522
@@ -69526,7 +69526,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1743743524}
 --- !u!1 &1745404516
@@ -70453,7 +70453,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1755807973}
 --- !u!65 &1755807973
@@ -70771,7 +70771,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1766046541}
 --- !u!1 &1767628137
@@ -70931,7 +70931,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1767844583}
 --- !u!1 &1768248617
@@ -71431,7 +71431,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1794377226}
 --- !u!65 &1794377226
@@ -73125,7 +73125,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1851865582}
 --- !u!65 &1851865582
@@ -74039,7 +74039,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uBCC4\uC774 \uBE5B\uB098\uB294 \uBC24"
   size: 0.065
@@ -74247,7 +74247,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1891562970}
 --- !u!65 &1891562970
@@ -75949,7 +75949,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uBE48\uC13C\uD2B8 \uBC18 \uACE0\uD750 \xB7 1889"
   size: 0.045
@@ -76086,7 +76086,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uD55C\uC2A4 \uD640\uBC14\uC778 \xB7 1533"
   size: 0.045
@@ -76859,7 +76859,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1952066762}
 --- !u!65 &1952066762
@@ -76943,7 +76943,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 1952683347}
 --- !u!65 &1952683347
@@ -78328,7 +78328,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uB300\uC0AC\uB4E4"
   size: 0.065
@@ -79149,7 +79149,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uD55C\uC2A4 \uD640\uBC14\uC778 \xB7 1533"
   size: 0.045
@@ -79184,7 +79184,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 2019932167}
 --- !u!65 &2019932167
@@ -80432,7 +80432,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC5D0\uB4DC\uBC14\uB974 \uBB49\uD06C \xB7 1893"
   size: 0.045
@@ -81112,7 +81112,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 2076824765}
 --- !u!65 &2076824765
@@ -81722,7 +81722,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 2093709500}
 --- !u!1 &2097477668
@@ -81848,7 +81848,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9283ad170515d094b951710d38836668, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryCaster
   shape: {fileID: 2097477670}
 --- !u!1 &2098594771
@@ -83745,7 +83745,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6fd14535418c134f93253c0f51be174, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryLabel
   caption: "\uC694\uD558\uB124\uC2A4 \uD398\uB974\uBA54\uC774\uB974 \xB7 \uC57D 1665"
   size: 0.045
@@ -83804,7 +83804,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e646fb4f61bc5714cb56c7213bb034fd, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PlacementSupport
 --- !u!114 &2146439330
 MonoBehaviour:
@@ -83816,7 +83816,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73ecac1d98f841fb8696cfe8f670c751, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.PropReleasePhysics
 --- !u!54 &2146439331
 Rigidbody:
@@ -83855,7 +83855,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aed219970ecf4d640a4c88d002a9475d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryProp
   title: "\uB300\uB9AC\uC11D \uD749\uC0C1\uACFC \uBC1B\uCE68"
   zone: 1
@@ -83890,7 +83890,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9ad27ab73e246e18be376cf901ca762, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShadeLink.Gallery.GalleryNikeLightCover
   prop: {fileID: 2146439332}
   discovered: 0

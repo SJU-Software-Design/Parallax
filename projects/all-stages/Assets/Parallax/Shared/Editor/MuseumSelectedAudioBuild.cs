@@ -48,8 +48,7 @@ namespace ShadeLink.Editor
         public static void ValidateAndBuild()
         {
             string buildId = DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ") + "-" + Guid.NewGuid().ToString("N").Substring(0, 8);
-            string projectRoot = Directory.GetParent(Application.dataPath).FullName;
-            string artifactDirectory = Path.Combine(projectRoot, "Builds", "MuseumSelectedAudio", buildId);
+            string artifactDirectory = Path.Combine(WorkspaceRoot(), "artifacts", "museum-selected-audio-20261112", "builds", buildId);
             string output = Path.Combine(artifactDirectory, "Parallax.exe");
             var result = new Result
             {
@@ -105,18 +104,21 @@ namespace ShadeLink.Editor
                 // Fixtures can dirty the editor's in-memory scene. Discard them;
                 // the build must consume the existing scene, never a saved fixture.
                 EditorSceneManager.OpenScene(GalleryScene, OpenSceneMode.Single);
+                result.phase = "prepare-destination-and-collision";
+                Require(AssetDatabase.LoadAssetAtPath<SceneAsset>(GalleryPortalBeachAssets.SourceScenePath) != null,
+                    "The saved museum's existing Beach portal destination is missing.");
+                GalleryPortalBeachAssets.Prepare();
+                GalleryStaticExhibitCollisionAssets.PrepareSavedScene();
+                result.checks.Add("Actual saved Beach preview and exact saved-museum collision copies prepared without regenerating either stage");
                 var scenes = new List<string> { GalleryScene };
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(LibraryBuild.ScenePath) != null)
-                    scenes.Add(LibraryBuild.ScenePath);
-                else
-                    throw new FileNotFoundException("The saved museum's existing Library portal destination is missing.", LibraryBuild.ScenePath);
+                scenes.Add(GalleryPortalBeachAssets.SourceScenePath);
                 result.scenes = scenes.ToArray();
                 GalleryBuild.WriteCredits(Path.GetDirectoryName(output));
                 File.Copy(AudioCredits, Path.Combine(Path.GetDirectoryName(output), Path.GetFileName(AudioCredits)), true);
 
                 result.phase = "build";
                 settingsChanged = true;
-                PlayerSettings.productName = "Parallax - Museum Selected Audio";
+                PlayerSettings.productName = "Parallax - Museum Bottle and Balance - Selected Audio";
                 PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
                 PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { GraphicsDeviceType.Direct3D11 });
                 BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
@@ -263,6 +265,17 @@ namespace ShadeLink.Editor
             if (index < 0) return null;
             Require(index + 1 < arguments.Length && !arguments[index + 1].StartsWith("-"), "Missing value for " + name);
             return arguments[index + 1];
+        }
+
+        static string WorkspaceRoot()
+        {
+            var directory = new DirectoryInfo(Application.dataPath);
+            while (directory != null)
+            {
+                if (Directory.Exists(Path.Combine(directory.FullName, "SW기초설계github"))) return directory.FullName;
+                directory = directory.Parent;
+            }
+            throw new DirectoryNotFoundException("Could not locate the Parallax workspace for the audio build audit.");
         }
 
         static string Hash(string path)

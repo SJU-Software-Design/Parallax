@@ -39,6 +39,8 @@ namespace ShadeLink.Tutorial
 
         readonly FirstPersonMotor motor = new FirstPersonMotor();
         readonly PlayerControls controls = new PlayerControls();
+        PlayerMovementAudio movementAudio;
+        TutorialAudio tutorialAudio;
         ObjectInteraction<GalleryProp> interaction;
         TutorialLandingShake landingShake;
         GalleryProp die;
@@ -51,6 +53,7 @@ namespace ShadeLink.Tutorial
         Renderer doorLamp;
         Material unlockedLamp;
         bool exitUnlocked;
+        bool doorSoundPlayed;
         Font font;
         Vector2 referenceViewportSize;
         float yaw, pitch, messageUntil, firstSize;
@@ -93,6 +96,8 @@ namespace ShadeLink.Tutorial
             Camera = new GameObject("Tutorial camera").AddComponent<Camera>();
             Camera.transform.SetParent(player.transform, false);
             Camera.gameObject.AddComponent<AudioListener>();
+            tutorialAudio = TutorialAudio.Install(gameObject);
+            movementAudio = PlayerMovementAudio.Attach(Controller);
             Camera.clearFlags = CameraClearFlags.SolidColor;
             Camera.backgroundColor = steel.color;
             FirstPersonMotor.Configure(Controller, Camera);
@@ -106,7 +111,7 @@ namespace ShadeLink.Tutorial
             die.placement.PreviewUntilSettled = false;
             AttachLandingFeedback(die);
             Props = new[] { die };
-            interaction = new ObjectInteraction<GalleryProp>(this);
+            interaction = new ObjectInteraction<GalleryProp>(this, autoUprightOnPickup: true);
             primaryTarget = WallTarget("First wall target", orange, new Vector3(0, OrangeTargetSize * .5f, Room.max.z), OrangeTargetSize);
             tabletopTarget = Outline("Tabletop target", new Material(guideShader) { color = TableAccent });
             tabletopTarget.position = TablePosition + Vector3.up * TableHeight;
@@ -126,10 +131,13 @@ namespace ShadeLink.Tutorial
             BuildDistanceMarks();
             BuildClimbRoom();
             BuildSunlightCourse();
+            BuildMuseumElevator();
             ResetStep();
             SetPaused(false);
             if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "--tutorial-stage3"))
                 StartTutorialStage(3);
+            if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "-tutorial-elevator-review" || arg == "-tutorial-elevator-validate"))
+                JumpToElevatorReview();
         }
 
         void BuildRoom()
@@ -211,11 +219,18 @@ namespace ShadeLink.Tutorial
                     Mathf.Abs(feet.z - DoorCenter) < DoorWidth * .5f)
                 {
                     climbComplete = true;
+                    TutorialAudio.Play("puzzle.complete", this, feet);
                     EnterSunlightRoom();
                 }
                 return;
             }
             if (!exitUnlocked) return;
+
+            if (!doorSoundPlayed)
+            {
+                doorSoundPlayed = true;
+                TutorialAudio.Play("door.open", this, door.position);
+            }
 
             Vector3 position = door.position;
             position.y = Mathf.MoveTowards(position.y, DoorHeight * 1.5f + .12f, dt * 3.3f);
@@ -449,13 +464,14 @@ namespace ShadeLink.Tutorial
 
         void OnDestroy()
         {
+            DisposeShadowPreview();
             Font.textureRebuilt -= RefreshSignFont;
             if (signInk != null) Destroy(signInk);
             landingShake?.Dispose();
             if (sunlightWarningClip != null) Destroy(sunlightWarningClip);
         }
 
-        void OnDisable() => ClearLandingFeedback();
+        void OnDisable() { ClearLandingFeedback(); ClearRotationHintTransient(); ClearShadowPreview(); }
 
         void RefreshLesson()
         {
@@ -469,6 +485,7 @@ namespace ShadeLink.Tutorial
 
         void ResetStep()
         {
+            ResetRotationHint();
             ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
             die.Restore();
@@ -477,12 +494,14 @@ namespace ShadeLink.Tutorial
             Controller.transform.position = PlayerStart;
             Controller.enabled = true;
             motor.Reset();
+            movementAudio?.Reset();
             controls.Reset();
             yaw = 0;
             pitch = -.23f;
             SyncView();
             messageUntil = 0;
             exitUnlocked = false;
+            doorSoundPlayed = false;
             door.position = new Vector3(Room.max.x + .1f, DoorHeight * .5f, DoorCenter);
             doorLamp.sharedMaterial = orange;
         }
@@ -492,6 +511,9 @@ namespace ShadeLink.Tutorial
         void SetPaused(bool value)
         {
             paused = value;
+            if (MuseumElevator != null) MuseumElevator.Paused = value;
+            tutorialAudio?.SetGameplayRunning(!paused);
+            if (paused) ClearShadowPreview();
             if (paused) landingShake?.Clear();
             motor.ClearInput();
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
@@ -566,33 +588,49 @@ namespace ShadeLink.Tutorial
 
         void Update()
         {
-            if (PlayerControls.PausePressed) { SetPaused(!paused); return; }
+            if (elevatorDeparted) return;
+            if (PlayerControls.PausePressed)
+            {
+                TutorialAudio.Play("ui.cancel", this, Controller.transform.position);
+                SetPaused(!paused); return;
+            }
             if (paused) return;
             if (Input.GetKeyDown(KeyCode.R))
             {
+                TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                 RestartLesson();
                 return;
             }
 
             var frame = controls.Read(Time.deltaTime, Aimed != null, Held != null);
+            bool practicedRotation = false;
+            Quaternion beforeRotation = Held != null ? Held.transform.rotation : Quaternion.identity;
             if (Held != null && frame.RotateHeld)
             {
                 Vector2 rotation = PlayerControls.ObjectRotationDegrees(frame.Look);
+                practicedRotation = rotation.sqrMagnitude > 1e-8f;
                 interaction.Rotation = Quaternion.AngleAxis(rotation.x, Vector3.up) * interaction.Rotation *
                     Quaternion.AngleAxis(rotation.y, Vector3.right);
             }
             else PlayerControls.ApplyLook(ref yaw, ref pitch, frame.Look);
             motor.Step(Controller, frame.Move, yaw, frame.JumpPressed, frame.JumpHeld, Time.deltaTime);
+            movementAudio?.Tick(motor.Velocity, motor.Grounded, frame.Move.sqrMagnitude > .0001f, Time.deltaTime);
             SyncView();
             UpdateExit(Time.deltaTime);
+            TickRotationHint(Time.deltaTime);
             if (inSunlightRoom) TickSunlight(Time.deltaTime);
             if (!CanInteract) return;
 
             if (Held != null)
             {
-                if (frame.CancelPressed) { interaction.Cancel(); return; }
+                if (frame.CancelPressed)
+                {
+                    TutorialAudio.Play("ui.cancel", this, Controller.transform.position);
+                    interaction.Cancel(); return;
+                }
                 interaction.Advance(Time.deltaTime);
                 UpdateProjection();
+                if (practicedRotation) RecordRotationPractice(AppliedRotationDegrees(beforeRotation, Held.transform.rotation));
             }
             else interaction.UpdateAim();
 
@@ -643,6 +681,7 @@ namespace ShadeLink.Tutorial
             Held.GetComponent<TutorialLandingFeedback>().ClearPending();
             referenceViewportSize = ProjectedSize(Held.WorldBounds);
             Held.BeginHold();
+            BeginRotationHint();
         }
 
         Vector2 ProjectedSize(Bounds bounds)
@@ -684,6 +723,7 @@ namespace ShadeLink.Tutorial
 
         public void FinishInteraction(bool released)
         {
+            ClearRotationHintTransient();
             if (!released || exitUnlocked || step >= LessonCount) return;
 
             float size = die.transform.localScale.x;
@@ -709,6 +749,7 @@ namespace ShadeLink.Tutorial
                 exitUnlocked = true;
                 doorLamp.sharedMaterial = unlockedLamp;
                 messageUntil = 0;
+                TutorialAudio.Play("puzzle.complete", this, door.position);
             }
         }
 
@@ -731,6 +772,8 @@ namespace ShadeLink.Tutorial
             die.homeScale = Vector3.one * checkpointSize;
             die.homeRotation = Quaternion.identity;
             step++;
+            TutorialAudio.Play("puzzle.complete", this, Controller.transform.position);
+            ResetRotationHint();
             RefreshLesson();
             Tell(instruction, 8);
         }
@@ -745,8 +788,10 @@ namespace ShadeLink.Tutorial
             messageUntil = Time.time + duration;
         }
 
+        bool stageTravelTab;
         void OnGUI()
         {
+            if (elevatorDeparted || (MuseumElevator != null && MuseumElevator.ContainsPlayer && !paused)) return;
             if (Camera == null) return;
             float width = Screen.width;
             float height = Screen.height;
@@ -779,8 +824,10 @@ namespace ShadeLink.Tutorial
             string notice = sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
                 climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
                 Time.time < messageUntil ? message :
+                inSunlightRoom && Held != null ? "빗금은 예상 그늘이에요. 주사위를 놓으면 실제 그늘이 생겨요." :
                 exitUnlocked && !inClimbRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
                 null;
+            DrawRotationHint(width, height);
             if (notice != null)
             {
                 float bannerWidth = Mathf.Min(width - 36, 1040);
@@ -794,19 +841,39 @@ namespace ShadeLink.Tutorial
                 var menu = new Rect((width - menuWidth) / 2, height / 2 - 202, menuWidth, 404);
                 var button = new GUIStyle(GUI.skin.button) { font = font, fontSize = 20, wordWrap = true };
                 GUI.Box(menu, GUIContent.none);
+                if (StageTravelMenu.DrawPauseTabs(new Rect(menu.x, menu.y - 46, menu.width, 38), font, ref stageTravelTab))
+                {
+                    StageTravelMenu.DrawDestinations(new Rect(menu.x, menu.y + 8, menu.width, menu.height - 16), font);
+                    return;
+                }
                 GUI.Label(new Rect(menu.x + 20, menu.y + 12, menu.width - 40, 32), "튜토리얼 일시정지", style);
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 56, menu.width - 40, 48), "계속하기", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     SetPaused(false);
+                }
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 116, menu.width - 40, 48), "처음부터 다시 시작", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(1);
+                }
                 GUI.Label(new Rect(menu.x + 20, menu.y + 176, menu.width - 40, 28), "스테이지 바로가기", style);
                 float stageWidth = (menu.width - 52) / 2;
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 216, stageWidth, 64), "1스테이지\n크기 조절", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(1);
+                }
                 if (GUI.Button(new Rect(menu.x + 32 + stageWidth, menu.y + 216, stageWidth, 64), "2스테이지\n주사위 발판", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(2);
+                }
                 if (GUI.Button(new Rect(menu.x + 20, menu.y + 292, menu.width - 40, 64), "3스테이지 · 햇빛과 그늘", button))
+                {
+                    TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                     StartTutorialStage(3);
+                }
             }
         }
 

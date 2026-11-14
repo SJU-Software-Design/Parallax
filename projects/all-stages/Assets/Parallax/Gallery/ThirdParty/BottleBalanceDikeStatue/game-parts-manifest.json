@@ -1,0 +1,442 @@
+{
+  "checkedAt": "2026-11-13T14:49:04.255Z",
+  "originalCreator": "Kenny Maguire",
+  "license": "CC BY 4.0",
+  "sourceModel": "https://sketchfab.com/3d-models/lady-justice-67b91f4d07ee423b9c5c53a08d8aa454",
+  "publicRedistribution": "https://maybelucas.com/models/lady-justice/scene.glb",
+  "redistributionCreditPage": "https://maybelucas.com/",
+  "originalCreatorZipAcquired": false,
+  "publicRedistributionAcquired": true,
+  "sourceGlbBytes": 4085884,
+  "sourceGlbSHA256": "7bec27a05f6c15268a76b03598ad3afd57e049abf0f0b29b02a6db3703736541",
+  "sourceTriangleCount": 400351,
+  "axes": "glTF right-handed Y-up, original scene root transforms baked into OBJ coordinates; standard OBJ RH winding/normals",
+  "sword": {
+    "sourceNodes": [
+      40,
+      41
+    ],
+    "identifiedBy": "Actual geometry highlighted/removed in software-rendered original scene; whole sword disappears while hand and body remain",
+    "normalization": {
+      "center": [
+        -0.0074139158564282505,
+        -0.2714242541533672,
+        0.1260053162453612
+      ],
+      "axisY": [
+        0.46445334082598083,
+        0.8784768704138685,
+        -0.11207801900212658
+      ],
+      "basisColumns": [
+        [
+          0.8840468872926303,
+          -0.4673982253584321,
+          0
+        ],
+        [
+          0.46445334082598083,
+          0.8784768704138685,
+          -0.11207801900212658
+        ],
+        [
+          0.052385067183282584,
+          0.09908222383275424,
+          0.99369941011181
+        ]
+      ],
+      "rotationQuatXYZW": [
+        -0.054476157094071866,
+        0.013514557053675692,
+        -0.24040364618975285,
+        0.969048911022853
+      ],
+      "originalLength": 0.7498165279779084,
+      "outputLength": 1,
+      "hiltDirection": "+Y",
+      "tipDirection": "-Y",
+      "maxReconstructionError": 3.7649494539356106e-16
+    },
+    "skinCount": 0,
+    "animationCount": 0,
+    "independentRigidMeshVerified": true,
+    "unityGravityTestCompleted": false
+  },
+  "scale": {
+    "sourceNodes": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      33,
+      34,
+      35,
+      38,
+      39
+    ],
+    "handNode13PreservedInBody": true,
+    "partitionMethod": "Original world-space triangles partitioned at y=.31 (suspension), y=.20 (beam/chain boundary), x=-.44 (left/right chain-pan assemblies); no triangles discarded. This is project-authored part separation, not pre-authored rig.",
+    "beamPivotSuggested": [
+      -0.44,
+      0.275,
+      0.39
+    ],
+    "triangleConservation": true
+  },
+  "parts": {
+    "StaticBody": {
+      "file": "game-parts/StaticBody.obj",
+      "vertices": 310363,
+      "triangles": 312264,
+      "bounds": {
+        "min": [
+          -0.47038018978653545,
+          -0.6568701864644944,
+          -0.22035703284177544
+        ],
+        "max": [
+          0.151287476610901,
+          0.5803746339756675,
+          0.4131668780286809
+        ],
+        "center": [
+          -0.15954635658781724,
+          -0.038247776244413445,
+          0.09640492259345274
+        ],
+        "size": [
+          0.6216676663974364,
+          1.2372448204401618,
+          0.6335239108704563
+        ]
+      },
+      "sha256": "1abffdd928cf81f5b1e5176930bdd24ee881bfc14220ed1b01309a5cda75b0bd"
+    },
+    "RewardSword": {
+      "file": "game-parts/RewardSword.obj",
+      "vertices": 6914,
+      "triangles": 12831,
+      "bounds": {
+        "min": [
+          -0.06763094894022484,
+          -0.49999999999999994,
+          -0.08623797029630728
+        ],
+        "max": [
+          0.06763094894022484,
+          0.5,
+          0.08623797029630728
+        ],
+        "center": [
+          0,
+          2.7755575615628914e-17,
+          0
+        ],
+        "size": [
+          0.13526189788044968,
+          1,
+          0.17247594059261456
+        ]
+      },
+      "sha256": "67779b4f699dff7a4e5755329f8af6d5ee529e4a51cd607f14d9cca9e1e525bd"
+    },
+    "SourceSwordAtPose": {
+      "file": "game-parts/SourceSwordAtPose.obj",
+      "vertices": 6914,
+      "triangles": 12831,
+      "bounds": {
+        "min": [
+          -0.1863817840498721,
+          -0.5982475947668664,
+          0.03978877833620595
+        ],
+        "max": [
+          0.1731879780725959,
+          0.05982537873940773,
+          0.1741199234722615
+        ],
+        "center": [
+          -0.006596902988638104,
+          -0.2692111080137293,
+          0.10695435090423372
+        ],
+        "size": [
+          0.359569762122468,
+          0.6580729735062741,
+          0.13433114513605554
+        ]
+      },
+      "sha256": "3817a8e28e63768192f7fa49b87e0c68846c08ff7714d58f0e559dca6c090244"
+    },
+    "ScaleCompleteAtSourcePose": {
+      "file": "game-parts/ScaleCompleteAtSourcePose.obj",
+      "vertices": 84423,
+      "triangles": 75256,
+      "bounds": {
+        "min": [
+          -0.5992543235397448,
+          -0.07292170675379908,
+          0.17324316458588135
+        ],
+        "max": [
+          -0.18287762859654594,
+          0.5986724702546244,
+          0.5316499652118822
+        ],
+        "center": [
+          -0.3910659760681454,
+          0.2628753817504127,
+          0.3524465648988818
+        ],
+        "size": [
+          0.4163766949431989,
+          0.6715941770084235,
+          0.3584068006260009
+        ]
+      },
+      "sha256": "7970feba77edd2bf6bd2473ae60e54149ada03e2666c394c0cd3d732e56a807e"
+    },
+    "ScaleSuspension": {
+      "file": "game-parts/ScaleSuspension.obj",
+      "vertices": 14372,
+      "triangles": 9856,
+      "bounds": {
+        "min": [
+          -0.4656464895477646,
+          0.30840380937748396,
+          0.17324316458588135
+        ],
+        "max": [
+          -0.18287762859654594,
+          0.5986724702546244,
+          0.4155231384665747
+        ],
+        "center": [
+          -0.3242620590721553,
+          0.4535381398160542,
+          0.294383151526228
+        ],
+        "size": [
+          0.28276886095121867,
+          0.2902686608771405,
+          0.24227997388069333
+        ]
+      },
+      "sha256": "0b3190a502387d84840198ebd80617789f498473ca199bdb3532e9b4838edfe2"
+    },
+    "ScaleBeam": {
+      "file": "game-parts/ScaleBeam.obj",
+      "vertices": 20386,
+      "triangles": 16009,
+      "bounds": {
+        "min": [
+          -0.5706961816623017,
+          0.19872907533196427,
+          0.28059848319811426
+        ],
+        "max": [
+          -0.31148534781218085,
+          0.31150654020930546,
+          0.4992121084733776
+        ],
+        "center": [
+          -0.4410907647372413,
+          0.25511780777063486,
+          0.38990529583574596
+        ],
+        "size": [
+          0.2592108338501209,
+          0.1127774648773412,
+          0.21861362527526335
+        ]
+      },
+      "sha256": "1e2467e150462b10a53a38bc6e4d32441863e1a822897420fade8e9ca1471229"
+    },
+    "PanLeft": {
+      "file": "game-parts/PanLeft.obj",
+      "vertices": 24133,
+      "triangles": 23937,
+      "bounds": {
+        "min": [
+          -0.5992543235397448,
+          -0.07291737653155339,
+          0.24826749774220813
+        ],
+        "max": [
+          -0.480845245904046,
+          0.20128742482516165,
+          0.36607459317460883
+        ],
+        "center": [
+          -0.5400497847218955,
+          0.06418502414680413,
+          0.30717104545840845
+        ],
+        "size": [
+          0.11840907763569886,
+          0.27420480135671504,
+          0.1178070954324007
+        ]
+      },
+      "sha256": "e81dd1d3eb08c275ad81799ad9653be424f0081e21a3ba33955bc5abafcc7266"
+    },
+    "PanRight": {
+      "file": "game-parts/PanRight.obj",
+      "vertices": 25651,
+      "triangles": 25454,
+      "bounds": {
+        "min": [
+          -0.4014181748672829,
+          -0.07292170675379908,
+          0.41371545433922363
+        ],
+        "max": [
+          -0.2834966854090146,
+          0.20093471133907734,
+          0.5316499652118822
+        ],
+        "center": [
+          -0.3424574301381488,
+          0.06400650229263913,
+          0.47268270977555293
+        ],
+        "size": [
+          0.11792148945826825,
+          0.2738564180928764,
+          0.1179345108726586
+        ]
+      },
+      "sha256": "3cf2aa01ea8ce9a3d3aa1f7c3e922dfc7e89f715817a8818e08dce9b31168536"
+    },
+    "PanLeftBowl": {
+      "file": "game-parts/PanLeftBowl.obj",
+      "vertices": 11313,
+      "triangles": 9316,
+      "bounds": {
+        "min": [
+          -0.5992543235397448,
+          -0.07291737653155339,
+          0.24826749774220813
+        ],
+        "max": [
+          -0.480845245904046,
+          -0.01695256240469105,
+          0.36607459317460883
+        ],
+        "center": [
+          -0.5400497847218955,
+          -0.04493496946812222,
+          0.30717104545840845
+        ],
+        "size": [
+          0.11840907763569886,
+          0.05596481412686234,
+          0.1178070954324007
+        ]
+      },
+      "sha256": "13e2d41a4ccb2d4cfd50c164ef1835fa4840b81903317f0ea443a23497ee996a"
+    },
+    "PanLeftChains": {
+      "file": "game-parts/PanLeftChains.obj",
+      "vertices": 12852,
+      "triangles": 14621,
+      "bounds": {
+        "min": [
+          -0.5940307958578785,
+          -0.021782492398751782,
+          0.25784732164526364
+        ],
+        "max": [
+          -0.49490679057847603,
+          0.20128742482516165,
+          0.3347903748103892
+        ],
+        "center": [
+          -0.5444687932181773,
+          0.08975246621320493,
+          0.2963188482278264
+        ],
+        "size": [
+          0.09912400527940252,
+          0.22306991722391345,
+          0.07694305316512556
+        ]
+      },
+      "sha256": "9b1c359bd9d50bc288cc194c75007a77f053010dd74d6d0345e804c89bdf4bb7"
+    },
+    "PanRightBowl": {
+      "file": "game-parts/PanRightBowl.obj",
+      "vertices": 11165,
+      "triangles": 9395,
+      "bounds": {
+        "min": [
+          -0.4014181748672829,
+          -0.07292170675379908,
+          0.41371545433922363
+        ],
+        "max": [
+          -0.2834966854090146,
+          -0.018762707118152866,
+          0.5316499652118822
+        ],
+        "center": [
+          -0.3424574301381488,
+          -0.045842206935975974,
+          0.47268270977555293
+        ],
+        "size": [
+          0.11792148945826825,
+          0.054158999635646216,
+          0.1179345108726586
+        ]
+      },
+      "sha256": "069b85a61b828964f8f4eb09c7bf62bfaace0e755321c040d304dd57a952bc38"
+    },
+    "PanRightChains": {
+      "file": "game-parts/PanRightChains.obj",
+      "vertices": 14509,
+      "triangles": 16059,
+      "bounds": {
+        "min": [
+          -0.3957381031105645,
+          -0.021401132323272773,
+          0.4233177445108124
+        ],
+        "max": [
+          -0.29500829563556147,
+          0.20093471133907734,
+          0.5001394371970824
+        ],
+        "center": [
+          -0.345373199373063,
+          0.08976678950790229,
+          0.4617285908539474
+        ],
+        "size": [
+          0.10072980747500304,
+          0.2223358436623501,
+          0.07682169268627004
+        ]
+      },
+      "sha256": "e11a52cd8d6f65b272c0a04fbcdfe9d3c2596f2eee0656b8222a2a8ebc1629c0"
+    }
+  },
+  "changes": [
+    "Public web-optimised GLB decoded using official npm meshoptimizer MIT decoder",
+    "Root transforms baked",
+    "Separate sword nodes merged; static body excludes all sword nodes",
+    "Scale detached from static body; static grip/hand kept",
+    "Sword normalized to unit Y length with source reconstruction transform",
+    "Scale geometry partitioned into suspension, beam and two chain-pan groups"
+  ],
+  "evidence": [
+    "inspection-sword-highlight.png",
+    "inspection-without-candidate-sword.png",
+    "inspection-scale-candidates.png",
+    "inspection-node13.png"
+  ]
+}

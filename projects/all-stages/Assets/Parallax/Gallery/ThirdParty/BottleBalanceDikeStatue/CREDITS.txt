@@ -1,0 +1,6 @@
+Lady Justice — Kenny Maguire
+Original: https://sketchfab.com/3d-models/lady-justice-67b91f4d07ee423b9c5c53a08d8aa454
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Public redistributed/optimised GLB served by Lucas Barbosa: https://maybelucas.com/models/lady-justice/scene.glb
+Credit page: https://maybelucas.com/
+Changes by Parallax project: Public web-optimised GLB decoded using official npm meshoptimizer MIT decoder; Root transforms baked; Separate sword nodes merged; static body excludes all sword nodes; Scale detached from static body; static grip/hand kept; Sword normalized to unit Y length with source reconstruction transform; Scale geometry partitioned into suspension, beam and two chain-pan groups.

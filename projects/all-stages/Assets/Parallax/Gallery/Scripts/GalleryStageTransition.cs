@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using ShadeLink.Library;
+using ShadeLink.Beach;
 
 namespace ShadeLink.Gallery
 {
@@ -14,14 +14,14 @@ namespace ShadeLink.Gallery
         float fade;
         bool automatedHandoff;
         GameObject shaft;
-        Material stone, timber, paper, gold;
+        Material stone, sand, sea, foam;
 
         void Awake() { DontDestroyOnLoad(gameObject); }
 
         public bool Begin(GalleryGame game, GalleryOrcusExit entrance)
         {
             if(IsTransitioning||game==null||entrance==null||
-                !Application.CanStreamedLevelBeLoaded("Library"))return false;
+                !Application.CanStreamedLevelBeLoaded("Beach"))return false;
             IsTransitioning=true;
             automatedHandoff=game.automated;
             if(automatedHandoff)SceneManager.sceneLoaded+=KeepAutomatedHandoffRunning;
@@ -30,12 +30,12 @@ namespace ShadeLink.Gallery
 
         void KeepAutomatedHandoffRunning(Scene scene,LoadSceneMode mode)
         {
-            if(!automatedHandoff||scene.name!="Library")return;
-            // Library Awake establishes its normal menu/focus policy. Restore
+            if(!automatedHandoff||scene.name!="Beach")return;
+            // Beach Awake establishes its normal menu/focus policy. Restore
             // inherited automation in this same frame, before a hidden player
             // can pause and prevent the async passage from ever resuming.
-            var library=Object.FindFirstObjectByType<LibraryGame>();
-            if(library!=null)library.automated=true;
+            var beach=Object.FindFirstObjectByType<BeachGame>();
+            if(beach!=null)beach.automated=true;
             Application.runInBackground=true;
         }
 
@@ -67,30 +67,31 @@ namespace ShadeLink.Gallery
                 yield return null;
             }
             fade=1;
-            AsyncOperation load=SceneManager.LoadSceneAsync("Library",LoadSceneMode.Single);
+            AsyncOperation load=SceneManager.LoadSceneAsync("Beach",LoadSceneMode.Single);
             while(!load.isDone)yield return null;
             SceneManager.sceneLoaded-=KeepAutomatedHandoffRunning;
             // Awake has established the next stage's controller and placement state.
             yield return null;
-            var library=Object.FindFirstObjectByType<LibraryGame>();
-            if(library==null)
+            var beach=Object.FindFirstObjectByType<BeachGame>();
+            if(beach==null)
             {
-                Debug.LogError("MUSEUM_PASSAGE: Library scene has no LibraryGame");
+                Debug.LogError("MUSEUM_PASSAGE: Beach scene has no BeachGame");
                 yield break;
             }
-            library.automated=automated;Application.runInBackground=automated;
+            beach.automated=automated;Application.runInBackground=automated;
             Application.targetFrameRate=automated?90:-1;QualitySettings.vSyncCount=automated?0:1;
-            library.PlacePlayer(LibraryWorld.Checkpoints[0]+Vector3.up*.35f);
+            beach.checkpoint=0;beach.yaw=0;beach.pitch=-.08f;
+            beach.PlacePlayer(BeachWorld.Checkpoints[0]+Vector3.up*.35f);
             // Keep the arrival visible behind the fade without accepting a held W
             // key until the player can actually see the destination.
-            library.enabled=false;library.active=library.started=true;
+            beach.enabled=false;beach.active=beach.started=true;
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
             if(shaft!=null)Destroy(shaft);
             for(float time=0;time<.55f;time+=Time.unscaledDeltaTime)
             {fade=1-Mathf.Clamp01(time/.55f);yield return null;}
-            fade=0;library.enabled=true;library.Resume();DestinationReady=true;
-            library.Tell("두 손 사이의 빛을 지나, 책장 사이에 내려앉았습니다.",6);
-            Debug.Log("MUSEUM_LIBRARY_HANDOFF_OK");
+            fade=0;beach.enabled=true;beach.Resume();DestinationReady=true;
+            beach.Tell("두 손 사이의 빛을 지나, 바닷바람이 부는 해변에 내려앉았습니다.",6);
+            Debug.Log("MUSEUM_BEACH_HANDOFF_OK");
             IsTransitioning=false;Destroy(gameObject);
         }
 
@@ -109,12 +110,12 @@ namespace ShadeLink.Gallery
 
         void BuildShaft()
         {
-            shaft=new GameObject("A passage too deep for a small sculpture");
+            shaft=new GameObject("Museum passage · descending toward the sunlit shore");
             DontDestroyOnLoad(shaft);
             stone=Surface("Passage charcoal stone",new Color(.065f,.072f,.079f));
-            timber=Surface("Bookshelf warm oak",new Color(.26f,.14f,.055f));
-            paper=Surface("Book spines in the distance",new Color(.57f,.38f,.15f));
-            gold=Surface("Library lamplight",new Color(.90f,.58f,.22f));
+            sand=Surface("Sunlit shore sand",new Color(.83f,.72f,.49f));
+            sea=Surface("Turquoise water beyond the passage",new Color(.075f,.58f,.66f));
+            foam=Surface("White sunlight on the surf",new Color(.86f,.97f,.95f));
             for(int side=-1;side<=1;side+=2)
             {
                 Box("Deep stone wall",new Vector3(side*2.7f,-39.5f,72),new Vector3(.35f,23,6.2f),stone);
@@ -122,16 +123,15 @@ namespace ShadeLink.Gallery
             }
             for(int ring=0;ring<8;ring++)
                 for(int side=-1;side<=1;side+=2)
-                    Box("Stone seam",new Vector3(side*2.49f,-29-ring*2.6f,72),new Vector3(.10f,.12f,5.8f),timber);
-            Box("Lower library floor",new Vector3(0,-49.4f,72),new Vector3(5.5f,.3f,5.8f),timber);
-            for(int side=-1;side<=1;side+=2)
+                    Box("Sandstone seam",new Vector3(side*2.49f,-29-ring*2.6f,72),new Vector3(.10f,.12f,5.8f),sand);
+            Box("Shore sand at the foot of the passage",new Vector3(0,-49.4f,72),new Vector3(5.5f,.3f,5.8f),sand);
+            Box("Turquoise sea at the passage mouth",new Vector3(0,-49.20f,73.9f),new Vector3(5.4f,.08f,2),sea);
+            for(int wave=0;wave<5;wave++)
             {
-                Box("Bookcase at the foot of the passage",new Vector3(side*2.35f,-47.6f,72),new Vector3(.35f,3.4f,4.6f),timber);
-                for(int shelf=0;shelf<4;shelf++)for(int book=0;book<15;book++)
-                    Box("Warm book spine",new Vector3(side*2.11f,-48.8f+shelf*.75f,69.9f+book*.29f),new Vector3(.09f,.40f+(book%3)*.07f,.16f),paper);
+                var strip=new Vector3(Mathf.Sin(wave*1.7f)*.18f,-49.147f,73.03f+wave*.36f);
+                Box("Soft surf in the arrival light",strip,new Vector3(5.1f,.018f,.035f+wave*.009f),foam);
             }
-            Box("Lower reading table",new Vector3(0,-48.4f,73),new Vector3(1.5f,.10f,.9f),timber);
-            Box("A light on the reading table",new Vector3(0,-48.15f,73),new Vector3(.22f,.25f,.22f),gold);
+            Box("Daylight on the sandy arrival",new Vector3(0,-49.235f,71.85f),new Vector3(3.8f,.02f,.15f),foam);
         }
 
         void OnGUI()
@@ -146,7 +146,7 @@ namespace ShadeLink.Gallery
         {
             SceneManager.sceneLoaded-=KeepAutomatedHandoffRunning;
             if(shaft!=null)Destroy(shaft);
-            foreach(var material in new[]{stone,timber,paper,gold})if(material!=null)Destroy(material);
+            foreach(var material in new[]{stone,sand,sea,foam})if(material!=null)Destroy(material);
         }
     }
 }

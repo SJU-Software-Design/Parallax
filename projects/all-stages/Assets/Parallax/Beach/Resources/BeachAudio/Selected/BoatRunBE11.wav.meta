@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 293d5a59adfe49f2a2fd053d264ee5de
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 8
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 2
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 0.9
+    conversionMode: 0
+    preloadAudioData: 1
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 0
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: Beach user selection 2026-11-14; original recordings preserved
+  assetBundleName:
+  assetBundleVariant:

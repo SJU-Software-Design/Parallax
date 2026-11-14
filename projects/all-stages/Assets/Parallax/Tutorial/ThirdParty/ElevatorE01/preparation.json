@@ -1,0 +1,10 @@
+﻿{
+    "prefab": "Assets/Parallax/Tutorial/Resources/Tutorial/ElevatorE01.prefab",
+    "sourceSha256": "121d348338ff566df6a72925469ed64a0b54c2be782e80ddaad7748ed83029f2",
+    "modifications": "Source glTF geometry transformed into +Z-facing entrance coordinates; preview wall/ground and original arrow glyphs omitted. A real rear-wall aperture is clipped behind the original mirror, whose actual source plane is now translucent frosted glass. Source door translations baked as four independent opening targets; added inner display housing/anchors and collision. No downloaded code or animation loop runs.",
+    "triangles": 5163,
+    "sourceTrianglesCarved": 22,
+    "doorCount": 4,
+    "horizontalScale": 0.8999999761581421,
+    "verticalScale": 0.75
+}

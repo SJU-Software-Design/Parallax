@@ -300,9 +300,15 @@ namespace ShadeLink.Gallery
             if(game.active&&!game.won&&forward&&continuous)
             {
                 if(previousFeet.z<TutorialFinish&&feet.z>=TutorialFinish)tutorialCrossed=true;
-                if(previousFeet.z<crossingZ&&feet.z>=crossingZ&&NikeUnlocked&&game.safe&&game.player.grounded&&
-                    Mathf.Abs(feet.x)<crossingHalfWidth&&(nikeSocket!=null||!portableShade||nikeLight.canvas.shadeMarks.activeSelf))
-                    nikeCrossed=true;
+                if(previousFeet.z<crossingZ&&feet.z>=crossingZ&&NikeUnlocked&&
+                    (nikeSocket!=null||!portableShade||nikeLight.canvas.shadeMarks.activeSelf))
+                {
+                    // Latch intent through jumps/support seams; the completion
+                    // block below still requires a safe grounded landing.
+                    float t=(crossingZ-previousFeet.z)/(feet.z-previousFeet.z);
+                    float crossingX=Mathf.Lerp(previousFeet.x,feet.x,t);
+                    if(Mathf.Abs(crossingX)<crossingHalfWidth)nikeCrossed=true;
+                }
             }
             if(game.active&&!game.won&&game.safe&&game.player.grounded)
             {

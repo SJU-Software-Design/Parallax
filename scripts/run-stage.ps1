@@ -17,7 +17,7 @@ $stageNames = @{ Gallery='미술관'; Library='도서관'; Beach='해변'; Stars
 function Get-SourceFingerprint {
     $lines = New-Object System.Collections.Generic.List[string]
     $lines.Add('Parallax stage player v1')
-    foreach ($folder in @('Assets','Packages','ProjectSettings')) {
+    foreach ($folder in @('Assets','Packages','ProjectSettings','Documentation')) {
         $inputDir = Join-Path $sourceDir $folder
         if (!(Test-Path -LiteralPath $inputDir -PathType Container)) {
             throw "Unity 프로젝트 폴더가 없습니다: $inputDir"
@@ -67,7 +67,7 @@ function Copy-BuildInputs {
         }
     }
     $safeRoot = [IO.Path]::GetFullPath($buildProject).TrimEnd('\') + '\'
-    foreach ($folder in @('Assets','Packages','ProjectSettings')) {
+    foreach ($folder in @('Assets','Packages','ProjectSettings','Documentation')) {
         $from = Join-Path $sourceDir $folder
         $to = [IO.Path]::GetFullPath((Join-Path $buildProject $folder))
         # /MIR may delete stale copied files, so constrain it to the generated build project.

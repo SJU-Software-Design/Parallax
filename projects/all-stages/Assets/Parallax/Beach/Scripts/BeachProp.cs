@@ -37,6 +37,7 @@ namespace ShadeLink.Beach
             RefreshMass();
             Highlight(false, false); Physics.SyncTransforms();placement.ResetPlaced();
             GetComponent<BeachBoat>()?.OnPropRestored();
+            if(BeachAudio.Available)BeachAudio.Instance.ResetProp(this);
         }
         public void InitializePhysics()
         {
@@ -127,7 +128,8 @@ namespace ShadeLink.Beach
             bool wasFloating=floating;float drift=driftDistance;Vector3 last=lastDriftPosition;
             Action restoreRelease=PropReleasePhysics.Attach(body).CaptureState();
             Action restoreBoat=GetComponent<BeachBoat>()?.CaptureState();
-            return ()=>{floating=wasFloating;driftDistance=drift;lastDriftPosition=last;restoreRelease();restoreBoat?.Invoke();};
+            Action restoreAudio=GetComponent<BeachPropAudio>()?.CaptureState();
+            return ()=>{floating=wasFloating;driftDistance=drift;lastDriftPosition=last;restoreRelease();restoreBoat?.Invoke();restoreAudio?.Invoke();};
         }
 
     }

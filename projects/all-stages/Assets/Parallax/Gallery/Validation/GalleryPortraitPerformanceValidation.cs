@@ -44,7 +44,7 @@ namespace ShadeLink.Gallery
             public float observedHoldSeconds, observedAbsorbSeconds, observedRedSeconds, observedSmileSeconds, observedOpenSeconds;
             public int absorbWalkTicks, redWalkTicks, smileWalkTicks, openingWalkTicks;
             public string phase, failure, version, unity, gpu;
-            public string scope = "Explicit published portrait solution fixtures and disclosed player approach positions. Production hold/absorption/red-light/smile/curtain animation and public ResetZone/ResetAll execute normally. Walking uses the actual CharacterController, game Tick, exposure and PhysX; no player teleport occurs during a crossing. A floor grid checks the real direct/reflected sunlight queries in warm and red phases; the shader no-sun global and rendered screenshots are recorded, not a claim of automated GPU/CPU pixel-parity validation. Visual absorption and smile milestone events are checked at the original 4.5-second visual smile boundary, reset/replay, long-frame crossing and one-shot notification; this does not claim direct audible mixing verification. Separate full museum mechanics validation covers input-only portrait assembly and the Library handoff.";
+            public string scope = "Explicit published portrait solution fixtures and disclosed player approach positions. Production hold/absorption/red-light/smile/curtain animation and public ResetZone/ResetAll execute normally. Walking uses the actual CharacterController, game Tick, exposure and PhysX; no player teleport occurs during a crossing. A floor grid checks the real direct/reflected sunlight queries in warm and red phases; the shader no-sun global and rendered screenshots are recorded, not a claim of automated GPU/CPU pixel-parity validation. Audio milestone events are checked for the 4.5-second silent interval, reset/replay, long-frame crossing and one-shot notification; this does not claim direct audible mixing verification. Separate full museum mechanics validation covers input-only portrait assembly and the Library handoff.";
             public string[] checks, errors;
         }
 
@@ -211,7 +211,7 @@ namespace ShadeLink.Gallery
                 Mathf.Abs(smileSignalElapsed - GalleryPortraitGate.AbsorbSeconds - GalleryPortraitGate.RedSeconds) < .05f,
                 "The smile cue must fire once after the original 4.5-second absorption/red interval");
             report.smileCueElapsed = smileSignalElapsed; report.audioSignalsTimed = true;
-            Check("Portrait absorption and smile milestone signals preserve the real animation start and 4.5-second visual smile boundary");
+            Check("Portrait music silence and smile signals preserve the real animation start and its 4.5-second quiet interval");
             Require(Mathf.Abs(report.observedAbsorbSeconds - GalleryPortraitGate.AbsorbSeconds) < .05f &&
                 Mathf.Abs(report.observedRedSeconds - GalleryPortraitGate.RedSeconds) < .05f &&
                 Mathf.Abs(report.observedSmileSeconds - GalleryPortraitGate.SmileSeconds) < .05f &&

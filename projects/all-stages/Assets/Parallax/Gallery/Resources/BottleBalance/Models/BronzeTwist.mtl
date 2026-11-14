@@ -1,0 +1,8 @@
+# CC0 geometry preview material; Unity game materials may replace this.
+newmtl BronzeTwistMetal
+Ka 0.12 0.07 0.025
+Kd 0.58 0.31 0.08
+Ks 0.8 0.62 0.3
+Ns 120
+d 1
+illum 2

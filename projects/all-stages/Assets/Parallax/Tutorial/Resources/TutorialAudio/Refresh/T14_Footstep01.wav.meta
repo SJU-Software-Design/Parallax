@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: f6bb8aa5db5a539d8e4a1b7bf27fa6fe
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 8
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 0
+    quality: 0.85
+    conversionMode: 0
+    preloadAudioData: 1
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 0
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: Tutorial user selection 2026-11-14; originals preserved
+  assetBundleName:
+  assetBundleVariant:

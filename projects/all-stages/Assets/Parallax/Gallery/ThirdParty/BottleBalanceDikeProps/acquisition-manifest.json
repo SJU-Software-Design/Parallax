@@ -1,0 +1,368 @@
+{
+  "date": "2026-11-13",
+  "scope": "Free original prop acquisition; canonical Unity not modified",
+  "acquisitions": [
+    {
+      "id": "book_encyclopedia_set_01",
+      "title": "Book Encyclopedia Set 01",
+      "authors": {
+        "John Malcolm": "All"
+      },
+      "source": "https://polyhaven.com/a/book_encyclopedia_set_01",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "originalFilesAcquired": true,
+      "sourceTriangleCount": 67306,
+      "files": [
+        {
+          "file": "book_encyclopedia_set_01/book_encyclopedia_set_01_2k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_2k.gltf",
+          "bytes": 55011,
+          "md5": "b5c1936b6b9b0883b7e817ff49f03388",
+          "officialMd5": "b5c1936b6b9b0883b7e817ff49f03388",
+          "sha256": "6c8c76560ca8e3c28516c0831545db903111bea069ce569579c2848a2e781bed"
+        },
+        {
+          "file": "book_encyclopedia_set_01/book_encyclopedia_set_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/book_encyclopedia_set_01/book_encyclopedia_set_01.bin",
+          "bytes": 2547932,
+          "md5": "ac617be6503e537c5d1a16a94313e866",
+          "officialMd5": "ac617be6503e537c5d1a16a94313e866",
+          "sha256": "bbc726698b6e40ab5537b73e082f7bb4db97b9e6f978f52cdaf763dddc85d9ba"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_diff_2k.jpg",
+          "bytes": 302108,
+          "md5": "a19a5200b59c288f7b753d57db5f0506",
+          "officialMd5": "a19a5200b59c288f7b753d57db5f0506",
+          "sha256": "507a75738825e1d9dd78dfc8f32441db67c0b1e7b116c044b47c7b9116194241"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_nor_gl_2k.jpg",
+          "bytes": 566133,
+          "md5": "07765c22d4bc7626f93f2432c4137e78",
+          "officialMd5": "07765c22d4bc7626f93f2432c4137e78",
+          "sha256": "5fdcfc21365bb9ef26e0822cdb27b5add3b4a55fe36a975a2f0fce3d061219d3"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_roughness_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_roughness_2k.jpg",
+          "bytes": 49548,
+          "md5": "8ee25a87fbcc4d46dd5985e37b5ec99e",
+          "officialMd5": "8ee25a87fbcc4d46dd5985e37b5ec99e",
+          "sha256": "8415728143b9270913ae3d79351400fbd5295bb56e6571ea8c829b68792d9ae4"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_arm_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_arm_2k.jpg",
+          "bytes": 663503,
+          "md5": "f851bc2c9998fa116044a6462a78d4c2",
+          "officialMd5": "f851bc2c9998fa116044a6462a78d4c2",
+          "sha256": "a8586332a573a522619b65ac709f4f513660878d543510c7adf634736cf8dfa9"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_nor_gl_2k.jpg",
+          "bytes": 75257,
+          "md5": "d0b3c80e2d4c6735e2d53d2f9de81b4f",
+          "officialMd5": "d0b3c80e2d4c6735e2d53d2f9de81b4f",
+          "sha256": "7585385f842380949303eba7250d2ffc23aeeb7e3928dff567d532e9b9452276"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_diff_2k.jpg",
+          "bytes": 423488,
+          "md5": "5bdc3656803da131709b8459d7cc2622",
+          "officialMd5": "5bdc3656803da131709b8459d7cc2622",
+          "sha256": "b75dd3ba7b39bc57cc3c7118b24c18f2b99a298c72c1955084bc5845ac6f4092"
+        },
+        {
+          "file": "book_encyclopedia_set_01/book_encyclopedia_set_01_2k.fbx",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_2k.fbx",
+          "bytes": 1528364,
+          "md5": "ed8571f7ed741073bbeaf7f0d4b93af3",
+          "officialMd5": "ed8571f7ed741073bbeaf7f0d4b93af3",
+          "sha256": "13ed53420e14aa95c723db533b7d96175d3f5efbfb3a6aa16e85ad8e975f24a8"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_roughness_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_roughness_2k.png",
+          "bytes": 8597,
+          "md5": "a44b8ca05d7cd4df7fbd5aaddf34c8bb",
+          "officialMd5": "a44b8ca05d7cd4df7fbd5aaddf34c8bb",
+          "sha256": "034cb60d6a3b75a9ffafd12522837ada345f3a5c9eb189b7414819a6be088982"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_diff_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_diff_2k.png",
+          "bytes": 3727355,
+          "md5": "cf8b3f56c749f1c07a096b93b60d07a5",
+          "officialMd5": "cf8b3f56c749f1c07a096b93b60d07a5",
+          "sha256": "9f93800db579470c7ab2f198890d191973b94593a8c797ed825aaa10bc030ad0"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_nor_gl_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_nor_gl_2k.png",
+          "bytes": 62824,
+          "md5": "2b9b67bae83579524b3e817efa606de3",
+          "officialMd5": "2b9b67bae83579524b3e817efa606de3",
+          "sha256": "a734f1dd24a262f29486433469fb1c8d38066ccfe1a2095ac94c19f4c541e519"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_metallic_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_metallic_2k.png",
+          "bytes": 70467,
+          "md5": "f871c9aa29c3bac12351d80edd4b6edd",
+          "officialMd5": "f871c9aa29c3bac12351d80edd4b6edd",
+          "sha256": "d1f9aca3d619f3e7b1b824c6709cc566fc7dd70469442c6dac57b4c8b3655a59"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_cover_roughness_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_cover_roughness_2k.png",
+          "bytes": 2059998,
+          "md5": "026ab031101ef9f34a15ca07f721473a",
+          "officialMd5": "026ab031101ef9f34a15ca07f721473a",
+          "sha256": "027ee5965aa46766b6ed1f3a9e8b7e2d912c7056b950bcde09f956cc7b6fc8b5"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_diff_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_diff_2k.png",
+          "bytes": 1041521,
+          "md5": "80be660cf34e7ed0784896dc638bde30",
+          "officialMd5": "80be660cf34e7ed0784896dc638bde30",
+          "sha256": "9ef4c115773d0b3a403b5c887b29cc39277ea7b045608d1343a736dba9a38d91"
+        },
+        {
+          "file": "book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_nor_gl_2k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/book_encyclopedia_set_01/book_encyclopedia_set_01_paper_nor_gl_2k.png",
+          "bytes": 1374815,
+          "md5": "a1decf76becc5f75e30cea660c2641e2",
+          "officialMd5": "a1decf76becc5f75e30cea660c2641e2",
+          "sha256": "fc467eb9a4ea4ffc0222513594768c881dbf147cd7a2294814c9cd8deb3c8d3f"
+        }
+      ],
+      "preview": {
+        "file": "book_encyclopedia_set_01/official-preview.png",
+        "url": "https://cdn.polyhaven.com/asset_img/primary/book_encyclopedia_set_01.png?height=720",
+        "forSourceLinkedReviewOnly": true
+      }
+    },
+    {
+      "id": "rock_09",
+      "title": "Rock 09",
+      "authors": {
+        "Jenelle van Heerden": "All"
+      },
+      "source": "https://polyhaven.com/a/rock_09",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "originalFilesAcquired": true,
+      "sourceTriangleCount": 23280,
+      "files": [
+        {
+          "file": "rock_09/rock_09_2k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/rock_09/rock_09_2k.gltf",
+          "bytes": 2745,
+          "md5": "8b5710ab01c1e4425b898757e5cdbcf2",
+          "officialMd5": "8b5710ab01c1e4425b898757e5cdbcf2",
+          "sha256": "f5f430215ad93e3d95755aa78c1c84a619497dfdc1ee297f8ac35df607ee03a3"
+        },
+        {
+          "file": "rock_09/textures/rock_09_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_09/rock_09_nor_gl_2k.jpg",
+          "bytes": 2565303,
+          "md5": "3af48ac431dd3a8ea323772a51553f63",
+          "officialMd5": "3af48ac431dd3a8ea323772a51553f63",
+          "sha256": "944b7763b6431671e07b4e7ebe082cf747e791513e27c830a3bb2dbee0246614"
+        },
+        {
+          "file": "rock_09/textures/rock_09_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_09/rock_09_diff_2k.jpg",
+          "bytes": 2102702,
+          "md5": "7e40809bf4257cc23795d18b349fbfe9",
+          "officialMd5": "7e40809bf4257cc23795d18b349fbfe9",
+          "sha256": "657406a77530db692061b475681f98cbf1c67be81a5c422830dbe6eb36df813a"
+        },
+        {
+          "file": "rock_09/rock_09.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_09/rock_09.bin",
+          "bytes": 286592,
+          "md5": "6f2f71c9ca594566c1a3b29da27293a1",
+          "officialMd5": "6f2f71c9ca594566c1a3b29da27293a1",
+          "sha256": "780c37d6fc11ca3a01c3763535ef883908b6007271a46bd446d2289ded820751"
+        },
+        {
+          "file": "rock_09/textures/rock_09_arm_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_09/rock_09_arm_2k.jpg",
+          "bytes": 863180,
+          "md5": "4c994d22563b80849454e86bd4dfb6e4",
+          "officialMd5": "4c994d22563b80849454e86bd4dfb6e4",
+          "sha256": "eaedeb8428079a27bc5e290a61375454035b5fcfb1e9c7d16ce4bc85313789da"
+        },
+        {
+          "file": "rock_09/rock_09_2k.fbx",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/2k/rock_09/rock_09_2k.fbx",
+          "bytes": 890732,
+          "md5": "f779090f18fee85e2a1af805fc037776",
+          "officialMd5": "f779090f18fee85e2a1af805fc037776",
+          "sha256": "a04920ea816c4a3ca88c57ce8cbe2a9ba9315130df1c32b589640819d5096333"
+        },
+        {
+          "file": "rock_09/textures/rock_09_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_09/rock_09_diff_2k.jpg",
+          "bytes": 2102702,
+          "md5": "7e40809bf4257cc23795d18b349fbfe9",
+          "officialMd5": "7e40809bf4257cc23795d18b349fbfe9",
+          "sha256": "657406a77530db692061b475681f98cbf1c67be81a5c422830dbe6eb36df813a"
+        },
+        {
+          "file": "rock_09/textures/rock_09_nor_gl_2k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/rock_09/rock_09_nor_gl_2k.exr",
+          "bytes": 5329104,
+          "md5": "9d6ffae6336beb81d567f1ec29961a44",
+          "officialMd5": "9d6ffae6336beb81d567f1ec29961a44",
+          "sha256": "297c9d03b068d98278bfb63e7da736529c5f077278461c70ad24e886e587804c"
+        },
+        {
+          "file": "rock_09/textures/rock_09_rough_2k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/rock_09/rock_09_rough_2k.exr",
+          "bytes": 1657991,
+          "md5": "7e8682d1a7b8afbae8ff779ad57d3053",
+          "officialMd5": "7e8682d1a7b8afbae8ff779ad57d3053",
+          "sha256": "98360a6c8a377a90e256564da2f3d35df970d0a52b32c927962b919c967acc9b"
+        }
+      ],
+      "preview": {
+        "file": "rock_09/official-preview.png",
+        "url": "https://cdn.polyhaven.com/asset_img/primary/rock_09.png?height=720",
+        "forSourceLinkedReviewOnly": true
+      }
+    }
+  ],
+  "derived": [
+    {
+      "file": "book_encyclopedia_set_01/LawBook_SourceBook14_Flat.obj",
+      "meshIndex": 13,
+      "sourceMesh": "Cube.061",
+      "triangleCount": 3364,
+      "vertexCount": 3388,
+      "originalMeshBounds": {
+        "min": [
+          -0.01628226228058338,
+          0,
+          -0.16306231915950775
+        ],
+        "max": [
+          0.016351904720067978,
+          0.23741817474365234,
+          0
+        ],
+        "size": [
+          0.03263416700065136,
+          0.23741817474365234,
+          0.16306231915950775
+        ]
+      },
+      "transformation": {
+        "center": [
+          3.4821219742298126E-05,
+          0.11870908737182617,
+          -0.08153115957975388
+        ],
+        "uniformScale": 4.211977457411297,
+        "axisMapping": "newXYZ = oldZXY; lay book flat with thickness on Y"
+      },
+      "materials": [
+        "book_encyclopedia_set_01_cover",
+        "book_encyclopedia_set_01_paper"
+      ],
+      "sha256": "154b4895ca9b4ff565ad26a25b3078afe6041378a838003be03e4550634a9e91"
+    },
+    {
+      "file": "book_encyclopedia_set_01/LawBook_SourceBook14_Upright.obj",
+      "meshIndex": 13,
+      "sourceMesh": "Cube.061",
+      "triangleCount": 3364,
+      "vertexCount": 3388,
+      "originalMeshBounds": {
+        "min": [
+          -0.01628226228058338,
+          0,
+          -0.16306231915950775
+        ],
+        "max": [
+          0.016351904720067978,
+          0.23741817474365234,
+          0
+        ],
+        "size": [
+          0.03263416700065136,
+          0.23741817474365234,
+          0.16306231915950775
+        ]
+      },
+      "transformation": {
+        "center": [
+          3.4821219742298126E-05,
+          0.11870908737182617,
+          -0.08153115957975388
+        ],
+        "uniformScale": 4.211977457411297,
+        "axisMapping": "identity axes; centered and largest extent normalized to 1"
+      },
+      "materials": [
+        "book_encyclopedia_set_01_cover",
+        "book_encyclopedia_set_01_paper"
+      ],
+      "sha256": "ea4c754fc8ede618fda55ca0d2a3f51289abbbe0ade06a22e7356911813a4bca"
+    },
+    {
+      "file": "rock_09/rock_09_Centered.obj",
+      "meshIndex": 0,
+      "sourceMesh": "realCap_Model_1",
+      "triangleCount": 12416,
+      "vertexCount": 6628,
+      "originalMeshBounds": {
+        "min": [
+          -0.036732789129018784,
+          -0.0005740977358072996,
+          -0.06106271967291832
+        ],
+        "max": [
+          0.03727707266807556,
+          0.03229531645774841,
+          0.08356179296970367
+        ],
+        "size": [
+          0.07400986179709435,
+          0.03286941419355571,
+          0.144624512642622
+        ]
+      },
+      "transformation": {
+        "center": [
+          0.000272141769528389,
+          0.015860609360970557,
+          0.011249536648392677
+        ],
+        "uniformScale": 6.914457181066359,
+        "axisMapping": "identity axes; centered and largest extent normalized to 1"
+      },
+      "materials": [
+        "rock_09"
+      ],
+      "sha256": "f6f54f21b2d27fa3b1e23ea261c0e8b377dca3fd2fffd65b576d3bf524b48fb2"
+    }
+  ],
+  "notes": [
+    "Book source is an encyclopedia, not a historic law book. Law-book label/cover ornament is a proposed game adaptation.",
+    "Book 14 selected as a thick independent closed volume; source 20 books remain preserved.",
+    "Rock originals have no prebuilt sword slot. A physical cavity or insert plate must be added by implementation.",
+    "OBJ export preserves source geometry/UV/normals, flips UV V for OBJ, centers and uniformly normalizes largest extent to 1. Flat book uses proper cyclic axis rotation.",
+    "glTF and FBX plus PBR originals preserved; OBJ MTL carries albedo/normal only. Unity smoothness/metallic setup should use separately supplied original maps.",
+    "Official preview pictures are research reference images, not asserted to have the same license as source 3D assets."
+  ],
+  "stagingScope": "Only book_encyclopedia_set_01 and rock_09 are staged in this Unity folder; full acquisition evidence remains in artifacts/museum-dike-implementation-20261113/assets."
+}

@@ -103,16 +103,19 @@ namespace ShadeLink.Beach
 
         public void OnPickedUp()
         {
+            if(BeachAudio.Available)BeachAudio.Instance.CancelBoat();
             Departed=Arrived=AtBerth=false;Travelled=0;launchSaved=false;
             if(MooringRope!=null)MooringRope.enabled=false;
         }
         public void OnReleased()
         {
+            if(BeachAudio.Available)BeachAudio.Instance.CancelBoat();
             EnsureReferences();Departed=Arrived=AtBerth=false;Travelled=0;lastPosition=transform.position;launchSaved=false;
             SetMoored(true);
         }
         public void OnPropRestored()
         {
+            if(BeachAudio.Available)BeachAudio.Instance.CancelBoat();
             Departed=Arrived=AtBerth=false;Travelled=0;launchSaved=false;lastPosition=transform.position;
             if(Prop!=null&&Prop.body!=null)Prop.body.constraints=RigidbodyConstraints.FreezeRotation;
             if(MooringRope!=null)MooringRope.enabled=false;
@@ -143,6 +146,7 @@ namespace ShadeLink.Beach
             launchPosition=transform.position;launchRotation=transform.rotation;launchScale=transform.localScale;launchSaved=true;
             lastPosition=transform.position;Travelled=0;Departed=true;AtBerth=Arrived=false;SetMoored(false);
             if(MooringRope!=null)MooringRope.enabled=false;
+            Game.Audio?.BoatLaunched(this);
             Game.Tell("밧줄을 풀었습니다 · 배의 그늘 안에서 도착 부두까지 이동하세요.",6);
             return true;
         }
@@ -160,7 +164,7 @@ namespace ShadeLink.Beach
                 // A genuinely grounded landing also completes the voyage.
                 bool landed=Travelled>1&&IsOnArrivalLanding&&NearArrivalPier(2);
                 if(NearArrivalPier(.16f)||landed)
-                {AtBerth=true;SetMoored(true);Game.Tell("도착 부두에 닿았습니다 · 그늘을 따라 배에서 내려 주세요.",6);}
+                {AtBerth=true;SetMoored(true);Game.Audio?.BoatDocked(this);Game.Tell("도착 부두에 닿았습니다 · 그늘을 따라 배에서 내려 주세요.",6);}
             }
             // Launch already requires real shade. The ordinary exposure/water
             // rules stay active throughout travel; arrival must not require a
@@ -202,12 +206,13 @@ namespace ShadeLink.Beach
         }
         public Action CaptureState()
         {
+            EnsureReferences();Action restoreAudio=Game?.Audio?.CaptureBoatAudioState();
             bool departed=Departed,arrived=Arrived,berth=AtBerth,saved=launchSaved;
             float travelled=Travelled;Vector3 start=launchPosition,scale=launchScale,last=lastPosition;Quaternion rotation=launchRotation;
             return ()=>
             {
                 Departed=departed;Arrived=arrived;AtBerth=berth;launchSaved=saved;Travelled=travelled;
-                launchPosition=start;launchScale=scale;launchRotation=rotation;lastPosition=last;UpdateRope();
+                launchPosition=start;launchScale=scale;launchRotation=rotation;lastPosition=last;UpdateRope();restoreAudio?.Invoke();
             };
         }
     }

@@ -116,7 +116,7 @@ namespace ShadeLink.Editor
             Require(Vector3.Distance(game.Controller.transform.position, origin + stops[1]) < .05f &&
                 Vector3.Distance(game.Props[0].transform.position, placed) < .001f, "Respawn lost the checkpoint or placed die");
             Move(new Vector3(27, .03f, 31.1f)); Call(game, "TickSunlight", .02f);
-            Require(Get<bool>(game, "sunlightComplete"), "Walking through the exit did not complete stage 3");
+            Require(!Get<bool>(game, "sunlightComplete"), "Approaching the elevator completed stage 3 before its doors closed");
 
             Call(game, "StartTutorialStage", 2);
             float doorX = (float)type.GetField("ClimbWallX", BindingFlags.Static | BindingFlags.NonPublic).GetRawConstantValue();

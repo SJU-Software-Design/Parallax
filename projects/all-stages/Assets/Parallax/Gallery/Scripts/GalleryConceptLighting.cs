@@ -12,6 +12,7 @@ namespace ShadeLink.Gallery
         [SerializeField,Range(0,1)] float portraitMood;
         public float PortraitMood=>portraitMood;
         RenderTexture[] capturedRooms;
+        readonly Vector4[] portraitRadiance=new Vector4[4];
         // Exhibition fills are isolated from the gameplay sun and from all
         // horizontal walking surfaces by MuseumSurface. They light walls/art.
         static readonly Vector4[] PortraitPositions={
@@ -39,6 +40,8 @@ namespace ShadeLink.Gallery
             int index=room==0?0:room==1?4:room==2?3:6;
             Vector4 source=room==2?PortraitPositions[index]:Positions[index];
             position=source;target=room==2?PortraitTargets[index]:Targets[index];range=source.w;
+            if(GalleryBottleBalanceCourse.Requested())
+            {position=GalleryBottleBalanceCourse.ShiftLegacy(position);target=GalleryBottleBalanceCourse.ShiftLegacy(target);}
             fov=room==0?92:room==2?96:116;
         }
         public static void Configure(GalleryGame game)
@@ -95,6 +98,14 @@ namespace ShadeLink.Gallery
         {
             portraitMood=Mathf.Clamp01(red01);
             Shader.SetGlobalFloat("_MuseumPortraitMood",portraitMood);
+            for(int i=0;i<portraitRadiance.Length;i++)
+            {
+                Color red=i<2?new Color(1,.15f,.07f):new Color(1,.055f,.025f);
+                Color color=Color.Lerp(new Color(1,.65f,.32f),red,portraitMood);
+                float gain=Mathf.Lerp(1,i<2?11f:i==2?15f:18.5f,portraitMood);
+                portraitRadiance[i]=new Vector4(color.r,color.g,color.b,(i<2?5f:7f)*gain);
+            }
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitRadiance);
         }
         void InstallCoves()
         {
@@ -153,8 +164,23 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalVectorArray("_MuseumRoomProbeBoxMin",minimum);Shader.SetGlobalVectorArray("_MuseumRoomProbeBoxMax",maximum);
             Shader.SetGlobalFloat("_MuseumProbeReady",1);Debug.Log("MUSEUM_ROOM_REFLECTION_OK rooms=4");
         }
+        void AlignPortraitFixtures()
+        {
+            var room=game!=null?game.GetComponentInChildren<GalleryPortraitRoom>(true):null;
+            if(room==null||room.pictureDiffusers==null||room.pictureDiffusers.Length<2)return;
+            for(int i=0;i<2;i++)
+            {
+                var painting=i==0?room.originalArtwork:room.installationArtwork;
+                var diffuser=room.pictureDiffusers[i];
+                if(painting==null||diffuser==null)continue;
+                Vector3 position=diffuser.bounds.center;
+                PortraitPositions[i]=new Vector4(position.x,position.y,position.z,6);
+                PortraitTargets[i]=painting.position;
+            }
+        }
         void Publish()
         {
+            AlignPortraitFixtures();
             var colors=new Vector4[8];var directions=new Vector4[8];
             for(int i=0;i<8;i++)
             {
@@ -166,20 +192,21 @@ namespace ShadeLink.Gallery
             colors[5].w=4.2f;
             colors[6].w=8;
             Shader.SetGlobalInt("_MuseumLightCount",8);
-            Shader.SetGlobalVectorArray("_MuseumLightPositionRange",Positions);
+            var effectivePositions=(Vector4[])Positions.Clone();
+            if(game!=null&&game.bottleBalance!=null)for(int i=6;i<effectivePositions.Length;i++)effectivePositions[i].z+=GalleryBottleBalanceLayout.AddedLength;
+            Shader.SetGlobalVectorArray("_MuseumLightPositionRange",effectivePositions);
             Shader.SetGlobalVectorArray("_MuseumLightColorIntensity",colors);
             Shader.SetGlobalVectorArray("_MuseumLightDirectionCone",directions);
             var portraitDirections=new Vector4[PortraitPositions.Length];
-            var portraitColors=new Vector4[PortraitPositions.Length];
             for(int i=0;i<PortraitPositions.Length;i++)
             {
                 Vector3 direction=(PortraitTargets[i]-(Vector3)PortraitPositions[i]).normalized;
-                portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos(48*Mathf.Deg2Rad));
-                portraitColors[i]=new Vector4(1,.65f,.32f,i<2?5.0f:7.0f);
+                portraitDirections[i]=new Vector4(direction.x,direction.y,direction.z,Mathf.Cos((i<2?70:48)*Mathf.Deg2Rad));
             }
-            Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",PortraitPositions);
+            var effectivePortrait=(Vector4[])PortraitPositions.Clone();
+            if(game!=null&&game.bottleBalance!=null)for(int i=2;i<effectivePortrait.Length;i++)effectivePortrait[i].z+=GalleryBottleBalanceLayout.AddedLength;
+            Shader.SetGlobalVectorArray("_MuseumPortraitLightPositionRange",effectivePortrait);
             Shader.SetGlobalVectorArray("_MuseumPortraitLightDirectionCone",portraitDirections);
-            Shader.SetGlobalVectorArray("_MuseumPortraitLightColorIntensity",portraitColors);
             Shader.SetGlobalInt("_MuseumPortraitLightCount",PortraitPositions.Length);
             SetPortraitMood(portraitMood);
             Shader.SetGlobalFloat("_MuseumUseUnityShadows",1);

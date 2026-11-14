@@ -8,7 +8,8 @@ namespace ShadeLink.Gallery
     [DefaultExecutionOrder(100)]
     public sealed class GalleryCathedralPortal : MonoBehaviour
     {
-        public const string PreviewResource = "MuseumPortal/LibraryPreview";
+        public const string PreviewResource = "MuseumPortal/BeachPreview";
+        public const string PreviewSkyResource = "MuseumPortal/BeachPreviewSky";
         public const int PreviewLayer = 28;
         public GalleryGame game;
         public GalleryProp prop;
@@ -54,7 +55,7 @@ namespace ShadeLink.Gallery
             {
                 var shader = Shader.Find("Parallax/MuseumLibraryPortal");
                 if (shader == null) throw new InvalidOperationException("MuseumLibraryPortal shader is missing.");
-                var material = new Material(shader) { name = "Cathedral · warm library window" };
+                var material = new Material(shader) { name = "Cathedral · coastal window" };
                 portalSurface.sharedMaterial = material;
                 if (!Application.isPlaying) GalleryWorld.Materials.Add(material);
             }
@@ -76,7 +77,7 @@ namespace ShadeLink.Gallery
             if (source == null)
             {
                 setupFailed = true;
-                Debug.LogError("CATHEDRAL_PORTAL: Missing render-only library preview. Run GalleryPortalLibraryAssets.Prepare before building.");
+                Debug.LogError("CATHEDRAL_PORTAL: Missing render-only beach preview. Run GalleryPortalBeachAssets.Prepare before building.");
                 return false;
             }
             sourceCamera = game.view;
@@ -84,26 +85,28 @@ namespace ShadeLink.Gallery
             sourceCamera.cullingMask &= ~(1 << PreviewLayer);
             changedCullingMask = true;
             previewRoot = Instantiate(source);
-            previewRoot.name = "Library beyond the hands · render-only stage";
+            previewRoot.name = "Beach beyond the hands · render-only coastal stage";
             previewRoot.transform.SetPositionAndRotation(PreviewOrigin, Quaternion.identity);
             previewRoot.transform.localScale = Vector3.one;
             foreach (var child in previewRoot.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = PreviewLayer;
 
-            cameraObject = new GameObject("Cathedral · off-axis library camera");
+            cameraObject = new GameObject("Cathedral · off-axis beach camera");
             previewCamera = cameraObject.AddComponent<Camera>();
             previewCamera.enabled = false;
-            previewCamera.clearFlags = CameraClearFlags.SolidColor;
-            previewCamera.backgroundColor = new Color(.018f, .009f, .004f, 1);
+            var coastalSky = Resources.Load<Material>(PreviewSkyResource);
+            previewCamera.clearFlags = coastalSky != null ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
+            previewCamera.backgroundColor = new Color(.60f, .81f, .90f, 1);
+            if (coastalSky != null) cameraObject.AddComponent<Skybox>().material = coastalSky;
             previewCamera.cullingMask = 1 << PreviewLayer;
             previewCamera.nearClipPlane = .045f;
-            previewCamera.farClipPlane = 90;
+            previewCamera.farClipPlane = 550;
             previewCamera.allowHDR = true; previewCamera.allowMSAA = false;
             previewCamera.renderingPath = RenderingPath.Forward;
             previewCamera.useOcclusionCulling = false;
             cameraObject.transform.rotation = Quaternion.identity;
 
             originalSurfaceMaterial = portalSurface.sharedMaterial;
-            ownedSurfaceMaterial = new Material(originalSurfaceMaterial) { name = "Cathedral · live library window (instance)" };
+            ownedSurfaceMaterial = new Material(originalSurfaceMaterial) { name = "Cathedral · live beach window (instance)" };
             portalSurface.sharedMaterial = ownedSurfaceMaterial;
             surfaceProperties = new MaterialPropertyBlock(); handProperties = new MaterialPropertyBlock();
             EnsureTarget();
@@ -122,7 +125,7 @@ namespace ShadeLink.Gallery
                 ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
             target = new RenderTexture(width, height, 24, format, RenderTextureReadWrite.Linear)
             {
-                name = "Cathedral · live library", filterMode = FilterMode.Bilinear,
+                name = "Cathedral · live beach", filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp, useMipMap = false, antiAliasing = 1
             };
             target.Create(); previewCamera.targetTexture = target;
@@ -152,7 +155,8 @@ namespace ShadeLink.Gallery
             eye.z = Mathf.Min(eye.z, plane - .12f);
             previewCamera.transform.SetPositionAndRotation(eye, Quaternion.identity);
             float distance = plane - eye.z, near = previewCamera.nearClipPlane;
-            previewCamera.farClipPlane = Mathf.Max(40, distance + 24);
+            // Keep the real beach's broad ocean mesh and distant castle inside the view.
+            previewCamera.farClipPlane = Mathf.Max(550, distance + 510);
             float halfWidth = apertureBounds.size.x * ratio * .5f, halfHeight = destinationWindowHeight * .5f;
             Vector3 center = PreviewOrigin + WindowCenter;
             float left = (center.x - halfWidth - eye.x) * near / distance;
@@ -169,7 +173,7 @@ namespace ShadeLink.Gallery
             surfaceProperties.SetMatrix("_PortalViewProjection", textureProjection);
             surfaceProperties.SetFloat("_PortalReady", 1);
             // The GPU projection used for the target texture is vertically flipped on top-origin graphics backends.
-            // Correct projective sampling as well; otherwise the room's pendant lights appear beneath its floor.
+            // Correct projective sampling as well, so the beach horizon stays above its shoreline.
             surfaceProperties.SetFloat("_FlipY", SystemInfo.graphicsUVStartsAtTop ? 1 : 0);
             surfaceProperties.SetFloat("_TouchRipple", touch);
             surfaceProperties.SetFloat("_PortalNear", Mathf.Clamp01(1 - Vector3.Distance(sourceCamera.transform.position,
@@ -190,7 +194,7 @@ namespace ShadeLink.Gallery
                 if (renderer == null || renderer == portalSurface) continue;
                 renderer.GetPropertyBlock(handProperties);
                 handProperties.SetVector("_PortalGlowPosition", center);
-                handProperties.SetColor("_PortalGlowColor", new Color(1, .48f, .14f, 1) * strength);
+                handProperties.SetColor("_PortalGlowColor", new Color(.24f, .78f, 1, 1) * strength);
                 handProperties.SetFloat("_PortalGlowRadius", Mathf.Max(.12f, height * .7f));
                 renderer.SetPropertyBlock(handProperties);
             }
