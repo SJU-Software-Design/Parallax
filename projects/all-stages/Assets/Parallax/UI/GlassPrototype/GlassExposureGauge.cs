@@ -219,6 +219,23 @@ namespace GlassTrial
                 fadingDanger = fadingDanger, gaugeAlpha = gaugeAlpha };
         }
 
+        static string NikePanelText(string message)
+        {
+            switch (message)
+            {
+                case "조명 앞의 전시물을 옮겨 빛길을 열어 보세요.":
+                case "그림자 전체를 벽의 금색 윤곽 안에 넣어 보세요.":
+                case "그림자가 들어왔어요 · 조각상을 내려놓으세요.":
+                case "문 중앙의 홈에 액자 크기를 맞춰 끼우세요.":
+                case "액자가 맞물렸어요 · 열린 문으로 이동하세요.":
+                    return "";
+                case "니케가 그림으로 변하고 있어요 · 잠깐 기다려 주세요.":
+                    return "니케가 그림으로 변하고 있어요.";
+                default:
+                    return message;
+            }
+        }
+
         void LateUpdate()
         {
             if (!ready) return;
@@ -234,7 +251,7 @@ namespace GlassTrial
                 (game.checkpoint == 2 ? (game.portraitGate == null ? "눈·코·입을 얼굴처럼 놓아 보세요" : game.portraitGate.Status) :
                 game.orcusExit != null && game.orcusExit.cathedralActivation != null ? game.orcusExit.cathedralActivation.Status : "두 손 사이로 해변이 보입니다") :
                 game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ?
-                game.nikeLight.Status : "그늘 · 안전";
+                NikePanelText(game.nikeLight.Status) : "그늘 · 안전";
 
             int context = 0;
             bool started = false, complete = false;
@@ -272,6 +289,24 @@ namespace GlassTrial
                 complete = game.NikeCanvasPuzzle && nikeCanvas != null && nikeCanvas.Complete;
                 progress = fusing ? nikeCanvas.FusionProgress : light.ShadeReadiness;
                 started = !complete && (fusing || progress > 0);
+                if (nikeCanvas != null && (nikeCanvas.Drawing || (fusing && nikeCanvas.BrushProgress >= 1f)))
+                {
+                    // Keep the real brush animation unchanged; only remap the UI.
+                    float duration = Mathf.Max(.1f, nikeCanvas.BrushSeconds);
+                    float intro = Mathf.Min(2f, duration);
+                    float elapsed = nikeCanvas.BrushProgress * duration;
+                    bool showingIntro = nikeCanvas.Drawing && elapsed < intro;
+                    if (showingIntro)
+                    {
+                        caption.text = "붓결을 따라 그림이 채워지고 있어요";
+                        started = false;
+                    }
+                    else
+                    {
+                        progress = duration > intro ? Mathf.Clamp01((elapsed - intro) / (duration - intro)) : 1f;
+                        started = !complete;
+                    }
+                }
             }
 
             bool danger = !game.safe || game.exposure > 0;
@@ -289,6 +324,7 @@ namespace GlassTrial
             gaugeAlpha = presentation.gaugeAlpha;
             fadingDanger = presentation.fadingDanger;
             bool redGauge = presentation.redGauge;
+            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || gaugeAlpha > 0.001f;
             caption.color = new Color(1, 1, 1, danger ? 0 : 1 - gaugeAlpha);
             bar.color = new Color(1, 1, 1, gaugeAlpha);
             sun.color = new Color(1, .12f, .10f, redGauge ? gaugeAlpha : 0);

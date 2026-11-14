@@ -127,7 +127,9 @@ namespace ShadeLink.Gallery
                 else if(game.aimed!=null)
                     GUI.Label(new Rect(570,475,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
-                if(Time.unscaledTime<game.noticeUntil&&!game.showHints)
+                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&
+                   game.notice!="그림자가 붓결을 따라 그림으로 남습니다."&&
+                   game.notice!="그림을 집어 문 중앙의 홈에 크기를 맞춰 끼우세요.")
                     GUI.Label(new Rect(380,793,900,36),game.notice,small);
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
                 GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트   ·   Esc 메뉴",small);
