@@ -178,5 +178,18 @@
     "sha256": "8406d9c16c5630eaf83e1453b06abad72dbb9b5fe185bc665cc05f39307a4c33",
     "colorSpace": "Linear",
     "normalConvention": ""
+  },
+  {
+    "file": "PlaqueBronzeAlbedo.png",
+    "resourcesKey": "MuseumMaterials/PlaqueBronzeAlbedo",
+    "asset": "Parallax satin brushed bronze plaque",
+    "author": "Generated for Parallax using the built-in OpenAI image_gen tool",
+    "map": "Base colour",
+    "format": "png",
+    "colorSpace": "sRGB",
+    "bytes": 2245375,
+    "sha256": "2b396d941d640ce6e66a5cc280ce05e31795b2b7162df5aa1ab816f18f343d14",
+    "reference": "User-approved A / matte bronze plaque concept",
+    "prompt": "docs/museum-bronze-labels-review/bronze-texture-prompt.txt"
   }
 ]

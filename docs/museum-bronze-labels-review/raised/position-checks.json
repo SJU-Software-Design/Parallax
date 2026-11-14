@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Collection · 수련 연못 위의 다리",
+    "transform": 915583029,
+    "before_y": 2.85,
+    "after_y": 2.97,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.2475,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 절규",
+    "transform": 900258204,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.2975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 별이 빛나는 밤",
+    "transform": 877695789,
+    "before_y": 2.85,
+    "after_y": 2.97,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.2475,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 절규",
+    "transform": 976255063,
+    "before_y": 2.75,
+    "after_y": 2.915,
+    "raise_m": 0.165,
+    "bottom_after_m": 1.2425,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 메이 웨스트의 방",
+    "transform": 1830400449,
+    "before_y": 2.9,
+    "after_y": 3.02,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.8475,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 진주 귀걸이를 한 소녀",
+    "transform": 439075031,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.3975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 진주 귀걸이를 한 소녀",
+    "transform": 1094760042,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.3975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 대사들",
+    "transform": 588639510,
+    "before_y": 2.85,
+    "after_y": 2.97,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.2475,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 대사들",
+    "transform": 121953821,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.3975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 대사들",
+    "transform": 1319138460,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.3975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 절규",
+    "transform": 1685879525,
+    "before_y": 2.8,
+    "after_y": 2.92,
+    "raise_m": 0.12,
+    "bottom_after_m": 1.2975,
+    "trim_top_m": 1.2025
+  },
+  {
+    "name": "Collection · 메이 웨스트의 얼굴",
+    "transform": 696077907,
+    "before_y": 2.9,
+    "after_y": 3.215,
+    "raise_m": 0.315,
+    "bottom_after_m": 1.2425,
+    "trim_top_m": 1.2025
+  }
+]

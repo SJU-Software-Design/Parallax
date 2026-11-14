@@ -41,11 +41,12 @@ namespace ShadeLink.Editor
                 "Surface textures: Poly Haven, CC0. https://polyhaven.com/license\n"+
                 "Historic paintings: Public-domain sources from Wikimedia Commons. The completed Nike canvas is a generated painting based on the supplied concept reference.\n"+
                 "Mae West face and room references: Salvador Dali; installation with Oscar Tusquets. Reproductions from Museum Boijmans Van Beuningen and ARTE.it. Rights reserved; no public-domain or reuse license is asserted. See MuseumArt-Credits.md and MuseumArt/sources.json for source URLs.\n\n");
-            foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md"})
+            foreach(string name in new[]{"MuseumArt-Credits.md","MuseumMaterial-Credits.md","MuseumScan-Credits.md","MuseumTypography-Credits.md"})
             {
                 string source=Path.Combine("Documentation/Gallery",name);
                 if(File.Exists(source))File.Copy(source,Path.Combine(outputDirectory,name),true);
             }
+            File.Copy("Assets/Parallax/Gallery/Resources/MuseumTypography/OFL.txt",Path.Combine(outputDirectory,"MuseumTypography-OFL.txt"),true);
         }
         static void Integrate(GalleryGame game)
         {
@@ -88,6 +89,75 @@ namespace ShadeLink.Editor
             }
             }
             finally { AssetDatabase.StopAssetEditing(); }
+        }
+        public static void ApplyBronzePlaques()
+        {
+            Scene scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var game=UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
+            if(game==null)throw new InvalidOperationException("The saved museum is missing.");
+            var lightingData=Lightmapping.lightingDataAsset;int lightmaps=LightmapSettings.lightmaps.Length;
+            GalleryWorld.Materials.Clear();
+            var palette=new GalleryConceptArchitecture.Palette{assets=GalleryWorld.Materials};
+            GalleryConceptArchitecture.PlaqueMaterials(palette);
+            int count=0;
+            foreach(var painting in game.GetComponentsInChildren<Transform>(true).Where(t=>t.name.StartsWith("Collection · ")).ToArray())
+            {
+                var artwork=painting.Find("Original artwork reproduction").GetComponent<MeshRenderer>();
+                string title=painting.name.Substring("Collection · ".Length);
+                var labels=painting.GetComponentsInChildren<GalleryLabel>(true);
+                string credit=labels.First(label=>label.caption!=title).caption;
+                var old=painting.Find("Bronze artwork catalogue plaque");
+                if(old!=null)UnityEngine.Object.DestroyImmediate(old.gameObject);
+                else
+                {
+                    foreach(var label in labels)UnityEngine.Object.DestroyImmediate(label.gameObject);
+                    old=painting.Find("Museum catalogue plaque");
+                    if(old!=null)UnityEngine.Object.DestroyImmediate(old.gameObject);
+                }
+                string medium=GalleryConceptArchitecture.ArtworkMedium(artwork.sharedMaterial.mainTexture.name);
+                GalleryConceptArchitecture.CataloguePlaque(painting,title,credit,medium,palette);
+                count++;
+            }
+            if(count!=12)throw new InvalidOperationException("Expected twelve museum artwork plaques, found "+count);
+            SaveMuseumMeshes(game,"PlaqueMesh_");
+            foreach(var material in GalleryWorld.Materials.ToArray())
+            {
+                string path=Generated+material.name.Replace('/','_')+".mat";
+                var saved=AssetDatabase.LoadAssetAtPath<Material>(path);
+                if(saved==null){AssetDatabase.CreateAsset(material,path);saved=material;}
+                else EditorUtility.CopySerialized(material,saved);
+                foreach(var renderer in game.GetComponentsInChildren<Renderer>(true))
+                {
+                    var slots=renderer.sharedMaterials;bool changed=false;
+                    for(int i=0;i<slots.Length;i++)if(slots[i]==material){slots[i]=saved;changed=true;}
+                    if(changed)renderer.sharedMaterials=slots;
+                }
+            }
+            if(Lightmapping.lightingDataAsset!=lightingData||LightmapSettings.lightmaps.Length!=lightmaps)
+                throw new InvalidOperationException("Plaque upgrade unexpectedly changed baked museum lighting");
+            EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
+            Debug.Log("MUSEUM_PLAQUES_UPGRADE_OK count="+count+" retainedLightmaps="+lightmaps);
+        }
+        public static void AlignBronzePlaques()
+        {
+            Scene scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var game=UnityEngine.Object.FindFirstObjectByType<GalleryGame>();
+            int count=0;
+            foreach(var plaque in game.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Bronze artwork catalogue plaque"))
+            {
+                Transform painting=plaque.parent;Vector3 at=painting.localPosition;
+                if(Mathf.Abs(at.x)>7&&at.z>2&&at.z<13)
+                {
+                    int index=Mathf.Clamp(Mathf.RoundToInt((at.z-3f)/4f),0,2);
+                    at.z=(at.x<0?GalleryConceptArchitecture.FirstRoomLeftArtworkZ:GalleryConceptArchitecture.FirstRoomRightArtworkZ)[index];
+                }
+                else if(Mathf.Abs(at.z-13.74f)<.01f)at.x=at.x<0?-5.3f:4.6f;
+                painting.localPosition=at;
+                GalleryConceptArchitecture.AlignCataloguePlaque(painting,plaque);count++;
+            }
+            if(count!=12)throw new InvalidOperationException("Expected twelve museum artwork plaques, found "+count);
+            EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene,ScenePath);
+            Debug.Log("MUSEUM_PLAQUES_ALIGNMENT_OK count="+count);
         }
         // Upgrade only the moving Nike exhibits. Keep the saved architecture,
         // lightmap UVs, lighting data and authored probes intact.
