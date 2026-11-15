@@ -228,9 +228,47 @@ namespace GlassTrial
                 case "그림자가 들어왔어요 · 조각상을 내려놓으세요.":
                 case "문 중앙의 홈에 액자 크기를 맞춰 끼우세요.":
                 case "액자가 맞물렸어요 · 열린 문으로 이동하세요.":
+                case "발자국을 따라 그늘로 이동하세요.":
+                case "그림을 세워 문 앞의 빛을 가리세요.":
+                case "날개 그림자를 보면서 니케의 위치를 맞춰 보세요.":
+                case "조각상이 안착하면 출구 앞의 그림자를 확인해요.":
+                case "날개 그림자가 출구까지 이어졌어요.":
+                case "니케를 옮겨 문 앞 표시를 그림자로 덮어 보세요.":
+                case "그림자가 출구와 이어져요 · 조명을 내려놓아 고정하세요.":
+                case "조명을 옮겨 니케의 그림자를 출구 발판으로 보내 보세요.":
+                case "조명을 내려놓고 안착할 때까지 잠깐 기다려 주세요.":
+                case "니케의 그림자가 출구와 이어졌어요 · 그늘을 따라 이동하세요.":
+                case "조명을 왼쪽 앞쪽 바닥으로 옮겨 니케의 그림자를 출구 발판과 이어 보세요.":
+                case "전원선이 닿는 앞쪽 바닥에 조명을 놓아 주세요.":
                     return "";
                 case "니케가 그림으로 변하고 있어요 · 잠깐 기다려 주세요.":
                     return "니케가 그림으로 변하고 있어요.";
+                default:
+                    return message;
+            }
+        }
+
+        static string PanelText(string message)
+        {
+            switch (message)
+            {
+                case "병을 옮겨 키우고 좁은 입구를 넓혀 보세요":
+                case "입구가 넓어졌어요 · 병을 들어 아래로 기울여 보세요":
+                case "입구를 향해 움직이고 있어요 · 조금 더 기울여 보세요":
+                case "조각이 나올 수 있도록 병 입구 아래 공간을 비워 주세요":
+                case "오른쪽이 가벼워요 · 조각을 조금 키워 보세요":
+                case "오른쪽이 무거워요 · 조각을 조금 줄여 보세요":
+                case "디케가 놓아준 검을 클릭해 집으세요":
+                case "검으로 봉인을 풀었어요 · 열린 문으로 이동하세요":
+                case "작품을 내려놓으면 얼굴을 확인할 수 있어요.":
+                case "얼굴이 보이는 전시실 앞쪽에서 바라봐 주세요.":
+                case "조각을 조금 더 키워 보세요":
+                case "충분히 커졌어요 · 이제 내려놓으세요":
+                case "내려놓은 조각이 안착하면 문이 열려요":
+                case "통로에 맞게 조각을 맞추고 있어요":
+                case "손이 열리고 있습니다":
+                case "계단을 올라 두 손 사이로 들어가세요":
+                    return "";
                 default:
                     return message;
             }
@@ -252,6 +290,7 @@ namespace GlassTrial
                 game.orcusExit != null && game.orcusExit.cathedralActivation != null ? game.orcusExit.cathedralActivation.Status : "두 손 사이로 해변이 보입니다") :
                 game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ?
                 NikePanelText(game.nikeLight.Status) : "그늘 · 안전";
+            caption.text = PanelText(caption.text);
 
             int context = 0;
             bool started = false, complete = false;

@@ -7,6 +7,38 @@ namespace ShadeLink.Gallery
         public GalleryGame game;
         GUIStyle text,title,small,button;
         readonly Color mint=new Color(.32f,.95f,.79f), paper=new Color(.94f,.93f,.86f);
+        static string BottomNoticeText(string message)
+        {
+            switch(message)
+            {
+                case "액자가 맞물렸어요. 열린 문으로 들어가세요.": return "액자가 맞물렸어요.";
+                case "얼굴이 이어졌어요. 잠깐 바라봐 주세요.": return "얼굴이 이어졌어요.";
+                case "시점의 초상이 완성되었습니다. 눈·코·입이 하나의 얼굴로 보입니다.": return "시점의 초상이 완성되었습니다.";
+                case "그림자가 붓결을 따라 그림으로 남습니다.":
+                case "그림을 집어 문 중앙의 홈에 크기를 맞춰 끼우세요.":
+                case "홈보다 작아요. 문에서 조금 물러나 그림을 키우세요.":
+                case "홈보다 커요. 문에 조금 다가가 그림을 줄이세요.":
+                case "문 중앙의 홈을 조준해 그림을 가까이 맞추세요.":
+                case "열린 문을 통과했어요. 다음 전시실로 이동하세요.":
+                case "그림을 세워 문 앞의 빛을 가리세요.":
+                case "그림이 출구의 빛을 가렸어요. 그늘 위의 발자국을 따라가세요.":
+                case "그림이 완성됐어요. 발자국을 따라 그늘로 걸어가세요.":
+                case "날개의 그림자가 문에 닿았습니다. 열린 문으로 이동하세요.":
+                case "조각을 꺼냈어요. 오른쪽 접시를 겨냥해 현재 크기로 올려 보세요.":
+                case "균형을 되찾았어요. 디케가 놓아준 검을 집어 방 가운데 대리석 받침에 꽂으세요.":
+                case "검이 홈에 고정됐어요. 봉인이 풀리며 문이 열립니다.":
+                case "조각이 접시보다 큽니다. 크기를 줄여 주세요.":
+                case "조각을 저울 가까이 옮긴 뒤 접시 위에 놓아 주세요.":
+                case "벽·천장 또는 미술관 외곽을 벗어납니다.":
+                case "플레이어와 겹칩니다.":
+                case "다른 전시물이나 구조물과 겹칩니다.":
+                case "눈·코·입이 얼굴로 보이면, 작품을 내려놓고 잠깐 바라봐 주세요.":
+                case "하나의 초상이 완성되었습니다. 커튼을 바라봐 주세요.":
+                case "초상이 길을 열었어요. 열린 커튼 사이로 이동하세요.":
+                    return "";
+                default: return message;
+            }
+        }
         void Panel(Rect rect,Color color){GUI.color=color;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
         void Line(Vector2 a,Vector2 b,Color color,float width=2)
         {
@@ -127,10 +159,9 @@ namespace ShadeLink.Gallery
                 else if(game.aimed!=null)
                     GUI.Label(new Rect(570,475,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
-                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&
-                   game.notice!="그림자가 붓결을 따라 그림으로 남습니다."&&
-                   game.notice!="그림을 집어 문 중앙의 홈에 크기를 맞춰 끼우세요.")
-                    GUI.Label(new Rect(380,793,900,36),game.notice,small);
+                string bottomNotice=BottomNoticeText(game.notice);
+                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&!string.IsNullOrEmpty(bottomNotice))
+                    GUI.Label(new Rect(380,793,900,36),bottomNotice,small);
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
                 GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트   ·   Esc 메뉴",small);
             }
