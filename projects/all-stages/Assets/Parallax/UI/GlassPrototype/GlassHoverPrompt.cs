@@ -90,7 +90,8 @@ namespace GlassTrial
             mouseIcon = iconRect.gameObject.AddComponent<Image>(); mouseIcon.sprite = MakeMouseSprite(); mouseIcon.preserveAspect = true; mouseIcon.raycastTarget = false;
             var textRect = Rect("Object name", panel); textRect.anchoredPosition = new Vector2(54,-10); textRect.sizeDelta = new Vector2(210,34);
             label = textRect.gameObject.AddComponent<Text>(); label.font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            label.fontSize = 20; label.fontStyle = FontStyle.Bold; label.resizeTextForBestFit = true; label.resizeTextMinSize = 13; label.resizeTextMaxSize = 20;
+            label.fontSize = 20; label.fontStyle = FontStyle.Bold;
+            label.horizontalOverflow = HorizontalWrapMode.Wrap; label.verticalOverflow = VerticalWrapMode.Overflow;
             label.color = Color.white; label.alignment = TextAnchor.MiddleLeft; label.raycastTarget = false;
             var shadow = textRect.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0,0,0,.7f); shadow.effectDistance = new Vector2(1,-1);
             ready = true;
@@ -144,7 +145,19 @@ namespace GlassTrial
             mouseIcon.color = pulsing ? Color.white : new Color(.30f, 1f, .96f, 1f);
             backdrop.texture = preview.Capture.blurred;
             label.text = lastName;
-            material.SetFloat("_GlassMode",1); material.SetFloat("_PanelAspect",280f/54f); material.SetFloat("_CornerRadius", 1f);
+            // Size around the actual label while keeping the panel's center anchored.
+            float available = Mathf.Max(1f, ((RectTransform)canvas.transform).rect.width - 56f);
+            float textWidth = Mathf.Min(Mathf.Max(1f, available - 74f), Mathf.Max(1f, label.preferredWidth));
+            var settings = label.GetGenerationSettings(new Vector2(textWidth, 0));
+            float textHeight = label.cachedTextGeneratorForLayout.GetPreferredHeight(label.text, settings) / label.pixelsPerUnit;
+            float width = Mathf.Min(available, Mathf.Max(100f, textWidth + 74f));
+            float height = Mathf.Max(54f, textHeight + 20f);
+            panel.sizeDelta = new Vector2(width, height);
+            var labelRect = (RectTransform)label.transform;
+            labelRect.anchoredPosition = new Vector2(54, -(height - textHeight) * .5f);
+            labelRect.sizeDelta = new Vector2(textWidth, textHeight);
+            ((RectTransform)mouseIcon.transform).anchoredPosition = new Vector2(15, -(height - 36f) * .5f);
+            material.SetFloat("_GlassMode",1); material.SetFloat("_PanelAspect",width/height); material.SetFloat("_CornerRadius", 1f);
             material.SetFloat("_Refraction",preview.refraction?1:0); material.SetFloat("_RefractionStrength",preview.refractionStrength);
             material.SetFloat("_RefractionWidth",preview.refractionWidth); material.SetFloat("_LensDistortion",preview.lensDistortion);
             material.SetFloat("_EdgeContrast",preview.edgeContrast?1:0); material.SetFloat("_EdgeContrastStrength",Mathf.Max(1.5f,preview.edgeContrastStrength));
