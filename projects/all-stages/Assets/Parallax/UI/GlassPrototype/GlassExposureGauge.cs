@@ -14,14 +14,22 @@ namespace GlassTrial
         Canvas canvas;
         RawImage backdrop;
         Text caption;
-        Image bar, sun, sparkle, safeIndicator, safeHalo, safeRing;
+        Image bar, sun, safeIndicator, safeHalo, safeRing;
         Material glass, gauge;
-        Texture2D sunTexture, sparkleTexture, safeTexture, haloTexture, ringTexture;
-        Sprite sunSprite, sparkleSprite, safeSprite, haloSprite, ringSprite;
-        float gaugeAlpha, completionUntil;
+        Texture2D sunTexture, safeTexture, haloTexture, ringTexture;
+        Sprite sunSprite, safeSprite, haloSprite, ringSprite;
+        float morph, completionUntil, previousProgress;
         bool ready, fadingDanger;
         int previousContext = -1;
-        bool previousComplete;
+        bool previousStarted, completionArmed;
+
+        public static float VisiblePanelHeight(GalleryGame game)
+        {
+            var instance = game != null ? game.GetComponent<GlassExposureGauge>() : null;
+            return instance != null && instance.canvas != null && instance.canvas.enabled &&
+                instance.backdrop != null && instance.backdrop.enabled
+                ? ((RectTransform)instance.backdrop.transform).rect.height : 0f;
+        }
 
         public static bool CanDisplay(GalleryGame game)
         {
@@ -58,7 +66,9 @@ namespace GlassTrial
             scaler.referenceResolution = new Vector2(1600, 900);
             scaler.matchWidthOrHeight = .5f;
 
-            var panel = Rect("Glass panel", root.transform, new Vector2(1195, -25), new Vector2(377, 104));
+            var panel = Rect("Glass panel", root.transform, Vector2.zero, new Vector2(268, 52));
+            panel.anchorMin = panel.anchorMax = new Vector2(.5f, 1f / 6f);
+            panel.pivot = new Vector2(.5f, .5f);
             backdrop = panel.gameObject.AddComponent<RawImage>();
             backdrop.material = glass;
             backdrop.color = new Color(1, 1, 1, .97f);
@@ -69,6 +79,8 @@ namespace GlassTrial
             caption.font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             caption.fontSize = 20;
             caption.alignment = TextAnchor.MiddleLeft;
+            caption.horizontalOverflow = HorizontalWrapMode.Wrap;
+            caption.verticalOverflow = VerticalWrapMode.Overflow;
             caption.color = Color.white;
             caption.raycastTarget = false;
 
@@ -86,12 +98,6 @@ namespace GlassTrial
             sun = sunRect.gameObject.AddComponent<Image>();
             sun.sprite = sunSprite;
             sun.raycastTarget = false;
-
-            sparkleSprite = MakeIcon(true, out sparkleTexture);
-            var sparkleRect = Rect("Puzzle completion sparkle", panel, new Vector2(20, -32), new Vector2(40, 40));
-            sparkle = sparkleRect.gameObject.AddComponent<Image>();
-            sparkle.sprite = sparkleSprite;
-            sparkle.raycastTarget = false;
 
             safeSprite = MakeSafeIndicator(0, out safeTexture);
             haloSprite = MakeSafeIndicator(1, out haloTexture);
@@ -187,9 +193,9 @@ namespace GlassTrial
         {
             if (glass == null || preview == null) return;
 
-            // GlassLessonNotice와 동일한 셰이더 및 프리뷰 설정 적용 (사이즈 비율은 377x104 유지)
+            // Only this material uses pill corners; other glass panels retain their settings.
             glass.SetFloat("_GlassMode", 1);
-            glass.SetFloat("_PanelAspect", 377f / 104f);
+            glass.SetFloat("_CornerRadius", 1);
             glass.SetFloat("_Refraction", preview.refraction ? 1 : 0);
             glass.SetFloat("_RefractionStrength", preview.refractionStrength);
             glass.SetFloat("_RefractionWidth", preview.refractionWidth);
@@ -201,22 +207,15 @@ namespace GlassTrial
             glass.SetFloat("_MilkyTint", preview.milkyTint);
         }
 
-        struct Presentation
+        // This value is purely visual: neither puzzle progress nor game timing depends on it.
+        static float AdvanceMorph(float value, bool showGauge, float deltaTime)
         {
-            public bool danger, redGauge, fadingDanger;
-            public float gaugeAlpha;
+            return Mathf.MoveTowards(value, showGauge ? 1 : 0, deltaTime / .36f);
         }
 
-        static Presentation DecidePresentation(bool safe, float exposure, bool started, bool celebrating,
-            bool fadingDanger, float gaugeAlpha, float deltaTime)
+        static bool CompletionEdge(bool armed, bool started, bool wasStarted, float previous, float current)
         {
-            bool danger = !safe || exposure > 0;
-            bool showGauge = danger || started || celebrating;
-            if (danger) fadingDanger = true;
-            else if (showGauge) fadingDanger = false;
-            gaugeAlpha = danger ? 1 : Mathf.MoveTowards(gaugeAlpha, showGauge ? 1 : 0, deltaTime / .18f);
-            return new Presentation { danger = danger, redGauge = danger || (fadingDanger && gaugeAlpha > 0),
-                fadingDanger = fadingDanger, gaugeAlpha = gaugeAlpha };
+            return armed && (started || wasStarted) && previous < 1f && current >= 1f;
         }
 
         static string NikePanelText(string message)
@@ -240,9 +239,8 @@ namespace GlassTrial
                 case "니케의 그림자가 출구와 이어졌어요 · 그늘을 따라 이동하세요.":
                 case "조명을 왼쪽 앞쪽 바닥으로 옮겨 니케의 그림자를 출구 발판과 이어 보세요.":
                 case "전원선이 닿는 앞쪽 바닥에 조명을 놓아 주세요.":
-                    return "";
                 case "니케가 그림으로 변하고 있어요 · 잠깐 기다려 주세요.":
-                    return "니케가 그림으로 변하고 있어요.";
+                    return "";
                 default:
                     return message;
             }
@@ -258,8 +256,11 @@ namespace GlassTrial
                 case "조각이 나올 수 있도록 병 입구 아래 공간을 비워 주세요":
                 case "오른쪽이 가벼워요 · 조각을 조금 키워 보세요":
                 case "오른쪽이 무거워요 · 조각을 조금 줄여 보세요":
+                case "수평이에요 · 조각을 내려놓고 잠깐 기다리세요":
                 case "디케가 놓아준 검을 클릭해 집으세요":
+                case "검이 떨어지고 있어요 · 아래 받침에서 집을 수 있어요":
                 case "검으로 봉인을 풀었어요 · 열린 문으로 이동하세요":
+                case "검을 받침대의 홈에 맞춰 넣고 있어요":
                 case "작품을 내려놓으면 얼굴을 확인할 수 있어요.":
                 case "얼굴이 보이는 전시실 앞쪽에서 바라봐 주세요.":
                 case "조각을 조금 더 키워 보세요":
@@ -279,7 +280,7 @@ namespace GlassTrial
             if (!ready) return;
             bool visible = CanDisplay(game);
             canvas.enabled = visible;
-            if (!visible) { previousContext = -1; completionUntil = 0; gaugeAlpha = 0; fadingDanger = false; return; }
+            if (!visible) { previousContext = -1; completionUntil = 0; morph = 0; fadingDanger = false; return; }
 
             backdrop.texture = preview.Capture.blurred;
             ApplyGlassSettings();
@@ -291,6 +292,18 @@ namespace GlassTrial
                 game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ?
                 NikePanelText(game.nikeLight.Status) : "그늘 · 안전";
             caption.text = PanelText(caption.text);
+            // Keep the socket instruction until the blade is actually seated.
+            // Cancelling insertion returns the sword to its recovery pad and ends the guide.
+            var reward = game.bottleBalance != null ? game.bottleBalance.Reward : null;
+            bool swordGuide = reward != null && (reward.Carrying || reward.Busy);
+            bool doorGuide = reward != null && reward.Unlocked && game.bottleBalance.Door != null &&
+                game.bottleBalance.Door.Opening < 1f;
+            bool balanceGuide = reward != null && game.bottleBalance.InRoom &&
+                reward.Stage == GalleryBottleBalanceKeyReward.RewardStage.Flashing;
+            if (swordGuide)
+                caption.text = "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요";
+            else if (doorGuide)
+                caption.text = "검이 고정됐어요 · 봉인이 풀리고 있어요";
 
             int context = 0;
             bool started = false, complete = false;
@@ -328,6 +341,10 @@ namespace GlassTrial
                 complete = game.NikeCanvasPuzzle && nikeCanvas != null && nikeCanvas.Complete;
                 progress = fusing ? nikeCanvas.FusionProgress : light.ShadeReadiness;
                 started = !complete && (fusing || progress > 0);
+                // Keep the original canvas guide available whenever alignment stops.
+                // Fusion and completed artwork retain their own presentation.
+                if (nikeCanvas != null && !fusing && !complete)
+                    caption.text = "빈 캔버스와 주변 전시물을 살펴보세요.";
                 if (nikeCanvas != null && (nikeCanvas.Drawing || (fusing && nikeCanvas.BrushProgress >= 1f)))
                 {
                     // Keep the real brush animation unchanged; only remap the UI.
@@ -349,30 +366,76 @@ namespace GlassTrial
             }
 
             bool danger = !game.safe || game.exposure > 0;
-            if (previousContext != context) { previousContext = context; previousComplete = complete; completionUntil = 0; }
+            if (previousContext != context)
+            {
+                previousContext = context;
+                completionUntil = 0;
+                completionArmed = progress < 1f;
+            }
             else
             {
-                if (complete && !previousComplete && !danger) completionUntil = Time.unscaledTime + .8f;
-                if (!complete) completionUntil = 0;
-                previousComplete = complete;
+                if (progress <= 0f) completionArmed = true;
+                // The displayed progress, rather than a separate solved flag, owns the 100% edge.
+                if (CompletionEdge(completionArmed, started, previousStarted, previousProgress, progress))
+                {
+                    completionArmed = false;
+                    if (!danger) completionUntil = Time.unscaledTime + .65f;
+                }
+                if (started && progress < 1f) completionUntil = 0;
             }
-            bool celebrating = !danger && complete && Time.unscaledTime < completionUntil;
-            // Danger must appear in the same frame as the game's safety decision.
-            var presentation = DecidePresentation(game.safe, game.exposure, started, celebrating,
-                fadingDanger, gaugeAlpha, Time.unscaledDeltaTime);
-            gaugeAlpha = presentation.gaugeAlpha;
-            fadingDanger = presentation.fadingDanger;
-            bool redGauge = presentation.redGauge;
-            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || gaugeAlpha > 0.001f;
-            caption.color = new Color(1, 1, 1, danger ? 0 : 1 - gaugeAlpha);
+            previousProgress = progress;
+            previousStarted = started;
+            if (danger) completionUntil = 0;
+            bool celebrating = !danger && Time.unscaledTime < completionUntil;
+            bool showGauge = danger || (!swordGuide && !doorGuide && !balanceGuide &&
+                (started || (celebrating && context != 1)));
+            if (danger) fadingDanger = true;
+            else if (started || celebrating) fadingDanger = false;
+            // Safety feedback is immediate; normal morphs are reversible at any point.
+            // The brief balance-complete instruction must not be obscured by a fading gauge.
+            morph = danger ? 1 : balanceGuide ? 0 : AdvanceMorph(morph, showGauge, Time.unscaledDeltaTime);
+            bool redGauge = danger || (fadingDanger && morph > 0);
+            float gaugeAlpha = danger ? 1 : Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.28f, 1f, morph));
+            float captionAlpha = 1f - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .5f, morph));
+            float captionLift = 12f * Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .5f, morph));
+
+            var panel = (RectTransform)backdrop.transform;
+            float available = Mathf.Max(1, ((RectTransform)canvas.transform).rect.width - 56f);
+            float maxTextWidth = Mathf.Max(1, available - 76f);
+            float textWidth = Mathf.Min(maxTextWidth, Mathf.Max(1, caption.preferredWidth));
+            var settings = caption.GetGenerationSettings(new Vector2(textWidth, 0));
+            float textHeight = caption.cachedTextGeneratorForLayout.GetPreferredHeight(caption.text, settings) / caption.pixelsPerUnit;
+            float descriptionWidth = Mathf.Min(available, Mathf.Max(120, textWidth + 76f));
+            float descriptionHeight = Mathf.Max(52, textHeight + 24f);
+            float gaugeWidth = Mathf.Min(268, available);
+            float shape = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.4f, 1f, morph));
+            float width = Mathf.Lerp(descriptionWidth, gaugeWidth, shape);
+            float height = Mathf.Lerp(descriptionHeight, 42, shape);
+            panel.sizeDelta = new Vector2(width, height);
+            glass.SetFloat("_PanelAspect", width / height);
+
+            var captionRect = (RectTransform)caption.transform;
+            captionRect.anchoredPosition = new Vector2(56, -(height - textHeight) * .5f + captionLift);
+            captionRect.sizeDelta = new Vector2(textWidth, textHeight);
+            float dotY = -height * .5f + captionLift;
+            ((RectTransform)safeIndicator.transform).anchoredPosition = new Vector2(32, dotY);
+            ((RectTransform)safeHalo.transform).anchoredPosition = new Vector2(32, dotY);
+            ((RectTransform)safeRing.transform).anchoredPosition = new Vector2(32, dotY);
+            float gaugeY = -height * .5f + (1f - gaugeAlpha) * -10f;
+            float sunSize = 26f;
+            ((RectTransform)sun.transform).anchoredPosition = new Vector2(16, gaugeY + sunSize * .5f);
+            ((RectTransform)sun.transform).sizeDelta = new Vector2(sunSize, sunSize);
+            float barLeft = redGauge ? 50 : 14;
+            ((RectTransform)bar.transform).anchoredPosition = new Vector2(barLeft, gaugeY + 7);
+            ((RectTransform)bar.transform).sizeDelta = new Vector2(Mathf.Max(1, width - barLeft - 14), 14);
+            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || morph > .001f;
+            caption.color = new Color(1, 1, 1, captionAlpha);
             bar.color = new Color(1, 1, 1, gaugeAlpha);
             sun.color = new Color(1, .12f, .10f, redGauge ? gaugeAlpha : 0);
-            float flash = celebrating ? Mathf.Sin(Mathf.PI * Mathf.Clamp01((completionUntil - Time.unscaledTime) / .8f)) : 0;
-            sparkle.color = new Color(.58f, 1, .86f, flash);
+            float flash = celebrating ? Mathf.Sin(Mathf.PI * Mathf.Clamp01((completionUntil - Time.unscaledTime) / .65f)) : 0;
             glass.SetFloat("_SuccessGlow", flash);
-            bool showSafeIndicator = caption.text == "그늘 · 안전" && !danger && !celebrating;
             float breath = .5f - .5f * Mathf.Cos(Time.unscaledTime * (2f * Mathf.PI / 2.4f));
-            float indicatorAlpha = showSafeIndicator ? (1f - gaugeAlpha) : 0f;
+            float indicatorAlpha = !string.IsNullOrEmpty(caption.text) ? captionAlpha : 0f;
             float dotAlpha = Mathf.Lerp(.55f, 1f, breath);
             float dotScale = Mathf.Lerp(.92f, 1.12f, breath);
             Color mint = new Color(77f / 255f, 238f / 255f, 234f / 255f);
@@ -381,9 +444,7 @@ namespace GlassTrial
             safeRing.color = new Color(mint.r, mint.g, mint.b, indicatorAlpha * dotAlpha * .45f * Mathf.Lerp(.15f, .65f, breath));
             safeIndicator.transform.localScale = safeHalo.transform.localScale = Vector3.one * dotScale;
             safeRing.transform.localScale = Vector3.one * (dotScale * Mathf.Lerp(.85f, 1.25f, breath));
-            ((RectTransform)caption.transform).anchoredPosition = showSafeIndicator ? new Vector2(56, -17) : new Vector2(20, -17);
-            ((RectTransform)caption.transform).sizeDelta = new Vector2(showSafeIndicator ? 301 : 337, 70);
-            gauge.SetFloat("_Fill", Mathf.Clamp01(redGauge ? game.exposure : celebrating ? 1 : progress));
+            gauge.SetFloat("_Fill", Mathf.Clamp01(redGauge ? game.exposure : progress));
             gauge.SetFloat("_PuzzleMode", redGauge ? 0 : 1);
         }
 
@@ -394,9 +455,7 @@ namespace GlassTrial
             if (glass != null) Destroy(glass);
             if (gauge != null) Destroy(gauge);
             if (sunSprite != null) Destroy(sunSprite);
-            if (sparkleSprite != null) Destroy(sparkleSprite);
             if (sunTexture != null) Destroy(sunTexture);
-            if (sparkleTexture != null) Destroy(sparkleTexture);
             if (safeSprite != null) Destroy(safeSprite);
             if (safeTexture != null) Destroy(safeTexture);
             if (haloSprite != null) Destroy(haloSprite);

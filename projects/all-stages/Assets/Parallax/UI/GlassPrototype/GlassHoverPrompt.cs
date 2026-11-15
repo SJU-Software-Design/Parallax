@@ -51,6 +51,11 @@ namespace GlassTrial
             var prompt = game != null ? game.GetComponent<GlassHoverPrompt>() : null;
             return prompt != null && prompt.ready && (prompt.visibleAmount > 0 || Target(game) != null);
         }
+        public static bool OccupiesCenter(GalleryGame game)
+        {
+            var prompt = game != null ? game.GetComponent<GlassHoverPrompt>() : null;
+            return prompt != null && prompt.ready && (prompt.visibleAmount > 0 || Target(game) != null);
+        }
         static string NameFor(UnityEngine.Object target)
         {
             var prop = target as GalleryProp;
@@ -79,7 +84,7 @@ namespace GlassTrial
             group = root.GetComponent<CanvasGroup>(); group.blocksRaycasts = false; group.interactable = false;
             var scaler = root.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1600, 900); scaler.matchWidthOrHeight = .5f;
-            panel = Rect("Hover panel", root.transform); panel.anchorMin = panel.anchorMax = new Vector2(.5f,.5f); panel.pivot = new Vector2(.5f,.5f); panel.sizeDelta = new Vector2(280, 54);
+            panel = Rect("Hover panel", root.transform); panel.anchorMin = panel.anchorMax = new Vector2(.5f,.25f); panel.pivot = new Vector2(.5f,.5f); panel.sizeDelta = new Vector2(280, 54);
             backdrop = panel.gameObject.AddComponent<RawImage>(); backdrop.material = material; backdrop.color = new Color(1,1,1,.97f); backdrop.raycastTarget = false;
             var iconRect = Rect("Left mouse button", panel); iconRect.anchoredPosition = new Vector2(15,-9); iconRect.sizeDelta = new Vector2(27,36);
             mouseIcon = iconRect.gameObject.AddComponent<Image>(); mouseIcon.sprite = MakeMouseSprite(); mouseIcon.preserveAspect = true; mouseIcon.raycastTarget = false;
@@ -134,7 +139,7 @@ namespace GlassTrial
             if (!canvas.enabled) return;
             float eased = 1-Mathf.Pow(1-visibleAmount,3);
             group.alpha = eased;
-            panel.anchoredPosition = new Vector2(0, -94f - (1-eased)*verticalTravel);
+            panel.anchoredPosition = new Vector2(0, -(1-eased)*verticalTravel);
             panel.localScale = Vector3.one*(pulsing ? .95f : 1f);
             mouseIcon.color = pulsing ? Color.white : new Color(.30f, 1f, .96f, 1f);
             backdrop.texture = preview.Capture.blurred;

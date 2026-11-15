@@ -48,7 +48,9 @@ namespace GlassTrial
             group = root.GetComponent<CanvasGroup>(); group.blocksRaycasts = false; group.interactable = false;
             var scaler = root.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1600, 900); scaler.matchWidthOrHeight = .5f;
-            var panel = Rect("Stage glass panel", root.transform, new Vector2(28, -24), new Vector2(670, 150));
+            var panel = Rect("Stage glass panel", root.transform, Vector2.zero, new Vector2(670, 150));
+            panel.anchorMin = panel.anchorMax = new Vector2(.5f, 1f / 6f);
+            panel.pivot = new Vector2(.5f, 0);
             backdrop = panel.gameObject.AddComponent<RawImage>(); backdrop.material = material; backdrop.color = new Color(1, 1, 1, .97f); backdrop.raycastTarget = false;
             Font font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             heading = Label(panel, font, 21, new Vector2(20, -11), new Vector2(630, 31));
@@ -78,12 +80,21 @@ namespace GlassTrial
             if (active && (lastRoom == null || lastRoom != game.RoomTitle)) { lastRoom = game.RoomTitle; shownAt = Time.unscaledTime; }
             bool requested = active && Time.unscaledTime - shownAt < Mathf.Max(0, displaySeconds);
             alpha = Mathf.MoveTowards(alpha, requested ? 1 : 0, Time.unscaledDeltaTime / Mathf.Max(.01f, fadeSeconds));
-            canvas.enabled = active && alpha > 0; group.alpha = alpha;
+            // The hover prompt owns the same central area; do not draw over it.
+            canvas.enabled = active && alpha > 0 && !GlassHoverPrompt.OccupiesCenter(game); group.alpha = alpha;
             if (!canvas.enabled) return;
             backdrop.texture = preview.Capture.blurred;
             float height = game.conceptLayout ? 150 : game.checkpoint == 1 ? 139 : 102;
             float width = game.conceptLayout ? 670 : 555;
-            ((RectTransform)backdrop.transform).sizeDelta = new Vector2(width, height);
+            var panel = (RectTransform)backdrop.transform;
+            panel.sizeDelta = new Vector2(width, height);
+            float guideHeight = GlassExposureGauge.VisiblePanelHeight(game);
+            panel.anchoredPosition = new Vector2(0, guideHeight * .5f + 12f);
+            var canvasSize = ((RectTransform)canvas.transform).rect.size;
+            // Keep the announcement above the guide and below the hover prompt.
+            float maxHeight = Mathf.Max(1f, canvasSize.y / 3f - guideHeight * .5f - 145f);
+            float scale = Mathf.Min(1f, Mathf.Max(1f, canvasSize.x - 56f) / width, maxHeight / height);
+            panel.localScale = Vector3.one * scale;
             material.SetFloat("_GlassMode", 1); material.SetFloat("_PanelAspect", width / height);
             material.SetFloat("_Refraction", preview.refraction ? 1 : 0); material.SetFloat("_RefractionStrength", preview.refractionStrength);
             material.SetFloat("_RefractionWidth", preview.refractionWidth); material.SetFloat("_LensDistortion", preview.lensDistortion);
