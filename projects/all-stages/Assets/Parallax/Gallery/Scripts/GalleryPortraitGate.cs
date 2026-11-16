@@ -45,7 +45,7 @@ namespace ShadeLink.Gallery
         public bool CanUnlock=>Stage==RevealStage.Waiting&&game!=null&&game.view!=null&&portrait!=null&&portrait.Complete&&portrait.CanObserve;
         public string Status=>Opened?"커튼이 열렸어요. 다음 전시실로 이동하세요.":
             Stage==RevealStage.Absorbing?"완성된 초상이 커튼에 스며들고 있어요.":
-            Stage==RevealStage.Reddening?"초상이 커튼에 남았어요. 조명이 천천히 바뀌고 있어요.":
+            Stage==RevealStage.Reddening?"":
             Stage==RevealStage.Smiling?"초상이 천천히 미소 짓고 있어요.":
             Stage==RevealStage.Opening?"웃는 커튼이 천천히 열리고 있어요.":
             portrait==null?"눈·코·입을 하나의 얼굴로 이어 보세요.":portrait.Status;

@@ -35,6 +35,8 @@ namespace ShadeLink.Gallery
         public float BeamDegrees { get; private set; } = 12;
         public bool BalanceCaptured { get; private set; }
         public bool ExtractionBlocked => extractionBlocked;
+        public bool NeedsBottleEnlargement => Bottle != null && !Solved && !extractionBlocked && !Extracting && !Extracted &&
+            GalleryBottleBalanceVessel.MouthRadius(Bottle) < GalleryBottleContentsMotion.Radius + .02f;
         public string ExtractionBlocker { get; private set; }
         public Vector3 ExtractionExitPosition => GalleryBottleBalanceVessel.MouthWorld(Bottle)+GalleryBottleBalanceVessel.MouthDirection(Bottle)*.56f;
         public bool InRoom => game != null && game.player != null && game.player.feet.z >= GalleryBottleBalanceLayout.InsertAt && game.player.feet.z < GalleryBottleBalanceLayout.EndZ;
@@ -53,7 +55,7 @@ namespace ShadeLink.Gallery
         public string Status => Solved ? (Reward!=null?Reward.Status:"디케가 놓아주는 검을 살펴보세요") :
             extractionBlocked ? "조각이 나올 수 있도록 병 입구 아래 공간을 비워 주세요" :
             Extracting ? "입구를 향해 움직이고 있어요 · 조금 더 기울여 보세요" : !Extracted ?
-            (GalleryBottleBalanceVessel.MouthRadius(Bottle) < GalleryBottleContentsMotion.Radius+.02f ? "병을 옮겨 키우고 좁은 입구를 넓혀 보세요" : "입구가 넓어졌어요 · 병을 들어 아래로 기울여 보세요") :
+            (NeedsBottleEnlargement ? "병을 옮겨 키우고 좁은 입구를 넓혀 보세요" : "입구가 넓어졌어요 · 병을 들어 아래로 기울여 보세요") :
             RelativeLoad < .01f ? "꺼낸 법전을 오른쪽 저울에 올려 보세요" :
             BalanceCaptured ? "수평이에요 · 조각을 내려놓고 잠깐 기다리세요" :
             RelativeLoad < 1 ? "오른쪽이 가벼워요 · 조각을 조금 키워 보세요" :

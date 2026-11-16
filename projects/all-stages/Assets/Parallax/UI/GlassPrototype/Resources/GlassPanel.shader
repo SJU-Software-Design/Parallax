@@ -15,6 +15,8 @@ Shader "Hidden/GlassTrial/Panel"
         _WhiteTintStrength ("White tint strength", Range(0, 1)) = 1
         _MilkyTint ("Milky tint", Range(0, 0.5)) = 0.16
         _SuccessGlow ("Success glow", Range(0, 1)) = 0
+        _NoticeTint ("Notice tint", Color) = (1,1,1,1)
+        _NoticeStrength ("Notice tint strength", Range(0, 1)) = 0
         _PanelAspect ("Panel aspect", Float) = 1.47
         _CornerRadius ("Corner radius", Range(0.01, 1)) = 0.095
         _StencilComp ("Stencil Comparison", Float) = 8
@@ -44,6 +46,8 @@ Shader "Hidden/GlassTrial/Panel"
             float _LensDistortion;
             float _MilkyTint;
             float _SuccessGlow;
+        float4 _NoticeTint;
+        float _NoticeStrength;
             float _CornerRadius;
             v2f vert(appdata v)
             {
@@ -121,6 +125,7 @@ Shader "Hidden/GlassTrial/Panel"
                 }
                 float successRim = 1.0 - smoothstep(.0, .06, -distanceToEdge);
                 c.rgb = lerp(c.rgb, float3(.22, 1.0, .63), saturate(_SuccessGlow * (0.12 + successRim * .62)));
+                c.rgb = lerp(c.rgb, _NoticeTint.rgb, saturate(_NoticeStrength * (.05 + successRim * .58)));
                 c.a = mask * i.color.a;
                 return c;
             }

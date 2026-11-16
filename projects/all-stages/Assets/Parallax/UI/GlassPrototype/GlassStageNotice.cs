@@ -6,6 +6,7 @@ using UnityEngine.UI;
 namespace GlassTrial
 {
     // Stage announcements are separate from puzzle and exposure feedback.
+    [DefaultExecutionOrder(100)]
     public sealed class GlassStageNotice : MonoBehaviour
     {
         public float displaySeconds = 3f;
@@ -20,10 +21,45 @@ namespace GlassTrial
         string lastRoom;
         float shownAt, alpha;
         bool ready;
+        readonly MuseumStageGuideState stageState = new MuseumStageGuideState();
+        GalleryProp heldAtRequest;
+        string noticeAtRequest;
+        float noticeUntilAtRequest;
+
+        public static int CurrentStage(GalleryGame game)
+        {
+            return game == null ? -1 : MuseumStageGuide.StageFor(game.conceptLayout, game.exhibitionPreview,
+                game.checkpoint, game.bottleBalance != null && game.bottleBalance.InRoom);
+        }
+
+        public static bool StageRequested(GalleryGame game)
+        {
+            var notice = game != null ? game.GetComponent<GlassStageNotice>() : null;
+            return CurrentStage(game) >= 0 && notice != null && notice.stageState.Requested && ReplacesHud(game);
+        }
+
+        public static int RequestSerial(GalleryGame game)
+        {
+            var notice = game != null ? game.GetComponent<GlassStageNotice>() : null;
+            return notice != null ? notice.stageState.RequestSerial : 0;
+        }
+
+        public static bool EntryRequested(GalleryGame game)
+        {
+            var notice = game != null ? game.GetComponent<GlassStageNotice>() : null;
+            return notice != null && notice.stageState.Entry && StageRequested(game);
+        }
+
+        public static void InterruptStage(GalleryGame game)
+        {
+            var notice = game != null ? game.GetComponent<GlassStageNotice>() : null;
+            if (notice != null) notice.stageState.Interrupt();
+        }
 
         public static bool ReplacesHud(GalleryGame game)
         {
             if (game == null || !game.active || game.won || game.Transitioning || game.conceptCapture || GlassPanelPreview.ArrivalBlocksHud(game)) return false;
+            if (CurrentStage(game) >= 0 && !GlassExposureGauge.CanDisplay(game)) return false;
             var notice = game.GetComponent<GlassStageNotice>();
             return notice != null && notice.ready;
         }
@@ -73,10 +109,29 @@ namespace GlassTrial
             var shadow = rect.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .65f); shadow.effectDistance = new Vector2(1, -1);
             return text;
         }
-        void Update()
+        void LateUpdate()
         {
             if (!ready) return;
             bool active = ReplacesHud(game);
+            int stage = CurrentStage(game);
+            if (stage >= 0)
+            {
+                canvas.enabled = false;
+                alpha = 0;
+                bool interrupted = game.held != heldAtRequest || game.notice != noticeAtRequest ||
+                    game.noticeUntil != noticeUntilAtRequest || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1);
+                int serial = stageState.RequestSerial;
+                stageState.Update(stage, active, active && Input.GetKeyDown(KeyCode.J), interrupted,
+                    Time.unscaledTime, Mathf.Max(0, displaySeconds));
+                if (serial != stageState.RequestSerial)
+                {
+                    heldAtRequest = game.held;
+                    noticeAtRequest = game.notice;
+                    noticeUntilAtRequest = game.noticeUntil;
+                }
+                return;
+            }
+            stageState.Update(stage, active, false, false, Time.unscaledTime, displaySeconds);
             if (active && (lastRoom == null || lastRoom != game.RoomTitle)) { lastRoom = game.RoomTitle; shownAt = Time.unscaledTime; }
             bool requested = active && Time.unscaledTime - shownAt < Mathf.Max(0, displaySeconds);
             alpha = Mathf.MoveTowards(alpha, requested ? 1 : 0, Time.unscaledDeltaTime / Mathf.Max(.01f, fadeSeconds));

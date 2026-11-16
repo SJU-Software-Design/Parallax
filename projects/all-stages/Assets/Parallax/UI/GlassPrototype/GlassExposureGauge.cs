@@ -13,15 +13,32 @@ namespace GlassTrial
         GlassPanelPreview preview;
         Canvas canvas;
         RawImage backdrop;
-        Text caption;
+        Text caption, stageNumber, stageTitle, stageObjective;
+        RectTransform textMask;
+        CanvasGroup captionGroup, stageNumberGroup, stageTitleGroup, stageObjectiveGroup;
         Image bar, sun, safeIndicator, safeHalo, safeRing;
+        RawImage noticeTimer, noticeTimerGlow;
         Material glass, gauge;
         Texture2D sunTexture, safeTexture, haloTexture, ringTexture;
         Sprite sunSprite, safeSprite, haloSprite, ringSprite;
-        float morph, completionUntil, previousProgress;
+        float morph, stageMorph, completionUntil, previousProgress;
         bool ready, fadingDanger;
         int previousContext = -1;
         bool previousStarted, completionArmed;
+        int displayedStage = -1, stageRequestSerial;
+        bool wasStageRequested;
+        string captionAtStageRequest;
+        readonly MuseumCommonNoticeState commonNotice = new MuseumCommonNoticeState();
+        readonly MuseumPuzzleReminderState puzzleReminder = new MuseumPuzzleReminderState();
+        readonly MuseumResetGaugeHandoff resetGaugeHandoff = new MuseumResetGaugeHandoff();
+        readonly MuseumHudTextTransition textTransition = new MuseumHudTextTransition();
+        int observedNoticeSerial;
+        GalleryProp heldAtNotice;
+        string captionAtNotice;
+        bool gaugeAtNotice;
+        float animatedWidth, widthVelocity;
+        float resizeStartWidth;
+        bool wasResizing;
 
         public static float VisiblePanelHeight(GalleryGame game)
         {
@@ -74,7 +91,9 @@ namespace GlassTrial
             backdrop.color = new Color(1, 1, 1, .97f);
             backdrop.raycastTarget = false;
 
-            var text = Rect("Exposure status", panel, new Vector2(20, -17), new Vector2(337, 70));
+            textMask = Rect("Padded text clip", panel, Vector2.zero, Vector2.zero);
+            textMask.gameObject.AddComponent<RectMask2D>();
+            var text = Rect("Exposure status", textMask, new Vector2(20, -17), new Vector2(337, 70));
             caption = text.gameObject.AddComponent<Text>();
             caption.font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             caption.fontSize = 20;
@@ -83,10 +102,33 @@ namespace GlassTrial
             caption.verticalOverflow = VerticalWrapMode.Overflow;
             caption.color = Color.white;
             caption.raycastTarget = false;
+            captionGroup = text.gameObject.AddComponent<CanvasGroup>();
 
             var shadow = text.gameObject.AddComponent<Shadow>();
             shadow.effectColor = new Color(0, 0, 0, .65f);
             shadow.effectDistance = new Vector2(1, -1);
+
+            var titleRect = Rect("Stage title", textMask, Vector2.zero, new Vector2(320, 28));
+            stageTitle = titleRect.gameObject.AddComponent<Text>();
+            stageTitle.font = caption.font; stageTitle.fontSize = 21; stageTitle.fontStyle = FontStyle.Bold;
+            stageTitle.alignment = TextAnchor.MiddleCenter; stageTitle.raycastTarget = false;
+            stageTitleGroup = titleRect.gameObject.AddComponent<CanvasGroup>(); stageTitleGroup.alpha = 0;
+            var titleShadow = titleRect.gameObject.AddComponent<Shadow>(); titleShadow.effectColor = new Color(0, 0, 0, .65f); titleShadow.effectDistance = Vector2.one;
+            var numberRect = Rect("Stage number", textMask, Vector2.zero, new Vector2(32, 28));
+            stageNumber = numberRect.gameObject.AddComponent<Text>();
+            stageNumber.font = caption.font; stageNumber.fontSize = 21; stageNumber.fontStyle = FontStyle.Bold;
+            stageNumber.alignment = TextAnchor.MiddleRight; stageNumber.raycastTarget = false;
+            stageNumber.color = new Color(94f / 255f, 234f / 255f, 212f / 255f);
+            stageNumberGroup = numberRect.gameObject.AddComponent<CanvasGroup>(); stageNumberGroup.alpha = 0;
+            var numberShadow = numberRect.gameObject.AddComponent<Shadow>(); numberShadow.effectColor = new Color(0, 0, 0, .65f); numberShadow.effectDistance = Vector2.one;
+            var objectiveRect = Rect("Stage objective", textMask, Vector2.zero, new Vector2(380, 30));
+            stageObjective = objectiveRect.gameObject.AddComponent<Text>();
+            stageObjective.font = caption.font; stageObjective.fontSize = 18;
+            stageObjective.alignment = TextAnchor.MiddleCenter; stageObjective.raycastTarget = false;
+            stageObjective.resizeTextForBestFit = true; stageObjective.resizeTextMinSize = 12; stageObjective.resizeTextMaxSize = 18;
+            stageObjective.horizontalOverflow = HorizontalWrapMode.Wrap;
+            stageObjectiveGroup = objectiveRect.gameObject.AddComponent<CanvasGroup>(); stageObjectiveGroup.alpha = 0;
+            var objectiveShadow = objectiveRect.gameObject.AddComponent<Shadow>(); objectiveShadow.effectColor = new Color(0, 0, 0, .65f); objectiveShadow.effectDistance = Vector2.one;
 
             var barRect = Rect("Status gauge", panel, new Vector2(68, -43.3f), new Vector2(278, 17.375f));
             bar = barRect.gameObject.AddComponent<Image>();
@@ -111,6 +153,11 @@ namespace GlassTrial
             var safeRect = Rect("Safe indicator", panel, new Vector2(36, -48), new Vector2(8, 8));
             safeRect.pivot = new Vector2(.5f, .5f); safeRect.anchoredPosition = new Vector2(40, -52);
             safeIndicator = safeRect.gameObject.AddComponent<Image>(); safeIndicator.sprite = safeSprite; safeIndicator.raycastTarget = false;
+
+            var timerGlowRect = Rect("Notice timer glow", panel, Vector2.zero, Vector2.zero);
+            noticeTimerGlow = timerGlowRect.gameObject.AddComponent<RawImage>(); noticeTimerGlow.texture = Texture2D.whiteTexture; noticeTimerGlow.raycastTarget = false;
+            var timerRect = Rect("Notice timer", panel, Vector2.zero, Vector2.zero);
+            noticeTimer = timerRect.gameObject.AddComponent<RawImage>(); noticeTimer.texture = Texture2D.whiteTexture; noticeTimer.raycastTarget = false;
 
             ApplyGlassSettings();
             ready = true;
@@ -280,18 +327,29 @@ namespace GlassTrial
             if (!ready) return;
             bool visible = CanDisplay(game);
             canvas.enabled = visible;
-            if (!visible) { previousContext = -1; completionUntil = 0; morph = 0; fadingDanger = false; return; }
+            if (!visible) { observedNoticeSerial = game.NoticeSerial; commonNotice.CancelPending(); commonNotice.Update(Time.unscaledTime, true); puzzleReminder.Reset(); resetGaugeHandoff.Reset(); textTransition.Reset(); previousContext = -1; completionUntil = 0; morph = 0; stageMorph = 0; fadingDanger = false; wasStageRequested = false; animatedWidth = 0; return; }
 
             backdrop.texture = preview.Capture.blurred;
             ApplyGlassSettings();
 
-            caption.text = game.bottleBalance != null && game.bottleBalance.InRoom ? game.bottleBalance.Status :
+            bool inBottleRoom = game.bottleBalance != null && game.bottleBalance.InRoom;
+            caption.text = inBottleRoom ? MuseumStageGuide.BottleObjective(game.bottleBalance.NeedsBottleEnlargement, game.bottleBalance.Status) :
                 game.conceptLayout && game.checkpoint >= 2 ?
                 (game.checkpoint == 2 ? (game.portraitGate == null ? "눈·코·입을 얼굴처럼 놓아 보세요" : game.portraitGate.Status) :
                 game.orcusExit != null && game.orcusExit.cathedralActivation != null ? game.orcusExit.cathedralActivation.Status : "두 손 사이로 해변이 보입니다") :
                 game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ?
                 NikePanelText(game.nikeLight.Status) : "그늘 · 안전";
-            caption.text = PanelText(caption.text);
+            string puzzleCaption = inBottleRoom ? MuseumStageGuide.BottleObjective(game.bottleBalance.NeedsBottleEnlargement, game.bottleBalance.Status) :
+                game.conceptLayout && game.checkpoint == 2 && game.portraitGate != null ? game.portraitGate.Status :
+                game.conceptLayout && game.checkpoint == 3 && game.orcusExit != null && game.orcusExit.cathedralActivation != null ? game.orcusExit.cathedralActivation.Status :
+                game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ? game.Objective : caption.text;
+            if (!inBottleRoom) caption.text = PanelText(caption.text);
+            if (!inBottleRoom && game.conceptLayout && game.checkpoint == 3 &&
+                game.orcusExit != null && game.orcusExit.cathedralActivation != null)
+            {
+                string initial = MuseumStageGuide.CathedralInitialCaption(game.orcusExit.cathedralActivation.Status);
+                if (initial != null) caption.text = initial;
+            }
             // Keep the socket instruction until the blade is actually seated.
             // Cancelling insertion returns the sword to its recovery pad and ends the guide.
             var reward = game.bottleBalance != null ? game.bottleBalance.Reward : null;
@@ -389,15 +447,102 @@ namespace GlassTrial
             bool celebrating = !danger && Time.unscaledTime < completionUntil;
             bool showGauge = danger || (!swordGuide && !doorGuide && !balanceGuide &&
                 (started || (celebrating && context != 1)));
+            // During the portrait performance, briefly morph back to its current
+            // stage caption on a regular beat; never change the actual progress.
+            var portraitGate = context == 2 ? game.portraitGate : null;
+            bool portraitCue = portraitGate != null && portraitGate.Performing &&
+                MuseumStageGuide.PortraitPerformanceCue(portraitGate.PerformanceElapsed, (int)portraitGate.Stage) >= 0;
+            if (portraitCue && !danger) showGauge = false;
+            int stage = GlassStageNotice.CurrentStage(game);
+            bool requested = GlassStageNotice.StageRequested(game);
+            bool entry = GlassStageNotice.EntryRequested(game);
+            bool protectedStage = MuseumStageGuide.ProtectStageAnnouncement(stage, requested, entry);
+            float now = Time.unscaledTime;
+            bool newNotice = observedNoticeSerial != game.NoticeSerial;
+            bool waitForStage = entry;
+            if (newNotice)
+            {
+                observedNoticeSerial = game.NoticeSerial;
+                var classified = MuseumStageGuide.ClassifyNotice(game.notice, stage);
+                waitForStage = entry || (requested && classified.Kind == MuseumStageGuide.NoticeKind.Reset);
+                commonNotice.OnNotice(classified, now, waitForStage, danger || (requested && !waitForStage), stage);
+                heldAtNotice = game.held;
+                captionAtNotice = caption.text;
+                gaugeAtNotice = showGauge;
+            }
+            bool waitingForReset = requested && commonNotice.PendingIsReset;
+            commonNotice.AdvancePending(now, entry || waitingForReset, danger || (requested && !entry && !waitingForReset), stage);
+            bool warningAction = commonNotice.Active && commonNotice.Current.Kind == MuseumStageGuide.NoticeKind.Warning && !newNotice &&
+                (game.held != heldAtNotice || caption.text != captionAtNotice || Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) ||
+                 Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.R) ||
+                 Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Space));
+            bool puzzleTookOver = commonNotice.Active && commonNotice.Current.Kind == MuseumStageGuide.NoticeKind.Warning && showGauge && !gaugeAtNotice && !newNotice;
+            commonNotice.Update(now, requested || danger || warningAction || puzzleTookOver);
+            bool showCommon = commonNotice.Active;
+            if (showCommon)
+            {
+                caption.text = commonNotice.Current.Text;
+                showGauge = false;
+            }
+            int serial = GlassStageNotice.RequestSerial(game);
+            if (requested && (!wasStageRequested || displayedStage != stage || stageRequestSerial != serial))
+            {
+                captionAtStageRequest = caption.text;
+                stageRequestSerial = serial;
+            }
+            else if (requested && !protectedStage && caption.text != captionAtStageRequest)
+                GlassStageNotice.InterruptStage(game);
+            if (showGauge && !protectedStage) GlassStageNotice.InterruptStage(game);
+            showGauge = MuseumStageGuide.ShowGauge(stage, requested, entry, showGauge);
+            bool showStage = GlassStageNotice.StageRequested(game) && !showGauge;
+            bool reminderEligible = showGauge && started && !danger && !showStage && !requested && !showCommon &&
+                !swordGuide && !doorGuide && !balanceGuide && (portraitGate == null || !portraitGate.Performing) &&
+                !string.IsNullOrWhiteSpace(puzzleCaption);
+            bool showReminder = puzzleReminder.Update(context, reminderEligible, Time.unscaledDeltaTime);
+            if (showReminder) { caption.text = puzzleCaption; showGauge = false; }
+            wasStageRequested = showStage;
+            string stageNumberText = null, stageTitleText = null, stageObjectiveText = null;
+            if (stage >= 0)
+            {
+                var content = MuseumStageGuide.Get(stage);
+                stageNumberText = content.Number; stageTitleText = content.Title; stageObjectiveText = content.Objective;
+                if (inBottleRoom && stage == 2 && !entry)
+                    stageObjectiveText = MuseumStageGuide.BottleObjective(game.bottleBalance.NeedsBottleEnlargement, game.bottleBalance.Status);
+                displayedStage = stage;
+            }
+            var targetView = new MuseumHudTextTransition.View
+            {
+                Mode = showStage ? 2 : showGauge ? 1 : 0,
+                Caption = showStage || showGauge ? null : caption.text,
+                Number = showStage ? stageNumberText : null,
+                Title = showStage ? stageTitleText : null,
+                Objective = showStage ? stageObjectiveText : null
+            };
+            bool urgent = danger || (showCommon && commonNotice.Current.Kind == MuseumStageGuide.NoticeKind.Warning);
+            textTransition.Update(targetView, Time.unscaledDeltaTime, urgent);
+            var renderedView = textTransition.Current;
+            bool renderStage = renderedView.Mode == 2;
+            bool renderGauge = renderedView.Mode == 1;
+            caption.text = renderedView.Caption ?? "";
+            stageNumber.text = renderedView.Number ?? "";
+            stageTitle.text = renderedView.Title ?? "";
+            stageObjective.text = renderedView.Objective ?? "";
+            stageMorph = danger && !protectedStage ? 0 : Mathf.MoveTowards(stageMorph, renderStage ? 1 : 0, Time.unscaledDeltaTime / .28f);
+            float stageShape = Mathf.SmoothStep(0, 1, stageMorph);
             if (danger) fadingDanger = true;
             else if (started || celebrating) fadingDanger = false;
             // Safety feedback is immediate; normal morphs are reversible at any point.
             // The brief balance-complete instruction must not be obscured by a fading gauge.
-            morph = danger ? 1 : balanceGuide ? 0 : AdvanceMorph(morph, showGauge, Time.unscaledDeltaTime);
+            morph = protectedStage && !renderStage ? 0 : danger ? 1 : AdvanceMorph(morph, renderGauge, Time.unscaledDeltaTime);
             bool redGauge = danger || (fadingDanger && morph > 0);
-            float gaugeAlpha = danger ? 1 : Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.28f, 1f, morph));
-            float captionAlpha = 1f - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .5f, morph));
-            float captionLift = 12f * Mathf.SmoothStep(0, 1, Mathf.InverseLerp(0, .5f, morph));
+            float gaugeAlpha = protectedStage ? 0 : danger ? 1 : Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.28f, 1f, morph));
+            float captionAlpha = renderedView.Mode == 0 ? textTransition.Alpha : 0;
+            bool portraitReset = showCommon && MuseumStageGuide.IsPortraitReset(commonNotice.Current, stage);
+            bool hideHandoffCaption = resetGaugeHandoff.Update(portraitReset, showGauge && !danger,
+                danger || showStage || (showCommon && !portraitReset), true, morph);
+            if (hideHandoffCaption) captionAlpha = 0;
+            if (showCommon) captionAlpha *= Mathf.SmoothStep(0, 1, Mathf.Clamp01((now - commonNotice.StartedAt) / .12f));
+            float captionLift = 0;
 
             var panel = (RectTransform)backdrop.transform;
             float available = Mathf.Max(1, ((RectTransform)canvas.transform).rect.width - 56f);
@@ -411,12 +556,52 @@ namespace GlassTrial
             float shape = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.4f, 1f, morph));
             float width = Mathf.Lerp(descriptionWidth, gaugeWidth, shape);
             float height = Mathf.Lerp(descriptionHeight, 42, shape);
+            float stageWidth = Mathf.Min(available, Mathf.Max(430f, stageObjective.preferredWidth + 48f, stageTitle.preferredWidth + stageNumber.preferredWidth * 2f + 48f));
+            width = Mathf.Lerp(width, stageWidth, stageShape);
+            height = Mathf.Lerp(height, 86f, stageShape);
+            if (animatedWidth <= 0) animatedWidth = width;
+            if (textTransition.Resizing)
+            {
+                if (!wasResizing) resizeStartWidth = animatedWidth;
+                animatedWidth = Mathf.Lerp(resizeStartWidth, width, Mathf.SmoothStep(0, 1, textTransition.ResizeAmount));
+                widthVelocity = 0;
+            }
+            else animatedWidth = Mathf.SmoothDamp(animatedWidth, width, ref widthVelocity, .08f, Mathf.Infinity, Time.unscaledDeltaTime);
+            wasResizing = textTransition.Resizing;
+            width = Mathf.Min(available, animatedWidth);
             panel.sizeDelta = new Vector2(width, height);
             glass.SetFloat("_PanelAspect", width / height);
+            glass.SetFloat("_CornerRadius", Mathf.Lerp(1f, .60f, stageShape));
+            float stageAlpha = renderStage ? textTransition.Alpha : 0;
+            const float padding = 16f;
+            textMask.anchoredPosition = new Vector2(padding, -4f);
+            textMask.sizeDelta = new Vector2(Mathf.Max(1, width - padding * 2f), Mathf.Max(1, height - 8f));
+            var titleRect = (RectTransform)stageTitle.transform;
+            titleRect.anchoredPosition = new Vector2(-padding, -8f);
+            titleRect.sizeDelta = new Vector2(width, 28f);
+            var numberRect = (RectTransform)stageNumber.transform;
+            float numberWidth = Mathf.Max(1f, stageNumber.preferredWidth);
+            numberRect.anchoredPosition = new Vector2(Mathf.Max(0f, (width - stageTitle.preferredWidth) * .5f - numberWidth - 8f) - padding, -8f);
+            numberRect.sizeDelta = new Vector2(numberWidth, 28f);
+            var objectiveRect = (RectTransform)stageObjective.transform;
+            objectiveRect.anchoredPosition = new Vector2(12f - padding, -40f);
+            objectiveRect.sizeDelta = new Vector2(Mathf.Max(1f, width - 24f), 30f);
+            stageNumberGroup.alpha = stageTitleGroup.alpha = stageObjectiveGroup.alpha = stageAlpha;
 
             var captionRect = (RectTransform)caption.transform;
-            captionRect.anchoredPosition = new Vector2(56, -(height - textHeight) * .5f + captionLift);
+            captionRect.pivot = new Vector2(0, 1);
+            titleRect.pivot = numberRect.pivot = objectiveRect.pivot = new Vector2(0, 1);
+            captionRect.anchoredPosition = new Vector2(56 - padding, -(height - textHeight) * .5f + 4f);
             captionRect.sizeDelta = new Vector2(textWidth, textHeight);
+            float captionScale = Mathf.Lerp(.96f, 1f, textTransition.Alpha);
+            captionRect.pivot = new Vector2(.5f, .5f);
+            captionRect.anchoredPosition += new Vector2(textWidth * .5f, -textHeight * .5f);
+            captionRect.localScale = Vector3.one * captionScale;
+            titleRect.pivot = numberRect.pivot = objectiveRect.pivot = new Vector2(.5f, .5f);
+            titleRect.anchoredPosition += new Vector2(width * .5f, -14f);
+            numberRect.anchoredPosition += new Vector2(numberWidth * .5f, -14f);
+            objectiveRect.anchoredPosition += new Vector2((width - 24f) * .5f, -15f);
+            titleRect.localScale = numberRect.localScale = objectiveRect.localScale = Vector3.one * Mathf.Lerp(.96f, 1f, stageAlpha);
             float dotY = -height * .5f + captionLift;
             ((RectTransform)safeIndicator.transform).anchoredPosition = new Vector2(32, dotY);
             ((RectTransform)safeHalo.transform).anchoredPosition = new Vector2(32, dotY);
@@ -428,8 +613,8 @@ namespace GlassTrial
             float barLeft = redGauge ? 50 : 14;
             ((RectTransform)bar.transform).anchoredPosition = new Vector2(barLeft, gaugeY + 7);
             ((RectTransform)bar.transform).sizeDelta = new Vector2(Mathf.Max(1, width - barLeft - 14), 14);
-            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || morph > .001f;
-            caption.color = new Color(1, 1, 1, captionAlpha);
+            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || morph > .001f || stageMorph > .001f;
+            captionGroup.alpha = captionAlpha;
             bar.color = new Color(1, 1, 1, gaugeAlpha);
             sun.color = new Color(1, .12f, .10f, redGauge ? gaugeAlpha : 0);
             float flash = celebrating ? Mathf.Sin(Mathf.PI * Mathf.Clamp01((completionUntil - Time.unscaledTime) / .65f)) : 0;
@@ -439,11 +624,53 @@ namespace GlassTrial
             float dotAlpha = Mathf.Lerp(.55f, 1f, breath);
             float dotScale = Mathf.Lerp(.92f, 1.12f, breath);
             Color mint = new Color(77f / 255f, 238f / 255f, 234f / 255f);
+            Color noticeColor = mint;
+            float age = now - commonNotice.StartedAt;
+            float ringScale = 1f, ringAlpha = 1f, motionX = 0f, motionY = 0f, panelScale = 1f;
+            if (showCommon)
+            {
+                switch (commonNotice.Current.Kind)
+                {
+                    case MuseumStageGuide.NoticeKind.Warning:
+                        noticeColor = new Color(251f / 255f, 191f / 255f, 36f / 255f);
+                        float blink = Mathf.Clamp01(age / .55f);
+                        dotAlpha = blink < 1 ? Mathf.Lerp(.3f, 1f, Mathf.Abs(Mathf.Sin(blink * Mathf.PI * 2f))) : 1f;
+                        dotScale = blink < 1 ? Mathf.Lerp(.8f, 1.25f, dotAlpha) : 1f;
+                        motionX = age < .42f ? Mathf.Sin(age * 33f) * 7f * (1f - age / .42f) : 0f;
+                        break;
+                    case MuseumStageGuide.NoticeKind.Reset:
+                        noticeColor = new Color(56f / 255f, 189f / 255f, 248f / 255f);
+                        motionY = age < .48f ? 6f * (1f - Mathf.SmoothStep(0, 1, age / .48f)) : 0;
+                        panelScale = age < .48f ? Mathf.Lerp(.97f, 1f, Mathf.SmoothStep(0, 1, age / .48f)) : 1;
+                        ringScale = Mathf.Lerp(.5f, 1.75f, Mathf.Clamp01(age / .85f)); ringAlpha = 1f - Mathf.Clamp01(age / .85f);
+                        dotAlpha = 1f; dotScale = 1f;
+                        break;
+                    case MuseumStageGuide.NoticeKind.Save:
+                        noticeColor = new Color(52f / 255f, 211f / 255f, 153f / 255f);
+                        motionY = age < .52f ? -4f * (1f - Mathf.SmoothStep(0, 1, age / .52f)) : 0;
+                        panelScale = age < .52f ? Mathf.Lerp(.96f, 1f, Mathf.SmoothStep(0, 1, age / .52f)) : 1;
+                        ringScale = Mathf.Lerp(.6f, 1.9f, Mathf.Clamp01(age / 1.1f)); ringAlpha = 1f - Mathf.Clamp01(age / 1.1f);
+                        dotAlpha = 1f; dotScale = 1f + .35f * Mathf.Sin(Mathf.PI * Mathf.Clamp01(age / .65f));
+                        break;
+                }
+            }
+            panel.anchoredPosition = new Vector2(motionX, motionY);
+            panel.localScale = Vector3.one * panelScale;
+            glass.SetColor("_NoticeTint", noticeColor);
+            glass.SetFloat("_NoticeStrength", showCommon ? captionAlpha : 0f);
+            mint = noticeColor;
             safeIndicator.color = new Color(mint.r, mint.g, mint.b, indicatorAlpha * dotAlpha);
             safeHalo.color = new Color(mint.r, mint.g, mint.b, indicatorAlpha * dotAlpha * .85f);
-            safeRing.color = new Color(mint.r, mint.g, mint.b, indicatorAlpha * dotAlpha * .45f * Mathf.Lerp(.15f, .65f, breath));
+            safeRing.color = new Color(mint.r, mint.g, mint.b, indicatorAlpha * dotAlpha * .45f * (showCommon ? ringAlpha : Mathf.Lerp(.15f, .65f, breath)));
             safeIndicator.transform.localScale = safeHalo.transform.localScale = Vector3.one * dotScale;
-            safeRing.transform.localScale = Vector3.one * (dotScale * Mathf.Lerp(.85f, 1.25f, breath));
+            safeRing.transform.localScale = Vector3.one * (showCommon ? ringScale : dotScale * Mathf.Lerp(.85f, 1.25f, breath));
+            float timerWidth = Mathf.Max(0, width - 36f) * commonNotice.Remaining(now);
+            var timerRect = (RectTransform)noticeTimer.transform;
+            var glowRect = (RectTransform)noticeTimerGlow.transform;
+            timerRect.anchoredPosition = new Vector2(18f, -height + 4f); timerRect.sizeDelta = new Vector2(timerWidth, 2f);
+            glowRect.anchoredPosition = new Vector2(18f, -height + 6f); glowRect.sizeDelta = new Vector2(timerWidth, 6f);
+            noticeTimer.color = new Color(mint.r, mint.g, mint.b, showCommon ? captionAlpha : 0);
+            noticeTimerGlow.color = new Color(mint.r, mint.g, mint.b, showCommon ? captionAlpha * .22f : 0);
             gauge.SetFloat("_Fill", Mathf.Clamp01(redGauge ? game.exposure : progress));
             gauge.SetFloat("_PuzzleMode", redGauge ? 0 : 1);
         }

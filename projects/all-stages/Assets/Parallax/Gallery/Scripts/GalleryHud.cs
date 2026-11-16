@@ -162,11 +162,13 @@ namespace ShadeLink.Gallery
                 else if(game.aimed!=null)
                     GUI.Label(new Rect(570,654,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
-                string bottomNotice=BottomNoticeText(game.notice);
-                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&!string.IsNullOrEmpty(bottomNotice))
+                bool glassAvailable=GlassTrial.GlassExposureGauge.CanDisplay(game);
+                string bottomNotice=GlassTrial.MuseumStageGuide.HideLegacyCommonNotice(game.notice,glassAvailable)||GlassTrial.MuseumStageGuide.SuppressCoveredBottomNotice(game.notice,
+                    GlassTrial.GlassStageNotice.CurrentStage(game),glassAvailable)?"":BottomNoticeText(game.notice);
+                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&!GlassTrial.GlassStageNotice.EntryRequested(game)&&!string.IsNullOrEmpty(bottomNotice))
                     GUI.Label(new Rect(380,GlassTrial.GlassExposureGauge.CanDisplay(game)?793:806,900,36),bottomNotice,small);
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트   ·   Esc 메뉴",small);
+                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트"+(GlassTrial.GlassStageNotice.CurrentStage(game)>=0?"   ·   J 스테이지 안내":"")+"   ·   Esc 메뉴",small);
             }
             if(!game.active||game.won)
             {
