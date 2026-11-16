@@ -1,0 +1,1343 @@
+{
+  "passed": true,
+  "noCapture": true,
+  "captureCount": 0,
+  "skippedChecks": [
+    "Production coastal portal renders actual varied pixels",
+    "Actual Beach view renders a visible arrival after the production fade",
+    "Actual camera renders contain visible geometry"
+  ],
+  "skippedCaptures": [
+    "01-elevator-open-approach.png",
+    "02-frosted-wall-during-descent.png",
+    "03-open-door-to-museum.png"
+  ],
+  "phase": "complete",
+  "failure": "",
+  "startedUtc": "2026-11-16T17:07:42.0130619Z",
+  "finishedUtc": "2026-11-16T17:08:39.1574615Z",
+  "unity": "6000.3.24f1",
+  "gpu": "NVIDIA GeForce RTX 3070 / Direct3D11",
+  "finalScene": "Beach",
+  "scope": "Focused native/Editor integration QA of the actual E01 prefab, automatic ride states and actual asynchronous Tutorial-to-Gallery scene handoff. Review setup jumps to the existing final tutorial approach; actual CharacterController.Move enters the cabin, then a real kinematic rigidbody placed in the production safety bounds exercises reopening. Production pause/reset commands are invoked by method reflection. No completion, door phase, arrival flag or scene state is supplied. Gallery.Tick drives the actual destination motor through the open doorway. Explicit -validation-no-capture disables validation Camera.Render, pixel reads and PNG output. Three graphics assertions are reported as skipped and are not counted as passed; physics, audio and real scene handoffs still run. This is not a continuous tutorial puzzle playthrough or subjective art/audio approval.",
+  "closedDoorDuration": 2.104395627975464,
+  "feetPoseError": 0,
+  "eyePoseError": 2.384185791015625e-7,
+  "viewPoseErrorDegrees": 0,
+  "maximumShaftMotion": 14.995309829711914,
+  "tutorialCaptureDeviation": 0,
+  "shaftCaptureDeviation": 0,
+  "arrivalCaptureDeviation": 0,
+  "actualExitDistance": 2.6859683990478516,
+  "departureEvents": 1,
+  "arrivalEvents": 1,
+  "gallerySceneLoads": 1,
+  "maximumActiveListeners": 1,
+  "observedFrames": 11648,
+  "departureLocalFeet": {
+    "x": -0.03500356152653694,
+    "y": 0.04999971389770508,
+    "z": -1.1512508392333984
+  },
+  "arrivalLocalFeet": {
+    "x": -0.03500356152653694,
+    "y": 0.04999971389770508,
+    "z": -1.1512508392333984
+  },
+  "galleryExitFeet": {
+    "x": -0.03500013425946236,
+    "y": 0.049999892711639404,
+    "z": 1.5347174406051636
+  },
+  "checks": [
+    {
+      "name": "Tutorial is initial scene",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Tutorial audio baseline has actual saved-scene player",
+      "detail": "Production TutorialGame",
+      "passed": true
+    },
+    {
+      "name": "User-selected TutorialAudio refresh bank is actually installed",
+      "detail": "T02/T04/T07/T26/T14/T19 + TB01; PR41 controls retained",
+      "passed": true
+    },
+    {
+      "name": "Baseline starts in the first tutorial lesson",
+      "detail": "(0.000, 0.030, 0.000)",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "Footstep81",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "Land72",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "PropGrab128",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "PropRelease156",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "MetalMedium14",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "MetalHeavy157",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "Door026",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "PuzzleComplete036",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "UIConfirm42",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "UICancel142",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "UIError145",
+      "passed": true
+    },
+    {
+      "name": "Previous local tutorial resource remains included for compatibility",
+      "detail": "BgmB23",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T02_Pickup",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T04_DieSmall",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T07_DieMedium",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T26_DieLarge",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T19_JumpLand",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T14_Footstep01",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T14_Footstep02",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T14_Footstep03",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "T14_Footstep04",
+      "passed": true
+    },
+    {
+      "name": "User-selected refresh resource is actually included",
+      "detail": "BgmTB01_000_179",
+      "passed": true
+    },
+    {
+      "name": "One footstep uses a short individual contact rather than the whole T14 recording",
+      "detail": "Four 0.30-0.32 second source slices",
+      "passed": true
+    },
+    {
+      "name": "Twelve tutorial cue routes include three impact sizes",
+      "detail": "Small/medium/large are distinct; unchanged UI/release/door routes retained",
+      "passed": true
+    },
+    {
+      "name": "Selected TB01 0:00-2:59 is playing and advancing samples",
+      "detail": "Current sample=11289",
+      "passed": true
+    },
+    {
+      "name": "Original tutorial pause preserves BGM sample position",
+      "detail": "12230→12230",
+      "passed": true
+    },
+    {
+      "name": "Original tutorial BGM resumes without restarting",
+      "detail": "Sample=20697",
+      "passed": true
+    },
+    {
+      "name": "TB01 naturally crossfades back inside the authorized excerpt",
+      "detail": "Playback-position fixture near 2:57; production Update owns the transition",
+      "passed": true
+    },
+    {
+      "name": "Production movement dispatch actually plays all four short T14 contacts",
+      "detail": "PlayerMovementAudio.Tick walking-input fixture; not an actual walking-distance claim",
+      "passed": true
+    },
+    {
+      "name": "Production airborne-to-grounded dispatch actually plays selected T19",
+      "detail": "PlayerMovementAudio.Tick landing-state fixture; no direct audio Play call",
+      "passed": true
+    },
+    {
+      "name": "Practice prop opts into original tutorial audio routing",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual production grab uses selected T02",
+      "detail": "GalleryProp.BeginHold → PropReleasePhysics → TutorialAudio",
+      "passed": true
+    },
+    {
+      "name": "Actual production release retains PropRelease156",
+      "detail": "GalleryProp.Release → PropReleasePhysics → TutorialAudio",
+      "passed": true
+    },
+    {
+      "name": "Actual gravity-driven small die contact uses T04",
+      "detail": "No PlayImpact or fake audio event supplied",
+      "passed": true
+    },
+    {
+      "name": "Repeated contacts within the selected clip do not stack impact voices",
+      "detail": "First contact came from PhysX; two immediate production contact-method probes must be suppressed",
+      "passed": true
+    },
+    {
+      "name": "Fresh regrab resets suppression for a new gravity-driven drop",
+      "detail": "0.08m physical drop; no manual impact/audio event supplied",
+      "passed": true
+    },
+    {
+      "name": "Legacy common-effects switch suppresses shared cues without a fallback",
+      "detail": "Grab/release consumed; BGM remains active",
+      "passed": true
+    },
+    {
+      "name": "Original two-dice arrival uses actual FixedUpdate physics",
+      "detail": "FixedUpdate",
+      "passed": true
+    },
+    {
+      "name": "Original stage two has two automatic-drop dice",
+      "detail": "Medium and large",
+      "passed": true
+    },
+    {
+      "name": "Production stage selection starts the normal automatic arrival",
+      "detail": "No body-release or completion flags supplied",
+      "passed": true
+    },
+    {
+      "name": "Both original dice release sequentially and land once",
+      "detail": "medium=1, large=1",
+      "passed": true
+    },
+    {
+      "name": "Normal PhysX drops play distinct selected medium and large clips",
+      "detail": "T07=True, T26=True",
+      "passed": true
+    },
+    {
+      "name": "Each normal automatic drop retains at most one impact voice per size",
+      "detail": "No overlapping duplicate T07/T26 during the actual two-drop arrival",
+      "passed": true
+    },
+    {
+      "name": "Pooled tutorial drops retain the PR41 null-source fix",
+      "detail": "No synthesized local AudioSource on either die",
+      "passed": true
+    },
+    {
+      "name": "Original two-dice arrival completes and returns interaction",
+      "detail": "Normal FixedUpdate; stable placements",
+      "passed": true
+    },
+    {
+      "name": "Selected BGM remains active throughout physical arrival",
+      "detail": "TB01 0:00-2:59",
+      "passed": true
+    },
+    {
+      "name": "Boarding regression uses the actual saved-scene controller",
+      "detail": "No replacement controller or trigger fixture",
+      "passed": true
+    },
+    {
+      "name": "Boarding regression keeps the production automatic ride clock",
+      "detail": "No Step, phase or completion setters",
+      "passed": true
+    },
+    {
+      "name": "Edge boarding runs in the rotated tutorial cabin",
+      "detail": "Source yaw=180.000",
+      "passed": true
+    },
+    {
+      "name": "Actual controller reaches the left wall",
+      "detail": "CC.Move into source collider; local feet=(-0.8649, 0.0500, -1.2150); flags=5",
+      "passed": true
+    },
+    {
+      "name": "Physical left wall contact counts as fully aboard",
+      "detail": "local feet=(-0.8649, 0.0500, -1.2150); doorway remains clear",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the left wall",
+      "detail": "local feet=(-0.8649, 0.0500, -1.2150); dwell=0.7556; elapsed=0.7408; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Actual controller reaches the right wall",
+      "detail": "CC.Move into source collider; local feet=(0.7921, 0.0500, -1.2150); flags=5",
+      "passed": true
+    },
+    {
+      "name": "Physical right wall contact counts as fully aboard",
+      "detail": "local feet=(0.7921, 0.0500, -1.2150); doorway remains clear",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the right wall",
+      "detail": "local feet=(0.7921, 0.0500, -1.2150); dwell=0.7556; elapsed=0.7484; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Actual controller reaches the rear wall",
+      "detail": "CC.Move into source collider; local feet=(-0.0350, 0.0500, -1.9939); flags=5",
+      "passed": true
+    },
+    {
+      "name": "Physical rear wall contact counts as fully aboard",
+      "detail": "local feet=(-0.0350, 0.0500, -1.9939); doorway remains clear",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the rear wall",
+      "detail": "local feet=(-0.0350, 0.0500, -1.9939); dwell=0.7558; elapsed=0.7367; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Actual controller reaches the rear-left corner",
+      "detail": "CC.Move into source collider; local feet=(-0.8784, 0.0500, -2.0228); flags=5",
+      "passed": true
+    },
+    {
+      "name": "Physical rear-left corner contact counts as fully aboard",
+      "detail": "local feet=(-0.8784, 0.0500, -2.0228); doorway remains clear",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the rear-left corner",
+      "detail": "local feet=(-0.8784, 0.0500, -2.0228); dwell=0.7560; elapsed=0.7446; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Actual controller reaches the rear-right corner",
+      "detail": "CC.Move into source collider; local feet=(0.8055, 0.0500, -2.0228); flags=5",
+      "passed": true
+    },
+    {
+      "name": "Physical rear-right corner contact counts as fully aboard",
+      "detail": "local feet=(0.8055, 0.0500, -2.0228); doorway remains clear",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the rear-right corner",
+      "detail": "local feet=(0.8055, 0.0500, -2.0228); dwell=0.7557; elapsed=0.7518; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Body straddling the physical door plane remains partial boarding",
+      "detail": "Actual capsule local feet=(-0.0350, 0.0500, -0.2500); the full-capsule boarding guard must keep the doors open",
+      "passed": true
+    },
+    {
+      "name": "Threshold-straddling capsule cannot start the departure dwell",
+      "detail": "Stayed open beyond 0.75 seconds; dwell=0.0000",
+      "passed": true
+    },
+    {
+      "name": "A capsule just clear of the real doors is fully aboard near the front",
+      "detail": "CC.Move from straddling pose; local feet=(-0.0350, 0.0500, -0.4680); safety rear=-0.1330; wholly=True; blocked=False; radius=0.3; scale=(1.00, 1.00, 1.00)",
+      "passed": true
+    },
+    {
+      "name": "Normal 0.75-second dwell starts closing at the front just inside the doors",
+      "detail": "local feet=(-0.0350, 0.0500, -0.4680); dwell=0.7557; elapsed=0.7500; open=1.0000",
+      "passed": true
+    },
+    {
+      "name": "Boarding regressions never depart or supply a destination state",
+      "detail": "Six ordinary closing starts; each interrupted by production ResetRide before full closure",
+      "passed": true
+    },
+    {
+      "name": "Actual prepared E01 resource exists",
+      "detail": "Resources/Tutorial/ElevatorE01",
+      "passed": true
+    },
+    {
+      "name": "Four independently movable door leaves",
+      "detail": "Exterior pair and cabin pair retained from original model",
+      "passed": true
+    },
+    {
+      "name": "Door mesh and physical collider",
+      "detail": "LeftOutsideDoor_0",
+      "passed": true
+    },
+    {
+      "name": "Door mesh and physical collider",
+      "detail": "RightOutsideDoor_1",
+      "passed": true
+    },
+    {
+      "name": "Door mesh and physical collider",
+      "detail": "LeftInteriorDoor_8",
+      "passed": true
+    },
+    {
+      "name": "Door mesh and physical collider",
+      "detail": "RightInteriorDoor_10",
+      "passed": true
+    },
+    {
+      "name": "Original rear panel uses translucent glass",
+      "detail": "E01 frosted shaft glazing",
+      "passed": true
+    },
+    {
+      "name": "Eight selected clips and one shared door voice are present",
+      "detail": "8 clips / 7 owned sources",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL02",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL04",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL07",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL09",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL11",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL25",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL21",
+      "passed": true
+    },
+    {
+      "name": "Selected resource is actually loaded",
+      "detail": "EL23",
+      "passed": true
+    },
+    {
+      "name": "Approach does not complete tutorial",
+      "detail": "Completion remains false before closed-door departure",
+      "passed": true
+    },
+    {
+      "name": "Translucent panel retains physical collision",
+      "detail": "Object_29_0",
+      "passed": true
+    },
+    {
+      "name": "Actual rear panel blocks physical passage",
+      "detail": "Object_29_0",
+      "passed": true
+    },
+    {
+      "name": "Real aperture exists behind translucent panel",
+      "detail": "Source back wall and frame do not cover panel centre",
+      "passed": true
+    },
+    {
+      "name": "Original cabin floor has actual collision",
+      "detail": "Object_12_0",
+      "passed": true
+    },
+    {
+      "name": "Cabin side walls have actual collision",
+      "detail": "Real source meshes tested in both horizontal directions",
+      "passed": true
+    },
+    {
+      "name": "Shaft motion geometry exists",
+      "detail": "Passing shaft landing 0",
+      "passed": true
+    },
+    {
+      "name": "Production pause freezes elevator",
+      "detail": "Paused through TutorialGame.SetPaused; no ride phase supplied",
+      "passed": true
+    },
+    {
+      "name": "Production pause holds actual door audio sample position",
+      "detail": "Sample=65536→65536",
+      "passed": true
+    },
+    {
+      "name": "Door audio resumes without restarting its cue",
+      "detail": "Actual samples advance; Play count unchanged",
+      "passed": true
+    },
+    {
+      "name": "Production lesson reset restores idle elevator",
+      "detail": "RestartLesson is the actual R-key command path",
+      "passed": true
+    },
+    {
+      "name": "Reset stops effects and leaves one ventilation loop",
+      "detail": "Only EL23 remains playing",
+      "passed": true
+    },
+    {
+      "name": "Reset retains incomplete tutorial",
+      "detail": "No departure has occurred",
+      "passed": true
+    },
+    {
+      "name": "Threshold standing is partial boarding",
+      "detail": "(89.835, 5.649, 28.018)",
+      "passed": true
+    },
+    {
+      "name": "Partial boarding keeps doors open",
+      "detail": "Waited longer than the 0.75-second whole-body dwell",
+      "passed": true
+    },
+    {
+      "name": "Actual controller fully enters cabin",
+      "detail": "(89.835, 5.650, 29.251)",
+      "passed": true
+    },
+    {
+      "name": "Actual safety volume detects rigidbody",
+      "detail": "A real kinematic collider is placed in the production doorway bounds",
+      "passed": true
+    },
+    {
+      "name": "Obstruction prevents departure",
+      "detail": "Doors remain open while real obstruction remains",
+      "passed": true
+    },
+    {
+      "name": "Closed doors trigger tutorial completion and one departure",
+      "detail": "Door fraction=0, events=1",
+      "passed": true
+    },
+    {
+      "name": "Closing uses intended slow duration",
+      "detail": "2.104 seconds",
+      "passed": true
+    },
+    {
+      "name": "Journey camera stays visible through scene handoff",
+      "detail": "Museum view",
+      "passed": true
+    },
+    {
+      "name": "Actual running clip advances during descent",
+      "detail": "EL11_MotorRun",
+      "passed": true
+    },
+    {
+      "name": "Actual Gallery scene loaded",
+      "detail": "Gallery",
+      "passed": true
+    },
+    {
+      "name": "Tutorial scene actually unloaded",
+      "detail": "No TutorialGame survives the Single-scene handoff",
+      "passed": true
+    },
+    {
+      "name": "Descent, stop and 1-to-B1 floor sequence observed",
+      "detail": "OpeningForBoarding at 30.271, IdleClosed at 32.139, OpeningForBoarding at 32.161, Boarding at 34.262, ClosingForDeparture at 37.229, OpeningForBoarding at 37.629, Boarding at 38.029, ClosingForDeparture at 39.084, Descending at 41.198, Stopping at 47.693, ArrivalChime at 48.693",
+      "passed": true
+    },
+    {
+      "name": "Shaft structures actually move behind glass",
+      "detail": "14.995",
+      "passed": true
+    },
+    {
+      "name": "Actual floor display reads B1",
+      "detail": "Production TextMesh, not only a reported floor property",
+      "passed": true
+    },
+    {
+      "name": "One arrival and one Gallery scene load",
+      "detail": "arrivals=1, loads=1",
+      "passed": true
+    },
+    {
+      "name": "Destination owns the camera and controller",
+      "detail": "Temporary transfer camera removed",
+      "passed": true
+    },
+    {
+      "name": "Latest Dike museum room remains enabled on arrival",
+      "detail": "Tutorial route includes the existing bottle and balance exhibition",
+      "passed": true
+    },
+    {
+      "name": "Actual destination feet and view survive real scene load",
+      "detail": "feet=0, eye=2.384186E-07, angle=0",
+      "passed": true
+    },
+    {
+      "name": "Actual Gallery motor crosses physical open doorway",
+      "detail": "Local exit feet=(-0.035, 0.050, 1.535), travel=2.686",
+      "passed": true
+    },
+    {
+      "name": "Arrival remains in museum first room",
+      "detail": "(-0.035, 0.050, 1.535)",
+      "passed": true
+    },
+    {
+      "name": "Only one active listener throughout visible transfer",
+      "detail": "1",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL02",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL04",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL07",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL09",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL11",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL25",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL21",
+      "passed": true
+    },
+    {
+      "name": "Selected sound actually plays and advances samples",
+      "detail": "EL23",
+      "passed": true
+    },
+    {
+      "name": "Single event does not duplicate a selected cue",
+      "detail": "EL07 count=1",
+      "passed": true
+    },
+    {
+      "name": "Single event does not duplicate a selected cue",
+      "detail": "EL09 count=1",
+      "passed": true
+    },
+    {
+      "name": "Single event does not duplicate a selected cue",
+      "detail": "EL11 count=1",
+      "passed": true
+    },
+    {
+      "name": "Single event does not duplicate a selected cue",
+      "detail": "EL25 count=1",
+      "passed": true
+    },
+    {
+      "name": "Single event does not duplicate a selected cue",
+      "detail": "EL21 count=1",
+      "passed": true
+    },
+    {
+      "name": "Approach, obstruction reopening and destination use door sounds",
+      "detail": "open=11, close=8",
+      "passed": true
+    },
+    {
+      "name": "Running voice survives the actual scene replacement",
+      "detail": "-8166",
+      "passed": true
+    },
+    {
+      "name": "Arrival stops running motor and retains quiet ventilation",
+      "detail": "EL11 stopped / EL23 looping",
+      "passed": true
+    },
+    {
+      "name": "Stop, selected bell and opening have real DSP ordering",
+      "detail": "stop→bell=1.003, bell→open=0.448",
+      "passed": true
+    },
+    {
+      "name": "Door playback gain is reduced by six dB",
+      "detail": "EL02 actual max gain=0.220522",
+      "passed": true
+    },
+    {
+      "name": "Door playback gain is reduced by six dB",
+      "detail": "EL04 actual max gain=0.220522",
+      "passed": true
+    },
+    {
+      "name": "EL25 replaces EL15 in the active cue bank",
+      "detail": "Only the selected EL25 stop is mapped",
+      "passed": true
+    },
+    {
+      "name": "Route begins in the actual arriving Gallery",
+      "detail": "Tutorial elevator handoff must have completed first",
+      "passed": true
+    },
+    {
+      "name": "Beach belongs to the actual build scene list",
+      "detail": "No direct test scene load is used",
+      "passed": true
+    },
+    {
+      "name": "Route uses automatic PhysX",
+      "detail": "FixedUpdate",
+      "passed": true
+    },
+    {
+      "name": "Final hand exhibit and coastal portal are connected",
+      "detail": "Production GalleryOrcusExit + activation + portal",
+      "passed": true
+    },
+    {
+      "name": "Portal uses the render-only Beach preview resource",
+      "detail": "MuseumPortal/BeachPreview",
+      "passed": true
+    },
+    {
+      "name": "Actual enlarged hands settle and open through production logic",
+      "detail": "fixedSteps=111, progress=1.000",
+      "passed": true
+    },
+    {
+      "name": "Actual CharacterController crosses the opened hand plane",
+      "detail": "from=(-0.051, 1.966, 69.640), to=(-0.051, 1.966, 70.540)",
+      "passed": true
+    },
+    {
+      "name": "Normal entrance Update begins the production Beach passage",
+      "detail": "No test call to SceneManager.LoadScene or TryEnter",
+      "passed": true
+    },
+    {
+      "name": "Actual async route reaches Beach",
+      "detail": "Beach",
+      "passed": true
+    },
+    {
+      "name": "Production Beach fade completes and controls resume",
+      "detail": "MUSEUM_BEACH_HANDOFF_OK=True",
+      "passed": true
+    },
+    {
+      "name": "Beach arrives at its first checkpoint",
+      "detail": "(-6.000, 0.375, 4.000)",
+      "passed": true
+    },
+    {
+      "name": "Actual Beach motor accepts movement after the route",
+      "detail": "0.187 m",
+      "passed": true
+    },
+    {
+      "name": "Tutorial and Gallery stages have actually unloaded",
+      "detail": "Only Beach and intentional persistent infrastructure remain",
+      "passed": true
+    },
+    {
+      "name": "Elevator cabin and route owner do not leak into Beach",
+      "detail": "No stale elevator geometry, voices or controller route",
+      "passed": true
+    },
+    {
+      "name": "Beach has one active AudioListener",
+      "detail": "1",
+      "passed": true
+    }
+  ],
+  "phases": [
+    "OpeningForBoarding at 30.271",
+    "IdleClosed at 32.139",
+    "OpeningForBoarding at 32.161",
+    "Boarding at 34.262",
+    "ClosingForDeparture at 37.229",
+    "OpeningForBoarding at 37.629",
+    "Boarding at 38.029",
+    "ClosingForDeparture at 39.084",
+    "Descending at 41.198",
+    "Stopping at 47.693",
+    "ArrivalChime at 48.693",
+    "OpeningAtDestination at 49.144",
+    "Arrived at 51.245"
+  ],
+  "scenes": [
+    "Tutorial",
+    "Gallery",
+    "Beach"
+  ],
+  "captures": [],
+  "errors": [],
+  "handoffLogs": [
+    "TUTORIAL_ELEVATOR_BOARDING_EDGES_OK physicalContacts=5 frontJustClear=1 thresholdStraddle=1 departures=0",
+    "TUTORIAL_SUNLIGHT_COMPLETE · elevator doors closed",
+    "TUTORIAL_ELEVATOR_GALLERY_READY",
+    "TUTORIAL_ELEVATOR_VISUAL_SKIP Production coastal portal renders actual varied pixels (-validation-no-capture)",
+    "TUTORIAL_ELEVATOR_VISUAL_SKIP Actual Beach view renders a visible arrival after the production fade (-validation-no-capture)",
+    "TUTORIAL_ROUTE_BEACH_VALIDATION_OK: real elevator arrival followed by production hand opening/crossing/load; first Beach checkpoint and actual movement verified. Graphics assertions skipped (-validation-no-capture).",
+    "TUTORIAL_ELEVATOR_VISUAL_SKIP Actual camera renders contain visible geometry (-validation-no-capture)"
+  ],
+  "actualAudio": [
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "frames": 2057,
+      "initialSample": 0,
+      "lastSample": 100352,
+      "voiceId": -8148,
+      "maximumVolume": 0.22052237391471863,
+      "progressed": true,
+      "afterGallery": true,
+      "loop": false
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "frames": 8918,
+      "initialSample": 1024,
+      "lastSample": 47104,
+      "voiceId": -8184,
+      "maximumVolume": 0.07500000298023224,
+      "progressed": true,
+      "afterGallery": true,
+      "loop": true
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "frames": 225,
+      "initialSample": 1024,
+      "lastSample": 100352,
+      "voiceId": -8148,
+      "maximumVolume": 0.22052237391471863,
+      "progressed": true,
+      "afterGallery": false,
+      "loop": false
+    },
+    {
+      "id": "EL07",
+      "clip": "EL07_DoorLatch",
+      "frames": 19,
+      "initialSample": 940,
+      "lastSample": 10348,
+      "voiceId": -8154,
+      "maximumVolume": 0.3199999928474426,
+      "progressed": true,
+      "afterGallery": false,
+      "loop": false
+    },
+    {
+      "id": "EL09",
+      "clip": "EL09_MotorStart",
+      "frames": 19,
+      "initialSample": 1024,
+      "lastSample": 11264,
+      "voiceId": -8160,
+      "maximumVolume": 0.3799999952316284,
+      "progressed": true,
+      "afterGallery": false,
+      "loop": false
+    },
+    {
+      "id": "EL11",
+      "clip": "EL11_MotorRun",
+      "frames": 4010,
+      "initialSample": 940,
+      "lastSample": 119011,
+      "voiceId": -8166,
+      "maximumVolume": 0.25,
+      "progressed": true,
+      "afterGallery": true,
+      "loop": true
+    },
+    {
+      "id": "EL25",
+      "clip": "EL25_MotorStop",
+      "frames": 981,
+      "initialSample": 0,
+      "lastSample": 61440,
+      "voiceId": -8172,
+      "maximumVolume": 0.3400000035762787,
+      "progressed": true,
+      "afterGallery": true,
+      "loop": false
+    },
+    {
+      "id": "EL21",
+      "clip": "EL21_ArrivalBell",
+      "frames": 2757,
+      "initialSample": 0,
+      "lastSample": 164639,
+      "voiceId": -8178,
+      "maximumVolume": 0.28999999165534973,
+      "progressed": true,
+      "afterGallery": true,
+      "loop": false
+    }
+  ],
+  "audioHistory": [
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 2.026666666666667,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 2.026666666666667,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 2.0693333333333332,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 6.4,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 13.034666666666666,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 13.034666666666666,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 13.034666666666666,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 13.034666666666666,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 13.056,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 15.914666666666667,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 15.914666666666667,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 15.914666666666667,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 15.914666666666667,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 18.773333333333333,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 18.773333333333333,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 18.773333333333333,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 18.794666666666668,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 21.632,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 21.632,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 21.632,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 21.653333333333332,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 24.512,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 24.512,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 24.512,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 24.533333333333335,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 27.370666666666665,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 27.370666666666665,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 27.370666666666665,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 27.392,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 31.232,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 31.232,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 31.232,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 31.232,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 31.232,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 33.10933333333333,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL23",
+      "clip": "EL23_Ventilation",
+      "dspTime": 33.13066666666667,
+      "phase": 0,
+      "sample": 0,
+      "volume": 0.07500000298023224
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 33.152,
+      "phase": 1,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 38.208,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 38.592,
+      "phase": 1,
+      "sample": 82129,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL04",
+      "clip": "EL04_DoorClose",
+      "dspTime": 40.064,
+      "phase": 3,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    },
+    {
+      "id": "EL07",
+      "clip": "EL07_DoorLatch",
+      "dspTime": 42.154666666666664,
+      "phase": 4,
+      "sample": 0,
+      "volume": 0.3199999928474426
+    },
+    {
+      "id": "EL09",
+      "clip": "EL09_MotorStart",
+      "dspTime": 42.154666666666664,
+      "phase": 4,
+      "sample": 0,
+      "volume": 0.3799999952316284
+    },
+    {
+      "id": "EL11",
+      "clip": "EL11_MotorRun",
+      "dspTime": 42.154666666666664,
+      "phase": 4,
+      "sample": 0,
+      "volume": 0
+    },
+    {
+      "id": "EL25",
+      "clip": "EL25_MotorStop",
+      "dspTime": 48.68266666666667,
+      "phase": 5,
+      "sample": 0,
+      "volume": 0.3400000035762787
+    },
+    {
+      "id": "EL21",
+      "clip": "EL21_ArrivalBell",
+      "dspTime": 49.68533333333333,
+      "phase": 6,
+      "sample": 0,
+      "volume": 0.28999999165534973
+    },
+    {
+      "id": "EL02",
+      "clip": "EL02_DoorOpen",
+      "dspTime": 50.13333333333333,
+      "phase": 7,
+      "sample": 0,
+      "volume": 0.22052237391471863
+    }
+  ]
+}

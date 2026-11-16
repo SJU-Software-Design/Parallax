@@ -1,0 +1,156 @@
+{
+  "version": "0.29.2-complete-harbor",
+  "validatedDateKST": "2026-11-17",
+  "buildSourceCommit": "6e330a5773d45afadaaba6a472f7b8a050e89033",
+  "platform": "Windows x64 / Mono / D3D11",
+  "unity": "6000.3.24f1",
+  "cleanSource": "Committed source exported to a new ZIP extraction, no Library/cache/private config; supplied run-complete.ps1 used a new empty generated workspace.",
+  "build": {
+    "result": "Succeeded",
+    "errors": 0,
+    "warnings": 11,
+    "warningScope": "Nine existing shader warnings and two unused optional prototype rock/palm source warnings; the active submerged-bridge route has no missing resource dependency."
+  },
+  "entryScene": "Tutorial",
+  "scenes": [
+    "Tutorial",
+    "Gallery",
+    "Beach"
+  ],
+  "assemblySha256": "F39981027092C66E2601233AC5E00224BF0D0B1B4A6E58ABDD1FA911839BF6BF",
+  "native": {
+    "passed": true,
+    "checks": 538,
+    "skippedGraphicsAssertions": 9,
+    "pngCount": 0,
+    "suites": [
+      {
+        "name": "Tutorial",
+        "passed": true,
+        "checks": 158,
+        "seconds": 62.33,
+        "skippedGraphicsAssertions": [
+          "Production coastal portal renders actual varied pixels",
+          "Actual Beach view renders a visible arrival after the production fade",
+          "Actual camera renders contain visible geometry"
+        ],
+        "skippedCaptures": [
+          "01-elevator-open-approach.png",
+          "02-frosted-wall-during-descent.png",
+          "03-open-door-to-museum.png"
+        ],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/Tutorial.json"
+      },
+      {
+        "name": "Gallery",
+        "passed": true,
+        "checks": 59,
+        "seconds": 14.82,
+        "skippedGraphicsAssertions": [],
+        "skippedCaptures": [],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/Gallery.json"
+      },
+      {
+        "name": "Travel",
+        "passed": true,
+        "checks": 131,
+        "seconds": 10.05,
+        "skippedGraphicsAssertions": [],
+        "skippedCaptures": [],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/Travel.json"
+      },
+      {
+        "name": "Boat",
+        "passed": true,
+        "checks": 20,
+        "seconds": 9.54,
+        "skippedGraphicsAssertions": [],
+        "skippedCaptures": [
+          "01-natural-reveal-public-pickup",
+          "02-camera-placed-floating-boat",
+          "03-native-boarded-same-boat"
+        ],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/Boat.json"
+      },
+      {
+        "name": "BeachAudio",
+        "passed": true,
+        "checks": 83,
+        "seconds": 9.81,
+        "skippedGraphicsAssertions": [],
+        "skippedCaptures": [],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/BeachAudio.json"
+      },
+      {
+        "name": "Counterweight",
+        "passed": true,
+        "checks": 87,
+        "seconds": 16.99,
+        "skippedGraphicsAssertions": [
+          "Actual initial water occludes the submerged bridge deck in rendered depth",
+          "Actual initial view reveals the broad empty side receiver",
+          "Actual initial view shows empty open water through the future bridge corridor",
+          "Actual initial view includes substantial real ship hull surfaces beyond the open-water gap",
+          "Same initial camera sees the genuinely emerging canopy above open water",
+          "Same initial view preserves empty-water, emergence and complete covered-bridge stages"
+        ],
+        "skippedCaptures": [],
+        "pngCount": 0,
+        "exitCode": 0,
+        "runtimeErrors": [],
+        "report": "reports/Counterweight.json"
+      }
+    ],
+    "scope": "Sequential native focused fixture-based physics/audio/real-scene handoff checks; no unassisted complete-game playthrough, subjective art/mix approval or physical OS cursor-lock claim.",
+    "excludedSuite": "Gallery portal integration (pixel/parallax/arrival-render core remains unchanged; no fresh execution)"
+  },
+  "launcher": {
+    "mockChecks": 18,
+    "editorDiscoveryAndLockChecks": 12,
+    "actualCleanBuildSucceeded": true,
+    "actualSecondBuildReusedCache": true
+  },
+  "release": {
+    "file": "Parallax-CompleteHarbor-Windows-x64.zip",
+    "bytes": 378077474,
+    "sha256": "b1203d9b9302f16598c9dbc4bfc037180629e907dc23016c9aa81b5fe388209a",
+    "files": 128,
+    "allExtractedHashesMatch": true,
+    "koreanAndSpacePathVerified": true,
+    "machineAbsolutePathMatches": 0,
+    "originalPlayerFilesUnchanged": true,
+    "normalInitializationSmokePassed": true,
+    "smokeCaptureUsed": false,
+    "smokeAutomatedInputUsed": false
+  },
+  "publication": {
+    "scope": "Latest three-map gameplay/source/resources/attribution only; original dirty repository untouched; separate UI prototype excluded.",
+    "duplicateGuids": 0,
+    "unresolvedScopedGuidDependencies": 0,
+    "missingActiveResources": 0,
+    "endingAudioRawHashesMatched": 15,
+    "shipOriginalHashesMatchedAfterGitLineEndingNormalization": 33,
+    "tableOriginalHashesMatched": 5
+  },
+  "limitations": [
+    "Focused fixture-based validation; no unassisted continuous human playthrough or subjective final sound-mix approval.",
+    "Nine visual assertions explicitly skipped, not counted as passes; no desktop/image capture.",
+    "Only Windows x64 executable built and tested.",
+    "Existing third-party rights notices and unconfirmed TEAM11/TEAM12 provenance remain unchanged."
+  ]
+}
