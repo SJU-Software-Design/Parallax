@@ -25,8 +25,11 @@ namespace ShadeLink.Beach
         int frame,initialRespawns;
         SimulationMode previousSimulation;
         bool simulationChanged;
+        int manualWaterCalls;
+        readonly Dictionary<BeachWater,bool> waterEnabled=new Dictionary<BeachWater,bool>();
         readonly List<string> checks=new List<string>(),errors=new List<string>(),details=new List<string>();
         readonly List<string> trace=new List<string>();
+        readonly List<string> captures=new List<string>(),skippedCaptures=new List<string>();
         readonly List<Probe> probes=new List<Probe>();
         [Serializable] sealed class Probe
         {
@@ -37,7 +40,9 @@ namespace ShadeLink.Beach
         }
         [Serializable] sealed class Report
         {
-            public bool passed;
+            public bool passed,noCapture,captureUsed;
+            public int captureCount;
+            public string[] captures,skippedCaptures;
             public string scope,scene,unity,failure;
             public string[] checks,details,errors;
             public Probe[] legacyCargoProbes;
@@ -45,6 +50,7 @@ namespace ShadeLink.Beach
         }
         int inactiveLegacyBlockers;
         static bool Requested()=>Array.IndexOf(Environment.GetCommandLineArgs(),"-beach-boat-pickup-validate")>=0;
+        static bool NoCapture=>Array.IndexOf(Environment.GetCommandLineArgs(),"-validation-no-capture")>=0;
         static string Argument(string key)
         {var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:null;}
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -76,10 +82,14 @@ namespace ShadeLink.Beach
                 if(!more){stack.Pop();continue;}
                 if(item is IEnumerator nested){stack.Push(nested);continue;}yield return item;
             }
+            foreach(var state in waterEnabled)if(state.Key!=null)state.Key.enabled=state.Value;
+            details.Add("Manual physics clock isolation: water components="+waterEnabled.Count+" native force calls="+manualWaterCalls+" manual frames="+frame
+                +"; original enabled states restored; FixedUpdate was disabled only while this test explicitly called Simulate once per water per Step.");
             if(simulationChanged)Physics.simulationMode=previousSimulation;Time.timeScale=1;
             Application.logMessageReceived-=Log;
             var report=new Report{passed=failure==null&&errors.Count==0&&checks.Count>0,scene=SceneManager.GetActiveScene().name,unity=Application.unityVersion,failure=failure,
-                scope="Focused fresh-scene progression regression. Stage3 entry/player checkpoint and the two shadow solution source poses are explicit initial fixtures. The real shadow solver, .85s confirmation, .65s visible reveal, gravity and settling create the miniature. From reveal onward there is no ResetAll/ResetZone, stage/player teleport, source activation change, held setter or direct boat pose/scale fixture. Camera-ray Interact, native movement/perspective/drop, actual water buoyancy and native boarding must succeed continuously. An already active stage3 parasol is separately placed on the real boat roof as a cargo-negative fixture and only that cargo is restored afterward. Not a full unassisted four-puzzle playthrough.",
+                scope="Focused fresh-scene progression regression. Stage3 entry/player checkpoint and the two shadow solution source poses are explicit initial fixtures. The real shadow solver, .85s confirmation, .65s visible reveal, gravity and settling create the miniature. From reveal onward there is no ResetAll/ResetZone, stage/player teleport, source activation change, held setter or direct boat pose/scale fixture. Camera-ray Interact, native movement/perspective/drop, actual water buoyancy and native boarding must succeed continuously. During manual Script-mode physics, BeachWater components temporarily disable their automatic FixedUpdate while the harness invokes their unchanged real Simulate exactly once per water per Step; original enabled states are restored in cleanup. This isolates the clock without changing buoyancy, boat behavior, collision, shade or boarding criteria. An already active stage3 parasol is separately placed on the real boat roof as a cargo-negative fixture and only that cargo is restored afterward. Not a full unassisted four-puzzle playthrough.",
+                noCapture=NoCapture,captureUsed=captures.Count>0,captureCount=captures.Count,captures=captures.ToArray(),skippedCaptures=skippedCaptures.ToArray(),
                 checks=checks.ToArray(),details=details.ToArray(),errors=errors.ToArray(),legacyCargoProbes=probes.ToArray(),inactiveLegacyBlockers=inactiveLegacyBlockers,
                 propRegistryCount=game==null?0:game.props.Length,frames=frame,respawns=game==null?0:game.respawns-initialRespawns};
             File.WriteAllText(Path.Combine(output,"boat-pickup-results.json"),JsonUtility.ToJson(report,true));
@@ -100,6 +110,10 @@ namespace ShadeLink.Beach
             game.automated=true;Application.runInBackground=true;game.Resume();
             previousSimulation=Physics.simulationMode;Physics.simulationMode=SimulationMode.Script;simulationChanged=true;
             waters=FindObjectsByType<BeachWater>(FindObjectsSortMode.None);
+            // Physics.simulationMode=Script does not stop MonoBehaviour.FixedUpdate.
+            // Prevent uncounted extra buoyancy forces between coroutine yields;
+            // every manual Step still invokes the real public Simulate exactly once.
+            foreach(var water in waters){waterEnabled.Add(water,water.enabled);water.enabled=false;}
             trace.Add("frame,phase,playerX,playerY,playerZ,boatX,boatY,boatZ,held,ready,materializing,activeProps,respawns");
             // The sole entry fixture happens before the production solver reveals anything.
             phase="stage3 entry fixture";game.checkpoint=2;game.PlacePlayer(BeachWorld.Checkpoints[2]);initialRespawns=game.respawns;
@@ -117,13 +131,16 @@ namespace ShadeLink.Beach
             Require(game.shadowHarbor.Solved&&game.shadowHarbor.RevealCount==1&&!game.shadowHarbor.Materializing&&boat.Prop.placement.Ready,
                 "Real shadow solver creates and settles the miniature without injecting completion state");
             Require(game.shadowHarbor.Pieces.All(p=>!p.gameObject.activeInHierarchy),"Production reveal naturally hides both consumed source pieces");
-            Require(registry.SequenceEqual(game.props.Select(p=>p.GetInstanceID()))&&game.props.Length==11,"Original reset registry retains all eleven props without deleting consumed sources");
+            Require(registry.SequenceEqual(game.props.Select(p=>p.GetInstanceID()))&&game.props.Length==9&&game.props.Contains(boat.Prop)
+                &&(game.counterweightFinale!=null?game.props.Contains(game.counterweightFinale.Rock):game.harborFinale!=null&&game.props.Contains(game.harborFinale.Island))&&game.shadowHarbor.Pieces.All(p=>game.props.Contains(p)),
+                "Reset registry retains all nine current props, both consumed source pieces, the boat and the current finale prop");
             ProbeCargo("newly revealed");
             inactiveLegacyBlockers=probes.Count(p=>p.blocksBoat&&!p.active&&p.assembly);
             Require(inactiveLegacyBlockers>0,"Legacy raw registry raycasts reproduce inactive assembly pieces falsely counted as boat cargo");
             var active=((IObjectInteractionHost<BeachProp>)game).Props;
-            Require(active.Length==9&&active.All(p=>p.gameObject.activeInHierarchy)&&active.Count(p=>p==boat.Prop)==1,
-                "Interaction host exposes active prop roots only; hidden sources, decorations, child colliders and player are absent");
+            Require(active.Length==7&&active.All(p=>p.gameObject.activeInHierarchy)&&active.Count(p=>p==boat.Prop)==1
+                &&active.Count(p=>p==(game.counterweightFinale!=null?game.counterweightFinale.Rock:game.harborFinale.Island))==1&&game.shadowHarbor.Pieces.All(p=>!active.Contains(p)),
+                "Interaction host exposes the seven active prop roots including the boat and current finale prop; consumed sources and decorations are absent");
             phase="continuous walk to receiving tray";Vector3 home=boat.Prop.homePosition;
             yield return Travel(new Vector3(0,0,49.3f));yield return Travel(new Vector3(home.x,.08f,49.3f));yield return Travel(new Vector3(home.x,0,home.z-.95f));
             Vector3 settled=boat.transform.position,settledScale=boat.transform.localScale;
@@ -186,7 +203,7 @@ namespace ShadeLink.Beach
         void Step(Vector2 move=default,bool jump=false,bool held=false)
         {
             JumpHeld?.SetValue(game,held);game.Tick(Dt,move,jump);
-            foreach(var water in waters)water.Simulate(Dt);Physics.Simulate(Dt);Physics.SyncTransforms();
+            foreach(var water in waters){water.Simulate(Dt);manualWaterCalls++;}Physics.Simulate(Dt);Physics.SyncTransforms();
             foreach(var prop in game.props)if(prop.gameObject.activeInHierarchy){prop.placement.Tick(Dt);prop.GetComponent<BeachPropAudio>()?.SampleWater();}
             game.lighting.Synchronize();frame++;
             Ensure(game.respawns==initialRespawns,"Unexpected heat/water recovery broke continuous progression at "+phase+" feet="+game.player.feet);
@@ -235,12 +252,13 @@ namespace ShadeLink.Beach
         }
         void Capture(string name)
         {
+            if(NoCapture){skippedCaptures.Add(name);Debug.Log("BOAT_PICKUP_CAPTURE_SKIP "+name+" (-validation-no-capture)");return;}
             var camera=game.view;var previousTarget=camera.targetTexture;var previous=RenderTexture.active;
             var texture=new RenderTexture(1280,720,24);Texture2D pixels=null;
             try
             {
                 camera.targetTexture=texture;camera.Render();RenderTexture.active=texture;pixels=new Texture2D(1280,720,TextureFormat.RGB24,false);
-                pixels.ReadPixels(new Rect(0,0,1280,720),0,0);pixels.Apply();File.WriteAllBytes(Path.Combine(output,name+".png"),pixels.EncodeToPNG());
+                pixels.ReadPixels(new Rect(0,0,1280,720),0,0);pixels.Apply();File.WriteAllBytes(Path.Combine(output,name+".png"),pixels.EncodeToPNG());captures.Add(name+".png");
             }
             finally{camera.targetTexture=previousTarget;RenderTexture.active=previous;texture.Release();Destroy(texture);if(pixels!=null)Destroy(pixels);}
         }

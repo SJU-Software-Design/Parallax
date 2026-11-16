@@ -17,6 +17,7 @@ namespace ShadeLink.Beach
         static bool claimed;
         string output;
         BeachAudio audio;
+        BeachEndingAudio endingAudio;
         BeachWater[] waters;
         SimulationMode previousSimulation;
         readonly List<Check> checks=new List<Check>();
@@ -26,7 +27,7 @@ namespace ShadeLink.Beach
         [Serializable] sealed class Playback
         { public string cue,clip; public bool playing; public int sample; public float gain; public double dsp; }
         [Serializable] sealed class Report
-        { public bool passed; public string scope,scene,unity,failure; public int resourceCount; public Check[] checks; public Playback[] playback; public string[] errors; }
+        { public bool passed; public string scope,scene,unity,failure; public int resourceCount, endingResourceCount; public Check[] checks; public Playback[] playback; public string[] errors; }
 
         static bool Requested()=>Array.IndexOf(Environment.GetCommandLineArgs(),"-beach-audio-validate")>=0;
         static string Argument(string key)
@@ -47,6 +48,7 @@ namespace ShadeLink.Beach
         { if(type==LogType.Error||type==LogType.Exception||type==LogType.Assert)errors.Add(message+"\n"+stack); }
         void Played(string cue,AudioSource source)
         { events.Add(new Playback{cue=cue,clip=source.clip==null?"null":source.clip.name,playing=source.isPlaying,sample=source.timeSamples,gain=source.volume,dsp=AudioSettings.dspTime}); }
+        void EndingPlayed(string cue,AudioSource source)=>Played("ending."+cue,source);
         IEnumerator Start()
         {
             if(!Requested()||claimed){Destroy(this);yield break;}claimed=true;
@@ -69,11 +71,12 @@ namespace ShadeLink.Beach
                 if(item is IEnumerator nested){stack.Push(nested);continue;}yield return item;
             }
             if(audio!=null)audio.CuePlayed-=Played;
+            if(endingAudio!=null)endingAudio.CuePlayed-=EndingPlayed;
             Time.timeScale=1;Physics.simulationMode=previousSimulation;Application.logMessageReceived-=CaptureLog;
             bool passed=failure==null&&errors.Count==0&&checks.Count>0&&checks.All(c=>c.passed);
             var report=new Report{passed=passed,scene=SceneManager.GetActiveScene().name,unity=Application.unityVersion,
-                scope="Focused selected-audio native PhysX/controller tests in the actual Beach scene. Explicit prop dimensions/positions, aligned mirror, shadow solution source poses and enlarged released boat/rider are declared fixtures. Puzzle completion, contacts, water entry, shade, support, launch and berth state are production results; no counts/completion/phase fields are injected. Script physics advances gameplay faster than real time; DSP playback/pause checks use actual realtime waits. Not an unassisted full-stage solve or subjective mix approval.",
-                failure=failure,resourceCount=BeachAudio.RequiredFiles.Length,checks=checks.ToArray(),playback=events.ToArray(),errors=errors.ToArray()};
+                scope="Focused selected-audio native PhysX/controller tests in the actual Beach scene. Explicit prop dimensions/positions, aligned mirror, shadow solution source poses and enlarged released boat/rider are declared fixtures. The added ending-impact group isolates the actual natural boulder at .7/1.8/3.5 metre extents over the authored shoreline and water, with small post-entry body offsets to exercise splash-latch suppression; these are collision/audio fixtures, not counterweight-puzzle solution injection. Its cues come only from production collision callbacks and SampleWater after Script PhysX, never direct Play or Contact calls. Puzzle completion, contacts, water entry, shade, support, launch and berth state are production results; no counts/completion/phase fields are injected. Script physics advances gameplay faster than real time; DSP playback/pause checks use actual realtime waits. Not an unassisted full-stage solve or subjective mix approval.",
+                failure=failure,resourceCount=BeachAudio.RequiredFiles.Length,endingResourceCount=endingAudio==null?0:BeachEndingAudio.RequiredFiles.Length,checks=checks.ToArray(),playback=events.ToArray(),errors=errors.ToArray()};
             File.WriteAllText(Path.Combine(output,"beach-audio-results.json"),JsonUtility.ToJson(report,true));
             Debug.Log("BEACH_AUDIO_VALIDATION "+(passed?"PASSED":"FAILED")+" checks="+checks.Count+" output="+output);
             Application.Quit(passed?0:1);
@@ -94,7 +97,9 @@ namespace ShadeLink.Beach
         IEnumerator Sequence()
         {
             CheckThat(game!=null&&game.Audio!=null,"Actual Beach scene and scene-local audio bank loaded");
-            audio=game.Audio;audio.CuePlayed+=Played;waters=FindObjectsByType<BeachWater>(FindObjectsSortMode.None);
+            audio=game.Audio;audio.CuePlayed+=Played;endingAudio=audio.Ending;
+            if(endingAudio!=null)endingAudio.CuePlayed+=EndingPlayed;
+            waters=FindObjectsByType<BeachWater>(FindObjectsSortMode.None);
             game.automated=true;game.ResetAll();game.Resume();
             var clips=BeachAudio.RequiredFiles.Select(f=>Resources.Load<AudioClip>("BeachAudio/Selected/"+f)).ToArray();
             CheckThat(clips.Length==27&&clips.All(c=>c!=null&&c.samples>0&&c.frequency>0),"All 26 selected WAV resources including BC02 and full BB01 music load",string.Join(", ",clips.Where(c=>c!=null).Select(c=>c.name)));
@@ -103,6 +108,7 @@ namespace ShadeLink.Beach
             yield return Group("movement and ground materials",Movement());
             yield return Group("real prop impacts",Impacts());
             yield return Group("water entry and suppression",Water());
+            yield return Group("actual selected boulder impacts",EndingImpacts());
             yield return Group("shore exposure and distance",Shore());
             yield return Group("solar and shadow puzzle completion",Puzzles());
             yield return Group("actual boat engine lifecycle",Engine());
@@ -212,13 +218,69 @@ namespace ShadeLink.Beach
             CheckThat(!audio.WaterContact(new Bounds(new Vector3(0,-.17f,82),Vector3.one*.2f),out _)&&
                 !audio.WaterContact(new Bounds(new Vector3(-4,-.04f,35.2f),Vector3.one*.1f),out _),"Hidden ocean under dry land and water under fixed island do not splash");
         }
+        int GenericImpactCount()
+        {
+            return new[]{"sand.small","sand.medium","sand.large","wood.small","wood.medium","wood.large","wood.sand",
+                "water.small","water.medium","water.large"}.Sum(audio.CountFor);
+        }
+        IEnumerator EndingImpacts()
+        {
+            CheckThat(endingAudio!=null&&game.counterweightFinale!=null&&game.counterweightFinale.Rock!=null,
+                "Selected ending impact bank and original natural boulder exist");
+            var rock=game.counterweightFinale.Rock;
+            var sizes=new[]{.7f,1.8f,3.5f};var suffixes=new[]{"small","medium","large"};
+            for(int i=0;i<sizes.Length;i++)
+            {
+                ResetFixture();string key="rock_"+suffixes[i],cue="ending."+key;
+                int count=endingAudio.CountFor(key),generic=GenericImpactCount(),from=events.Count;
+                // Explicit collision fixture on the real shoreline. No placement,
+                // Ready, carrier, puzzle-completion or sound counter is injected.
+                Drop(rock,new Vector3(-6,0,78),sizes[i]);
+                yield return Frames(100,false);
+                var impact=events.Skip(from).Where(e=>e.cue==cue).ToArray();
+                CheckThat(BeachAudio.SizeIndex(rock)==i&&endingAudio.CountFor(key)==count+1
+                    &&impact.Length==1&&impact[0].playing&&impact[0].clip==key,
+                    "Actual natural-rock shoreline fall plays selected HF04/HF08/HF06 "+suffixes[i],
+                    "extent="+BeachAudio.PhysicalExtent(rock)+" source="+string.Join(",",impact.Select(e=>e.clip+":"+e.gain)));
+                CheckThat(GenericImpactCount()==generic,
+                    "Natural-rock shoreline fall suppresses all generic sand/wood/water impacts "+suffixes[i]);
+                if(i==2)CheckThat(impact[0].gain>0&&impact[0].gain<=.2201f,
+                    "Actual large-rock HF06 source uses the reduced selected gain","gain="+impact[0].gain);
+                yield return Frames(60,false);
+                CheckThat(endingAudio.CountFor(key)==count+1,
+                    "Solver settling after a real rock fall does not chatter "+suffixes[i]);
+
+                ResetFixture();key="splash_"+suffixes[i];cue="ending."+key;
+                count=endingAudio.CountFor(key);generic=GenericImpactCount();from=events.Count;
+                // Keep the ordinary callback/SampleWater path isolated from the
+                // unrelated puzzle recovery Tick; Script PhysX still crosses
+                // the actual water plane with the same released rigidbody.
+                Drop(rock,new Vector3(0,-.04f,100),sizes[i]);
+                for(int n=0;n<120&&endingAudio.CountFor(key)==count;n++)
+                {PhysicsStep();if(n%20==19)yield return null;}
+                CheckThat(BeachAudio.SizeIndex(rock)==i&&endingAudio.CountFor(key)==count+1&&LiveEvent(cue,from)
+                    &&events.Skip(from).Any(e=>e.cue==cue&&e.clip==key),
+                    "Actual falling natural-rock bounds play selected HF23/HF24/HF25 at sea "+suffixes[i],
+                    "extent="+BeachAudio.PhysicalExtent(rock)+" bounds="+rock.WorldBounds);
+                CheckThat(GenericImpactCount()==generic,
+                    "Natural-rock water entry suppresses the old generic water impact "+suffixes[i]);
+                for(int n=0;n<18;n++)
+                {
+                    rock.body.position+=Vector3.up*(n%2==0?.02f:-.02f);
+                    Physics.SyncTransforms();PhysicsStep();
+                }
+                CheckThat(endingAudio.CountFor(key)==count+1&&GenericImpactCount()==generic,
+                    "One actual released rock cannot repeat its selected splash while bobbing "+suffixes[i]);
+            }
+        }
         IEnumerator Shore()
         {
             ResetFixture();audio.RebuildWaterSamples();
-            float dry=audio.DistanceToExposedWater(new Vector3(0,0,82)),near=audio.DistanceToExposedWater(new Vector3(13,0,82)),island=audio.DistanceToExposedWater(new Vector3(-4,.3f,35.2f));
+            // The final shoreline now begins at z83; compare the unchanged dry bank before the plank crossing instead.
+            float dry=audio.DistanceToExposedWater(new Vector3(1,0,24.5f)),near=audio.DistanceToExposedWater(new Vector3(13,0,24.5f)),island=audio.DistanceToExposedWater(new Vector3(-4,.3f,35.2f));
             CheckThat(dry>8&&near<1.2f&&island>.65f,"Shore distance uses exposed water rather than giant ocean bounds", "dry="+dry+" near="+near+" island="+island);
-            game.PlacePlayer(new Vector3(0,0,82));for(int i=0;i<150;i++)audio.Tick(Dt);float farGain=audio.ShoreGain;
-            game.PlacePlayer(new Vector3(13,0,82));for(int i=0;i<150;i++)audio.Tick(Dt);float nearGain=audio.ShoreGain;
+            game.PlacePlayer(new Vector3(1,0,24.5f));for(int i=0;i<150;i++)audio.Tick(Dt);float farGain=audio.ShoreGain;
+            game.PlacePlayer(new Vector3(13,0,24.5f));for(int i=0;i<150;i++)audio.Tick(Dt);float nearGain=audio.ShoreGain;
             CheckThat(nearGain>farGain*1.5f&&audio.ShoreSource.isPlaying&&audio.ShoreSource.loop,"115 shore ambience becomes louder near exposed shoreline", "far="+farGain+" near="+nearGain);
             int sample=audio.ShoreSource.timeSamples;yield return new WaitForSecondsRealtime(.09f);
             CheckThat(audio.ShoreSource.timeSamples!=sample,"Selected shore source advances real DSP samples");

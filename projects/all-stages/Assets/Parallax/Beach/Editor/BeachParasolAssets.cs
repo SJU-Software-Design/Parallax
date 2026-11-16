@@ -42,6 +42,19 @@ namespace ShadeLink.Editor
                 var points=canopy.vertices;var bounds=new Bounds(points[cloth[0]],Vector3.zero);
                 foreach(int i in cloth)bounds.Encapsulate(points[i]);canopy.bounds=bounds;
                 canopy=Save(canopy,Generated+"Art_Umbrella_Canopy.asset");
+                // Fixed roofs must also stop a capsule coming from below. Use
+                // both windings of the actual fabric surface, never a hidden
+                // flat collision slab spanning open canopy corners.
+                var collisionTriangles=new int[cloth.Length*2];Array.Copy(cloth,collisionTriangles,cloth.Length);
+                for(int i=0;i<cloth.Length;i+=3)
+                {
+                    collisionTriangles[cloth.Length+i]=cloth[i];
+                    collisionTriangles[cloth.Length+i+1]=cloth[i+2];
+                    collisionTriangles[cloth.Length+i+2]=cloth[i+1];
+                }
+                var collisionCanopy=new Mesh{name="ToonTastic fixed shelter canopy two-sided collision",indexFormat=mesh.indexFormat,
+                    vertices=mesh.vertices,triangles=collisionTriangles,bounds=canopy.bounds};
+                collisionCanopy=Save(collisionCanopy,Generated+"Art_Umbrella_Canopy_TwoSidedCollision.asset");
                 var shader=Shader.Find("Parallax/BeachSurface");
                 var textureImporter=AssetImporter.GetAtPath(sourcePath+"ColorPalette_256.png") as TextureImporter;
                 if(shader==null||ShaderUtil.ShaderHasError(shader)||textureImporter==null)throw new InvalidOperationException("ToonTastic shader or palette is missing.");
@@ -64,7 +77,9 @@ namespace ShadeLink.Editor
                     roof.transform.localScale=new Vector3(footprint.size.x/bounds.size.x,1,footprint.size.z/bounds.size.z);
                     roof.transform.localPosition=new Vector3(0,footprint.max.y-bounds.max.y,0);
                     roof.AddComponent<MeshFilter>().sharedMesh=canopy;var r=roof.AddComponent<MeshRenderer>();r.sharedMaterial=material;r.shadowCastingMode=ShadowCastingMode.TwoSided;
-                    roof.AddComponent<MeshCollider>().sharedMesh=canopy;
+                    var roofCollision=roof.AddComponent<MeshCollider>();
+                    roofCollision.cookingOptions=MeshColliderCookingOptions.CookForFasterSimulation|MeshColliderCookingOptions.UseFastMidphase;
+                    roofCollision.sharedMesh=collisionCanopy;
                 }
                 foreach(var prop in game.props)
                 {
@@ -73,12 +88,15 @@ namespace ShadeLink.Editor
                     prop.Remember();
                 }
                 // Lift the cloth along the sun ray while extending the mast down to its original floor.
+                if(game.castleRoute!=null&&game.castleRoute.FixedParasol!=null)
+                {
                 var entry=game.castleRoute.FixedParasol;var raised=UnityEngine.Object.Instantiate(mesh);raised.name="Castle entrance raised C umbrella";
                 var vertices=raised.vertices;float lift=BeachCastleRestoration.EntranceCanopyLift/entry.lossyScale.y;
                 for(int i=0;i<vertices.Length;i++)if(vertices[i].y>.1f)vertices[i].y+=lift;
                 raised.vertices=vertices;raised.RecalculateBounds();raised=Save(raised,Generated+"Art_Castle_Entrance_Parasol.asset");
                 entry.GetComponent<MeshFilter>().sharedMesh=raised;
                 foreach(var collider in entry.GetComponents<MeshCollider>())collider.sharedMesh=raised;
+                }
             }
             finally{UnityEngine.Object.DestroyImmediate(instance);}
         }

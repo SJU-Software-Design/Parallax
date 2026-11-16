@@ -155,7 +155,7 @@ namespace ShadeLink.Gallery
             eye.z = Mathf.Min(eye.z, plane - .12f);
             previewCamera.transform.SetPositionAndRotation(eye, Quaternion.identity);
             float distance = plane - eye.z, near = previewCamera.nearClipPlane;
-            // Keep the real beach's broad ocean mesh and distant castle inside the view.
+            // Keep the actual coastal garden and broad ocean mesh inside the view.
             previewCamera.farClipPlane = Mathf.Max(550, distance + 510);
             float halfWidth = apertureBounds.size.x * ratio * .5f, halfHeight = destinationWindowHeight * .5f;
             Vector3 center = PreviewOrigin + WindowCenter;

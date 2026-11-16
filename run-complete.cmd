@@ -1,3 +1,5 @@
 @echo off
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\run-complete.ps1" %*
-if errorlevel 1 pause
+set "PARALLAX_LAUNCH_EXIT=%ERRORLEVEL%"
+if not "%PARALLAX_LAUNCH_EXIT%"=="0" pause
+exit /b %PARALLAX_LAUNCH_EXIT%

@@ -1,0 +1,179 @@
+PARALLAX - user-selected submerged bridge and sailing ending audio
+Selected 2026-11-15. Source recordings retained in AudioReview; only selected sounds integrated.
+SFX: mono PCM16 downmix of audition candidates; no extra time stretching, pitch change, or duration edits.
+Large rock HF06 and flight HF31 reductions are runtime gain choices, not changes to these files.
+No rock pickup sound selected. No separate counterweight-tray contact sound selected.
+HF33 selects ending fade behavior only. HF33/Bossa Antigua demo is not copied or replayed over the selected HB02.
+HB02: official full-length Wanderlust MP3 copied byte-for-byte; runtime playback envelopes are not baked into this file.
+
+HF04 | rock_small
+File: rock_small.wav
+Output SHA256: 26aab24ff121df75b01ad1cbb7eee391fdfcd5772df23b4a92aa17445b7dcca7
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 실제 자갈 낙하·잔돌
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/fall-of-stone-s1022.html
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF08 | rock_medium
+File: rock_medium.wav
+Output SHA256: 52d7879b1b9b174da587ec132ddddd607cfe3db2d7bd493989496bf20ec7c75f
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 실제 자갈 낙하·잔돌
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/fall-of-stone-s1022.html
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: Heavy Stone Push
+Author: msavioti
+URL: https://freesound.org/people/msavioti/sounds/558254/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF06 | rock_large
+File: rock_large.wav
+Output SHA256: e01ad0e5fb6b8ef3bcedd8386513aee69673f09e7f9e75c9451357a5f52d324c
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Moving Boulder
+Author: themightyglider; source recordings IDLauncher and magnuswaker
+URL: https://opengameart.org/content/moving-boulder
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 실제 자갈 낙하·잔돌
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/fall-of-stone-s1022.html
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF11 | load_latch
+File: load_latch.wav
+Output SHA256: a9148683f993d429516ae4831ad843b01a96a0b06269332eef79b3700157dfe4
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: metal-click.wav
+Author: newagesoup
+URL: https://freesound.org/people/newagesoup/sounds/337865/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF14 | pulley
+File: pulley.wav
+Output SHA256: 990c4afd28c08b2e44e84d023fbf16b540d63fb1f8ca68db4cc0596ecd34e7e4
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 실제 수동 체인 호이스트
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/manual-chain-hoist-downhill-s1134.html
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF17 | water_rise
+File: water_rise.wav
+Output SHA256: 46e6fb4acc59528bd0453bf8d7a630431d372c1d45b3bb56299ddef0ceca650f
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 큰 물통으로 흐르는 물
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/flowing-water-s1522.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: Rock Splash
+Author: Fission9
+URL: https://freesound.org/people/Fission9/sounds/583348/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF20 | bridge_stop
+File: bridge_stop.wav
+Output SHA256: 26b70a1d28c4fde5143662814d9118128d4b9a3e43ec82ba8dca4a9ddb2e9b97
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Heavy Stone Push
+Author: msavioti
+URL: https://freesound.org/people/msavioti/sounds/558254/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 금속 장치 닫힘·고정
+Author: rubberduck
+URL: https://opengameart.org/content/100-cc0-metal-and-wood-sfx
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF22 | canopy_drips
+File: canopy_drips.wav
+Output SHA256: 032cc259c838bbee8b6293e751ed1343b162a01c87378e518b0de5d5fee81f79
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 여러 물방울이 떨어지는 잔향
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/drops-of-water-1-s1384.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF23 | splash_small
+File: splash_small.wav
+Output SHA256: eb567b39342f186796cb2137bab77ca65d52cd84f8f3eaea66ccfa613e45b51e
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Water Splash and sand footsteps
+Author: Peludo
+URL: https://opengameart.org/content/water-splash-and-sand-footsteps
+License: CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF24 | splash_medium
+File: splash_medium.wav
+Output SHA256: 968cbf8827a7c83a8db496cb7a8c9d3d7b118e663dd49c3cd4c9cd83414485c7
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Rock Splash
+Author: Fission9
+URL: https://freesound.org/people/Fission9/sounds/583348/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF25 | splash_large
+File: splash_large.wav
+Output SHA256: bc5610aa67081e6f9a72e7a9b130d776f559d494cb3c278befe46da0556f864f
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Rock Splash
+Author: Fission9
+URL: https://freesound.org/people/Fission9/sounds/583348/
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF26 | departure
+File: departure.wav
+Output SHA256: 6fa829520652841ccdd5e5d0801072411769adbc13ceb2b2d2c9034c6ca151ba
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 헛간 걸쇠 철컥
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/barn-lock-unlocking-s1539.html
+License: CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 굵은 로프의 낮은 삐걱임
+Author: Joseph SARDIN & Axeline T.
+URL: https://bigsoundbank.com/big-rope-s3426.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF29 | takeoff
+File: takeoff.wav
+Output SHA256: b2a9cbdb183a75819cb8e22f8d146489a62e7d2b222069168e439607c07a0708
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: Nature - Essentials / Iceland - Flows
+Author: Nox Sound Design
+URL: https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+License: CC0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 부드럽게 설계한 바람
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/wind-s0595.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 바람에 펄럭이는 천
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/flag-in-the-wind-1-s1632.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 짧은 목재 삐걱임
+Author: DenisChardonnet
+URL: https://bigsoundbank.com/creaking-closet-door-s0305.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HF31 | flight
+File: flight.wav
+Output SHA256: 3c9f5bed58075bdb960b0f06047a9097d1708087e0280f9a8f6554fe7f8ec5d0
+Processing: Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.
+Source: 부드럽게 설계한 바람
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/wind-s0595.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Source: 바람에 펄럭이는 천
+Author: Joseph SARDIN
+URL: https://bigsoundbank.com/flag-in-the-wind-1-s1632.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+HB02 | departure_bgm
+File: departure_bgm.mp3
+Output SHA256: 1dda9c6a8ca852e1a75d043b0aeaf5e86f39fadd1c2cf6c896303992d01c51be
+Processing: Full original MP3 byte-copy. Original 168.186576 seconds; not the 24-second review excerpt. Runtime fade-out/fade-in and final fade only.
+Source: Wanderlust
+Author: Scott Buckley
+URL: https://www.scottbuckley.com.au/library/wanderlust/
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+Credit: 'Wanderlust' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au

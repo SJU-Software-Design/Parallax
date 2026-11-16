@@ -1,24 +1,32 @@
 # Parallax
 
-현재 통합 완성본은 **0.26.10 · Tutorial → E01 엘리베이터 → 미술관 → 해변**입니다. Unity **6000.3.24f1 / Built-in / Mono**, 원본 프로젝트는 **projects/all-stages**입니다. 미술관 출구는 해변으로 이어집니다.
+최신 통합본은 **0.29.2 · 튜토리얼 → E01 엘리베이터 → 미술관 → 해변 → 해적선 출항·엔딩**입니다.
+원근으로 바위를 키워 수중 천막 다리를 인양하고 실제 그늘을 건너 해적선에 승선합니다. 출항 효과음과 **HB02 Wanderlust** 전환·비행·암전까지 포함합니다.
 
-Windows에서는 루트의 **[run-complete.cmd](run-complete.cmd)**를 실행하세요. 첫 실행은 원본을 생성용 작업공간에 복사해 세 맵을 포함한 실행본을 빌드하고, 튜토리얼 첫 수업부터 시작합니다. 소스 내용이 같은 성공 빌드가 있으면 재사용합니다.
+## Windows에서 바로 플레이
 
-    .\scripts\run-complete.ps1
-    .\scripts\run-complete.ps1 -BuildOnly
-    .\scripts\run-complete.ps1 -Rebuild -UnityEditor 'X:\Unity\6000.3.24f1\Editor\Unity.exe' -WorkspaceRoot 'X:\ParallaxBuilds'
+[Windows 실행본 다운로드](https://github.com/SJU-Software-Design/Parallax/releases/tag/complete-harbor-preview-20261117)에서 **Parallax-CompleteHarbor-Windows-x64.zip**을 받으세요.
+ZIP 전체를 새 폴더에 압축 해제한 뒤 **Parallax.exe**를 실행하면 튜토리얼 첫 방에서 시작합니다. Unity 설치는 필요 없습니다. exe만 따로 옮기지 말고 `Parallax_Data`, `MonoBleedingEdge`, `UnityPlayer.dll`과 크레딧 파일을 함께 두세요. 이 배포는 통합 PR 미리보기입니다.
 
-- 튜토리얼에는 원근 조작·발판·그늘 수업, 반투명 벽의 E01 엘리베이터와 1F→B1 표시·선정 사운드가 있습니다.
-- 미술관에는 니케 그림자/액자, 병·법전·디케 저울과 검·P02 받침, 눈코입 커튼, 손 출구, 브론즈 작품 명판이 연결됩니다.
-- 해변에는 태양광 수신기, 물길·그늘, 그림자로 조립한 배의 운반·항해, 모래성 퍼즐과 선정 BGM/효과음이 포함됩니다.
-- 세 맵에서 **Esc → 맵 이동**으로 **튜토리얼 / 미술관 / 해변** 중 하나의 시작점으로 이동할 수 있습니다. 같은 맵도 처음부터 새로 시작하며 기존 구역 체험은 일시정지 탭에 남아 있습니다.
+## 소스를 받아 빌드·실행
 
-빌드는 원본 씬·설정을 바꾸지 않는 생성 프로젝트를 사용합니다. 생성 위치는 WorkspaceRoot 인수, PARALLAX_BUILD_ROOT 환경 변수, 비공개 Builds/build-workspace.json, 저장소의 Git 제외 Builds 순서로 선택합니다. Unity 에디터는 UnityEditor 인수 또는 UNITY_EDITOR_PATH로 지정할 수 있습니다. 실패한 후보는 실행하거나 기존 성공본을 교체하지 않습니다.
+Unity **6000.3.24f1 / Built-in / Mono + Windows Build Support**가 필요합니다. 통합 소스는 **projects/all-stages**입니다.
+저장소 루트의 **[run-complete.cmd](run-complete.cmd)**를 더블클릭하면 별도 생성 프로젝트에서 세 맵을 준비하고 빌드한 뒤 실행합니다. 성공한 동일 소스 빌드가 있으면 재사용합니다. 처음 임포트·빌드는 시간이 걸립니다.
 
-상세 실행·캐시·검사 범위·음원 출처 상태는 **[통합 코스 안내](docs/CompleteCourse.md)**를 확인하세요. 빌드 자체와 fixture 기반 native 검증, 연속 수동 완주는 구분합니다. 팀 제공 TEAM11/TEAM12 음원의 원본 출처/라이선스는 아직 미확인으로 기록되어 있습니다.
+```powershell
+.\scripts\run-complete.ps1
+.\scripts\run-complete.ps1 -BuildOnly
+.\scripts\run-complete.ps1 -Rebuild -UnityEditor 'X:\Unity\6000.3.24f1\Editor\Unity.exe' -WorkspaceRoot 'X:\ParallaxBuilds'
+```
+
+- 튜토리얼: 원근 조작·발판·그늘 수업 → E01 엘리베이터로 미술관 이동.
+- 미술관: 니케 → 병·법전·디케 저울과 검·P02 받침 → 눈코입 → 손 포털로 해변 이동.
+- 해변: 태양광 수신기 → 물길·그늘 → 그림자 배 조립·승선 → 바위·도르래로 수중 천막 다리 인양 → 해적선 갑판에서 E → 출항·비행·END.
+- **Esc → 맵 이동**에서 튜토리얼 / 미술관 / 해변으로 이동합니다. WASD 이동, 마우스 시점, 좌클릭 잡기·놓기, 우클릭+마우스 회전, Space 점프입니다.
+
+상세 빌드·검증 범위·출처는 **[통합 코스 안내](docs/CompleteCourse.md)**를 확인하세요. 소스/실행본은 기존 미술관·튜토리얼 UI를 사용하며 별도 UI 시안 PR은 포함하지 않습니다. 팀 제공 TEAM11/TEAM12의 원 출처·라이선스 미확인 상태 및 기존 작품 권리 고지는 보존했습니다.
 
 ---
-
 ## 이전 버전 기록 · 레거시 실행 경로
 
 아래는 과거 Gallery 단독판·Library/Starship 연결 및 당시 빌드/검증 이력입니다. 현재 세 맵 통합 실행은 위의 run-complete.cmd를 사용하세요. 기존 기록과 이전 명령은 보존합니다.

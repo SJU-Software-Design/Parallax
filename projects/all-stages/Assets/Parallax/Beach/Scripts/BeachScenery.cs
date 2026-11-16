@@ -37,6 +37,20 @@ namespace ShadeLink.Beach
         static GameObject Model(string key, string name, Transform parent,
             Func<string, GameObject> assets, Vector3 at, float scale, float yaw, bool solid)
         {
+            if(key=="umbrella"&&solid)
+            {
+                // Decorative fixed parasols share the tall, grounded shelter
+                // construction. Interactive umbrella props keep their own mesh
+                // and ordinary perspective scaling unchanged.
+                var shelter=new GameObject(name);shelter.transform.SetParent(parent,false);
+                Vector3 footing=parent.TransformPoint(at);
+                const float peakHeight=4.95f;
+                float oldPeak=2.2f*scale;
+                Vector3 lift=BeachLighting.ToSun*((peakHeight-oldPeak)/BeachLighting.ToSun.y);
+                Vector3 peak=footing+Vector3.up*oldPeak+lift;
+                BeachResortParasol.Build(name,shelter.transform,peak,new Vector2(2.2f*scale,2.2f*scale),footing.y,footing);
+                return shelter;
+            }
             var item = UnityEngine.Object.Instantiate(assets(key));
             item.name = name;
             item.transform.SetParent(parent, false);
@@ -272,15 +286,18 @@ namespace ShadeLink.Beach
             // Side exhibitions frame the real castle. The approach terraces and
             // every castle climbing ledge at z90..101 keep their original space.
             var stall = Cluster(exhibition, "Open sand sculpture festival stall");
+            const float oldRoofHeight=2.48f,newRoofHeight=4.5f,postBottom=-.15f;
+            Vector3 roofLift=BeachLighting.ToSun*((newRoofHeight-oldRoofHeight)/BeachLighting.ToSun.y);
             foreach (float x in new[] { -12.55f, -9.65f })
                 foreach (float z in new[] { 78.85f, 81.35f })
                     Primitive("Festival stall timber post", PrimitiveType.Cylinder, stall,
-                        new Vector3(x, 1.23f, z), new Vector3(.09f, 1.23f, .09f), timber, true);
+                        new Vector3(x+roofLift.x,(postBottom+newRoofHeight)*.5f,z+roofLift.z),
+                        new Vector3(.09f,(newRoofHeight-postBottom)*.5f,.09f),timber,true);
             Primitive("Festival stall canvas roof", PrimitiveType.Cube, stall,
-                new Vector3(-11.1f, 2.48f, 80.1f), new Vector3(3.2f, .12f, 2.8f), canvas, true);
+                new Vector3(-11.1f,2.48f,80.1f)+roofLift,new Vector3(3.2f,.12f,2.8f),canvas,true);
             for (int i = 0; i < 5; i++)
                 Primitive("Festival awning stripe", PrimitiveType.Cube, stall,
-                    new Vector3(-12.36f + i * .63f, 2.547f, 80.1f), new Vector3(.25f, .014f, 2.8f), coral, false, false);
+                    new Vector3(-12.36f+i*.63f,2.547f,80.1f)+roofLift,new Vector3(.25f,.014f,2.8f),coral,false,false);
             Primitive("Festival stall counter", PrimitiveType.Cube, stall,
                 new Vector3(-11.1f, .48f, 78.9f), new Vector3(2.65f, .96f, .62f), timber, true);
             Model("sandcastle", "Festival counter display sculpture", stall, assets,
@@ -406,7 +423,7 @@ namespace ShadeLink.Beach
             BeachActivity(root, assets, timber, canvas, coral, navy, grass);
             GardenPlanting(root, timber, grass, coral, canvas, gold);
             WorkingHarbor(root, assets, timber, canvas, coral, navy, gold);
-            CastleFestival(root, assets, sand, timber, canvas, coral, navy, grass, gold, blue);
+            // The miniature-harbor finale owns the shoreline beyond the arrival gate.
         }
     }
 }

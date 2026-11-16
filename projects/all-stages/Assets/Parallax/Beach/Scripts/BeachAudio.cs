@@ -7,7 +7,7 @@ namespace ShadeLink.Beach
     // Scene-local selected sounds. Does not add listeners, water colliders or puzzle rules.
     public sealed class BeachAudio : MonoBehaviour
     {
-        sealed class Voice { public AudioSource source; public bool paused; }
+        sealed class Voice { public AudioSource source; public bool paused; public float gain; }
         static readonly Dictionary<string,string> Files=new Dictionary<string,string>
         {
             {"step.sand","SandFootstep097"},{"land.sand","SandLand085"},
@@ -57,6 +57,11 @@ namespace ShadeLink.Beach
             "ShoreAmbience115","WaterImpactSmall124","WaterImpactMediumTeamEnter1","WaterImpactLargeBE10",
             "WoodImpactSmall005","WoodImpactMedium008","WoodImpactLarge132","GateMove027","Completion036",
             "BoatStartBE12","BoatRunBE11","BoatStopBE12","BgmBB01_BossaAntigua","BoatCompleteBC02"};
+        public BeachEndingAudio Ending {get;private set;}
+        public float PuzzleMusicEnvelope {get;private set;}=1;
+        float finaleShoreEnvelope=1,finaleWorldEnvelope=1;
+        public void SetFinaleMix(float puzzle,float shoreGain,float world)
+        {PuzzleMusicEnvelope=Mathf.Clamp01(puzzle);finaleShoreEnvelope=Mathf.Clamp01(shoreGain);finaleWorldEnvelope=Mathf.Clamp01(world);}
         public bool Running=>running;
         public float ShoreDistance {get;private set;}
         public float ShoreGain=>shore==null?0:shore.volume;
@@ -98,6 +103,7 @@ namespace ShadeLink.Beach
             }
             if(game.shadowHarbor!=null)foreach(var p in game.shadowHarbor.Pieces)if(p!=null)specialWoodSand.Add(p);
             RebuildWaterSamples();
+            Ending=BeachEndingAudio.Install(game,this);
         }
         AudioSource Source(string name,bool spatial,bool loop,float gain)
         {
@@ -157,7 +163,7 @@ namespace ShadeLink.Beach
                 if(voices.Count>=24)return false;
                 voice=new Voice{source=Source("Beach one shot",true,false,1)};voices.Add(voice);
             }
-            var s=voice.source;s.transform.position=position;s.pitch=1;s.volume=Gain(cue)*gain;s.clip=clip;s.loop=false;s.Play();voice.paused=false;Count(cue,s);return true;
+            var s=voice.source;s.transform.position=position;s.pitch=1;voice.gain=Gain(cue)*gain;s.volume=voice.gain*finaleWorldEnvelope;s.clip=clip;s.loop=false;s.Play();voice.paused=false;Count(cue,s);return true;
         }
         static float Gain(string cue)
         {
@@ -171,6 +177,7 @@ namespace ShadeLink.Beach
         public void SetRunning(bool value)
         {
             if(value==running)return;running=value;
+            Ending?.SetRunning(value);
             SetMusicRunning(value);
             foreach(var v in voices)
             {
@@ -221,11 +228,11 @@ namespace ShadeLink.Beach
                 incomingMusic.time=0;incomingMusic.volume=0;incomingMusic.Play();
                 musicCrossfading=true;musicCrossfadeElapsed=0;Count("bgm.loop",incomingMusic);
             }
-            if(!musicCrossfading){currentMusic.volume=MusicGain;return;}
+            if(!musicCrossfading){currentMusic.volume=MusicGain*PuzzleMusicEnvelope;return;}
             musicCrossfadeElapsed+=Time.unscaledDeltaTime;
             float t=Mathf.Clamp01(musicCrossfadeElapsed/overlap);
-            currentMusic.volume=MusicGain*Mathf.Cos(t*Mathf.PI*.5f);
-            incomingMusic.volume=MusicGain*Mathf.Sin(t*Mathf.PI*.5f);
+            currentMusic.volume=MusicGain*PuzzleMusicEnvelope*Mathf.Cos(t*Mathf.PI*.5f);
+            incomingMusic.volume=MusicGain*PuzzleMusicEnvelope*Mathf.Sin(t*Mathf.PI*.5f);
             if(t>=1)
             {
                 currentMusic.Stop();var previous=currentMusic;currentMusic=incomingMusic;incomingMusic=previous;
@@ -235,7 +242,7 @@ namespace ShadeLink.Beach
         public void ResetAudio()
         {
             foreach(var v in voices){v.source.Stop();v.paused=false;}
-            CancelBoat();shore?.Stop();running=false;woodStepIndex=0;completedSolar.Clear();harborCompleted=false;
+            CancelBoat();shore?.Stop();Ending?.ResetState();running=false;Ending?.SetRunning(false);woodStepIndex=0;completedSolar.Clear();harborCompleted=false;
             foreach(var p in game.props)p.GetComponent<BeachPropAudio>()?.ResetState();
             SetRunning(game.active&&!game.won);
         }
@@ -290,8 +297,10 @@ namespace ShadeLink.Beach
         public void Tick(float dt)
         {
             if(!running||dt<=0)return;
+            Ending?.Tick(dt);
+            foreach(var voice in voices)voice.source.volume=voice.gain*finaleWorldEnvelope;
             var feet=game.controller.transform.position;ShoreDistance=DistanceToExposedWater(feet);
-            float target=.60f*Mathf.Lerp(.10f,1,Mathf.Exp(-ShoreDistance/5.5f));
+            float target=.60f*Mathf.Lerp(.10f,1,Mathf.Exp(-ShoreDistance/5.5f))*finaleShoreEnvelope*finaleWorldEnvelope;
             shore.volume=Mathf.MoveTowards(shore.volume,target,dt*.24f);
             if(game.boat!=null)
             {
@@ -366,12 +375,14 @@ namespace ShadeLink.Beach
         {
             if(!Available||body==null||body.GetComponent<BeachProp>()==null)return false;
             body.GetComponent<BeachPropAudio>()?.BeginHold();
-            Instance.Play("prop.grab",body.position);return true;
+            if(Instance.Ending!=null&&Instance.Ending.IsRock(body.GetComponent<BeachProp>()))Instance.Ending.OnRockPickedUp();
+            else Instance.Play("prop.grab",body.position);return true;
         }
         public static bool TryRelease(Rigidbody body)
         {
             if(!Available||body==null||body.GetComponent<BeachProp>()==null)return false;
             body.GetComponent<BeachPropAudio>()?.Released();
+            if(Instance.Ending!=null&&Instance.Ending.IsRock(body.GetComponent<BeachProp>()))Instance.Ending.OnRockReleased();
             Instance.Play("prop.release",body.position);return true;
         }
         public static bool TryCollision(Rigidbody body,Collision collision)
@@ -463,6 +474,7 @@ namespace ShadeLink.Beach
         }
         void OnDisable()
         {
+            Ending?.SetRunning(false);
             foreach(var v in voices)v.source?.Stop();shore?.Stop();CancelBoat();
             musicA?.Stop();musicB?.Stop();musicStarted=musicCrossfading=false;
             if(Instance==this)Instance=null;

@@ -1,0 +1,48 @@
+{
+  "id": "M01",
+  "title": "Wooden Table 02",
+  "publisher": "Poly Haven",
+  "author": "Serhii Khromov",
+  "source": "https://polyhaven.com/a/wooden_table_02",
+  "license": "CC0 1.0 Universal",
+  "licenseUrl": "https://polyhaven.com/license",
+  "acquired": true,
+  "originalFilesUnchanged": true,
+  "files": [
+    {
+      "file": "wooden_table_02_2k.fbx",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/2k/wooden_table_02/wooden_table_02_2k.fbx",
+      "bytes": 28284,
+      "md5": "123a41b3f2f31e89c8b3d345311c9a1e",
+      "sha256": "80B9A0C78DA89CC629C7AD78A93AE98DC201A35B8BFBED671F9D8BA0A6D7FB75"
+    },
+    {
+      "file": "textures/wooden_table_02_metal_2k.exr",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/wooden_table_02/wooden_table_02_metal_2k.exr",
+      "bytes": 13296,
+      "md5": "b03fd78d6179d5408bc5f6b6fbd6136c",
+      "sha256": "80E2AE2C79AA0AEECB8D167BD9837F395CFA42DEA6FB24C375A443874ECD4E3E"
+    },
+    {
+      "file": "textures/wooden_table_02_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/wooden_table_02/wooden_table_02_diff_2k.jpg",
+      "bytes": 711929,
+      "md5": "2a346503ce15e4df59c0fd4ed1891047",
+      "sha256": "CB0A767C4671866A3AE6B85D0D163F814BF95398137E3C4A9D9AF5B8E011F191"
+    },
+    {
+      "file": "textures/wooden_table_02_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/wooden_table_02/wooden_table_02_rough_2k.jpg",
+      "bytes": 785964,
+      "md5": "50647bce6cdbba9eed1d7f7fab403d01",
+      "sha256": "746A4B378720B409C2C09E7B97BE735E0667EF83ACE871F8165AB2ABC517AD13"
+    },
+    {
+      "file": "textures/wooden_table_02_nor_gl_2k.exr",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/wooden_table_02/wooden_table_02_nor_gl_2k.exr",
+      "bytes": 5041006,
+      "md5": "88b2bc4f3d04100599722aaa3b1dad4b",
+      "sha256": "505D034357C7852CF400E8EB32BF0090BAC4AB33716F1667A86C029CBA974F3C"
+    }
+  ]
+}

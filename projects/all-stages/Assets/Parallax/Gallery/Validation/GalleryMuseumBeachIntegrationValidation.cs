@@ -16,20 +16,21 @@ namespace ShadeLink.Gallery
         {
             public bool passed, automaticPhysics, benchBlocksController, pedestalBlocksController, newStatueSurfaceBlocksController;
             public bool firstBottleFallAudible, rapidBottleBouncesSuppressed, separatedStrikeAudible, freshHoldDropAudible;
-            public bool beachPreviewAsset, previewHasCoastalGeometry, noLibraryPreview, livePortalTexture, portalParallax;
+            public bool beachPreviewAsset, previewHasCoastalGeometry, noLibraryPreview, noRetiredCastlePreview, previewFramingUpdated, livePortalTexture, portalParallax;
             public bool handsOpenedNaturally, actualControllerCrossing, beachLoaded, beachFirstSpawn, beachControlsReady, beachCanMove, beachCameraRenderVisible;
             public float benchTravel, pedestalTravel, bottleMinimumRepeatInterval, previewLuminanceDeviation, previewParallaxDifference;
             public float beachCameraMeanLuminance, beachCameraLuminanceDeviation;
             public int bottleFirstCount, bottleRapidCount, bottleSeparatedCount, bottleFreshCount, previewRenderers, previewRenderCount, fixedSteps;
             public string phase, failure, physicsMode, unity, gpu, finalScene;
             public string arrivalCaptureMethod = "Actual BeachGame.view.Camera.Render into a temporary 1600x900 sRGB RenderTexture, preserving the camera and its existing effects. Captured only after MUSEUM_BEACH_HANDOFF_OK, transition-runner destruction, production movement and three warm-up frames. Production fade, lighting, exposure and materials are unchanged. The hidden-window ScreenCapture backbuffer method used by v3 produced a black PNG and is not treated as verified arrival imagery.";
-            public Vector3 beachSpawn, beachAfterMove;
+            public Vector3 beachSpawn, beachAfterMove, previewSourceAperture;
+            public string previewSceneryRegion;
             public GalleryStaticExhibitCollisionValidation.Result staticCollisions;
             public string[] errors, checks, previewNames, bottleEvents;
             public string scope = "Actual saved museum and automatic FixedUpdate PhysX. Explicit poses test the visitor controller against a bench and P02, release the actual bottle above the actual floor, and add five small physical bounce impulses. Public BeginHold/Release isolate a fresh impact episode. A disclosed three-times hands placement uses production placement/opening; a real CharacterController crossing invokes production TryEnter and actual asynchronous Beach scene load. Portal render-texture pixels and view-dependent camera motion are inspected. This is focused integration QA, not continuous human play, complete Dike puzzle solving, or subjective sound/art approval.";
         }
         [Serializable] sealed class PreviewRecord
-        { public string sourceScene; public int sourceRenderers, meshGroups; public string[] originalMaterialPaths; }
+        { public string sourceScene, sceneryRegion; public Vector3 sourceAperture; public float scenicCutoffZ; public int sourceRenderers, meshGroups; public string[] originalMaterialPaths, sourceRendererNames; }
         public GalleryGame game;
         readonly Report report = new Report();
         readonly List<string> errors = new List<string>(), checks = new List<string>();
@@ -54,6 +55,9 @@ namespace ShadeLink.Gallery
             Directory.CreateDirectory(output); deadline = Time.realtimeSinceStartupAsDouble + 75;
             report.unity = Application.unityVersion; report.gpu = SystemInfo.graphicsDeviceName;
             report.physicsMode = Physics.simulationMode.ToString();
+            if (SceneManager.GetActiveScene().name != "Gallery")
+                yield return SceneManager.LoadSceneAsync("Gallery", LoadSceneMode.Single);
+            yield return null;
             IEnumerator run = Sequence();
             while (true)
             {
@@ -67,7 +71,7 @@ namespace ShadeLink.Gallery
             report.passed = report.failure == null && errors.Count == 0 && report.automaticPhysics &&
                 report.staticCollisions != null && report.staticCollisions.passed && report.benchBlocksController && report.pedestalBlocksController && report.newStatueSurfaceBlocksController &&
                 report.firstBottleFallAudible && report.rapidBottleBouncesSuppressed && report.separatedStrikeAudible && report.freshHoldDropAudible &&
-                report.beachPreviewAsset && report.previewHasCoastalGeometry && report.noLibraryPreview && report.livePortalTexture && report.portalParallax &&
+                report.beachPreviewAsset && report.previewHasCoastalGeometry && report.noLibraryPreview && report.noRetiredCastlePreview && report.previewFramingUpdated && report.livePortalTexture && report.portalParallax &&
                 report.handsOpenedNaturally && report.actualControllerCrossing && report.beachLoaded && report.beachFirstSpawn && report.beachControlsReady && report.beachCanMove && report.beachCameraRenderVisible;
             File.WriteAllText(Path.Combine(output, "museum-beach-integration-results.json"), JsonUtility.ToJson(report, true));
             Application.logMessageReceived -= Log;
@@ -188,7 +192,7 @@ namespace ShadeLink.Gallery
             {
                 names.Add(renderer.name); string lower = renderer.name.ToLowerInvariant();
                 coastal |= lower.Contains("sea") || lower.Contains("ocean") || lower.Contains("water") || lower.Contains("shore");
-                landmark |= lower.Contains("castle") || lower.Contains("palm") || lower.Contains("cliff") || lower.Contains("beach");
+                landmark |= lower.Contains("palm") || lower.Contains("cliff") || lower.Contains("beach") || lower.Contains("flower");
                 library |= lower.Contains("library") || lower.Contains("bookcase");
                 foreach (var material in renderer.sharedMaterials)
                     if (material != null && material.shader != null)
@@ -201,13 +205,29 @@ namespace ShadeLink.Gallery
             var record = provenance == null ? null : JsonUtility.FromJson<PreviewRecord>(provenance.text);
             Require(record != null && record.sourceScene == "Assets/Parallax/Beach/Scenes/Beach.unity" &&
                 record.sourceRenderers >= 100 && record.meshGroups == names.Count, "Beach extraction provenance does not match the preview geometry.");
-            bool destinationLandmark = false;
+            bool destinationLandmark = false, retiredCastle = false;
             foreach (string path in record.originalMaterialPaths ?? Array.Empty<string>())
             {
                 string lower = path.ToLowerInvariant();
-                destinationLandmark |= lower.Contains("castle") || lower.Contains("palm") || lower.Contains("flower");
+                destinationLandmark |= lower.Contains("palm") || lower.Contains("flower") || lower.Contains("coastal");
+                retiredCastle |= lower.Contains("castle") || lower.Contains("모래성");
                 library |= lower.Contains("library");
             }
+            foreach (string name in record.sourceRendererNames ?? Array.Empty<string>())
+            {
+                string lower = name.ToLowerInvariant();
+                retiredCastle |= lower.Contains("castle") || lower.Contains("모래성");
+            }
+            report.previewSceneryRegion = record.sceneryRegion;
+            report.previewSourceAperture = record.sourceAperture;
+            report.previewFramingUpdated = record.sceneryRegion == "tidal-garden-and-shadow-harbor" &&
+                record.sourceAperture.x >= 12 && record.sourceAperture.x <= 13 &&
+                record.sourceAperture.z >= 33 && record.sourceAperture.z <= 35 && record.scenicCutoffZ <= 72.01f;
+            report.noRetiredCastlePreview = !retiredCastle && record.sourceRendererNames != null &&
+                record.sourceRendererNames.Length == record.sourceRenderers;
+            Require(report.previewFramingUpdated && report.noRetiredCastlePreview,
+                "The hand window still uses the retired castle frame or lacks current coastal extraction provenance.");
+            checks.Add("Hand preview uses the actual tidal garden and harbor framing with recorded source renderers and no retired castle geometry.");
             landmark &= destinationLandmark;
             report.previewNames = names.ToArray(); report.previewRenderers = names.Count;
             report.previewHasCoastalGeometry = coastal && landmark && names.Count >= 20;

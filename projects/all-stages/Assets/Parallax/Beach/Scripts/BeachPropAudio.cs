@@ -33,6 +33,16 @@ namespace ShadeLink.Beach
             if(audio==null||prop==null||!audio.Running||!released||prop.body==null||prop.body.isKinematic||normalSpeed<.4f||Time.time<nextImpact)return false;
             if(surface!=null&&surface.GetComponentInParent<BeachProp>()==prop)return false;
             if(audio.IsSubmergedPoint(point))return false;
+            if(audio.Ending!=null&&audio.Ending.IsRock(prop))
+            {
+                bool heard=audio.Ending.TryRockContact(prop,surface,point,normalSpeed);
+                if(heard)
+                {
+                    var clip=audio.Ending.ClipFor(audio.Ending.RockCueFor(prop,false));
+                    nextImpact=Time.time+Mathf.Max(1.4f,clip==null?1.4f:clip.length+.15f);
+                }
+                return heard;
+            }
             string cue=audio.ImpactCueFor(prop,audio.IsWood(surface));
             bool played=audio.Play(cue,point,Mathf.Clamp(.5f+normalSpeed*.12f,.6f,1));
             if(played)nextImpact=Time.time+audio.RetriggerDelay(cue);return played;
@@ -43,7 +53,9 @@ namespace ShadeLink.Beach
             var boat=prop.GetComponent<BeachBoat>();Bounds bounds=boat!=null?boat.HullBounds:prop.WorldBounds;
             if(!audio.WaterContact(bounds,out var point))return false;
             if(waterLatched)return false;
-            waterLatched=true;string cue=audio.ImpactCueFor(prop,false,true);
+            waterLatched=true;
+            if(audio.Ending!=null&&audio.Ending.IsRock(prop))return audio.Ending.TryRockWater(prop,point);
+            string cue=audio.ImpactCueFor(prop,false,true);
             bool played=audio.Play(cue,point);if(played)nextImpact=Time.time+audio.RetriggerDelay(cue);return played;
         }
         void FixedUpdate(){SampleWater();}

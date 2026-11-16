@@ -43,18 +43,23 @@ namespace ShadeLink.Editor
         public static void Prepare()
         {
             Directory.CreateDirectory(Generated);Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));AssetDatabase.Refresh();
+            BeachHarborAssetPreparation.PrepareAvailable();
             var models=new Dictionary<string,GameObject>();foreach(string key in new[]{"umbrella","ball","chair","mat","sandcastle","fence","driftwood","surfboard","volleyball","hirehut","boardrack","cooler"})models[key]=Import(key);
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);var game=BeachWorld.Build(key=>models[key]);
             ConfigureSand(BeachWorld.Materials.Find(material=>material.name=="Sand"));
             // Procedural parasol fabric/ribs must be assets before the saved scene
             // is reopened or copied into the isolated player-build project.
-            foreach(var filter in game.GetComponentsInChildren<MeshFilter>(true))
+            var meshFilters=game.GetComponentsInChildren<MeshFilter>(true);
+            foreach(var filter in meshFilters)
             {
                 var mesh=filter.sharedMesh;
                 if(mesh==null||AssetDatabase.Contains(mesh))continue;
+                var users=System.Array.FindAll(meshFilters,f=>f.sharedMesh==mesh);
+                var colliders=System.Array.FindAll(game.GetComponentsInChildren<MeshCollider>(true),c=>c.sharedMesh==mesh);
                 string meshPath=Generated+mesh.name.Replace('/','_')+".asset";
-                var saved=Save(mesh,meshPath);filter.sharedMesh=saved;
-                foreach(var collider in filter.GetComponents<MeshCollider>())if(collider.sharedMesh==mesh||collider.sharedMesh==null)collider.sharedMesh=saved;
+                var saved=Save(mesh,meshPath);
+                foreach(var user in users)user.sharedMesh=saved;
+                foreach(var collider in colliders)collider.sharedMesh=saved;
             }
             foreach(var material in BeachWorld.Materials)
             {
@@ -73,8 +78,9 @@ namespace ShadeLink.Editor
                     UnityEngine.Object.DestroyImmediate(material);
                 }
             }
-            ConfigureWood(game);ConfigureFlowers(game);ConfigureCastleSurface(game);ConfigureParasols(game);
+            ConfigureWood(game);ConfigureFlowers(game);if(game.castleRoute!=null)ConfigureCastleSurface(game);ConfigureParasols(game);
             ConfigureCoastalDetails(game);
+            ConfigureSkyHarbor(game);ConfigureSpawnPirateShip(game);
             EditorSceneManager.SaveScene(scene,ScenePath);AssetDatabase.SaveAssets();
             PlayerSettings.productName="Parallax - Last Beach v"+BeachGame.Version;PlayerSettings.bundleVersion=BeachGame.Version;PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(ScenePath,true)};

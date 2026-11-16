@@ -9,15 +9,15 @@ namespace ShadeLink.Beach
     {
         public const int PhysicalMask=~(1<<BeachLighting.ShadowLayer);
         public const float WaterBedY=-2f, PropMinimumY=WaterBedY-.03f;
-        public static readonly float[] ZoneNear={.18f,24.1f,48.1f,72.1f},ZoneFar={23.8f,47.8f,71.8f,107.8f};
+        public static readonly float[] ZoneNear={.18f,24.1f,48.1f,72.1f},ZoneFar={23.8f,47.8f,71.8f,129.8f};
         public static readonly Vector3[] Checkpoints={new Vector3(-6,0,4),new Vector3(0,0,27),new Vector3(0,0,51),new Vector3(0,0,75)};
         public static readonly Vector3 CastleRest=new Vector3(0,3.44f,91.7f),Exit=new Vector3(0,6.7f,95.4f);
-        public static readonly string[] Titles={"01  태양광 산책로를 열다","02  두 섬을 잇는 비치 가든","03  그림자에서 꺼낸 그늘 배","04  원근으로 복구하는 모래성"};
+        public static readonly string[] Titles={"01  태양광 산책로를 열다","02  두 섬을 잇는 비치 가든","03  그림자에서 꺼낸 그늘 배","04  바닷속 천막 다리를 인양하다"};
         public static readonly string[] Hints={
-            "깃발이 있는 모래성 정상이 목적지입니다.\n거울을 키워 놓고 안착시킨 뒤, 반사광을 태양 문양의\n두 수신판에 보내세요. 두 링이 차오르면 산책로가 열립니다.\n파라솔과 돗자리로 그늘을 이어 열린 길로 이동하세요.",
+            "멀리 정박한 하늘행 배가 목적지입니다.\n거울을 키워 놓고 안착시킨 뒤, 반사광을 태양 문양의\n두 수신판에 보내세요. 두 링이 차오르면 산책로가 열립니다.\n파라솔과 돗자리로 그늘을 이어 열린 길로 이동하세요.",
             "왼쪽 쉼터 섬과 오른쪽 섬을 판자로 비스듬히 잇거나,\n긴 다리를 직접 만들어 건널 수 있습니다. 파라솔로\n판자 위까지 그늘을 이어 주세요. 건너편 화단 사이에서는\n산책로와 차양을 따라 S자로 이동하세요.",
             "오른쪽에 세워진 제작 보드에 선체와 차양 그림자를\n맞추세요. 완성된 배가 작아져 보드 앞 받침에 떨어집니다.\n그 배를 직접 잡아 출항 부두 앞 물에 크게 놓고\n실제 그늘에 올라타 E로 출항하세요.",
-            "모래성 정면의 빠진 성벽 두 곳을 복구하세요.\n첫 계단 조각을 키워 아래 그늘에서 올라가세요.\n중간의 평평한 성벽에 파라솔을 크게 놓아\n그늘을 만든 뒤, 두 번째 조각으로 정상까지 연결하세요."};
+            "긴 바닷길 아래에 천막 다리가 잠겨 있습니다.\n바위를 들고 경사로 오른쪽 모래사장으로 이동하세요.\n그곳에서 원근으로 키워 옆 추 받침에 놓으세요.\n안착한 바위가 무거우면 받침은 내려가고 다리가 올라옵니다.\n인양이 끝나면 높은 천막 아래로 배에 올라 E로 출항하세요."};
         public static readonly List<Material> Materials=new List<Material>();
         static Transform root;static Func<string,GameObject> assets;
         static Material sand,timber,foam,coral,blue,navy,water,gold;
@@ -57,12 +57,23 @@ namespace ShadeLink.Beach
             }
             else
             {
-                Box("쉼터 차양",at+new Vector3(.68f,3.1f,-1.25f),new Vector3(6.2f,.18f,5.2f),foam);
-                foreach(float x in new[]{-2.25f,3.6f})Box("쉼터 기둥",at+new Vector3(x,1.5f,-3.3f),new Vector3(.15f,3,.15f),timber);
+                // Lift the complete roof along the real sun ray. Its original
+                // ground shadow stays in place while a full jump clears it.
+                const float originalHeight=3.1f,height=4.5f,pileBottom=-2.15f;
+                Vector3 roof=at+new Vector3(.68f,originalHeight,-1.25f)
+                    +BeachLighting.ToSun*((height-originalHeight)/BeachLighting.ToSun.y);
+                Box("쉼터 차양",roof,new Vector3(6.2f,.18f,5.2f),foam);
+                foreach(float x in new[]{-3.0f,3.0f})foreach(float z in new[]{-2.47f,2.47f})
+                {
+                    float bottom=at.y+pileBottom,top=roof.y-.09f;
+                    Vector3 basePoint=new Vector3(roof.x+x,bottom,roof.z+z);
+                    Box("쉼터 기둥",new Vector3(basePoint.x,(bottom+top)*.5f,basePoint.z),new Vector3(.15f,top-bottom,.15f),timber);
+                    Box("쉼터 기둥 매입 기초",basePoint+Vector3.up*.12f,new Vector3(.34f,.24f,.34f),navy);
+                }
             }
             Box("체크포인트 표식",at+new Vector3(0,.012f,0),new Vector3(2,.025f,1.4f),blue,solid:false,shadow:false);
         }
-        static BeachWater Water(string name,Vector2 min,Vector2 max,Vector3 flow,bool transport=false,float y=-.04f)
+        public static BeachWater Water(string name,Vector2 min,Vector2 max,Vector3 flow,bool transport=false,float y=-.04f,float bedDepth=WaterBedY)
         {
             var go=Box(name,new Vector3((min.x+max.x)/2,y-.03f,(min.y+max.y)/2),new Vector3(max.x-min.x,.06f,max.y-min.y),water,solid:false,shadow:false);
             bool moving=flow.sqrMagnitude>.01f;
@@ -71,7 +82,7 @@ namespace ShadeLink.Beach
             var w=go.AddComponent<BeachWater>();w.min=min;w.max=max;w.surface=y;w.flow=flow;w.transportChannel=transport;
             // Channels need a real floor so non-buoyant props remain reachable.
             // Puddles already sit on the sand; neither floor makes water safe to walk in.
-            if(y<0)Box(name+" · 水底",new Vector3((min.x+max.x)/2,WaterBedY-.15f,(min.y+max.y)/2),
+            if(y<0)Box(name+" · 水底",new Vector3((min.x+max.x)/2,bedDepth-.15f,(min.y+max.y)/2),
                 new Vector3(max.x-min.x,.3f,max.y-min.y),sand,shadow:false);
             if(moving)for(int z=(int)min.y+1;z<max.y;z+=2)
             {
@@ -130,7 +141,7 @@ namespace ShadeLink.Beach
             foreach(float y in new[]{-1.9f,1.9f})Box("수문 이동 프레임",new Vector3(0,y,0),new Vector3(4,.18f,.25f),navy,panel.transform,false);
             for(int i=0;i<9;i++)Box("열리는 수문 문살",new Vector3(-1.8f+i*.45f,0,0),new Vector3(.055f,3.8f,.16f),foam,panel.transform,false);
             Box("도착 게이트 표지",new Vector3(0,4.35f,z),new Vector3(5.7f,.65f,.15f),navy,obj.transform,false,false);
-            Label("그늘 배 선착장 → 모래성 축제",new Vector3(0,4.35f,z-.1f),.22f,new Color(.98f,.95f,.83f));
+            Label("그늘 배 선착장 → 인양 항구",new Vector3(0,4.35f,z-.1f),.22f,new Color(.98f,.95f,.83f));
             g.sensors=new Transform[0];g.sensorFaces=new Renderer[0];
             return g;
         }
@@ -196,7 +207,7 @@ namespace ShadeLink.Beach
             Box("입구 해변 난간 윗틀",new Vector3(0,3.18f,0),new Vector3(28,.10f,.12f),foam);
             for(int i=0;i<=62;i++)Box("입구의 가는 경계 문살",new Vector3(-14+i*28f/62,1.6f,0),new Vector3(.045f,3.1f,.10f),foam);
             for(int x=-14;x<=14;x+=4)Box("입구 해변 말뚝",new Vector3(x,1.6f,0),new Vector3(.2f,3.2f,.2f),timber);
-            Box("끝 둑",new Vector3(0,1,108),new Vector3(28,2,.3f),sand);
+            Box("끝 둑",new Vector3(0,1,145),new Vector3(28,2,.3f),sand);
         }
         static void EntranceWayfinding()
         {
@@ -208,7 +219,7 @@ namespace ShadeLink.Beach
             }
             Box("모래성 방향 안내판 기둥",new Vector3(-8.6f,.9f,14.5f),new Vector3(.16f,1.8f,.16f),timber);
             Box("모래성 방향 안내판",new Vector3(-8.6f,1.92f,14.5f),new Vector3(2.65f,.95f,.14f),navy);
-            Label("목표 · 모래성 정상  ↗\n깃발을 향해 이동하세요",new Vector3(-8.6f,1.92f,14.41f),.19f,new Color(.98f,.95f,.83f));
+            Label("목표 · 하늘행 항구  ↗\n그늘을 따라 이동하세요",new Vector3(-8.6f,1.92f,14.41f),.19f,new Color(.98f,.95f,.83f));
             Box("거울 설치 구역 테두리",new Vector3(-1.1f,.012f,13.3f),new Vector3(3.5f,.025f,2.2f),foam,solid:false,shadow:false);
             Box("거울 설치 구역 안쪽",new Vector3(-1.1f,.028f,13.3f),new Vector3(3.3f,.008f,2.0f),sand,solid:false,shadow:false);
             Label("거울로 햇빛을 보내는 곳",new Vector3(-1.1f,.09f,14.0f),.15f);
@@ -226,7 +237,7 @@ namespace ShadeLink.Beach
         {
             // Project the canopy towards the sun so its real shadow covers the
             // labelled resting floor, rather than the empty sand behind it.
-            float height=roofY-refuge.y;
+            float height=Mathf.Max(4.95f,roofY-refuge.y);
             Vector3 roof=refuge+new Vector3(.24f*height,height,-.42f*height);
             var host=new GameObject(name);host.transform.SetParent(root,false);
             BeachResortParasol.Build(name,host.transform,roof,size,0,mastFoot);
@@ -266,7 +277,7 @@ namespace ShadeLink.Beach
             // The third waterway is an actual gap: only short launch/arrival
             // piers project from the two banks. There is no continuous side path.
             RouteDeck("03 · 그늘 배 출발 선착장",new Vector3(0,.24f,54.5f),new Vector2(4.8f,3),timber);
-            var arrivalPier=RouteDeck("03 · 모래성 도착 선착장",new Vector3(0,.24f,69.3f),new Vector2(5.4f,2.8f),timber);
+            var arrivalPier=RouteDeck("03 · 항구 도착 선착장",new Vector3(0,.24f,69.3f),new Vector2(5.4f,2.8f),timber);
             ShadeStop("03 · 승선 준비 그늘",new Vector3(0,.24f,54.2f),new Vector2(5.6f,4.2f),4.3f,new Vector3(4.5f,0,53.9f));
             ShadeStop("03 · 도착 쉼터",new Vector3(0,.24f,69.7f),new Vector2(6.2f,4.6f),4.4f,new Vector3(-3.5f,0,70.2f));
             foreach(float x in new[]{-2.5f,2.5f})
@@ -277,11 +288,10 @@ namespace ShadeLink.Beach
             }
             Label("제작 보드에서 꺼낸 배를 물가로 가져오세요",new Vector3(-5.7f,1.7f,53.8f),.18f);
             Label("가림막 그늘에 승선 → E 출항",new Vector3(0,1.3f,54.2f),.18f);
-            Label("모래성 구역 도착 선착장",new Vector3(0,1.4f,70.5f),.19f);
+            Label("돌과 그림자의 항구 · 도착 선착장",new Vector3(0,1.4f,70.5f),.19f);
 
-            Model("umbrella",root,new Vector3(1.2f,0,80.4f),2.4f,true);
-            foreach(float z in new[]{77.5f,80.5f,83.5f,85.5f})
-                Box("모래성 정면 산책로",new Vector3(0,.012f,z),new Vector3(.6f,.024f,.25f),coral,solid:false,shadow:false);
+            // The final workbench supplies its own permanent shade.
+            // The former castle approach markers are replaced by the harbor work area.
             return arrivalPier;
         }
         public static BeachGame Build(Func<string,GameObject> source)
@@ -295,7 +305,7 @@ namespace ShadeLink.Beach
             var sky=new Material(Shader.Find("Skybox/Procedural")){name="Beach sky"};sky.SetColor("_SkyTint",new Color(.44f,.69f,.95f));sky.SetFloat("_SunSize",.025f);sky.SetFloat("_AtmosphereThickness",.7f);RenderSettings.skybox=sky;Materials.Add(sky);
             QualitySettings.shadowDistance=100;QualitySettings.shadowResolution=ShadowResolution.VeryHigh;QualitySettings.shadowCascades=4;QualitySettings.shadows=ShadowQuality.All;
             Box("수평선",new Vector3(0,-.22f,40),new Vector3(900,.1f,900),water,solid:false,shadow:false);
-            Ground(0,33);Ground(40,55);Ground(69,108);
+            Ground(0,33);Ground(40,55);Ground(69,83);
             EntranceBoundary();EntranceWayfinding();
             Water("얕은 물웅덩이",new Vector2(3,9),new Vector2(9,12),Vector3.zero,false,.055f);
             Water("작은 물웅덩이",new Vector2(-11,17),new Vector2(-6,19),Vector3.zero,false,.055f);
@@ -324,16 +334,8 @@ namespace ShadeLink.Beach
             game.waterGate=Gate(game,71.8f,true);
             game.boat=BeachBoatBuilder.Build(root,game);game.boat.ArrivalBowZ=67.85f;game.boat.ArrivalPier=arrivalPier;props.Add(game.boat.Prop);
             game.shadowHarbor=BeachShadowHarborBuilder.Build(root,game,game.boat);props.AddRange(game.shadowHarbor.Pieces);
-            var castle=Model("sandcastle",root,new Vector3(0,0,96),9,true);
-            GoalLandmark();
-            BeachCastleCut.Apply(castle.transform);
-            var upperParasol=Prop("umbrella","04 · 성벽 파라솔",3,new Vector3(2,3.44f,91.7f),.65f,3.2f);
-            foreach(Transform child in upperParasol.transform)child.localPosition-=Vector3.up*2.15f;
-            upperParasol.transform.position+=Vector3.up*(2.15f*.65f);upperParasol.Remember();
-            var canopyOffset=BeachLighting.ToSun*(BeachCastleRestoration.EntranceCanopyLift/BeachLighting.ToSun.y);canopyOffset.y=0;
-            var lowerParasol=Model("umbrella",root,new Vector3(2.4f,1.1f,89.05f)+canopyOffset,2.4f,true);
-            game.castleRoute=BeachCastleRestoration.Build(root,game,castle.transform,upperParasol,lowerParasol.transform);
-            props.Add(game.castleRoute.LowerFragment);props.Add(game.castleRoute.UpperFragment);props.Add(upperParasol);
+            game.counterweightFinale=BeachCounterweightFinaleBuilder.Build(root,game);
+            props.Add(game.counterweightFinale.Rock);
             // Unreachable shoreline dressing establishes the resort silhouette.
             for(int z=7;z<105;z+=13){Model("surfboard",root,new Vector3(-17,0,z),1.4f);Model("driftwood",root,new Vector3(17,-.1f,z+3),1.7f);}
             BeachScenery.Build(root,assets);

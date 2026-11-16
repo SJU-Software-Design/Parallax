@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param(
     [switch]$BuildOnly,
     [switch]$Run,
@@ -101,7 +101,16 @@ function Find-Editor {
     if (!$chosen) { $chosen = $env:UNITY_EDITOR_PATH }
     if (!$chosen) {
         $choices = @()
-        if ($env:LOCALAPPDATA) { $choices += Join-Path $env:LOCALAPPDATA "Unity\Editors\$requiredUnity\Editor\Unity.exe" }
+        if ($env:LOCALAPPDATA) {
+            $choices += Join-Path $env:LOCALAPPDATA "Unity\Editors\$requiredUnity\Editor\Unity.exe"
+            # Desktop app installations can live in the current user's package cache.
+            $packages = Join-Path $env:LOCALAPPDATA 'Packages'
+            if (Test-Path -LiteralPath $packages -PathType Container) {
+                foreach ($package in @(Get-ChildItem -LiteralPath $packages -Directory -Filter 'OpenAI.Codex_*' -ErrorAction SilentlyContinue)) {
+                    $choices += Join-Path $package.FullName "LocalCache\Local\Unity\Editors\$requiredUnity\Editor\Unity.exe"
+                }
+            }
+        }
         if ($env:ProgramFiles) { $choices += Join-Path $env:ProgramFiles "Unity\Hub\Editor\$requiredUnity\Editor\Unity.exe" }
         if ($env:USERPROFILE) { $choices += Join-Path $env:USERPROFILE "AppData\Local\Unity\Editors\$requiredUnity\Editor\Unity.exe" }
         $chosen = $choices | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
@@ -112,8 +121,18 @@ function Find-Editor {
     return (Resolve-Path -LiteralPath $chosen).Path
 }
 function Check-UnityLock {
-    if (@(Get-Process -Name Unity -ErrorAction SilentlyContinue).Count) {
-        throw 'A Unity editor is running. Finish/close it before preparing the generated project.'
+    # Only the disposable build project must be closed; other Unity projects may stay open.
+    $editors = @()
+    try { $editors = @(Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" -ErrorAction Stop) } catch { }
+    foreach ($editorProcess in $editors) {
+        $argument = [regex]::Match([string]$editorProcess.CommandLine, '(?i)(?:^|\s)-projectPath\s+(?:"([^"]+)"|([^\s]+))')
+        if (!$argument.Success) { continue }
+        $openProject = $argument.Groups[1].Value
+        if (!$openProject) { $openProject = $argument.Groups[2].Value }
+        try { $openProject = [IO.Path]::GetFullPath($openProject).TrimEnd('\','/') } catch { continue }
+        if ([string]::Equals($openProject,$buildProject.TrimEnd('\','/'),[StringComparison]::OrdinalIgnoreCase)) {
+            throw "Close the Unity editor using this generated project before rebuilding: $buildProject"
+        }
     }
     $path = Join-Path $buildProject 'Temp\UnityLockfile'
     if (Test-Path -LiteralPath $path) {
