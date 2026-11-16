@@ -37,10 +37,12 @@ namespace ShadeLink.Beach
                 // hits, rather than a second hidden size condition, charge the gate.
                 illuminated=count>0&&LitSensors==count;
                 charge=unlocked?1:illuminated?Mathf.Min(1,charge+dt/.8f):Mathf.Max(0,charge-dt*2);
-                if(charge>=1&&!unlocked){unlocked=true;game.Tell("두 수신기 연결 완료 · 게이트가 열렸습니다. 그늘을 이어 모래성으로 가세요.",7);}
+                if(charge>=1&&!unlocked){unlocked=true;game.Audio?.SolarCompleted(this);game.Tell("두 수신기 연결 완료 · 게이트가 열렸습니다. 그늘을 이어 모래성으로 가세요.",7);}
                 UpdateReceivers();
             }
+            float beforeOpening=opening;
             opening=Mathf.MoveTowards(opening,unlocked?1:0,dt*.7f);
+            if(beforeOpening<=0&&opening>0)game.Audio?.GateOpened(this);
             panel.transform.position=closedPosition+openOffset*opening;
         }
         void UpdateReceivers()

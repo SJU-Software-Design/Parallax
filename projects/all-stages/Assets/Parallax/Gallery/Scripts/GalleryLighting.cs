@@ -18,6 +18,14 @@ namespace ShadeLink.Gallery
         public bool conceptLayout;
         // Keep four shader slots, with the former portrait skylight disabled.
         static readonly Vector4[] ConceptWindows={new Vector4(-8.1f,8.1f,3,6.2f),new Vector4(-8.1f,8.1f,18,22.2f),new Vector4(1,-1,32,35),new Vector4(-8.1f,8.1f,47,50)};
+        Vector4[] ActiveConceptWindows
+        {
+            get
+            {
+                if(owner==null||owner.bottleBalance==null)return ConceptWindows;
+                var shifted=(Vector4[])ConceptWindows.Clone();shifted[3].z+=GalleryBottleBalanceLayout.AddedLength;shifted[3].w+=GalleryBottleBalanceLayout.AddedLength;return shifted;
+            }
+        }
         public GalleryMirror mirror;
         readonly Matrix4x4[] inverse = new Matrix4x4[MaxCasters];
         readonly float[] mirrorCaster = new float[MaxCasters];
@@ -58,7 +66,7 @@ namespace ShadeLink.Gallery
             Shader.SetGlobalVector("_GalleryToSun", ToSun);
             Shader.SetGlobalFloat("_GalleryRoof", conceptLayout?GalleryConceptWorld.Roof:Roof);
             Shader.SetGlobalFloat("_GalleryPortraitNoSun",conceptLayout?1:0);
-            Shader.SetGlobalVectorArray("_GalleryWindows", conceptLayout?ConceptWindows:Windows);
+            Shader.SetGlobalVectorArray("_GalleryWindows", conceptLayout?ActiveConceptWindows:Windows);
             bool enabled = mirror != null && mirror.isActiveAndEnabled;
             Shader.SetGlobalFloat("_GalleryMirrorActive", enabled ? 1 : 0);
             if (!enabled) return;
@@ -94,7 +102,7 @@ namespace ShadeLink.Gallery
             if(conceptLayout)
             {
                 Vector3 aperture=surface+ToSun*((GalleryConceptWorld.Roof-surface.y)/ToSun.y);bool lit=false;
-                foreach(var w in ConceptWindows)if(aperture.x>=w.x&&aperture.x<=w.y&&aperture.z>=w.z&&aperture.z<=w.w){lit=true;break;}
+                foreach(var w in ActiveConceptWindows)if(aperture.x>=w.x&&aperture.x<=w.y&&aperture.z>=w.z&&aperture.z<=w.w){lit=true;break;}
                 if(!lit)return false;
             }
             else if (!WindowLit(surface)) return false;
@@ -144,7 +152,8 @@ namespace ShadeLink.Gallery
             return true;
         }
         public bool IsSunlit(Vector3 surface, Vector3 normal) => IsDirectLit(surface, normal) || IsReflectedLit(surface, normal);
-        static bool InPortraitRoom(Vector3 point)=>point.z>=GalleryConceptWorld.PortraitRoomStart&&point.z<GalleryConceptWorld.PortraitRoomEnd;
+        bool InPortraitRoom(Vector3 point)
+        {float offset=owner!=null&&owner.bottleBalance!=null?GalleryBottleBalanceLayout.AddedLength:0;return point.z>=GalleryConceptWorld.PortraitRoomStart+offset&&point.z<GalleryConceptWorld.PortraitRoomEnd+offset;}
         void LateUpdate() { Synchronize(); }
         void OnDisable(){if(conceptLayout)Shader.SetGlobalFloat("_GalleryPortraitNoSun",0);}
     }

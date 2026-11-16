@@ -1,0 +1,6 @@
+{
+  "suite": "Museum",
+  "passed": true,
+  "checks": 59,
+  "scope": "Actual Gallery with Dike enabled and normal progression checks. Only the initial bronze gallery is skipped by a declared Nike-room start fixture; checkpoint2/3 are never injected. Published cover/statue/bottle/book/portrait geometry poses are explicit fixtures; actual Nike fusion/painting dock, airborne forward crossing and grounded completion, Dike extraction/balance/sword drop/public socket use, both physical doorway walks, portrait performance, live BGM and public hand enlargement/drop/opening remain production results. A separate declared historical-state fixture restores checkpoint1 and NikeCleared=false after all physical gates were genuinely completed, then checks narrow owner-handoff negatives and actual forward crossing recovery without changing NikeCleared. Script PhysX accelerates gameplay; audio waits use realtime. Not an unassisted full-stage solve or a claim that the user personally jumped the Nike door."
+}

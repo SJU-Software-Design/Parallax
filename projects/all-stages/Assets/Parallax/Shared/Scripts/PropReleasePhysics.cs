@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ShadeLink.Tutorial;
 
 namespace ShadeLink
 {
@@ -7,6 +8,7 @@ namespace ShadeLink
     // window. Puzzle, support, collider and buoyancy rules stay with each prop.
     public sealed class PropReleasePhysics : MonoBehaviour
     {
+        public bool SuppressImpactAudio;
         Rigidbody body;
         CollisionDetectionMode previousDynamicMode;
         bool profileInitialized;
@@ -63,6 +65,9 @@ namespace ShadeLink
             if (ccdRemaining <= 0 && !body.isKinematic) previousDynamicMode = body.collisionDetectionMode;
             CancelPendingRelease();
             HeldCollisionState.Attach(body).Begin();
+            if (ShadeLink.Beach.BeachAudio.TryGrab(body)) return;
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            { TutorialAudio.Play("prop.grab", this, body.position); return; }
             if (!MuseumAudio.TryPlayPropGrab(body)) PlayCue(1.18f, .75f);
         }
 
@@ -73,6 +78,9 @@ namespace ShadeLink
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
             body.WakeUp(); ccdRemaining = 2f;
+            if (ShadeLink.Beach.BeachAudio.TryRelease(body)) return;
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            { TutorialAudio.Play("prop.release", this, body.position); return; }
             if (!MuseumAudio.TryPlayPropRelease(body)) PlayCue(.9f, 1f);
         }
 
@@ -129,13 +137,30 @@ namespace ShadeLink
 
         public bool PlayImpact(float relativeSpeed)
         {
-            if (body == null || body.isKinematic || relativeSpeed < .25f || impactCooldown > 0) return false;
+            if(SuppressImpactAudio)return false;
+            if (ShadeLink.Beach.BeachAudio.TryImpact(body, relativeSpeed)) return true;
+            if (body == null || body.isKinematic || impactCooldown > 0) return false;
+            if (TutorialAudio.Available && GetComponent<TutorialLandingFeedback>() != null)
+            {
+                if (relativeSpeed < .15f) return false;
+                string cue = TutorialAudio.ImpactCueForSize(transform.lossyScale.x);
+                float massPitch = Mathf.Clamp(1.04f - Mathf.Log(Mathf.Max(.25f, body.mass) / 8f, 2) * .035f, .72f, 1.25f);
+                impactCooldown = TutorialAudio.ImpactRetriggerDelay(cue, massPitch);
+                float impactGain = Mathf.Clamp(.4f + relativeSpeed * .15f, .4f, 1.15f);
+                return TutorialAudio.Play(cue, this, body.position, impactGain, massPitch);
+            }
+            if (relativeSpeed < .25f) return false;
             impactCooldown = .1f;
             if (!MuseumAudio.TryPlayPropImpact(body, relativeSpeed))
                 PlayCue(.8f, Mathf.Clamp(relativeSpeed * .12f, .4f, 1.25f));
             return true;
         }
-        void OnCollisionEnter(Collision collision) { PlayImpact(collision.relativeVelocity.magnitude); }
+        void OnCollisionEnter(Collision collision)
+        {
+            if (SuppressImpactAudio) return;
+            if (ShadeLink.Beach.BeachAudio.TryCollision(body, collision)) return;
+            PlayImpact(collision.relativeVelocity.magnitude);
+        }
 
         void PlayCue(float pitchMultiplier, float volumeMultiplier)
         {

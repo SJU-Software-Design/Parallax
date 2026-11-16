@@ -34,7 +34,9 @@ namespace ShadeLink
         {
             // The museum owns independent one-shot voices. In particular,
             // changing from a step to a landing must not retune a step's tail.
+            if(ShadeLink.Beach.BeachAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(MuseumAudio.TryPlayMovement(cue,impact,transform.position))return;
+            if(ShadeLink.Tutorial.TutorialAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(source==null)
             {
                 source=gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=false;

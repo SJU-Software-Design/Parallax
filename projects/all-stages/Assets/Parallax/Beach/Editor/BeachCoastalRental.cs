@@ -44,7 +44,8 @@ namespace ShadeLink.Editor
 
             var signMesh=CoastalRoundedBoxMesh(new Vector3(1,1,.35f),.04f);signMesh.name="Coastal Rental slim rounded sign frame";
             var signs=game.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="Beach rental sign").ToArray();
-            if(signs.Length!=4)throw new InvalidOperationException("Expected the four original beach rental signs.");
+            int expectedSigns=game.harborFinale!=null||game.counterweightFinale!=null?3:4;
+            if(signs.Length!=expectedSigns)throw new InvalidOperationException("Expected the retained beach rental signs: "+expectedSigns+", found "+signs.Length);
             foreach(var sign in signs)
             {
                 var board=sign.Find("Sign board");board.GetComponent<MeshFilter>().sharedMesh=signMesh;board.GetComponent<Renderer>().sharedMaterial=timber;
@@ -60,7 +61,7 @@ namespace ShadeLink.Editor
             if(goal==null||post==null)throw new InvalidOperationException("The original castle direction sign is missing.");
             goal.GetComponent<MeshFilter>().sharedMesh=signMesh;goal.GetComponent<Renderer>().sharedMaterial=timber;post.GetComponent<Renderer>().sharedMaterial=timber;
             var goalCanvas=CoastalBox(details,"Coastal Rental castle direction canvas",goal.localPosition+Vector3.back*.036f,new Vector3(2.47f,.79f,.012f),canvas,.006f);
-            var goalLabel=game.GetComponentsInChildren<BeachLabel>().Single(l=>l.caption.StartsWith("목표 · 모래성 정상"));
+            var goalLabel=game.GetComponentsInChildren<BeachLabel>().Single(l=>l.caption.StartsWith("목표 · 하늘행 항구"));
             goalLabel.style=FontStyle.Bold;goalLabel.color=ink;goalLabel.transform.position=goalCanvas.transform.position+Vector3.back*.012f;
 
             if(!colliders.SequenceEqual(game.GetComponentsInChildren<Collider>(true)))

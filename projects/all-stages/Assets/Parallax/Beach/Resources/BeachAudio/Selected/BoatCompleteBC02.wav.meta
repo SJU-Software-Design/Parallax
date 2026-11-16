@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 21e4561149b8485eaea7143104734051
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 8
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 48000
+    compressionFormat: 0
+    quality: 0.9
+    conversionMode: 0
+    preloadAudioData: 1
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 0
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: BC02 Level Up Bells; Qvantor 878595 CC0; approved 1.65s preview byte-identical
+  assetBundleName:
+  assetBundleVariant:

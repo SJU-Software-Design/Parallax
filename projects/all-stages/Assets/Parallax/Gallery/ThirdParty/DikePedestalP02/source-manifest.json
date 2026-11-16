@@ -1,0 +1,75 @@
+{
+  "candidate": "P02",
+  "sourceTitle": "Pedestal",
+  "author": "Treleau",
+  "license": "CC BY 4.0",
+  "sourceURL": "https://sketchfab.com/3d-models/pedestal-39c98c97598547d9951be09a1d8fb2fb",
+  "originalArchiveSha256": "274e6e2de12f8f7c6f82763d2f30972894f6673dcbd31422212655dc2a57191b",
+  "originalObjSha256": "55590750c43e6d0d0aac9cecb601efa07a638eefc0a0afc59f0c541b71b9f8e8",
+  "originalBodyTriangles": 15040,
+  "excludedGroundTriangles": 2848,
+  "runtimeTriangles": 16469,
+  "runtimeVertices": 49407,
+  "slotIntersectedTriangles": 118,
+  "targetHeight": 1.2,
+  "sourceBodyMin": [
+    -0.422084,
+    0.004399,
+    -0.411143
+  ],
+  "sourceBodyMax": [
+    0.40216,
+    1.389909,
+    0.419665
+  ],
+  "uniformScale": 0.8661070652683849,
+  "slotHalfWidth": 0.055,
+  "slotHalfDepth": 0.155,
+  "slotFloorY": 0.6,
+  "meshFile": "P02BodySocket.meshdata",
+  "meshSha256": "cc9fef946d49d38f8503234d813fd9098c72e09ef8ab07822963e65bf56e5dcc",
+  "originalAcquired": true,
+  "unityApplied": true,
+  "preparedFiles": [
+    {
+      "file": "P02BodySocket.meshdata",
+      "bytes": 1778665,
+      "sha256": "cc9fef946d49d38f8503234d813fd9098c72e09ef8ab07822963e65bf56e5dcc"
+    },
+    {
+      "file": "Textures/P02_Albedo.png",
+      "bytes": 22016514,
+      "sha256": "fe065d095302b745ad682eeeb5ed951499a5ac4f1475ff64e70f3f163d836306"
+    },
+    {
+      "file": "Textures/P02_Normal.png",
+      "bytes": 7919875,
+      "sha256": "d798d53be55a4d871686f74b570d02b3d0e0576580f974fa414c1449bec2caff"
+    },
+    {
+      "file": "Textures/P02_SpecularSmoothness.png",
+      "bytes": 15212044,
+      "sha256": "b042c35ee6b776a4d010a8e638e6c88b3588fd0f05d3749a9709187b23bcfbf5"
+    }
+  ],
+  "buildId": "20261113T172042Z-621b6246",
+  "runtimePrefab": "BottleBalance/Dike/VersaillesPedestalP02",
+  "layout": {
+    "bottle": [
+      -6,
+      0,
+      42.5
+    ],
+    "scale": [
+      6,
+      0,
+      42.2
+    ],
+    "receiver": [
+      0,
+      0,
+      37.5
+    ]
+  },
+  "runtimeValidated": true
+}

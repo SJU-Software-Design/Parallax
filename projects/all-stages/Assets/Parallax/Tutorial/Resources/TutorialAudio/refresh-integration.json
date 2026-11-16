@@ -1,0 +1,296 @@
+{
+  "status": "SOURCE_READY_FOR_D_UNITY_BUILD",
+  "implementedUtc": "2026-11-14T12:13:31.313234+00:00",
+  "version": "0.26.4-tutorial-audio-refresh",
+  "authority": "source-record://audio-review/Tutorial_Current_Selection.json",
+  "authoritySha256": "e49204ce983d44016b1e470e3ffa494c45b8597fee2b0c8f4af984acca2250f3",
+  "gitPreservationProof": "source-record://migration-20261114/git-d-repair-validation.json",
+  "selections": {
+    "dicePickup": "T02",
+    "diceSmallImpact": "T04",
+    "diceMediumImpact": "T07",
+    "footstep": "T14",
+    "jumpLand": "T19",
+    "diceLargeImpact": "T26"
+  },
+  "newResourceCount": 10,
+  "retainedOriginalAudioCount": 20,
+  "protectedFileCount": 44,
+  "newAudio": [
+    {
+      "selection": "T02",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T02_216629.mp3",
+      "inputSha256": "01eb7da4fd2bea0d62e8d41bae8396559671f041eab544491256bc58dfadc790",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T02_Pickup.wav",
+      "outputSha256": "defe44f4ee4c02b0354dd5fe355b78a2b5667bd77765023154f79d83ec870f09",
+      "sourceRangeSeconds": [
+        0.16,
+        0.8
+      ],
+      "frames": 28224,
+      "durationSeconds": 0.64,
+      "sampleRate": 44100,
+      "channels": 2,
+      "gainDb": 15.255945408571334,
+      "fadeInSeconds": 0.002,
+      "fadeOutSeconds": 0.025,
+      "pcm": "PCM16 WAV",
+      "peak": 0.82000732421875,
+      "rms": 0.050503707345416954
+    },
+    {
+      "selection": "T04",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T04_353975.mp3",
+      "inputSha256": "21869daba2dd9f7d913b4f22ca4130ce05f3053547d06f17a2b30d5b65e52259",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T04_DieSmall.wav",
+      "outputSha256": "e4fad721e8e05e7dca15444573bf7a73ab3cb9ceecedb1d43c4a2936265c76c2",
+      "sourceRangeSeconds": [
+        0,
+        0.56
+      ],
+      "frames": 24696,
+      "durationSeconds": 0.56,
+      "sampleRate": 44100,
+      "channels": 1,
+      "gainDb": -1.5041489366564065,
+      "fadeInSeconds": 0.00075,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.82000732421875,
+      "rms": 0.04292459594291231
+    },
+    {
+      "selection": "T07",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T07_697092.mp3",
+      "inputSha256": "b65f7e095b8c525c711b69e34a73afdad44b291c9301a5ca12a95bef744729bc",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T07_DieMedium.wav",
+      "outputSha256": "561b079cc82cc8bf35dc52c61e31fe77b49c86083a62d72b797e1f0da9b24884",
+      "sourceRangeSeconds": [
+        0,
+        0.44
+      ],
+      "frames": 19404,
+      "durationSeconds": 0.44,
+      "sampleRate": 44100,
+      "channels": 2,
+      "gainDb": -1.4420723742274104,
+      "fadeInSeconds": 0.00075,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.82000732421875,
+      "rms": 0.07299635032013961
+    },
+    {
+      "selection": "T14",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep01.wav",
+      "outputSha256": "28b522cf567df7addf42f605503cce8f93060c707cc597e6793113df55f25caa",
+      "sourceRangeSeconds": [
+        0,
+        0.3
+      ],
+      "frames": 13230,
+      "durationSeconds": 0.3,
+      "sampleRate": 44100,
+      "channels": 1,
+      "gainDb": 5.623082391493051,
+      "fadeInSeconds": 0.001,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.6500244140625,
+      "rms": 0.06158251650074718
+    },
+    {
+      "selection": "T14",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep02.wav",
+      "outputSha256": "be3133313e20c02a29d04fed15843cd9f0599a5727554b1521d71d32c53884fa",
+      "sourceRangeSeconds": [
+        0.52,
+        0.82
+      ],
+      "frames": 13230,
+      "durationSeconds": 0.3,
+      "sampleRate": 44100,
+      "channels": 1,
+      "gainDb": 14.845323880744946,
+      "fadeInSeconds": 0.001,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.6500244140625,
+      "rms": 0.11427921135388502
+    },
+    {
+      "selection": "T14",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep03.wav",
+      "outputSha256": "07393f5a965ccc76e0cf1ead85092d8c612ed3d06f3801205605dc10298e15f7",
+      "sourceRangeSeconds": [
+        1.02,
+        1.34
+      ],
+      "frames": 14112,
+      "durationSeconds": 0.32,
+      "sampleRate": 44100,
+      "channels": 1,
+      "gainDb": -1.6940737368719894,
+      "fadeInSeconds": 0.001,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.6500244140625,
+      "rms": 0.04668289902038744
+    },
+    {
+      "selection": "T14",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep04.wav",
+      "outputSha256": "0a0263a4893eddbd1316426f9a93583067be78c4b02dc0a44204da9a40048cf0",
+      "sourceRangeSeconds": [
+        1.54,
+        1.86
+      ],
+      "frames": 14112,
+      "durationSeconds": 0.32,
+      "sampleRate": 44100,
+      "channels": 1,
+      "gainDb": 12.311393057005278,
+      "fadeInSeconds": 0.001,
+      "fadeOutSeconds": 0.02,
+      "pcm": "PCM16 WAV",
+      "peak": 0.6500244140625,
+      "rms": 0.11497345972789108
+    },
+    {
+      "selection": "T19",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T19_421138.mp3",
+      "inputSha256": "c7ebd22f5ea60b7bcff752e74953c5db52a8a579a30f994cac8457e5c8815d62",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T19_JumpLand.wav",
+      "outputSha256": "41fea3e7c6cd8da3adabc91d65f737c47c84f85c99828d98c2480a44ac371b66",
+      "sourceRangeSeconds": [
+        0.72,
+        1.25
+      ],
+      "frames": 25440,
+      "durationSeconds": 0.53,
+      "sampleRate": 48000,
+      "channels": 1,
+      "gainDb": -1.6561505427658085,
+      "fadeInSeconds": 0.002,
+      "fadeOutSeconds": 0.03,
+      "pcm": "PCM16 WAV",
+      "peak": 0.82000732421875,
+      "rms": 0.09576975433571024
+    },
+    {
+      "selection": "T26",
+      "inputPath": "source-record://audio-review/Tutorial_20261114_Round3/Previews/T26_ShortContact.wav",
+      "inputSha256": "2cfd76835d37d2ec5e02419354ab1b6b22a9708c1d3a1d9aeed67f1aa2da5344",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T26_DieLarge.wav",
+      "outputSha256": "2cfd76835d37d2ec5e02419354ab1b6b22a9708c1d3a1d9aeed67f1aa2da5344",
+      "byteIdenticalToUserApprovedShortContact": true,
+      "durationSeconds": 1.15,
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.78594970703125,
+      "rms": 0.09583148648353977
+    },
+    {
+      "selection": "TB01",
+      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-bgm/Originals/TB01_Equatorial_Complex.mp3",
+      "inputSha256": "b31de67f7422c0a48eb9faf16f3d2379dd568f9b37f275c537d320194e327f2c",
+      "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\BgmTB01_000_179.wav",
+      "outputSha256": "f308dc55c40d9456a1c8dbafa5c00fcb3a07599f983a8a91c4df3ad94d37a28e",
+      "sourceRangeSeconds": [
+        0,
+        179
+      ],
+      "frames": 7893900,
+      "durationSeconds": 179.0,
+      "sampleRate": 44100,
+      "channels": 2,
+      "gainDb": 0.0,
+      "fadeInSeconds": 0.01,
+      "fadeOutSeconds": 0.04,
+      "pcm": "PCM16 WAV",
+      "peak": 0.428375244140625,
+      "rms": 0.044826223592436716
+    }
+  ],
+  "sourceChanges": [
+    {
+      "path": "Assets/Parallax/Tutorial/Scripts/TutorialAudio.cs",
+      "beforeSha256": "47fe9fb671839d316622b6df0c3bb38fe6f1a226bf229c866542c8c53752cdf5",
+      "afterSha256": "f2ee76df9f0939ebdb8e019d8440090d0c03fb42bc845cb956b9b5a100624600"
+    },
+    {
+      "path": "Assets/Parallax/Tutorial/Scripts/TutorialAudioBaselineValidation.cs",
+      "beforeSha256": "503d66c3e5b6133279e99127d470fdeb5fdb39667c5434fdf08e4131c7ee1cdf",
+      "afterSha256": "519269e9e06a14a5720e6dcbcf6b79c53472093a1f8f69d1b6c4484dccad063a"
+    },
+    {
+      "path": "Assets/Parallax/Shared/Scripts/PropReleasePhysics.cs",
+      "beforeSha256": "1fb3a09da12ac630e5a069750a45ad042f418356ccf2f3320c719ad2b5ceb83a",
+      "afterSha256": "4083c7c1876f7459fed7c7e7fb9920bf1cc42bbe92879916e247228d06c49d35"
+    },
+    {
+      "path": "Assets/Parallax/Tutorial/Resources/TutorialAudio/CREDITS.txt",
+      "beforeSha256": "d84688a4330d03455c2a7ce55d24dacb95357bb0863b6b5ea2d41557c514fb44",
+      "afterSha256": "eb04b2d9bf151ca8f2cf957be08307471538b6ab563d03d27f29e356b2a8fc94"
+    },
+    {
+      "path": "Assets/Parallax/Tutorial/Editor/TutorialElevatorBuild.cs",
+      "beforeSha256": "07fb0ca446296d57c34aa9118845b51de43b667ac56bc06df2d6cc94071dae75",
+      "afterSha256": "127a1a899bed0b7a3189d53d59fc56ee3c17e77e489db4383db27a502ced99ec"
+    }
+  ],
+  "runtimeRoutes": {
+    "prop.grab": "T02_Pickup",
+    "prop.release": "PropRelease156 unchanged",
+    "impact.small": "T04_DieSmall (<1m)",
+    "impact.medium": "T07_DieMedium (1m to <2m)",
+    "impact.large": "T26_DieLarge (>=2m)",
+    "movement.footstep": "four T14 single-contact slices in sequence",
+    "movement.land": "T19_JumpLand",
+    "bgm": "TB01 0..179 seconds only; existing1.5s equal-power two-source repeat",
+    "bodyBump": "none"
+  },
+  "runtimeInitialGains": {
+    "music": 0.22,
+    "step": 0.22,
+    "land": 0.34,
+    "grab": 0.24,
+    "small": 0.27,
+    "medium": 0.32,
+    "large": 0.34
+  },
+  "invariants": {
+    "original20AudioAndMetasUnchanged": true,
+    "sourceInputsUnchanged": true,
+    "t26ByteIdenticalToApprovedPreview": true,
+    "bgmExactly179Seconds": true,
+    "legacyReleaseUIDoorRoutesRetained": true,
+    "firstDoor026Unchanged": true,
+    "elevatorEL25AndMinus6dBDoorsUnchanged": true,
+    "elevatorBoardingFixAndHandoffUnchanged": true,
+    "galleryBeachFallbackCodeByteIdentical": true,
+    "noBeachOrGalleryGameSourceChanged": true,
+    "noNewCArtifacts": true
+  },
+  "nativeValidationPlan": "Updated existing TutorialAudioBaselineValidation: real3size gravity drops, pickup/release/commonoff, production4stepcycle/landing dispatch, production BGM near-end wrap, duplicate contact rejection + fresh actual regrab/drop. Fixtures disclosed in check text.",
+  "credits": "Existing TutorialAudio/CREDITS.txt retains all old attributions and now appends the new CC BY4/CC0 sources + exact derivative edits; existing WriteCredits copies this to TutorialAudio-CREDITS.txt beside the player.",
+  "verification": {
+    "audioPcmAndHashesPassed": true,
+    "independentReadOnlyAssetAuditPassed": true,
+    "unityBuildRun": false,
+    "nativePlayerValidationRun": false,
+    "subjectiveMixApproved": false
+  },
+  "remaining": [
+    "Root D isolated Unity build and updated focused native QA",
+    "Only promote candidate and mark selection game-applied after native success"
+  ]
+}

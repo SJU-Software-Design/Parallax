@@ -1,0 +1,13 @@
+Antique key — Savino
+Source: https://opengameart.org/content/antique-key
+Accessible official mirror: https://lpc.opengameart.org/content/antique-key
+Original OBJ: https://lpc.opengameart.org/sites/default/files/low_2.obj
+License: CC0 1.0 Universal — https://creativecommons.org/publicdomain/zero/1.0/
+Original mesh retained without vertex/face edits. Runtime length normalization and existing brass material adaptation only.
+
+Original oval brass keyhole plate — project-authored 2026-11-13 planning prototype.
+Not a downloaded stock asset. No third-party licence is claimed for that original project geometry.
+
+The earlier pictured plaggy CC0 Keys candidate was not downloaded or used.
+Its $0 Sellfy freebie checkout was not submitted. No email or payment was transmitted.
+No new sound clips were installed or played by the reward component.

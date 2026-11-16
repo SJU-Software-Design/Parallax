@@ -1,0 +1,22 @@
+E01 elevator source and adaptation credits
+
+Original work: Simple Elevator with Animation
+Author: lhaegy.fu — https://sketchfab.com/lhaegy.fu
+Original model: https://sketchfab.com/3d-models/simple-elevator-with-animation-770488a2f94a453fb90a7445bda63cd0
+License: Creative Commons Attribution 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+This work is based on Simple Elevator with Animation by lhaegy.fu, licensed under CC BY 4.0.
+The official downloaded E01 archive's embedded license.txt identifies this original source.
+Downloaded through Elevator, uploaded by ART_LOLL:
+https://sketchfab.com/3d-models/elevator-221312f2fd7f47af8ba0003f4573f1dd
+
+Parallax adaptation (2026-11-14): glTF/BIN source converted to portable Unity meshes/materials/prefab;
+coordinate normalization and nonuniform scale; source-preview wall and ground omitted; old arrow glyphs
+replaced by runtime 1/B1 displays; rear-wall aperture clipped behind original mirror plane and original
+mirror surface changed to translucent frosted glass; added physical collisions and inner display housing.
+Source geometry, materials and four independently sliding door components are preserved where applicable.
+No downloaded Godot scripts were included or executed. No sound assets are included in this adaptation.
+
+Source/scene.gltf SHA256: 121d348338ff566df6a72925469ed64a0b54c2be782e80ddaad7748ed83029f2
+Source/scene.bin SHA256: 4ea41eaa20b5fce9d9751754742e7ef3de2ae007673bec805f9ac2cfa1485571
+The embedded upstream license is preserved verbatim in Source/license.txt.

@@ -1,0 +1,177 @@
+{
+  "source": "https://assetstore.unity.com/packages/3d/vehicles/sea/stylized-pirate-ship-200192",
+  "publisher": "Comeback",
+  "package": "Stylized Pirate Ship",
+  "version": "1.0",
+  "acquired": "2026-11-13",
+  "license": "Standard Unity Asset Store EULA",
+  "licenseUrl": "https://unity.com/legal/as-terms",
+  "packageSha256": "f8df9c0ea623ec05cb80245561b84ebbc537d6b820c77be9ffda0ee1133cf68a",
+  "files": [
+    {
+      "file": "StylShip_MatTextures/StylShip_Decks_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Decks_NormalOpenGL.png",
+      "sha256": "08e472ae9023d4ef89ed2be4d3f2ae77ac85617f5429632bdb4e20ac183bc5d6"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_AlbedoTransparency.png",
+      "sha256": "0dcad1737d35f851ea097ca857b92abe58ae1b933cd233a865364e1fc38ec929"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_MetallicSmoothness.png",
+      "sha256": "cf022757fd16fff8e3e5332bb73f8266dbd666a34ded2836ff2976a107655084"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Elements_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Elements_AlbedoTransparency.png",
+      "sha256": "68810f845b2eed2df4f02660f80d65894982993713c2fb22b09fb6df986ff73b"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Decks_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Decks_AmbientOcclusion.png",
+      "sha256": "8d50fa5927f5a3f51ac7f6c8851ec9b34d7ed9cca1f75be91767454c1d213248"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Decks_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Decks_MetallicSmoothness.png",
+      "sha256": "190c8a7388188563d727c1b7f8886bbccd7e76018ae3787b46b5c5697348cc68"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_ShipHull_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_ShipHull_Mat.mat",
+      "sha256": "2dc73fe779ac3e26f0b367ddb35eb2d86211ab55656a28b24d9dc0ee44ef23f2"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Props_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Props_NormalOpenGL.png",
+      "sha256": "9c4f5a5c723705f8837489d7d462c5d5206fc5bcbafe715906318f5c30d59628"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_ShipHull_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_ShipHull_AmbientOcclusion.png",
+      "sha256": "ac64d0953466a1c06b1c3565af4691989db96a595feaf98f91a32f758900619a"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Masts_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Masts_Mat.mat",
+      "sha256": "435b5acf7f05f399a56e1ffe534d2b0826d1f7d9eede8196f5f66f7e011b66d0"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_Mat.mat",
+      "sha256": "f561d16a1c1922c58af943c4f1532f16669d38b396332f2310ebf2f11cdb879d"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_NormalOpenGL.png",
+      "sha256": "23349f53db2b6b6fc0dd9424e6a914443cd7939988311cdf7c22f1cfabf0c0bf"
+    },
+    {
+      "file": "StylShip_3dModel/StylShip_Unity.fbx",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_3dModel/StylShip_Unity.fbx",
+      "sha256": "c1b17b941067ac32673091ed8a97b28fa6b71282a286f6a7fee05a8c84bfcf59"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Elements_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Elements_AmbientOcclusion.png",
+      "sha256": "a60abbda3d3191b8bcd58571796d37617661c44f4d3d9ad811dda3eb87c3c61f"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Props_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Props_AmbientOcclusion.png",
+      "sha256": "f08e1f94608fecb0c85481b5538b53e51233ed855aceb318a9eb3d97d65f3f03"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Elements_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Elements_MetallicSmoothness.png",
+      "sha256": "98aa014efe2f59e4c9abcaa0ea4dd12d2e4714cfacc6747001eb0999faa159e8"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_AmbientOcclusion.png",
+      "sha256": "5eff3104309c6e0100b68ef8b4ad22bae31dcef46e1c804e7b60e71f810c6fde"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Props_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Props_AlbedoTransparency.png",
+      "sha256": "c8cf1809116ad0e889e293d486a930dc4748b64495a83567b4e78eacde7bf35b"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Masts_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Masts_NormalOpenGL.png",
+      "sha256": "f7ea3f270814474e19f2680bcfcf2c35e8da43cea30a725ce48da9f9879e11c7"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Masts_AmbientOcclusion.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Masts_AmbientOcclusion.png",
+      "sha256": "8d1206a974fafd4a4c4710d1d5ed032852000eceeb76fdee6b67b5b8c8314223"
+    },
+    {
+      "file": "StylShip_Unity.prefab",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_Unity.prefab",
+      "sha256": "904a70d20376402e768d18bea0d21fe9e6f13feb033f702aef4f01d04911d90f"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Props_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Props_Mat.mat",
+      "sha256": "935c655e5e18ea8202e584f9432d2bb9ddc887c96d73d0076a577c1937d78b69"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Elements_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Elements_Mat.mat",
+      "sha256": "9adeaaf94a4d3691fb2f6eb1f56bf35db56f53ad13f9232514c883fee0c6877c"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_ShipHull_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_ShipHull_AlbedoTransparency.png",
+      "sha256": "339de568a1da6bbf99d1896c63ec1cea706ff9460fae1358b92027aec58a56b3"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_SailsRope_Emissive.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_SailsRope_Emissive.png",
+      "sha256": "580696314c7008dfe86b04c8c211df302ce3b3546416178bddcd48aee2e77baa"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Masts_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Masts_AlbedoTransparency.png",
+      "sha256": "d81a51b839e61e9cf03316e092554fd5b3ff356d29957154f0105148f2b25e3b"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Decks_AlbedoTransparency.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Decks_AlbedoTransparency.png",
+      "sha256": "bfb63350dcd61c45293d21bbed5eb0d96dd0eb67012e3f81a5309809b0cef2e1"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Decks_Mat.mat",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Decks_Mat.mat",
+      "sha256": "2c38e71894298e4d2435fbf87b9c83406d7480db933738e7cb1cf61b63f4d069"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_ShipHull_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_ShipHull_NormalOpenGL.png",
+      "sha256": "8a645e6ccc56072c4c9f71d61ade4ffeb04f25f5f952371b2b77c2f1ac2c063f"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_ShipHull_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_ShipHull_MetallicSmoothness.png",
+      "sha256": "be99ae6ee1537bb98e8297babfb1051551146e570ad7c056a95380af166c0d4f"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Elements_NormalOpenGL.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Elements_NormalOpenGL.png",
+      "sha256": "1461744c6c4c5090296a4e1287f484fc9d64d22bdb29c4a246dc46df3964b8ee"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Masts_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Masts_MetallicSmoothness.png",
+      "sha256": "7fcf594fb745a5e39dab889119589796ee0c59066a5821b5722b21e4b4029bd2"
+    },
+    {
+      "file": "StylShip_MatTextures/StylShip_Props_MetallicSmoothness.png",
+      "originalPath": "Assets/Stylized_Pirate_Ship/StylShip_MatTextures/StylShip_Props_MetallicSmoothness.png",
+      "sha256": "bb0a7cc77d7e253deff54a9fd56dd9f503ba0cbff20bf7d35b7f952ce3e81e2d"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "suite": "Boat",
+  "passed": true,
+  "checks": 20,
+  "scope": "Focused fresh-scene progression regression. Stage3 entry/player checkpoint and the two shadow solution source poses are explicit initial fixtures. The real shadow solver, .85s confirmation, .65s visible reveal, gravity and settling create the miniature. From reveal onward there is no ResetAll/ResetZone, stage/player teleport, source activation change, held setter or direct boat pose/scale fixture. Camera-ray Interact, native movement/perspective/drop, actual water buoyancy and native boarding must succeed continuously. An already active stage3 parasol is separately placed on the real boat roof as a cargo-negative fixture and only that cargo is restored afterward. Not a full unassisted four-puzzle playthrough."
+}

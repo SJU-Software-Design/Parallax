@@ -1,0 +1,82 @@
+[
+  {
+    "name": "BladeColorTexture.png",
+    "sha256": "0f6d92b25ff43634e6058da83fb51ea9e27d15579a8b658c163f8ae6b3c22510",
+    "dimensions": [
+      2048,
+      6144
+    ]
+  },
+  {
+    "name": "BladeNormalsTexture.png",
+    "sha256": "16a708c5fa14898ea7ddd9c2d4fe898ae79f208860d874e711f1558a84a4363d",
+    "dimensions": [
+      2048,
+      6144
+    ]
+  },
+  {
+    "name": "BladeRoughnessTexture.png",
+    "sha256": "eec7d09c938f3af50cd6d6c7578134b8a75fa139875947008a810bf0348ebc60",
+    "dimensions": [
+      2048,
+      6144
+    ]
+  },
+  {
+    "name": "hiltColorTexture.png",
+    "sha256": "164e830ced1382a6b31fce62e219d216b619e068009d502235afd3b64d28251c",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "hiltNormalTexture.png",
+    "sha256": "60b83d3d252f90d83567d71c1af635ac2e9b2bf569e9c4eae11992be69c0c190",
+    "dimensions": [
+      4096,
+      4096
+    ]
+  },
+  {
+    "name": "PommelTexture.png",
+    "sha256": "d9ab30d1b319568a65dd71cfb5e2b5960568a153259872425da432cb069cbb77",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "PommelRoughnessTexture.png",
+    "sha256": "f7e307156e6d2d6e070fea223dfbcead54d8877484234bf1d35746aa16afceac",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "GuardColorTexture.png",
+    "sha256": "e8c42322fd17f8b6eba334c58d75fe24bd2a5083de93322b8fcb4e3bf7f58ee6",
+    "dimensions": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "GuardNormalTexture.png",
+    "sha256": "a5f7fa2c7cfd44403619d04351133424d80fe8da83b79b900c4737eefbe66405",
+    "dimensions": [
+      4096,
+      4096
+    ]
+  },
+  {
+    "name": "GuardRoughnessTexture.png",
+    "sha256": "5aaf1787efda0b6ff6d849129503c1252153ae519307ced159eb9332e09ee132",
+    "dimensions": [
+      4096,
+      4096
+    ]
+  }
+]

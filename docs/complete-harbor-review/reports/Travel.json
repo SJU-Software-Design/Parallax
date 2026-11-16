@@ -1,0 +1,687 @@
+{
+  "passed": true,
+  "batchMode": true,
+  "normalWindowCursorLockVerified": false,
+  "osPointerLockRequiresVisibleReview": true,
+  "scope": "Actual initial Tutorial and six public pause-menu LoadStage operations: Tutorial→Gallery→Beach→Tutorial→Tutorial(fresh same-scene restart)→Gallery→Tutorial. Each request follows the game's production pause command. Tutorial's private SetPaused command and initial step number use minimal reflection because no public pause/lesson accessor exists. Destination automation only prevents hidden-window focus pause, without supplying ResetAll/Resume or completion state. Assertions inspect real scene/game/source destruction, fresh first-room state, display camera/controller/listener ownership, Dike installation, absence of fake elevator arrival, exact source music identity, preserved per-stage import policy (Tutorial/Beach Streaming; existing Museum DecompressOnLoad) and live PCM cursor advancement, cursor/time-scale, invalid requests and synchronous reentrancy rejection. In batch mode, logical unpaused gameplay, time scale and pointer visibility are asserted while the observed OS cursor-lock value is recorded without asserting physical lock; a separate normal visible-window computer-use check is required for physical cursor lock. Non-batch execution still strictly asserts Locked and hidden at each destination. UI tab clicking/layout, completed-game UI rendering, continuous puzzle solving and subjective listening are outside this test.",
+  "failure": "",
+  "scene": "Tutorial",
+  "unity": "6000.3.24f1",
+  "completedTransitions": 6,
+  "checks": [
+    {
+      "name": "Travel validation starts in the real Tutorial entry scene",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination belongs to the actual build: Tutorial",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination belongs to the actual build: Gallery",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination belongs to the actual build: Beach",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Tutorial gameCounts=1/0/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Tutorial counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Tutorial timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Tutorial batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial starts unpaused at lesson one without an elevator departure",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial controller begins at its actual first-room spawn",
+      "detail": "(0.00, 0.03, 0.00)",
+      "passed": true
+    },
+    {
+      "name": "Tutorial audio singleton is fresh and previous stage audio singletons are gone",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial owns exactly its idle elevator flow",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Tutorial expectedClip=BgmTB01_000_179 expectedLoad=Streaming source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Tutorial samples=12230→19756 source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Tutorial exposes its existing production pause command to the test harness",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial production pause actually pauses gameplay",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Invalid destination rejected without a scene mutation",
+      "detail": "<null>",
+      "passed": true
+    },
+    {
+      "name": "Invalid destination rejected without a scene mutation",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Invalid destination rejected without a scene mutation",
+      "detail": "Library",
+      "passed": true
+    },
+    {
+      "name": "Invalid destination rejected without a scene mutation",
+      "detail": "gallery",
+      "passed": true
+    },
+    {
+      "name": "Invalid destination rejected without a scene mutation",
+      "detail": "Beach/../Gallery",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Tutorial→Gallery",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Gallery",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Gallery completed=Gallery failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Gallery priorSources=10",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Gallery oldId=4748 newId=14116",
+      "passed": true
+    },
+    {
+      "name": "Direct-Gallery intent was present during destination construction",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Gallery gameCounts=0/1/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Gallery counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Gallery timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Gallery batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Gallery",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery starts in its first exhibit with Dike installed and no fake elevator arrival",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Gallery uses its first exhibit spawn",
+      "detail": "(0.00, 0.03, 3.00)",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery resumes its own music service and clears earlier audio singletons",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery contains no old persistent elevator cabin",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Gallery expectedClip=MuseumBgmC01 expectedLoad=DecompressOnLoad source=Museum BGM A playing=True volume=0.08705257 spatial=0 pitch=1 loadType=DecompressOnLoad clip=MuseumBgmC01 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Gallery samples=17875→25401 source=Museum BGM A playing=True volume=0.105 spatial=0 pitch=1 loadType=DecompressOnLoad clip=MuseumBgmC01 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Gallery production Pause enters the pause menu",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Gallery→Beach",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Beach",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Beach completed=Beach failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Beach priorSources=4",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Beach oldId=14116 newId=49210",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Beach gameCounts=0/0/1",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Beach counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Beach timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Beach batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Beach",
+      "passed": true
+    },
+    {
+      "name": "Direct Beach automatically resumes its fresh first checkpoint",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Beach uses its actual first shoreline spawn",
+      "detail": "(-6.00, 0.03, 4.00)",
+      "passed": true
+    },
+    {
+      "name": "Beach owns its new audio service and no previous game audio/elevator singleton",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Beach expectedClip=BgmBB01_BossaAntigua expectedLoad=Streaming source=Beach BB01 music A playing=True volume=0.14 spatial=0 pitch=1 loadType=Streaming clip=BgmBB01_BossaAntigua loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Beach samples=11289→18815 source=Beach BB01 music A playing=True volume=0.14 spatial=0 pitch=1 loadType=Streaming clip=BgmBB01_BossaAntigua loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Beach production Pause enters the pause menu",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Beach→Tutorial",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Tutorial completed=Tutorial failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Tutorial priorSources=21",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Tutorial oldId=49210 newId=49300",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Tutorial gameCounts=1/0/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Tutorial counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Tutorial timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Tutorial batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial starts unpaused at lesson one without an elevator departure",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial controller begins at its actual first-room spawn",
+      "detail": "(0.00, 0.03, 0.00)",
+      "passed": true
+    },
+    {
+      "name": "Tutorial audio singleton is fresh and previous stage audio singletons are gone",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial owns exactly its idle elevator flow",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Tutorial expectedClip=BgmTB01_000_179 expectedLoad=Streaming source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Tutorial samples=11289→17875 source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Tutorial exposes its existing production pause command to the test harness",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial production pause actually pauses gameplay",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Tutorial→Tutorial",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Tutorial completed=Tutorial failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Tutorial priorSources=10",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Tutorial oldId=49300 newId=49314",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Tutorial gameCounts=1/0/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Tutorial counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Tutorial timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Tutorial batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial starts unpaused at lesson one without an elevator departure",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial controller begins at its actual first-room spawn",
+      "detail": "(0.00, 0.03, 0.00)",
+      "passed": true
+    },
+    {
+      "name": "Tutorial audio singleton is fresh and previous stage audio singletons are gone",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial owns exactly its idle elevator flow",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Tutorial expectedClip=BgmTB01_000_179 expectedLoad=Streaming source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Tutorial samples=10348→16934 source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Tutorial exposes its existing production pause command to the test harness",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial production pause actually pauses gameplay",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Tutorial→Gallery",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Gallery",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Gallery completed=Gallery failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Gallery priorSources=10",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Gallery oldId=49314 newId=57268",
+      "passed": true
+    },
+    {
+      "name": "Direct-Gallery intent was present during destination construction",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Gallery gameCounts=0/1/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Gallery counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Gallery timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Gallery batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Gallery",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery starts in its first exhibit with Dike installed and no fake elevator arrival",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Gallery uses its first exhibit spawn",
+      "detail": "(0.00, 0.03, 3.00)",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery resumes its own music service and clears earlier audio singletons",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Direct Gallery contains no old persistent elevator cabin",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Gallery expectedClip=MuseumBgmC01 expectedLoad=DecompressOnLoad source=Museum BGM A playing=True volume=0.07577177 spatial=0 pitch=1 loadType=DecompressOnLoad clip=MuseumBgmC01 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Gallery samples=15993→22579 source=Museum BGM A playing=True volume=0.105 spatial=0 pitch=1 loadType=DecompressOnLoad clip=MuseumBgmC01 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Gallery production Pause enters the pause menu",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause releases the pointer before travel",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Paused game accepts one public travel request: Gallery→Tutorial",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Loading synchronously rejects same and competing duplicate requests",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Public travel completion clears its request state",
+      "detail": "Tutorial completed=Tutorial failure=",
+      "passed": true
+    },
+    {
+      "name": "Previous game, scene audio sources and elevator owner were destroyed",
+      "detail": "→Tutorial priorSources=4",
+      "passed": true
+    },
+    {
+      "name": "Single-load creates a fresh destination game instance",
+      "detail": "Tutorial oldId=57268 newId=57292",
+      "passed": true
+    },
+    {
+      "name": "Only the destination game and its one loaded stage remain",
+      "detail": "Tutorial gameCounts=1/0/0",
+      "passed": true
+    },
+    {
+      "name": "Destination owns one live controller, display camera and listener",
+      "detail": "Tutorial counts=1/1/1",
+      "passed": true
+    },
+    {
+      "name": "Travel leaves no elevator arrival or loading clock behind",
+      "detail": "Tutorial timeScale=1",
+      "passed": true
+    },
+    {
+      "name": "Batch-mode destination hides the pointer; physical OS lock requires visible-window review",
+      "detail": "Tutorial batch=True observedLock=None visible=False",
+      "passed": true
+    },
+    {
+      "name": "One persistent menu-transport owner serves all repeated trips",
+      "detail": "Tutorial",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial starts unpaused at lesson one without an elevator departure",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Tutorial controller begins at its actual first-room spawn",
+      "detail": "(0.00, 0.03, 0.00)",
+      "passed": true
+    },
+    {
+      "name": "Tutorial audio singleton is fresh and previous stage audio singletons are gone",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh Tutorial owns exactly its idle elevator flow",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Destination starts its selected music with its preserved import policy",
+      "detail": "Tutorial expectedClip=BgmTB01_000_179 expectedLoad=Streaming source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    },
+    {
+      "name": "Destination music advances real PCM samples after its load buffers settle",
+      "detail": "Tutorial samples=11289→18815 source=Tutorial BGM TB01 B playing=True volume=0.22 spatial=0 pitch=1 loadType=Streaming clip=BgmTB01_000_179 loadState=Loaded enabled=True",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "route": [
+    "Tutorial initial",
+    "→Gallery",
+    "→Beach",
+    "→Tutorial",
+    "→Tutorial",
+    "→Gallery",
+    "→Tutorial"
+  ],
+  "cursorObservations": [
+    "Tutorial batch=True observedLock=None visible=False",
+    "Gallery batch=True observedLock=None visible=False",
+    "Beach batch=True observedLock=None visible=False",
+    "Tutorial batch=True observedLock=None visible=False",
+    "Tutorial batch=True observedLock=None visible=False",
+    "Gallery batch=True observedLock=None visible=False",
+    "Tutorial batch=True observedLock=None visible=False"
+  ]
+}

@@ -6,7 +6,7 @@ namespace ShadeLink.Beach
 {
     public sealed class BeachGame : MonoBehaviour, IObjectInteractionHost<BeachProp>
     {
-        public const string Version="0.16.1";
+        public const string Version="0.29.1-harbor-sound";
         public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
         public CharacterController controller;
         public Camera view;
@@ -18,6 +18,9 @@ namespace ShadeLink.Beach
         public BeachLightGate lightGate, waterGate;
         public BeachShadowHarbor shadowHarbor;
         public BeachBoat boat;
+        public BeachHarborFinale harborFinale;
+        public BeachCounterweightFinale counterweightFinale;
+        public BeachSkyShip skyShip;
         public BeachCastleRestoration castleRoute;
         public bool castleRest;
         public bool adjustingMirror;
@@ -31,7 +34,7 @@ namespace ShadeLink.Beach
         public string PlacementObstacle { get; private set; }
         public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
-        public bool visitedUpper;
+        public bool visitedUpper,endingMenuVisible;
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
@@ -45,6 +48,7 @@ namespace ShadeLink.Beach
         readonly List<HoldShape> holdShapes=new List<HoldShape>();
         bool initialPlacement;
         PlayerMovementAudio movementAudio;
+        public BeachAudio Audio {get;private set;}
         readonly FirstPersonMotor motor=new FirstPersonMotor { GroundFilter=PlacementSupport.IsUsableGround };
         readonly PlayerControls controls=new PlayerControls();
         bool gameJumpHeld, pendingDrop,assistedDrop;
@@ -58,9 +62,12 @@ namespace ShadeLink.Beach
             var arguments=Environment.GetCommandLineArgs();
             bool placementTest=Array.IndexOf(arguments,"-placement-test")>=0;
             bool waterTest=Array.IndexOf(arguments,"-beach-water-test")>=0;
+            bool audioTest=Array.IndexOf(arguments,"-beach-audio-validate")>=0;
             bool harborDemo=Array.IndexOf(arguments,"-beach-harbor-demo")>=0;
             bool castleDemo=Array.IndexOf(arguments,"-beach-castle-demo")>=0;
-            automated=placementTest||waterTest||Array.IndexOf(arguments,"-beach-test")>=0;
+            bool finaleTest=Array.IndexOf(arguments,"-beach-harbor-finale-validate")>=0;
+            bool counterweightTest=Array.IndexOf(arguments,"-validate-beach-counterweight")>=0;
+            automated=counterweightTest||finaleTest||audioTest||placementTest||waterTest||Array.IndexOf(arguments,"-beach-test")>=0;
             Application.runInBackground=automated;Application.targetFrameRate=automated?90:-1;
             QualitySettings.vSyncCount=automated?0:1;QualitySettings.antiAliasing=2;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
@@ -72,19 +79,22 @@ namespace ShadeLink.Beach
             player.feet=controller.transform.position;
             foreach(var prop in props){prop.InitializePhysics();prop.placement.SetPlayer(controller);}
             foreach(var prop in props)prop.placement.ResetPlaced();
+            Audio=BeachAudio.Install(this);
             lighting.Rebuild();SyncView();
             gameObject.AddComponent<BeachHud>().game=this;
-            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won,()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,BeachLighting.ToSun);
+            lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(counterweightFinale==null||checkpoint!=3),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,BeachLighting.ToSun);
             foreach(var prop in props){var floatingProp=prop;prop.placement.WaterSupport=()=>BeachWater.Supports(floatingProp);}
             gameObject.AddComponent<BeachPlacementPreview>().game=this;
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
             if(shadowHarbor!=null)shadowHarbor.InitializeOnGameReady();
+            harborFinale?.Initialize();counterweightFinale?.Initialize();skyShip?.Initialize(this);
             if(harborDemo)StartHarborDemo();
-            if(castleDemo)StartCastleDemo();
-            if(placementTest)gameObject.AddComponent<PlacementValidation>();
+            if(castleDemo)StartHarborFinaleDemo();
+            if(audioTest)gameObject.AddComponent<BeachAudioValidation>().game=this;
+            else if(placementTest)gameObject.AddComponent<PlacementValidation>();
             else if(waterTest)gameObject.AddComponent<BeachWaterValidation>().game=this;
-            else if(automated)gameObject.AddComponent<BeachValidation>().game=this;
+            else if(automated&&!finaleTest&&!counterweightTest)gameObject.AddComponent<BeachValidation>().game=this;
         }
         void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
         void OnDestroy() { Time.timeScale=1; }
@@ -92,26 +102,27 @@ namespace ShadeLink.Beach
         public void Resume()
         {
             if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
+            Audio?.SetRunning(true);
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { ClearControlInput();active=false;Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { harborFinale?.CancelInteraction();ClearControlInput();active=false;Audio?.SetRunning(false);Time.timeScale=0;Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
         void ClearControlInput()
         {
             motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
         }
         void ResetControlState()
         {
-            motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
+            harborFinale?.CancelInteraction();motor.Reset();movementAudio?.Reset();controls.Reset();pendingDrop=false;gameJumpHeld=false;verticalVelocity=0;
         }
         void OnApplicationFocus(bool focused) { if(!focused&&!automated)Pause(); }
         public void ResetAll()
         {
-            if(held!=null)Cancel(true);foreach(var p in props)p.Restore();
+            if(held!=null)Cancel(true);skyShip?.ResetFlight();harborFinale?.ResetPuzzle();counterweightFinale?.ResetPuzzle();foreach(var p in props)p.Restore();
             adjustingMirror=false;if(lightGate!=null)lightGate.Restore();if(waterGate!=null)waterGate.Restore();castleRest=false;
             if(shadowHarbor!=null)shadowHarbor.Restore();
             if(castleRoute!=null)castleRoute.Restore();
-            checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=false;lesson?.Restart();
-            PlacePlayer(BeachWorld.Checkpoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();
+            checkpoint=respawns=grabs=drops=0;elapsed=exposure=0;won=visitedUpper=endingMenuVisible=false;lesson?.Restart();
+            PlacePlayer(BeachWorld.Checkpoints[0]);yaw=0;pitch=-.08f;lighting.Synchronize();SyncView();Audio?.ResetAudio();
         }
         public void ResetZone()
         {
@@ -120,13 +131,16 @@ namespace ShadeLink.Beach
             adjustingMirror=false;if(checkpoint==0&&lightGate!=null)lightGate.Restore();if(checkpoint==2&&waterGate!=null)waterGate.Restore();if(checkpoint==3)castleRest=false;
             if(checkpoint==2&&shadowHarbor!=null)shadowHarbor.Restore();
             if(checkpoint==3&&castleRoute!=null)castleRoute.Restore();
-            PlacePlayer(BeachWorld.Checkpoints[checkpoint]);exposure=0;lighting.Synchronize();
-            Tell("현재 구역의 사물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
+            if(checkpoint==3){skyShip?.ResetFlight();harborFinale?.ResetPuzzle();counterweightFinale?.ResetPuzzle();}
+            if(checkpoint==3&&counterweightFinale!=null)PlaceCounterweightObserver();
+            else PlacePlayer(BeachWorld.Checkpoints[checkpoint]);
+            exposure=0;lighting.Synchronize();
+            Audio?.ResetAudio();Tell("현재 구역의 사물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
         }
         public void StartMirrorDemo()
         {
             ResetAll();Resume();
-            Tell("작은 거울을 잡고 멀리 배치해 키우세요 · Q/E 회전 · H 힌트",7);
+            Tell("작은 거울을 잡고 멀리 배치해 키우세요 · 오른쪽 버튼 + 마우스 회전 · H 힌트",7);
         }
         public void StartHarborDemo()
         {
@@ -148,7 +162,7 @@ namespace ShadeLink.Beach
             player.feet=controller.transform.position;player.grounded=false;
             Physics.SyncTransforms();SyncView();
         }
-        public void StartCastleDemo()
+        public void StartHarborFinaleDemo()
         {
             ResetAll();
             foreach(var gate in new[]{lightGate,waterGate})if(gate!=null)
@@ -156,8 +170,17 @@ namespace ShadeLink.Beach
                 gate.unlocked=true;gate.charge=gate.opening=1;
                 gate.panel.transform.position=gate.closedPosition+gate.openOffset;
             }
-            checkpoint=3;PlacePlayer(new Vector3(0,0,80.5f));yaw=0;pitch=.12f;SyncView();
-            Tell("모래성 정면 복구 · 계단 조각 두 개를 각각 연결하고, 평평한 성벽에 파라솔을 설치하세요. H 힌트",12);
+            checkpoint=3;
+            if(counterweightFinale!=null)PlaceCounterweightObserver();
+            else {PlacePlayer(new Vector3(0,0,75));yaw=0;pitch=-.06f;SyncView();}
+            Tell(counterweightFinale!=null?"끊긴 바닷길을 이으세요 · 해안 바위를 키워 옆 추 받침에 놓기 · H 힌트":"모형으로 부두를 조절하고 작은 섬을 키워 연결하세요 · H 힌트",12);
+        }
+        void PlaceCounterweightObserver()
+        {
+            PlacePlayer(counterweightFinale.ObservationPoint);
+            yaw=counterweightFinale.reviewLookDegrees.x*Mathf.Deg2Rad;
+            pitch=counterweightFinale.reviewLookDegrees.y*Mathf.Deg2Rad;
+            SyncView();
         }
         public void Respawn()
         {
@@ -167,7 +190,7 @@ namespace ShadeLink.Beach
             if(checkpoint==2&&boat!=null)boat.HandleRespawn();
             if(checkpoint==3&&castleRoute!=null)castleRoute.RecoverFragment();
             adjustingMirror=false;
-            var spawn=castleRest&&checkpoint==3?BeachWorld.CastleRest:BeachWorld.Checkpoints[checkpoint];
+            var spawn=checkpoint==3&&counterweightFinale!=null?counterweightFinale.ObservationPoint:castleRest&&checkpoint==3?BeachWorld.CastleRest:BeachWorld.Checkpoints[checkpoint];
             if(checkpoint==3&&!castleRest&&castleRoute!=null&&castleRoute.ReachedEntrance)spawn=BeachCastleRestoration.LowerStart;
             if(!CanStand(spawn))
             {
@@ -190,19 +213,22 @@ namespace ShadeLink.Beach
         public void SyncView()
         {
             view.transform.position=controller.transform.position+Vector3.up*1.55f;
-            view.transform.rotation=Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
+            view.transform.rotation=(skyShip!=null&&skyShip.Flying?skyShip.ViewRotation:Quaternion.identity)*Quaternion.LookRotation(IndoorRules.Look(yaw,pitch));
+            skyShip?.ApplyDepartureView(view);
             if(player!=null)player.feet=controller.transform.position;
         }
         void Update()
         {
             if(automated)return;
-            if(PlayerControls.PausePressed){if(active)Pause();else Resume();return;}
+            if(PlayerControls.PausePressed){if(won){endingMenuVisible=!endingMenuVisible;return;}if(active)Pause();else Resume();return;}
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
             if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
+            if(harborFinale!=null&&harborFinale.Manipulating){harborFinale.HandleInput(Time.deltaTime);Tick(Time.deltaTime,Vector2.zero);return;}
             var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
             if(checkpoint==2&&held==null&&boat!=null&&Input.GetKeyDown(KeyCode.E))boat.TryLaunch();
+            if(checkpoint==3&&held==null&&skyShip!=null&&Input.GetKeyDown(KeyCode.E))skyShip.TryLaunch();
             motor.SmoothKeyboardInput=!controls.UsingGamepad;
             Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
             if(held!=null&&frame.RotateHeld)
@@ -213,19 +239,7 @@ namespace ShadeLink.Beach
             SyncView();UpdateAim();
             if(frame.CancelPressed)Cancel();
             if(Input.GetKeyDown(KeyCode.F))MatchSurfaceDepth();
-            if(held!=null)
-            {
-                float turn=(Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0);
-                float tilt=(Input.GetKey(KeyCode.X)?1:0)-(Input.GetKey(KeyCode.Z)?1:0);
-                RotateHeld(turn*75*Time.deltaTime,tilt*75*Time.deltaTime);
-                if(Input.GetKeyDown(KeyCode.C))heldRotation=Quaternion.Euler(0,Mathf.Round(heldRotation.eulerAngles.y/15)*15,0);
-            }
-            else if(adjustingMirror&&mirror!=null)
-            {
-                if(Input.GetMouseButtonDown(1)||Vector3.Distance(view.transform.position,mirror.transform.position)>Reach)adjustingMirror=false;
-                else mirror.Turn(((Input.GetKey(KeyCode.E)?1:0)-(Input.GetKey(KeyCode.Q)?1:0))*28*Time.deltaTime);
-            }
-            if(frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
+            if((skyShip==null||!skyShip.Flying)&&frame.GrabPressed){if(held!=null)pendingDrop=true;else Interact();}
             gameJumpHeld=frame.JumpHeld;
             Vector2 direction=new Vector2(Mathf.Cos(yaw)*frame.Move.x+Mathf.Sin(yaw)*frame.Move.y,
                 -Mathf.Sin(yaw)*frame.Move.x+Mathf.Cos(yaw)*frame.Move.y);
@@ -247,7 +261,7 @@ namespace ShadeLink.Beach
             Interaction.UpdateAim();
         }
         public void AdvanceHeld(float dt) { Interaction.Advance(dt);UpdateHeldPose(); }
-        public void Interact() { Interaction.Interact(); }
+        public void Interact() { if(skyShip==null||!skyShip.Flying)Interaction.Interact(); }
         void CachePlacementSamples()
         {
             placementSamples.Clear();
@@ -490,7 +504,9 @@ namespace ShadeLink.Beach
         public void Tick(float dt,Vector2 move,bool jump=false)
         {
             if(!active||won)return;dt=Mathf.Clamp(dt,0,.05f);elapsed+=dt;
+            if(skyShip!=null&&skyShip.Flying){skyShip.Tick(dt);Audio?.Tick(dt);SyncView();return;}
             foreach(var prop in props)prop.placement.Tick(dt);
+            harborFinale?.Tick(dt);counterweightFinale?.Tick(dt);
             lighting.Synchronize();if(lightGate!=null)lightGate.Tick(dt,lighting,controller);if(waterGate!=null)waterGate.Tick(dt,lighting,controller);
             if(shadowHarbor!=null)shadowHarbor.Tick(dt);
             Vector3 supportMotion=Vector3.zero;
@@ -501,6 +517,7 @@ namespace ShadeLink.Beach
             motor.Step(controller,localMove,yaw,jump,gameJumpHeld||jump,dt,BeachWorld.PhysicalMask,supportMotion);
             verticalVelocity=motor.VerticalVelocity;
             movementAudio?.Tick(motor.Velocity,motor.Grounded,move.sqrMagnitude>.0001f,dt);
+            Audio?.Tick(dt);
             player.feet=controller.transform.position;player.grounded=motor.Grounded;
             if(boat!=null)boat.Tick(dt);
             SyncView();if(automated&&held!=null)AdvanceHeld(dt);
@@ -520,10 +537,13 @@ namespace ShadeLink.Beach
             if(exposure>=1||player.feet.y< -3||BeachWater.InHazard(player.feet))Respawn();
         }
         ObjectInteraction<BeachProp> interaction;
-        ObjectInteraction<BeachProp> Interaction => interaction??(interaction=new ObjectInteraction<BeachProp>(this));
+        ObjectInteraction<BeachProp> Interaction => interaction??(interaction=new ObjectInteraction<BeachProp>(this, autoUprightOnPickup: true));
         Camera IObjectInteractionHost<BeachProp>.Camera => view;
         CharacterController IObjectInteractionHost<BeachProp>.Controller => controller;
-        BeachProp[] IObjectInteractionHost<BeachProp>.Props => props;
+        // Completed assembly pieces remain in the reset registry, but their
+        // inactive shapes must not masquerade as cargo on the revealed boat.
+        BeachProp[] IObjectInteractionHost<BeachProp>.Props =>
+            Array.FindAll(props, prop=>prop!=null&&prop.gameObject.activeInHierarchy&&(harborFinale==null||!harborFinale.GeometryFrozen||prop!=harborFinale.Island));
         BeachProp IObjectInteractionHost<BeachProp>.Held { get => held; set => held=value; }
         BeachProp IObjectInteractionHost<BeachProp>.Aimed { get => aimed; set => aimed=value; }
         int IObjectInteractionHost<BeachProp>.InteractionMask => BeachWorld.PhysicalMask;
@@ -536,18 +556,18 @@ namespace ShadeLink.Beach
         }
         bool IObjectInteractionHost<BeachProp>.TrySpecialInteraction()
         {
-            if(aimedMirror!=null)
-            {
-                adjustingMirror=!adjustingMirror;
-                Tell(adjustingMirror?"Q/E로 거울 회전 · WASD로 이동 · 클릭 또는 오른쪽 클릭으로 조작 종료":"거울 각도를 고정했습니다.",5);
-                return true;
-            }
-            adjustingMirror=false;return false;
+            adjustingMirror=false;
+            if(counterweightFinale!=null&&aimed==counterweightFinale.Rock&&counterweightFinale.LoadLatched)
+            { Tell("바위가 인양장치에 고정됐어요 · 올라온 천막 다리로 배에 타세요.");return true; }
+            if(counterweightFinale!=null&&aimed==counterweightFinale.Rock&&counterweightFinale.PlayerOnBridgeNow)
+            { Tell("고정 부두로 돌아가 돌을 조정하세요. 승선교 위에서는 돌을 잡을 수 없습니다.");return true; }
+            return harborFinale!=null&&harborFinale.TryInteract(view);
         }
-        void IObjectInteractionHost<BeachProp>.CancelSpecialInteraction() { adjustingMirror=false; }
+        void IObjectInteractionHost<BeachProp>.CancelSpecialInteraction() { adjustingMirror=false;harborFinale?.CancelInteraction(); }
         void IObjectInteractionHost<BeachProp>.StartPlacement()
         {
             assistedDrop=false;assistedPiece=null;
+            counterweightFinale?.OnPickedUp(held);
             invalid=false;CachePlacementSamples();initialPlacement=true;PlacementBlocked=false;held.BeginHold();
             restoreCastlePickup=castleRoute?.PiecePickedUp(held);
             UpdateHeldPose();
@@ -555,7 +575,9 @@ namespace ShadeLink.Beach
         }
         void IObjectInteractionHost<BeachProp>.PrepareRelease()
         {
-            UpdateHeldPose();assistedDrop=Interaction.PlacementFeasible&&shadowHarbor!=null&&shadowHarbor.TryAssistRelease(held);
+            UpdateHeldPose();assistedDrop=Interaction.PlacementFeasible&&
+                ((counterweightFinale!=null&&counterweightFinale.TryAssistRelease(held))||
+                 (shadowHarbor!=null&&shadowHarbor.TryAssistRelease(held)));
             assistedPiece=assistedDrop?held:null;
         }
         bool IObjectInteractionHost<BeachProp>.ValidatePreview(out string reason) => ValidatePlacement(held,out reason,true);
@@ -566,13 +588,14 @@ namespace ShadeLink.Beach
         {
             if(!released)restoreCastlePickup?.Invoke();restoreCastlePickup=null;
             invalid=false;if(released)drops++;
-            if(released&&assistedDrop&&shadowHarbor!=null)
+            if(released&&assistedDrop&&shadowHarbor!=null&&(counterweightFinale==null||assistedPiece!=counterweightFinale.Rock))
             {
                 // The helper only runs for the two source pieces, and this
                 // callback confirms the ordinary release actually succeeded.
                 shadowHarbor.NotifyAssistApplied(assistedPiece);
                 Tell("윤곽 근처의 조각을 살짝 정렬해 놓았습니다.",3);
             }
+            counterweightFinale?.OnInteractionFinished(released);
             assistedDrop=false;assistedPiece=null;lighting.Synchronize();
         }
 

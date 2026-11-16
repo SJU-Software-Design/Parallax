@@ -110,6 +110,13 @@ namespace ShadeLink.Beach
 
         public static void Build(string name,Transform parent,Vector3 peak,Vector2 size,float groundY,Vector3? mastFoot=null)
         {
+            // Fixed shelters keep their authored floor/shadow footprint. Raising
+            // only the roof along ToSun preserves actual mesh-based sun tests;
+            // the original mast footing stays on its real ground or landing.
+            Vector3 anchoredFoot=mastFoot??new Vector3(peak.x-size.x*.5f-.68f,groundY,peak.z);
+            float minimumPeakY=Mathf.Max(groundY,anchoredFoot.y)+4.95f;
+            float lift=Mathf.Max(0,minimumPeakY-peak.y);
+            peak+=BeachLighting.ToSun*(lift/BeachLighting.ToSun.y);
             var host=new GameObject("Beach resort parasol · "+name);host.transform.SetParent(parent,false);host.transform.position=peak;
             var cloth=Palette("Resort sand canvas",new Color(.91f,.83f,.68f));
             var alternate=Palette("Resort sand canvas alternate",new Color(.87f,.78f,.62f));
@@ -147,7 +154,7 @@ namespace ShadeLink.Beach
             var vent=Part(name+" raised wind vent",host.transform,Fabric("Resort vent · "+name,size*.20f,.11f),new[]{cloth,alternate});
             vent.transform.localPosition=Vector3.up*.13f;
 
-            Vector3 pole=mastFoot.HasValue?mastFoot.Value-peak:new Vector3(-size.x*.5f-.68f,groundY-peak.y,0);
+            Vector3 pole=anchoredFoot-peak;
             float poleX=pole.x,poleZ=pole.z,bottom=pole.y,sideSign=Mathf.Sign(poleX);
             // The outer mast leaves the resting floor and plank landings open.
             BeachWorld.Box(name+" weighted base",new Vector3(poleX,bottom+.065f,poleZ),new Vector3(.88f,.13f,.78f),foot,host.transform);

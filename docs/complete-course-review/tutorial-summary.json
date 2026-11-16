@@ -1,0 +1,6 @@
+{
+  "suite": "Tutorial",
+  "passed": true,
+  "checks": 161,
+  "scope": "Focused native/Editor integration QA of the actual E01 prefab, automatic ride states and actual asynchronous Tutorial-to-Gallery scene handoff. Review setup jumps to the existing final tutorial approach; actual CharacterController.Move enters the cabin, then a real kinematic rigidbody placed in the production safety bounds exercises reopening. Production pause/reset commands are invoked by method reflection. No completion, door phase, arrival flag or scene state is supplied. Gallery.Tick drives the actual destination motor through the open doorway. Camera.Render captures use disclosed inspection viewpoints and existing scene materials/lighting. This is not a continuous tutorial puzzle playthrough or subjective art/audio approval."
+}

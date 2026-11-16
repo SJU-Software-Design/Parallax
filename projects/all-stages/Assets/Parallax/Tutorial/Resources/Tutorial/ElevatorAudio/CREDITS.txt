@@ -1,0 +1,71 @@
+E01 Elevator — User-selected external sound effects — 2026-11-14
+EL25 is the final user-selected motor stop, replacing the earlier temporary EL15. EL21 remains the separately selected arrival bell.
+Official public whole HQ MP3 preview copies and existing decoded verification files are preserved. PCM16 gameplay copies use excerpts, fades, stated gains and loop crossfades. No pitch/time-stretch or new audio synthesis. Initial mix; no subjective final listening approval claimed.
+
+EL02 Elevator door opening — LukaCafuka
+https://freesound.org/people/LukaCafuka/sounds/843023/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL02_DoorOpen.wav
+Changes: excerpt 2.920000–5.020000s; gain -2dB; fades 0.025/0.085s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 79d7f973eee33a6421fdfa8214122c9af710da86da76e893de6964fa2a362792
+Prepared SHA256 5d6b9800e1352515107735231de7ce90b817d3ba2d62e1b692168f0e4ea31911
+
+EL04 Elevator door closing — LukaCafuka
+https://freesound.org/people/LukaCafuka/sounds/843022/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL04_DoorClose.wav
+Changes: excerpt 1.000000–3.100000s; gain +0dB; fades 0.025/0.085s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 25ea1db789fd5ad8a9cc6b2f8bbda616e3e989df991d46f536428a10a9989188
+Prepared SHA256 b7ab21b3e4788b2c9ef66a0e1d60f427e8ccfd337da892272f846be322eb1878
+
+EL07 doorlatch.wav — j1987
+https://freesound.org/people/j1987/sounds/335747/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL07_DoorLatch.wav
+Changes: excerpt 0.000000–0.641088s; gain -4dB; fades 0.002/0.025s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 87f1a1ff7723fee807a6889b4392ccaeba33d0f799a3afd655d3c02d2484c835
+Prepared SHA256 8157464d7568d1a99b4c58b82cebb5d8aa3b60742b200679c8c4f293151d0755
+
+EL09 Elevator Starting 1.wav — maxmaxmaxmaxmaxmaxmax
+https://freesound.org/people/maxmaxmaxmaxmaxmaxmax/sounds/439424/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL09_MotorStart.wav
+Changes: excerpt 0.000000–1.093000s; gain +6dB; fades 0.008/0.04s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 22e68b42737286c504ae45623967afb6298f1e58905cfade78846f90746a1013
+Prepared SHA256 02f05da85bcadc871a4419a18620a45c0a0bccf355c2285c5f3703d0313066be
+
+EL11 Elevator ride.wav — schafferdavid
+https://freesound.org/people/schafferdavid/sounds/419319/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL11_MotorRun.wav
+Changes: excerpt 11.250000–15.500000s; gain -1dB; fades 0/0s; loop crossfade 0.25s; original pitch/rate preserved.
+Original SHA256 6c02300925aa9d73c9e6707e4ea2e8df2eaba68c53b09a408d9dcd38aa571198
+Prepared SHA256 1ccdab93e2bbd14d008284d27195f8ec2728bdd08773e45d1bcb802105dbd796
+
+EL25 elevator_stop.wav — simpsi
+https://freesound.org/people/simpsi/sounds/175668/
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+Prepared file: EL25_MotorStop.wav
+Changes: excerpt 1.950000–3.250000s; gain -4dB; fades 0.008/0.1s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 48cb26d7d79c73bcac754e494653fdfe32cd7c0ba775b15dec0edd77aafbd91d
+Prepared SHA256 e3fddd2f16db96bef12b1e5912cd0136d50dd7a12ecbdc939c758ac015dbecb2
+
+EL21 toaster oven or lift/elevator bell — azumarill
+https://freesound.org/people/azumarill/sounds/564623/
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+Prepared file: EL21_ArrivalBell.wav
+Changes: excerpt 0.000000–3.750000s; gain -2dB; fades 0.002/0.1s; loop crossfade 0s; original pitch/rate preserved.
+Original SHA256 b12bcf11ea436c57b4d60d2b0a576c0e0d688e17425ebf3b518763b7765403a3
+Prepared SHA256 c29190ea8ce490eb135c8161b4d364494f57fd1fd2fe2603a106cbea5968261f
+
+EL23 Old Elevator Fan Sound — MainQND
+https://freesound.org/people/MainQND/sounds/855000/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Prepared file: EL23_Ventilation.wav
+Changes: excerpt 9.000000–17.250000s; gain +0dB; fades 0/0s; loop crossfade 0.25s; original pitch/rate preserved.
+Original SHA256 cf0a0a2eb507a3e300fed056afd92479b1ae4aa022e5f260a8b014f8d8f955fb
+Prepared SHA256 be57a48ab0e7ce38c55e3fd012a01ed83ac931ce8febd0afd6af5302d478b7dd
+
+Superseded EL15 is retained as an unreferenced historical file; it is not the current selected stop.
+https://freesound.org/people/maxmaxmaxmaxmaxmaxmax/sounds/439431/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/

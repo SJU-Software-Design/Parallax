@@ -1,0 +1,27 @@
+균형과 매듭 — 사운드 후속 연결 지점 (2026-11-13)
+
+외부 후보 E01~E30은 게임에 적용하지 않았다. 기존 미술관 BGM·공통 이동/사물 소리와 기존 선택은 유지한다.
+후보: 에셋/Audio_Museum_BalanceKey_20261113/index.html
+
+GalleryBottleContentsMotion / GalleryBottleBalanceCourse:
+- GlassImpact(speed, worldPoint): 독립 시뮬레이션한 조각이 실제 병의 64개 중공 충돌 셸에 부딪힌 기하 접촉. 속도 0.2m/s 이상, 최소 0.075초 간격.
+  잡힌 물체의 레이어는 일반 PhysX 접촉을 무시하므로 내부는 ComputePenetration 기반 substep 시뮬레이션이다. OnCollisionEnter 이벤트라고 부르지 않는다.
+- GlassContact: 위 GlassImpact에 대응하는 기존 인자 없는 호환 이벤트.
+- SculptureReleased: 입구를 완전히 나와 일반 Rigidbody 중력/회전으로 넘길 때.
+- BeamDegrees: 저울 각도. 후속 기울기 소리는 각도 변화/속도와 연결할 대상.
+- BalanceCompleted: 실제 접시 지지 상태로 수평 2초 후 1회. 띵 후보 연결점.
+- PassageOpened: 양개문 개방 완료 후 1회. 문 소리 시작은 잠금 해제 직후 Opening이 0에서 증가하는 시점으로 연결한다.
+
+GalleryBottleBalanceKeyReward 상태:
+- WaitingBalance -> HatchOpening: 균형 완료 직후 덮개 동작 시작.
+- HatchOpening -> TrayExtending: 덮개 80도 개방 완료(HatchOpened), 트레이 시작.
+- TrayExtending -> KeyReady: 30cm 이동 완료(TrayExtended), 열쇠 잡기 활성화.
+- KeyTaken: 공개 클릭으로 열쇠를 들었을 때.
+- Inserting: 문 구멍을 겨냥한 클릭으로 0.6초 자동 삽입 시작.
+- KeyInserted: 삽입 완료, Turning 시작.
+- KeyTurned / LockReleased: 0.5초 동안 90도 회전 완료, 잠금 해제.
+현재 이벤트는 동작 완료 시점을 뜻한다. 움직임 시작 소리는 해당 상태 진입 시점을 사용한다.
+
+병 전체를 접시에 놓는 시도는 기존 ui.error와 '병을 통째로 올릴 수는 없습니다!' 안내를 사용한다.
+새 후보는 선택·구간 편집·음량·pitch·공간 감쇠·반복 간격을 확인한 뒤 연결한다.
+R/Shift+R은 초기화하며 active=false 또는 dt=0에서는 동작이 진행되지 않는다.

@@ -43,6 +43,15 @@ namespace ShadeLink.Beach
                 material.SetVector("_Area",kind<.5f?new Vector4(-14,0,14,108):previous.GetVector("_Area"));
                 material.SetFloat("_DepthStrength",puddle?2.5f:.35f);
                 material.SetFloat("_WaveHeight",puddle?.002f:kind<.5f?.02f:.015f);
+                // The final harbor is a deeper turquoise lagoon; keep all earlier water presets intact.
+                bool harbor=game.harborFinale!=null&&region!=null&&region.min.y>=83&&region.max.y<=125;
+                if(harbor)
+                {
+                    material.SetColor("_DeepColor",new Color(.035f,.30f,.37f,.52f));
+                    material.SetColor("_ShallowColor",new Color(.10f,.53f,.57f,.28f));
+                    material.SetVector("_Absorption",new Vector4(.9f,.25f,.10f,0));
+                    material.SetFloat("_DepthStrength",.8f);material.SetFloat("_Smoothness",.86f);
+                }
                 var visual=new GameObject("Simple Water · "+source.name);visual.layer=source.gameObject.layer;
                 visual.transform.SetParent(source.transform,false);
                 visual.transform.localScale=new Vector3(1/bounds.size.x,1,1/bounds.size.z);

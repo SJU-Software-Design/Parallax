@@ -1,0 +1,69 @@
+{
+  "version": "0.26.10-bronze-plaques",
+  "testedAssemblySha256": "7367FEBC23B9A752305226DE99DD69C5406D0695DAF1393511A2CFD9B527C539",
+  "totalNativeChecks": 434,
+  "suites": [
+    {
+      "suite": "Museum",
+      "passed": true,
+      "checks": 59,
+      "report": "museum-summary.json"
+    },
+    {
+      "suite": "Travel",
+      "passed": true,
+      "checks": 131,
+      "report": "travel-summary.json"
+    },
+    {
+      "suite": "Tutorial",
+      "passed": true,
+      "checks": 161,
+      "report": "tutorial-summary.json"
+    },
+    {
+      "suite": "Beach",
+      "passed": true,
+      "checks": 63,
+      "report": "beach-summary.json"
+    },
+    {
+      "suite": "Boat",
+      "passed": true,
+      "checks": 20,
+      "report": "boat-summary.json"
+    }
+  ],
+  "visual": {
+    "gameCameraImages": 19,
+    "bronzePlaques": 12,
+    "textLabels": 36,
+    "sceneryPhysXHits": 317,
+    "missingHits": 0
+  },
+  "launcherMock": {
+    "passed": 18,
+    "total": 18,
+    "actualUnityBuild": false
+  },
+  "prSourceBuild": {
+    "performed": false,
+    "reason": "Previously installed Unity Editor is unavailable; the D archive contains only the Unity installation CLI, not an Editor.",
+    "postBinaryChanges": [
+      "retain main null/inactive cargo guard",
+      "build-only credit packaging",
+      "portable launcher and Documentation mirroring",
+      "Tutorial-first Editor build list",
+      "publication path/whitespace normalization",
+      "preserve upstream key-shadow preview classes and shaders; preview scene is outside the three included scenes"
+    ]
+  },
+  "scope": "Focused native fixture-based checks and actual camera/PhysX observations of the completed local binary. Not an unassisted playthrough, subjective final mix approval, or a fresh build of the PR branch.",
+  "creditsPackaging": {
+    "requiredSourceFiles": 17,
+    "packagedOutputFiles": 18,
+    "sourceHashesMatch": true,
+    "missingInputFailsBeforeOutput": true,
+    "verification": "Extracted actual WriteCredits C# method compiled/executed using .NET; not an actual Unity build."
+  }
+}

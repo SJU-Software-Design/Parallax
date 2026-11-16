@@ -23,10 +23,10 @@ namespace ShadeLink.Gallery
             var room=root.AddComponent<GalleryPortraitRoom>();room.game=game;
             room.originalArtwork=GalleryConceptArchitecture.FramedArtwork(root.transform,"MaeWestFace",
                 "메이 웨스트의 얼굴","살바도르 달리 · 1934–35",
-                new Vector3(-7.78f,2.9f,36),Quaternion.Euler(0,-90,0),3.2f,3.5f,palette);
+                new Vector3(-7.78f,3.215f,36),Quaternion.Euler(0,-90,0),3.2f,3.5f,palette);
             room.installationArtwork=GalleryConceptArchitecture.FramedArtwork(root.transform,"MaeWestRoom",
                 "메이 웨스트의 방","달리 · 오스카르 투스케츠 / 설치 사진",
-                new Vector3(7.78f,2.9f,36),Quaternion.Euler(0,90,0),3.8f,2.8f,palette);
+                new Vector3(7.78f,3.02f,36),Quaternion.Euler(0,90,0),3.8f,2.8f,palette);
             var outline=new GameObject("Portrait doorway · forehead cheek and jaw contour").transform;
             outline.SetParent(root.transform,false);outline.localPosition=new Vector3(0,0,43.15f);
             room.headOutline=outline;
@@ -99,7 +99,7 @@ namespace ShadeLink.Gallery
             red01=Mathf.Clamp01(red01);
             if(Mathf.Abs(red01-lastMood)<.001f)return;
             lastMood=red01;properties??=new MaterialPropertyBlock();
-            Color tint=Color.Lerp(new Color(1,.74f,.38f),new Color(1,.025f,.015f),red01);
+            Color tint=Color.Lerp(new Color(1,.74f,.38f),new Color(1,.15f,.07f),red01);
             properties.SetColor("_Color",tint);properties.SetColor("_EmissionColor",tint*.32f);
             if(pictureDiffusers!=null)foreach(var renderer in pictureDiffusers)if(renderer!=null)renderer.SetPropertyBlock(properties);
         }

@@ -1,0 +1,64 @@
+PARALLAX TUTORIAL - SELECTED AUDIO
+2026-11-12
+
+B23 Contemplation - bart
+https://opengameart.org/content/contemplation
+CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+Contemplation by bart, licensed under CC BY 3.0.
+
+026 Door - 100 CC0 metal and wood SFX, rubberduck
+https://opengameart.org/content/100-cc0-metal-and-wood-sfx
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified library playback file.
+
+036 Puzzle complete - Interface Sounds, Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified library playback file.
+
+072 Landing and 081 footsteps - Footsteps - Essentials Series, Nox Sound Design
+https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound
+CC0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified assets reused from the museum integration.
+
+128 grab - Wood Grab 1, CJspellsfish
+https://freesound.org/people/CJspellsfish/sounds/669472/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration.
+
+142 cancel - UI Audio (UI SFX Set), Kenney Vleugels
+https://kenney.nl/assets/ui-audio
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified asset reused from the museum integration.
+
+145 error and 042 confirm - Interface Sounds, Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified assets reused from the museum integration.
+
+156 release - Put down item, qubodup
+https://freesound.org/people/qubodup/sounds/792930/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration.
+
+014 small die impact - Impact Sounds, Kenney
+https://kenney.nl/assets/impact-sounds
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Unmodified asset reused from the museum integration. Used for dice with side length below 2.0 m.
+
+157 large die impact - Heavy Metal Thud on Ground, 7of9Designs
+https://freesound.org/people/7of9Designs/sounds/640204/
+CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+PCM playback copy reused from the museum integration. Used for dice with side length 2.0 m or larger.
+
+All listed selected audio is stored under Assets/Parallax/Tutorial/Resources/TutorialAudio/Selected.
+
+Tutorial user selections applied 2026-11-14. Original files retained; derivatives are listed in tutorial-refresh-integration.json.
+TB01: "Equatorial Complex" Kevin MacLeod (incompetech.com), CC BY 4.0, https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2300008 . Changes: first 0:00-2:59 only; 10ms/40ms boundary fades; PCM16 derivative. Runtime uses equal-power repeat crossfade; no source after179s.
+T02: "Picking up small box with items inside" by WiesenWiesel, CC BY 4.0, https://freesound.org/people/WiesenWiesel/sounds/216629/ . Changes: 0.16-0.80s, gain and boundary fades.
+T04: "rolling dice 1.wav" by nettimato, CC0 1.0, https://freesound.org/people/nettimato/sounds/353975/ . Changes: 0.00-0.56s, gain and boundary fades. Original creator had already slowed the recording; no additional speed change.
+T07: "hollow plastic box, dropped" by Lemato, CC0 1.0, https://freesound.org/people/Lemato/sounds/697092/ . Changes: 0.00-0.44s, gain and boundary fades.
+T14: "Footsteps Metallic Muffled.wav" by RutgerMuller, CC0 1.0, https://freesound.org/people/RutgerMuller/sounds/50723/ . Changes: four individual 0.30-0.32s footstep slices, gain and boundary fades.
+T19: "Jump_Metal_2.wav" by GiocoSound, CC0 1.0, https://freesound.org/people/GiocoSound/sounds/421138/ . Changes: landing contact 0.72-1.25s, gain and boundary fades.
+T26: "Large piece of wood being dropped 04" by Jagadamba, CC BY 4.0, https://freesound.org/people/Jagadamba/sounds/258062/ . The user's approved1.15s T26_ShortContact.wav derivative is copied byte-identically, SHA256 2cfd76835d37d2ec5e02419354ab1b6b22a9708c1d3a1d9aeed67f1aa2da5344. No further file processing.
+CC BY4: https://creativecommons.org/licenses/by/4.0/ ; CC0: https://creativecommons.org/publicdomain/zero/1.0/ .

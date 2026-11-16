@@ -15,7 +15,7 @@ namespace ShadeLink.Editor
             var ao=BeachTexture("PlankTexturesPBR/Planks4_Ambient_Occlusion.tga",linear:true);var metal=BeachTexture("PlankTexturesPBR/Planks4_Metallic.tga",linear:true);
             foreach(var material in BeachWorld.Materials.Concat(game.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials)).Where(m=>m!=null).Distinct())
             {
-                if(material.name!="Weathered timber"&&material.name!="Shadow boat timber deck")continue;
+                if(material.name!="Weathered timber"&&material.name!="Shadow boat timber deck"&&material.name!="Harbor finale · weathered timber")continue;
                 material.shader=shader;material.color=Color.white;material.SetTexture("_MainTex",color);material.SetTexture("_BumpMap",normal);
                 material.SetTexture("_OcclusionMap",ao);material.SetTexture("_MetallicGlossMap",metal);
                 material.SetFloat("_BumpScale",.7f);material.SetFloat("_Tiling",.65f);material.SetFloat("_Glossiness",.32f);material.SetFloat("_Metallic",1);

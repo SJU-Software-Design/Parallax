@@ -1,1 +1,8 @@
 *.sh text eol=lf
+
+# Preserve downloaded attribution/license/source documents byte for byte.
+projects/all-stages/Assets/Parallax/Gallery/Resources/MuseumTypography/OFL.txt -whitespace
+projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/polyhaven-license.html -whitespace
+projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/lucas-public.html -whitespace
+projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceKeyReward/savino-antique-key-source.html -whitespace
+projects/all-stages/Assets/Parallax/Gallery/Resources/BottleBalance/Models/original_oval_brass_keyhole_plate.mtl -whitespace

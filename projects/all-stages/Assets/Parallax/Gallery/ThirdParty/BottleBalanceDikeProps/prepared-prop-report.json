@@ -1,0 +1,53 @@
+{
+    "preparedAtUtc": "2026-11-13T14:53:34.2960955Z",
+    "sourceManifest": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/acquisition-manifest.json",
+    "sourceLicense": "CC0 1.0 / Poly Haven",
+    "texturePacking": "Standard metallic R and smoothness A=(1-source roughness); occlusion grayscale from original AO/ARM red; original OpenGL normals imported as NormalMap",
+    "entries": [
+        {
+            "resource": "BottleBalance/Dike/LawBook",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/LawBook.prefab",
+            "sourceObj": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/SourceAssets/book_encyclopedia_set_01/LawBook_SourceBook14_Flat.obj",
+            "vertices": 3388,
+            "triangles": 3364,
+            "submeshes": 2,
+            "boundsMin": {
+                "x": -0.34340742230415347,
+                "y": -0.06872718781232834,
+                "z": -0.5
+            },
+            "boundsSize": {
+                "x": 0.6868148446083069,
+                "y": 0.13745437562465669,
+                "z": 1.0
+            },
+            "materialNames": [
+                "BookCover",
+                "BookPaper"
+            ],
+            "visualOnly": true
+        },
+        {
+            "resource": "BottleBalance/Dike/SwordStone",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/SwordStone.prefab",
+            "sourceObj": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/SourceAssets/rock_09/rock_09_Centered.obj",
+            "vertices": 6628,
+            "triangles": 12416,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.2558690011501312,
+                "y": 0.0,
+                "z": -0.5
+            },
+            "boundsSize": {
+                "x": 0.5117380023002625,
+                "y": 0.22727416455745698,
+                "z": 1.0
+            },
+            "materialNames": [
+                "SwordStone"
+            ],
+            "visualOnly": true
+        }
+    ]
+}

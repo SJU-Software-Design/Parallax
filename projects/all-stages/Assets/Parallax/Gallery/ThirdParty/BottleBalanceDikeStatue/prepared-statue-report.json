@@ -1,0 +1,167 @@
+{
+    "sourceModel": "https://sketchfab.com/3d-models/lady-justice-67b91f4d07ee423b9c5c53a08d8aa454",
+    "publicRedistribution": "https://maybelucas.com/models/lady-justice/scene.glb",
+    "sourceSHA256": "7bec27a05f6c15268a76b03598ad3afd57e049abf0f0b29b02a6db3703736541",
+    "license": "CC BY 4.0",
+    "originalCreatorZipAcquired": false,
+    "publicAdaptationAcquired": true,
+    "independentSwordGeometryVerified": true,
+    "providedReleaseAnimation": false,
+    "providedRig": false,
+    "conversion": "OBJ vertices/normals mirrored on Z; source CCW indices reversed by shared ReadObj; source normals preserved",
+    "normalizedSword": "RewardSword is centered, Y-long-axis, unit length. Rig.json restores its exact source pose.",
+    "parts": [
+        {
+            "resource": "BottleBalance/Dike/StatueBody",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/StaticBody.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/StatueBody.prefab",
+            "vertices": 310363,
+            "triangles": 312264,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.47038018703460696,
+                "y": -0.6568701863288879,
+                "z": -0.413166880607605
+            },
+            "boundsMax": {
+                "x": 0.1512874960899353,
+                "y": 0.5803746581077576,
+                "z": 0.2203570455312729
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/RewardSword",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/RewardSword.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/RewardSword.prefab",
+            "vertices": 6914,
+            "triangles": 12831,
+            "submeshes": 2,
+            "boundsMin": {
+                "x": -0.06763094663619995,
+                "y": -0.5,
+                "z": -0.08623796701431275
+            },
+            "boundsMax": {
+                "x": 0.06763094663619995,
+                "y": 0.5,
+                "z": 0.08623796701431275
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/ScaleBeam",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/ScaleBeam.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/ScaleBeam.prefab",
+            "vertices": 20386,
+            "triangles": 16009,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.5706961750984192,
+                "y": 0.19872906804084779,
+                "z": -0.4992121160030365
+            },
+            "boundsMax": {
+                "x": -0.3114853501319885,
+                "y": 0.3115065395832062,
+                "z": -0.2805984914302826
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/ScaleSuspension",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/ScaleSuspension.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/ScaleSuspension.prefab",
+            "vertices": 14372,
+            "triangles": 9856,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.4656464755535126,
+                "y": 0.30840378999710085,
+                "z": -0.4155231714248657
+            },
+            "boundsMax": {
+                "x": -0.18287762999534608,
+                "y": 0.5986724495887756,
+                "z": -0.1732431799173355
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/PanLeftBowl",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/PanLeftBowl.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/PanLeftBowl.prefab",
+            "vertices": 11313,
+            "triangles": 9316,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.599254310131073,
+                "y": -0.0729173794388771,
+                "z": -0.3660745918750763
+            },
+            "boundsMax": {
+                "x": -0.48084527254104617,
+                "y": -0.01695255935192108,
+                "z": -0.2482675015926361
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/PanRightBowl",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/PanRightBowl.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/PanRightBowl.prefab",
+            "vertices": 11165,
+            "triangles": 9395,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.40141814947128298,
+                "y": -0.07292170822620392,
+                "z": -0.5316499471664429
+            },
+            "boundsMax": {
+                "x": -0.2834966778755188,
+                "y": -0.018762707710266115,
+                "z": -0.4137154817581177
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/PanLeftChains",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/PanLeftChains.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/PanLeftChains.prefab",
+            "vertices": 12852,
+            "triangles": 14621,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.5940307378768921,
+                "y": -0.021782487630844117,
+                "z": -0.33479034900665285
+            },
+            "boundsMax": {
+                "x": -0.4949067533016205,
+                "y": 0.2012874186038971,
+                "z": -0.25784730911254885
+            },
+            "hasCollider": false
+        },
+        {
+            "resource": "BottleBalance/Dike/PanRightChains",
+            "sourceGeometry": "Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/SourceGeometry/PanRightChains.obj.txt",
+            "prefab": "Assets/Parallax/Gallery/Resources/BottleBalance/Dike/PanRightChains.prefab",
+            "vertices": 14509,
+            "triangles": 16059,
+            "submeshes": 1,
+            "boundsMin": {
+                "x": -0.3957381248474121,
+                "y": -0.021401137113571168,
+                "z": -0.5001394152641296
+            },
+            "boundsMax": {
+                "x": -0.2950083017349243,
+                "y": 0.20093470811843873,
+                "z": -0.42331773042678835
+            },
+            "hasCollider": false
+        }
+    ]
+}

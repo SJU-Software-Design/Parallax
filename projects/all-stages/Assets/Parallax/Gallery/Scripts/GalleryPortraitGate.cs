@@ -25,6 +25,8 @@ namespace ShadeLink.Gallery
         public Transform leftCurtain,rightCurtain;
         public BoxCollider barrier;
         public bool Opened;
+        public bool PassageConfirmed {get;private set;}
+        bool passageCrossed;
         public float Progress;
         public GalleryPortraitPerformance performance;
         public RevealStage Stage {get;private set;}
@@ -51,11 +53,44 @@ namespace ShadeLink.Gallery
         public void ResetGate()
         {
             if(performance!=null)performance.ResetPerformance();
+            ResetPassage();
             Stage=RevealStage.Waiting;Opened=false;Progress=opening=missedTime=performanceTime=0;wasAtPoint=wasMatching=redNotified=smileNotified=false;
             MoodRed01=Smile01=0;SetMood(0);
             if(barrier!=null)barrier.enabled=true;
             portrait?.ResetEvaluation();PositionCurtains();Physics.SyncTransforms();
             PerformanceReset?.Invoke();
+        }
+        public void ResetPassage(){passageCrossed=false;PassageConfirmed=false;}
+        // A completed current gate owns its handoff. Earlier crossing latches
+        // may be stale, but every preceding physical gate must still be open.
+        public void RecordPassage(Vector3 fromFeet,Vector3 toFeet,float dt,bool priorGatesOpen)
+        {
+            if(!Opened||barrier==null||game==null||!game.active||game.won||!priorGatesOpen)
+            {ResetPassage();return;}
+            if(Vector3.Distance(fromFeet,toFeet)>GalleryGame.Speed*Mathf.Clamp(dt,0,.05f)+.5f)
+            {ResetPassage();return;}
+            Vector3 from=barrier.transform.InverseTransformPoint(fromFeet),to=barrier.transform.InverseTransformPoint(toFeet);
+            float plane=barrier.center.z;
+            if(to.z<plane){ResetPassage();return;}
+            if(!passageCrossed&&from.z<plane&&to.z>=plane&&to.z>from.z)
+            {
+                float t=(plane-from.z)/(to.z-from.z);
+                float crossingX=Mathf.Lerp(from.x,to.x,t)-barrier.center.x;
+                float radius=game.controller.radius/Mathf.Abs(barrier.transform.lossyScale.x);
+                float crossingFeet=Mathf.Lerp(from.y,to.y,t);
+                Vector3 worldFeet=Vector3.Lerp(fromFeet,toFeet,t);
+                float crossingHead=barrier.transform.InverseTransformPoint(worldFeet+Vector3.up*game.controller.height).y;
+                if(Mathf.Abs(crossingX)+radius<=barrier.size.x*.5f+.01f&&
+                    crossingFeet>=barrier.center.y-barrier.size.y*.5f-.02f&&crossingHead<=barrier.center.y+barrier.size.y*.5f+.02f)
+                {
+                    passageCrossed=true;
+                    Debug.Log("MUSEUM_PORTRAIT_CROSS_INTENT "+game.ProgressionState);
+                }
+            }
+            // Keep the intent through an airborne crossing and confirm only
+            // on a safe landing. The caller rechecks upstream gates every tick.
+            if(passageCrossed&&!PassageConfirmed&&game.safe&&game.player.grounded)
+            {PassageConfirmed=true;Debug.Log("MUSEUM_PORTRAIT_CROSS_CONFIRMED "+game.ProgressionState);}
         }
         public void Tick(float dt)
         {

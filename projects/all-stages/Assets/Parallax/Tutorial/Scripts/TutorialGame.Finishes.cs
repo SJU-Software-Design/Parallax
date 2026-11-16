@@ -16,6 +16,8 @@ namespace ShadeLink.Tutorial
             frame = SteelFinish(shader, new Color(.31f, .36f, .40f), .36f, .46f, wallGrain, .48f);
             floorPlate = SteelFinish(shader, new Color(.61f, .62f, .62f), .16f, .31f, floorGrain, .82f);
             paleFloorPlate = SteelFinish(shader, new Color(.64f, .64f, .64f), .16f, .31f, floorGrain, .82f);
+            floorPlate.SetFloat("_TutorialShadowPreviewReceiver", 1);
+            paleFloorPlate.SetFloat("_TutorialShadowPreviewReceiver", 1);
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = new Color(.75f, .75f, .74f);
