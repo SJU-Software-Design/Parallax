@@ -120,6 +120,7 @@ namespace ShadeLink.Tutorial
             if (Aimed != null) Aimed.Highlight(false, false);
             Aimed = null;
             inClimbRoom = true;
+            NotifyCheckpoint(false, "02 구역 저장");
             Props = climbDice;
             motor.MantleReachFor = ClimbMantleReach;
             door.position = new Vector3(Room.max.x + .1f, DoorHeight * .5f, DoorCenter);

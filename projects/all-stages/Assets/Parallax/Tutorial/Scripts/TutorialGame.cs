@@ -59,7 +59,30 @@ namespace ShadeLink.Tutorial
         float yaw, pitch, messageUntil, firstSize;
         int step;
         bool paused;
+        bool firstDiePickedUp;
         string message;
+        public event System.Action<bool, string> CheckpointNotice;
+        public event System.Action<string> InteractionWarning;
+        readonly System.Collections.Generic.Queue<System.Collections.Generic.KeyValuePair<bool, string>> pendingCheckpointNotices =
+            new System.Collections.Generic.Queue<System.Collections.Generic.KeyValuePair<bool, string>>();
+        void NotifyCheckpoint(bool reset, string text)
+        {
+            if (CheckpointNotice != null) CheckpointNotice(reset, text);
+            else if (GetComponent<GlassTrial.TutorialGlassNotice>() != null)
+                pendingCheckpointNotices.Enqueue(new System.Collections.Generic.KeyValuePair<bool, string>(reset, text));
+        }
+        public void ReplayPendingCheckpointNotices(System.Action<bool, string> receiver)
+        {
+            while (pendingCheckpointNotices.Count > 0)
+            {
+                var notice = pendingCheckpointNotices.Dequeue();
+                receiver(notice.Key, notice.Value);
+            }
+        }
+        public void PreserveBottomNoticeTime(float deltaTime)
+        {
+            if (Time.time < messageUntil) messageUntil += Mathf.Max(0, deltaTime);
+        }
 
         public Camera Camera { get; private set; }
         public CharacterController Controller { get; private set; }
@@ -134,6 +157,8 @@ namespace ShadeLink.Tutorial
             BuildMuseumElevator();
             ResetStep();
             SetPaused(false);
+            gameObject.AddComponent<GlassTrial.TutorialGlassNotice>();
+            gameObject.AddComponent<GlassTrial.TutorialGlassHover>();
             if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "--tutorial-stage3"))
                 StartTutorialStage(3);
             if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "-tutorial-elevator-review" || arg == "-tutorial-elevator-validate"))
@@ -465,6 +490,7 @@ namespace ShadeLink.Tutorial
         void OnDestroy()
         {
             DisposeShadowPreview();
+            DisposeRotationGlass();
             Font.textureRebuilt -= RefreshSignFont;
             if (signInk != null) Destroy(signInk);
             landingShake?.Dispose();
@@ -530,9 +556,11 @@ namespace ShadeLink.Tutorial
             if (inClimbRoom)
             {
                 ResetClimbRoom();
+                NotifyCheckpoint(true, "현재 구역을 초기화했습니다.");
                 return;
             }
             ResetStep();
+            NotifyCheckpoint(true, "현재 구역을 초기화했습니다.");
         }
 
         void StartTutorialStage(int stage)
@@ -551,6 +579,7 @@ namespace ShadeLink.Tutorial
             climbDropDelay = 0;
             motor.MantleReachFor = null;
             step = 0;
+            firstDiePickedUp = false;
             firstSize = 0;
             die.homePosition = TableHome;
             die.homeScale = Vector3.one * StartSize;
@@ -678,6 +707,7 @@ namespace ShadeLink.Tutorial
 
         public void StartPlacement()
         {
+            if (step == 0 && !inClimbRoom && !inSunlightRoom && Held == die) firstDiePickedUp = true;
             Held.GetComponent<TutorialLandingFeedback>().ClearPending();
             referenceViewportSize = ProjectedSize(Held.WorldBounds);
             Held.BeginHold();
@@ -772,6 +802,7 @@ namespace ShadeLink.Tutorial
             die.homeScale = Vector3.one * checkpointSize;
             die.homeRotation = Quaternion.identity;
             step++;
+            NotifyCheckpoint(false, "상태 저장");
             TutorialAudio.Play("puzzle.complete", this, Controller.transform.position);
             ResetRotationHint();
             RefreshLesson();
@@ -784,9 +815,26 @@ namespace ShadeLink.Tutorial
 
         public void Tell(string text, float duration = 4)
         {
+            if (GlassTrial.TutorialGlassNotice.IsInteractionWarning(text))
+            {
+                var glass = GetComponent<GlassTrial.TutorialGlassNotice>();
+                if (InteractionWarning != null && glass != null && glass.isActiveAndEnabled) { InteractionWarning(text); return; }
+                duration = GlassTrial.TutorialGlassNotice.ClassifyInteractionWarning(text).Seconds;
+            }
             message = text;
             messageUntil = Time.time + duration;
         }
+
+        // Keep the original notice priority and timing in one place for both
+        // the glass presentation and the legacy fallback.
+        public string CurrentBottomNotice => sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
+            climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
+            Time.time < messageUntil ? message :
+            inSunlightRoom && Held != null ? "빗금은 예상 그늘이에요. 주사위를 놓으면 실제 그늘이 생겨요." :
+            exitUnlocked && !inClimbRoom && !inSunlightRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
+            step == 0 && !inClimbRoom && !inSunlightRoom && !firstDiePickedUp && Held == null ? "주사위를 클릭해서 잡아보세요" :
+            null;
+        public bool BottomNoticeVisible => !paused && !elevatorDeparted && (MuseumElevator == null || !MuseumElevator.ContainsPlayer);
 
         bool stageTravelTab;
         void OnGUI()
@@ -797,7 +845,6 @@ namespace ShadeLink.Tutorial
             float height = Screen.height;
             var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = 20, wordWrap = true, alignment = TextAnchor.MiddleCenter };
             style.normal.textColor = Color.white;
-            if (inSunlightRoom) DrawSunlightExposure(width, height);
             bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
                 interaction.ProjectionApplied && interaction.ReleaseRestriction == null &&
                 SizeFeedback(die.transform.localScale.x) == null;
@@ -821,14 +868,10 @@ namespace ShadeLink.Tutorial
                 DrawReference(rect, Reference);
             }
             PlayerControls.DrawCursor(new Vector2(width / 2, height / 2), Aimed != null, Held != null, false, Accent, Color.white);
-            string notice = sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
-                climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
-                Time.time < messageUntil ? message :
-                inSunlightRoom && Held != null ? "빗금은 예상 그늘이에요. 주사위를 놓으면 실제 그늘이 생겨요." :
-                exitUnlocked && !inClimbRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
-                null;
+            string notice = CurrentBottomNotice;
             DrawRotationHint(width, height);
-            if (notice != null)
+            var glassNotice = GetComponent<GlassTrial.TutorialGlassNotice>();
+            if (notice != null && (glassNotice == null || !glassNotice.Ready))
             {
                 float bannerWidth = Mathf.Min(width - 36, 1040);
                 var banner = new Rect((width - bannerWidth) * .5f, height - 92, bannerWidth, 64);

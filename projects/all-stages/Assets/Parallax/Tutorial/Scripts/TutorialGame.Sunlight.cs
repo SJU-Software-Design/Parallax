@@ -24,6 +24,10 @@ namespace ShadeLink.Tutorial
         bool inSunlightRoom, sunlightComplete;
         int sunlightCheckpoint;
         float sunlightExposure, sunlightNextWarning;
+        bool sunlightSafe = true;
+        public bool SunlightHudActive => inSunlightRoom && !sunlightComplete;
+        public bool SunlightHudSafe => sunlightSafe;
+        public float SunlightHudExposure => sunlightExposure;
         float trainingShadowDistance;
         ShadowQuality trainingShadowQuality;
 
@@ -214,9 +218,11 @@ namespace ShadeLink.Tutorial
             inClimbRoom = false;
             climbArrivalPlaying = false;
             inSunlightRoom = true;
+            NotifyCheckpoint(false, "03 구역 저장");
             Props = sunlightDice;
             motor.MantleReachFor = null;
             sunlightExposure = 0;
+            sunlightSafe = true;
             SetSunlightLighting(true);
             firstSign.SetActive(false); shrinkSign.SetActive(false); secondSign.SetActive(false);
             primaryTarget.gameObject.SetActive(false); tabletopTarget.gameObject.SetActive(false); secondaryTarget.gameObject.SetActive(false);
@@ -228,6 +234,7 @@ namespace ShadeLink.Tutorial
             ResetMuseumElevator();
             sunlightCheckpoint = 0;
             sunlightExposure = 0;
+            sunlightSafe = true;
             sunlightComplete = false;
             if (sunlightDice != null) foreach (var prop in sunlightDice) prop.Restore();
         }
@@ -248,8 +255,14 @@ namespace ShadeLink.Tutorial
             if (Aimed != null) Aimed.Highlight(false, false);
             Aimed = null;
             sunlightExposure = 0;
+            sunlightSafe = true;
             MoveToSunlightCheckpoint();
-            Tell("마지막 쉼터로 돌아왔어요. 놓아 둔 주사위는 그대로예요. 크기나 위치를 조금 바꿔 봐요.", 5f);
+            message = null;
+            messageUntil = 0;
+            NotifyCheckpoint(true, "마지막 쉼터로 돌아왔어요.");
+            var glassNotice = GetComponent<GlassTrial.TutorialGlassNotice>();
+            if (glassNotice == null || !glassNotice.isActiveAndEnabled)
+                Tell("마지막 쉼터로 돌아왔어요.", 3f);
         }
 
         bool SunlightSafe(Vector3 feet)
@@ -288,6 +301,7 @@ namespace ShadeLink.Tutorial
             if (local.y < -2.2f || local.x < -2.5f) { RespawnSunlight(); return; }
             if (sunlightComplete || (MuseumElevator != null && MuseumElevator.ContainsPlayer)) return;
             bool safe = SunlightSafe(feet);
+            sunlightSafe = safe;
             sunlightExposure = Mathf.Clamp01(sunlightExposure + Mathf.Min(dt, .05f) * (safe ? -2f : .92f));
             if (sunlightExposure > .28f && Time.time >= sunlightNextWarning)
             {
@@ -299,27 +313,18 @@ namespace ShadeLink.Tutorial
             if (sunlightCheckpoint < 1 && local.x > 13.5f && local.x < 17.5f && Mathf.Abs(local.z - 9.5f) < 2f)
             {
                 sunlightCheckpoint = 1;
+                NotifyCheckpoint(false, "마지막 쉼터 저장");
                 Tell("첫 쉼터에 도착했어요. 새 주사위로 다음 그늘을 이어 보세요.", 6f);
             }
             if (sunlightCheckpoint < 2 && local.x > 24f && local.x < 29.8f && Mathf.Abs(local.z - 9.5f) < 2f)
             {
                 sunlightCheckpoint = 2;
+                NotifyCheckpoint(false, "마지막 쉼터 저장");
                 Tell("모퉁이 쉼터예요. 왼쪽으로 꺾인 길을 보고, 햇빛이 오는 쪽에 주사위를 놓아 보세요.", 7f);
             }
             // Completion now belongs to the closed elevator departure. Merely
             // entering the sheltered approach must not load the next scene.
         }
 
-        void DrawSunlightExposure(float width, float height)
-        {
-            if (sunlightExposure <= .03f) return;
-            Color previous = GUI.color;
-            GUI.color = new Color(1f, .52f, .16f, sunlightExposure * .25f);
-            GUI.DrawTexture(new Rect(0, 0, width, 32), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(0, height - 32, width, 32), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(0, 32, 24, height - 64), Texture2D.whiteTexture);
-            GUI.DrawTexture(new Rect(width - 24, 32, 24, height - 64), Texture2D.whiteTexture);
-            GUI.color = previous;
-        }
     }
 }

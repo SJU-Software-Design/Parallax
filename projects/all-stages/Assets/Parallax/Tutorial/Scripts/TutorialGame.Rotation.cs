@@ -7,6 +7,10 @@ namespace ShadeLink.Tutorial
         const float RotationPracticeDegrees = 12f;
         bool rotationHintCompleted;
         float rotationConfirmationRemaining, rotationPracticeDegrees;
+        Material rotationGlassMaterial;
+        Material rotationShadowMaterial;
+        public bool RotationGlassCaptureNeeded => isActiveAndEnabled && BottomNoticeVisible &&
+            TryRotationHintLayout(Screen.width, Screen.height, out _, out _);
 
         bool IsRotationLesson => step == 2 && !exitUnlocked && !inClimbRoom && !inSunlightRoom &&
             die != null && die.gameObject.activeInHierarchy;
@@ -90,10 +94,13 @@ namespace ShadeLink.Tutorial
             HintLine(tail, anchor, Mint, 2 * scale);
             GUI.DrawTexture(new Rect(anchor.x - 4 * scale, anchor.y - 4 * scale, 8 * scale, 8 * scale),
                 Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, Mint, 0, 4 * scale);
-            GUI.DrawTexture(banner, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                new Color(.055f, .065f, .065f, .94f), 0, 12 * scale);
-            GUI.DrawTexture(banner, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                new Color(.9f, .94f, .91f, .8f), 1 * scale, 12 * scale);
+            if (!DrawRotationGlass(banner, scale))
+            {
+                GUI.DrawTexture(banner, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
+                    new Color(.055f, .065f, .065f, .94f), 0, 12 * scale);
+                GUI.DrawTexture(banner, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
+                    new Color(.9f, .94f, .91f, .8f), 1 * scale, 12 * scale);
+            }
             var style = new GUIStyle(GUI.skin.label)
             {
                 font = font, fontSize = Mathf.Max(12, Mathf.RoundToInt(28 * scale)), fontStyle = FontStyle.Bold,
@@ -124,6 +131,72 @@ namespace ShadeLink.Tutorial
                     "다른 면도 볼 수 있어요.\n이제 먼 벽에 더 크게 놓아 보세요.", style);
             GUI.color = previous;
             return true;
+        }
+
+        bool DrawRotationGlass(Rect banner, float scale)
+        {
+            if (Camera == null) return false;
+            var capture = Camera.GetComponent<GlassTrial.GlassCameraCapture>();
+            if (capture == null || capture.blurred == null) return false;
+            if (!EnsureRotationGlassMaterial()) return false;
+            if (Event.current.type != EventType.Repaint) return true;
+            rotationGlassMaterial.SetFloat("_PanelAspect", banner.width / Mathf.Max(1, banner.height));
+            // Match the original 12px rounded card rather than a pill.
+            rotationGlassMaterial.SetFloat("_CornerRadius", Mathf.Clamp(24f * scale / Mathf.Max(1, banner.height), .01f, 1f));
+            rotationGlassMaterial.SetTexture("_MainTex", capture.blurred);
+            if (rotationShadowMaterial == null)
+            {
+                var shadow = Resources.Load<Shader>("TutorialIslandShadow");
+                if (shadow != null && shadow.isSupported)
+                {
+                    rotationShadowMaterial = new Material(shadow) { hideFlags = HideFlags.HideAndDontSave };
+                    rotationShadowMaterial.SetColor("_Color", new Color(0, 0, 0, .26f));
+                    rotationShadowMaterial.SetFloat("_Padding", 13f * scale);
+                    rotationShadowMaterial.SetFloat("_FadeDistance", 11f * scale);
+                    rotationShadowMaterial.SetFloat("_CornerRadiusPixels", 12f * scale);
+                }
+            }
+            if (rotationShadowMaterial != null)
+            {
+                rotationShadowMaterial.SetVector("_PanelSize", new Vector4(banner.width, banner.height, 0, 0));
+                rotationShadowMaterial.SetFloat("_Padding", 13f * scale);
+                rotationShadowMaterial.SetFloat("_FadeDistance", 11f * scale);
+                rotationShadowMaterial.SetFloat("_CornerRadiusPixels", 12f * scale);
+                var shadowRect = new Rect(banner.x - 13f * scale, banner.y - 10f * scale, banner.width + 26f * scale, banner.height + 26f * scale);
+                Graphics.DrawTexture(shadowRect, Texture2D.whiteTexture, rotationShadowMaterial);
+            }
+            Graphics.DrawTexture(banner, capture.blurred, rotationGlassMaterial);
+            return true;
+        }
+
+        bool EnsureRotationGlassMaterial()
+        {
+            if (rotationGlassMaterial == null)
+            {
+                var shader = Resources.Load<Shader>("TutorialRotationGlass");
+                if (shader == null || !shader.isSupported) return false;
+                rotationGlassMaterial = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
+                rotationGlassMaterial.SetFloat("_GlassMode", 1);
+                rotationGlassMaterial.SetFloat("_Refraction", 1);
+                rotationGlassMaterial.SetFloat("_RefractionStrength", 14);
+                rotationGlassMaterial.SetFloat("_RefractionWidth", .22f);
+                rotationGlassMaterial.SetFloat("_LensDistortion", 0);
+                rotationGlassMaterial.SetFloat("_EdgeContrast", 1);
+                rotationGlassMaterial.SetFloat("_EdgeContrastStrength", 1.35f);
+                rotationGlassMaterial.SetFloat("_WhiteTintStrength", .7f);
+                rotationGlassMaterial.SetFloat("_DarkTintStrength", .16f);
+                rotationGlassMaterial.SetFloat("_SpectrumPixels", 4f);
+                rotationGlassMaterial.SetFloat("_MilkyTint", 0);
+            }
+            return true;
+        }
+
+        void DisposeRotationGlass()
+        {
+            if (rotationGlassMaterial != null) Destroy(rotationGlassMaterial);
+            if (rotationShadowMaterial != null) Destroy(rotationShadowMaterial);
+            rotationGlassMaterial = null;
+            rotationShadowMaterial = null;
         }
 
         static void DrawRotationMouse(Vector2 origin, float scale)
