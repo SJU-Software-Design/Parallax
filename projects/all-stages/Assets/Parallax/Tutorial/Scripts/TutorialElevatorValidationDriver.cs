@@ -24,7 +24,9 @@ namespace ShadeLink.Tutorial
         }
         [Serializable] sealed class Report
         {
-            public bool passed;
+            public bool passed, noCapture;
+            public int captureCount;
+            public List<string> skippedChecks = new List<string>(), skippedCaptures = new List<string>();
             public string phase, failure, startedUtc, finishedUtc, unity, gpu, finalScene;
             public string scope = "Focused native/Editor integration QA of the actual E01 prefab, automatic ride states and actual asynchronous Tutorial-to-Gallery scene handoff. Review setup jumps to the existing final tutorial approach; actual CharacterController.Move enters the cabin, then a real kinematic rigidbody placed in the production safety bounds exercises reopening. Production pause/reset commands are invoked by method reflection. No completion, door phase, arrival flag or scene state is supplied. Gallery.Tick drives the actual destination motor through the open doorway. Camera.Render captures use disclosed inspection viewpoints and existing scene materials/lighting. This is not a continuous tutorial puzzle playthrough or subjective art/audio approval.";
             public float closedDoorDuration, feetPoseError, eyePoseError, viewPoseErrorDegrees, maximumShaftMotion;
@@ -54,6 +56,7 @@ namespace ShadeLink.Tutorial
         TutorialElevatorAudio selectedAudio;
         int runVoiceAtDeparture;
         static readonly string[] AudioIds = { "EL02", "EL04", "EL07", "EL09", "EL11", "EL25", "EL21", "EL23" };
+        static bool NoCapture => Array.IndexOf(Environment.GetCommandLineArgs(), "-validation-no-capture") >= 0;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Bootstrap()
@@ -69,6 +72,9 @@ namespace ShadeLink.Tutorial
         {
             DontDestroyOnLoad(gameObject);
             report.startedUtc = DateTime.UtcNow.ToString("o");
+            report.noCapture = NoCapture;
+            if (NoCapture) report.scope = report.scope.Replace("Camera.Render captures use disclosed inspection viewpoints and existing scene materials/lighting.",
+                "Explicit -validation-no-capture disables validation Camera.Render, pixel reads and PNG output. Three graphics assertions are reported as skipped and are not counted as passed; physics, audio and real scene handoffs still run.");
             report.unity = Application.unityVersion;
             report.gpu = SystemInfo.graphicsDeviceName + " / " + SystemInfo.graphicsDeviceType;
             Application.runInBackground = true;
@@ -83,7 +89,7 @@ namespace ShadeLink.Tutorial
                 reportPath = Path.Combine(reportPath, "tutorial-elevator-validation-results.json");
             Directory.CreateDirectory(Path.GetDirectoryName(reportPath));
             captureDirectory = Path.Combine(Path.GetDirectoryName(reportPath), "captures");
-            Directory.CreateDirectory(captureDirectory);
+            if (!NoCapture) Directory.CreateDirectory(captureDirectory);
             if (File.Exists(reportPath))
             {
                 Debug.LogError("Refusing to reuse tutorial elevator validation report: " + reportPath);
@@ -340,9 +346,10 @@ namespace ShadeLink.Tutorial
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "-tutorial-route-beach-validate") >= 0)
             {
                 report.phase = "actual museum exit continues to Beach";
-                yield return TutorialRouteBeachValidation.Run(gallery, CheckThat, captureDirectory);
+                yield return TutorialRouteBeachValidation.Run(gallery, CheckThat, captureDirectory, SkipVisualCheck);
             }
-            CheckThat(report.tutorialCaptureDeviation > .008f && report.shaftCaptureDeviation > .008f && report.arrivalCaptureDeviation > .008f,
+            if (NoCapture) SkipVisualCheck("Actual camera renders contain visible geometry");
+            else CheckThat(report.tutorialCaptureDeviation > .008f && report.shaftCaptureDeviation > .008f && report.arrivalCaptureDeviation > .008f,
                 "Actual camera renders contain visible geometry", "luminance deviations=" + report.tutorialCaptureDeviation + ", " + report.shaftCaptureDeviation + ", " + report.arrivalCaptureDeviation);
             report.phase = "complete";
         }
@@ -457,6 +464,11 @@ namespace ShadeLink.Tutorial
             foreach (var child in parent.GetComponentsInChildren<Transform>(true)) if (child.name == name) return child;
             return null;
         }
+        void SkipVisualCheck(string name)
+        {
+            report.skippedChecks.Add(name);
+            Debug.Log("TUTORIAL_ELEVATOR_VISUAL_SKIP " + name + " (-validation-no-capture)");
+        }
         void CheckThat(bool passed, string name, string detail)
         {
             report.checks.Add(new Check { name = name, detail = detail, passed = passed });
@@ -492,6 +504,7 @@ namespace ShadeLink.Tutorial
         }
         float Capture(Camera camera, string name, Vector3? position, Vector3? lookAt)
         {
+            if (NoCapture) { report.skippedCaptures.Add(name); return 0; }
             if (camera == null) throw new InvalidOperationException("Capture camera is missing: " + name);
             Vector3 oldPosition = camera.transform.position;
             Quaternion oldRotation = camera.transform.rotation;
@@ -546,6 +559,7 @@ namespace ShadeLink.Tutorial
             if (blocker != null) Destroy(blocker);
             if (ride != null) { ride.DepartureReady -= ObserveDeparture; ride.ArrivedAtDestination -= ObserveArrival; }
             report.finishedUtc = DateTime.UtcNow.ToString("o");
+            report.captureCount = report.captures.Count;
             report.finalScene = SceneManager.GetActiveScene().name;
             report.passed = report.failure == null && report.errors.Count == 0 && report.phase == "complete" && report.checks.Count >= 30;
             SceneManager.sceneLoaded -= ObserveScene;

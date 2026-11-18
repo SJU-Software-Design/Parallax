@@ -15,6 +15,7 @@ namespace ShadeLink.Tutorial
     // must then run; no completion/opening flags or scene-load setters are used.
     public sealed class TutorialRouteBeachValidation : MonoBehaviour
     {
+        static bool NoCapture => Array.IndexOf(Environment.GetCommandLineArgs(), "-validation-no-capture") >= 0;
         GalleryGame gallery;
         bool drive;
         int fixedSteps;
@@ -26,7 +27,7 @@ namespace ShadeLink.Tutorial
             fixedSteps++;
         }
 
-        public static IEnumerator Run(GalleryGame game, Action<bool, string, string> check, string outputFolder = null)
+        public static IEnumerator Run(GalleryGame game, Action<bool, string, string> check, string outputFolder = null, Action<string> skippedCheck = null)
         {
             Require(check, game != null && SceneManager.GetActiveScene().name == "Gallery", "Route begins in the actual arriving Gallery", "Tutorial elevator handoff must have completed first");
             Require(check, Application.CanStreamedLevelBeLoaded("Beach"), "Beach belongs to the actual build scene list", "No direct test scene load is used");
@@ -83,11 +84,20 @@ namespace ShadeLink.Tutorial
                 game.PlacePlayer(new Vector3(mouth.x - .15f, mouth.y - 1.55f, mouth.z - 3));
                 game.yaw = 0; game.pitch = 0; game.SyncView();
                 yield return null; yield return null;
-                portal.RenderWindow();
-                Color32[] coastal = ReadTexture(portal.PortalTexture, FileAt(outputFolder, "04-route-live-beach-portal.png"));
-                float portalDeviation = Deviation(coastal);
-                Require(check, portal.Ready && portal.PreviewCamera != null && portal.PreviewCamera.GetComponent<AudioListener>() == null && portalDeviation > .012f,
-                    "Production coastal portal renders actual varied pixels", "deviation=" + portalDeviation.ToString("F4"));
+                if (NoCapture)
+                {
+                    if (!portal.Ready || portal.PreviewCamera == null || portal.PreviewCamera.GetComponent<AudioListener>() != null)
+                        throw new InvalidOperationException("Production coastal portal must retain its ready render-only camera.");
+                    Skip(skippedCheck, "Production coastal portal renders actual varied pixels");
+                }
+                else
+                {
+                    portal.RenderWindow();
+                    Color32[] coastal = ReadTexture(portal.PortalTexture, FileAt(outputFolder, "04-route-live-beach-portal.png"));
+                    float portalDeviation = Deviation(coastal);
+                    Require(check, portal.Ready && portal.PreviewCamera != null && portal.PreviewCamera.GetComponent<AudioListener>() == null && portalDeviation > .012f,
+                        "Production coastal portal renders actual varied pixels", "deviation=" + portalDeviation.ToString("F4"));
+                }
 
                 driver.drive = false;
                 entrance.ResetEntrance();
@@ -146,11 +156,17 @@ namespace ShadeLink.Tutorial
                 foreach (var listener in UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None))
                     if (listener.enabled && listener.gameObject.activeInHierarchy) listeners++;
                 Require(check, listeners == 1, "Beach has one active AudioListener", listeners.ToString());
-                Color32[] arrival = RenderCamera(beach.view, FileAt(outputFolder, "05-route-actual-beach-arrival.png"));
-                float mean = Mean(arrival), deviation = Deviation(arrival);
-                Require(check, mean > .025f && deviation > .012f,
-                    "Actual Beach view renders a visible arrival after the production fade", "mean=" + mean.ToString("F4") + ", deviation=" + deviation.ToString("F4"));
-                Debug.Log("TUTORIAL_ROUTE_BEACH_VALIDATION_OK: real elevator arrival followed by production hand opening/crossing/load; first Beach checkpoint and actual movement/render verified.");
+                if (NoCapture) Skip(skippedCheck, "Actual Beach view renders a visible arrival after the production fade");
+                else
+                {
+                    Color32[] arrival = RenderCamera(beach.view, FileAt(outputFolder, "05-route-actual-beach-arrival.png"));
+                    float mean = Mean(arrival), deviation = Deviation(arrival);
+                    Require(check, mean > .025f && deviation > .012f,
+                        "Actual Beach view renders a visible arrival after the production fade", "mean=" + mean.ToString("F4") + ", deviation=" + deviation.ToString("F4"));
+                }
+                Debug.Log(NoCapture
+                    ? "TUTORIAL_ROUTE_BEACH_VALIDATION_OK: real elevator arrival followed by production hand opening/crossing/load; first Beach checkpoint and actual movement verified. Graphics assertions skipped (-validation-no-capture)."
+                    : "TUTORIAL_ROUTE_BEACH_VALIDATION_OK: real elevator arrival followed by production hand opening/crossing/load; first Beach checkpoint and actual movement/render verified.");
             }
             finally
             {
@@ -160,6 +176,11 @@ namespace ShadeLink.Tutorial
             }
         }
 
+        static void Skip(Action<string> skippedCheck, string name)
+        {
+            skippedCheck?.Invoke(name);
+            Debug.Log("TUTORIAL_ROUTE_VISUAL_SKIP " + name + " (-validation-no-capture)");
+        }
         static Vector3 Shift(GalleryGame game, Vector3 legacy) => game.bottleBalance != null ? GalleryBottleBalanceCourse.ShiftLegacy(legacy) : legacy;
         static void Require(Action<bool, string, string> check, bool passed, string name, string detail)
         {
@@ -174,6 +195,7 @@ namespace ShadeLink.Tutorial
         }
         static Color32[] ReadTexture(RenderTexture target, string path)
         {
+            if (NoCapture) throw new InvalidOperationException("Validation pixel reads are disabled by -validation-no-capture.");
             if (target == null || !target.IsCreated()) throw new InvalidOperationException("Production portal texture is not created");
             RenderTexture previous = RenderTexture.active;
             Texture2D pixels = null;
@@ -189,6 +211,7 @@ namespace ShadeLink.Tutorial
         }
         static Color32[] RenderCamera(Camera camera, string path)
         {
+            if (NoCapture) throw new InvalidOperationException("Validation Camera.Render is disabled by -validation-no-capture.");
             if (camera == null || !camera.enabled) throw new InvalidOperationException("Actual Beach view is unavailable");
             var oldTarget = camera.targetTexture;
             var target = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);

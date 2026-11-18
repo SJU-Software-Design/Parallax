@@ -173,7 +173,7 @@ namespace ShadeLink.Beach
             {
                 Arrived=true;
                 if(Game.waterGate!=null)Game.waterGate.unlocked=true;
-                Game.Tell("그늘 배로 도착했습니다 · 열린 길을 따라 모래성 축제로 가세요.",7);
+                Game.Tell("그늘 배로 도착했습니다 · 열린 길을 따라 모형 항구로 가세요.",7);
             }
             lastPosition=transform.position;
             UpdateRope();

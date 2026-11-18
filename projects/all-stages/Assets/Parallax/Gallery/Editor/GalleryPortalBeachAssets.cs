@@ -19,10 +19,12 @@ namespace ShadeLink.Editor
         public const string PrefabPath = "Assets/Parallax/Gallery/Resources/MuseumPortal/BeachPreview.prefab";
         const string RootPath = "Assets/Parallax/Gallery/Resources/MuseumPortal/";
         const string DirectoryPath = RootPath + "Beach/";
-        // The southeast shoreline frames the new C parasols and flowers against the real festival castle.
+        // Frame the actual tidal garden, picnic parasols and harbor rather than the retired finale.
         // This is a scenic glimpse, not a checkpoint: actual entry still starts at BeachWorld.Checkpoints[0].
-        public static readonly Vector3 SourceAperture = new Vector3(18.5f, 0, 79);
-        public const float SourceYaw = -48.5f;
+        public static readonly Vector3 SourceAperture = new Vector3(12.5f, 0, 34);
+        public const float SourceYaw = -52f;
+        public const float ScenicCutoffZ = 72f;
+        public const string SceneryRegion = "tidal-garden-and-shadow-harbor";
 
         sealed class Piece
         {
@@ -33,11 +35,11 @@ namespace ShadeLink.Editor
         }
         [Serializable] sealed class SourceRecord
         {
-            public string sourceScene, sourceSceneSha256, description;
+            public string sourceScene, sourceSceneSha256, description, sceneryRegion;
             public Vector3 sourceAperture, sourceEye;
-            public float sourceYaw;
+            public float sourceYaw, scenicCutoffZ;
             public int sourceRenderers, sourceMeshes, meshGroups, triangles;
-            public string[] originalMaterialPaths;
+            public string[] originalMaterialPaths, sourceRendererNames;
         }
 
         [MenuItem("Parallax/Prepare cathedral beach preview")]
@@ -73,9 +75,13 @@ namespace ShadeLink.Editor
                 Matrix4x4 frame = Matrix4x4.TRS(SourceAperture, viewRotation, Vector3.one);
                 int sourceCount = 0;
                 var materialPaths = new HashSet<string>();
+                var sourceNames = new List<string>();
                 foreach (var renderer in beach.GetComponentsInChildren<MeshRenderer>(true))
                 {
                     if (!renderer.enabled || !renderer.gameObject.activeInHierarchy || renderer.GetComponent<TextMesh>() != null) continue;
+                    // Do not reveal a final mechanism or retain an obsolete sandcastle.
+                    // The broad ocean mesh overlaps this scenic region and remains intact.
+                    if (renderer.bounds.min.z > ScenicCutoffZ || IsRetiredCastle(renderer)) continue;
                     var filter = renderer.GetComponent<MeshFilter>();
                     if (filter == null || filter.sharedMesh == null || renderer.sharedMaterials.Length == 0) continue;
                     // Preview/interaction overlays have no place in a render-only view of the destination.
@@ -104,6 +110,7 @@ namespace ShadeLink.Editor
                         }
                         pieces.Add(new Piece { mesh = mesh, subMesh = subMesh, matrix = transform, material = material });
                     }
+                    sourceNames.Add(SourceName(renderer.transform, beach.transform));
                     sourceCount++;
                 }
                 if (sourceCount < 100 || !converted.Keys.Any(m => m.shader.name.IndexOf("Water", StringComparison.OrdinalIgnoreCase) >= 0) ||
@@ -150,11 +157,13 @@ namespace ShadeLink.Editor
                         sourceScene = SourceScenePath,
                         sourceSceneSha256 = BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(SourceScenePath))).Replace("-", "").ToLowerInvariant(),
                         sourceAperture = SourceAperture, sourceEye = SourceAperture + Vector3.up * 1.85f,
-                        sourceYaw = SourceYaw, sourceRenderers = sourceCount, sourceMeshes = readable.Count,
+                        sourceYaw = SourceYaw, scenicCutoffZ = ScenicCutoffZ, sceneryRegion = SceneryRegion,
+                        sourceRenderers = sourceCount, sourceMeshes = readable.Count,
                         meshGroups = groups, triangles = triangles,
                         originalMaterialPaths = materialPaths.OrderBy(p => p, StringComparer.Ordinal).ToArray(),
+                        sourceRendererNames = sourceNames.OrderBy(p => p, StringComparer.Ordinal).ToArray(),
                         description = "Render-only extraction of actual Beach.unity meshes and original texture maps. " +
-                            "Scenic view from the southeast coast across the latest C parasols, flowers, sand festival and castle. " +
+                            "Scenic view from the southeast tidal channel across the real picnic parasols, flower garden and shadow harbor. Retired castle geometry and the final mechanism beyond the scenic cutoff are excluded. " +
                             "Combined by source material. Independent daylight, sky and animated-water shaders do not alter museum lighting or shader globals. " +
                             "No gameplay scripts, player, collider, listener, reflection camera or global-light component is copied. " +
                             "Original third-party source credits and destination assets remain in the project."
@@ -175,6 +184,24 @@ namespace ShadeLink.Editor
             }
         }
 
+        static bool RetiredName(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return false;
+            return value.IndexOf("castle", StringComparison.OrdinalIgnoreCase) >= 0 || value.Contains("모래성");
+        }
+        static bool IsRetiredCastle(MeshRenderer renderer)
+        {
+            for (Transform at = renderer.transform; at != null; at = at.parent)
+                if (RetiredName(at.name)) return true;
+            return renderer.sharedMaterials.Any(material => material != null &&
+                (RetiredName(material.name) || RetiredName(AssetDatabase.GetAssetPath(material))));
+        }
+        static string SourceName(Transform renderer, Transform owner)
+        {
+            string name = renderer.name;
+            for (Transform at = renderer.parent; at != null && at != owner; at = at.parent) name = at.name + "/" + name;
+            return name;
+        }
         static Shader RequiredShader(string name)
         {
             Shader shader = Shader.Find(name);

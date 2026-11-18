@@ -1,0 +1,27 @@
+PARALLAX 0.29.1 — 수중 천막 다리 / 출항 사운드
+
+기존 원근 조작·다리·배의 움직임은 유지합니다.
+R: 현재 구역 초기화 / Shift+R: 해변 처음부터 / ESC: 일시정지·구역 이동
+
+선정 적용
+- 작은 돌 바닥: HF04 / 중간: HF08 / 큰 돌: HF06 (기본 gain .22, 작게)
+- 돌 잡기 추가음 없음. 추 받침 충돌 추가음 없음. 기존 놓기156은 유지.
+- 실제 하중 고정: HF11 / 도르래: HF14 / 실제 출수: HF17 / 인양 완료: HF20
+- 인양 뒤 젖은 천막: HF22. 실제 천막 가장자리 낙수가 수면 밖부터 보이며,
+  완전 인양 뒤 8초 동안 소리와 물방울이 잦아듭니다.
+- 돌 낙수: 소 HF23 / 중 HF24 / 대 HF25. 같은 낙수의 반복 재생 방지.
+- 출항: HF26 / 부상: HF29 / 비행: HF31 (기본 gain .065, 은은하게)
+- 출항 BGM: HB02 Wanderlust 전체 원본 사용, 선정 미리듣기와 같은 원본24초부터 시작.
+  배 위에서는 BB01이 2초 동안 먼저 줄어듭니다. 내려오면 복원합니다.
+  실제 E 출항 후 기존 음악이 0이 되면 0.15초 뒤 HB02가 1.5초 동안 들어옵니다.
+- 엔딩 HF33은 별도의 BB01 데모 클립을 중복 재생하지 않고 감쇠 방식을 적용합니다.
+  24초 비행의 13~22초: HB02 감쇠 / 16~24초: 바람·환경 감쇠.
+  기존 화면 암전과 함께 음악이 먼저 사라지고 작은 바람 여운이 남습니다.
+- 일시정지 때 모든 새 소리/낙수/감쇠 시간 정지, 초기화 때 BB01/수중 다리 상태 복원.
+
+음원별 원출처·라이선스·편집 이력은 함께 제공한
+HarborEndingAudio-CREDITS.txt 및 HarborEndingAudio-selection.json을 확인하세요.
+Wanderlust by Scott Buckley — released under CC BY 4.0.
+https://www.scottbuckley.com.au/library/wanderlust/
+https://creativecommons.org/licenses/by/4.0/
+Wanderlust excerpt begins at 00:24; game applies fade-in and ending fade-out.

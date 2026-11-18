@@ -1,0 +1,1309 @@
+{
+  "passed": true,
+  "scope": "Focused selected-audio native PhysX/controller tests in the actual Beach scene. Explicit prop dimensions/positions, aligned mirror, shadow solution source poses and enlarged released boat/rider are declared fixtures. The added ending-impact group isolates the actual natural boulder at .7/1.8/3.5 metre extents over the authored shoreline and water, with small post-entry body offsets to exercise splash-latch suppression; these are collision/audio fixtures, not counterweight-puzzle solution injection. Its cues come only from production collision callbacks and SampleWater after Script PhysX, never direct Play or Contact calls. Puzzle completion, contacts, water entry, shade, support, launch and berth state are production results; no counts/completion/phase fields are injected. Script physics advances gameplay faster than real time; DSP playback/pause checks use actual realtime waits. Not an unassisted full-stage solve or subjective mix approval.",
+  "scene": "Beach",
+  "unity": "6000.3.24f1",
+  "failure": "",
+  "resourceCount": 27,
+  "endingResourceCount": 15,
+  "checks": [
+    {
+      "name": "Actual Beach scene and scene-local audio bank loaded",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "All 26 selected WAV resources including BC02 and full BB01 music load",
+      "detail": "SandFootstep097, SandLand085, PropGrab128, PropRelease156, SandImpactSmall091, SandImpactMedium083, SandImpactLargeTeamBreak3, WoodRodSandBE06, WoodFootstepBE13_01, WoodFootstepBE13_02, WoodFootstepBE13_03, WoodFootstepBE13_04, WoodLand102, ShoreAmbience115, WaterImpactSmall124, WaterImpactMediumTeamEnter1, WaterImpactLargeBE10, WoodImpactSmall005, WoodImpactMedium008, WoodImpactLarge132, GateMove027, Completion036, BoatStartBE12, BoatRunBE11, BoatStopBE12, BgmBB01_BossaAntigua, BoatCompleteBC02",
+      "passed": true
+    },
+    {
+      "name": "027 gate and 036 completion selected; no 035 solar charging cue",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Native controller walking on sand plays 097",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Native sand jump landing plays 085",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual departure-pier support is wood",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Native wood walking cycles all four BE13 single steps",
+      "detail": "WoodFootstepBE13_01,WoodFootstepBE13_02,WoodFootstepBE13_03,WoodFootstepBE13_04",
+      "passed": true
+    },
+    {
+      "name": "Native wood landing plays 102",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual sand and wood footsteps use quieter 0.10 gain (-8 dB)",
+      "detail": "step.sand=0.1,step.sand=0.1,step.wood=0.1,step.wood=0.1,step.wood=0.1,step.wood=0.1,step.wood=0.1",
+      "passed": true
+    },
+    {
+      "name": "All six actual fixed timber decks/piers and sand resolve by nearest real support",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual gravity sand impact small",
+      "detail": "extent=0.7",
+      "passed": true
+    },
+    {
+      "name": "Immediate duplicate contact is suppressed small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh regrab and release restores first sand impact small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual parasol contact with timber plays 005/008/132 small",
+      "detail": "Only fixed shade roof disabled; timber and prop unchanged; actual cues=prop.grab:PropGrab128,prop.release:PropRelease156,wood.small:WoodImpactSmall005",
+      "passed": true
+    },
+    {
+      "name": "Actual gravity sand impact medium",
+      "detail": "extent=1.8",
+      "passed": true
+    },
+    {
+      "name": "Immediate duplicate contact is suppressed medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh regrab and release restores first sand impact medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual parasol contact with timber plays 005/008/132 medium",
+      "detail": "Only fixed shade roof disabled; timber and prop unchanged; actual cues=prop.grab:PropGrab128,prop.release:PropRelease156,wood.medium:WoodImpactMedium008",
+      "passed": true
+    },
+    {
+      "name": "Actual gravity sand impact large",
+      "detail": "extent=3.5",
+      "passed": true
+    },
+    {
+      "name": "Immediate duplicate contact is suppressed large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fresh regrab and release restores first sand impact large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual parasol contact with timber plays 005/008/132 large",
+      "detail": "Only fixed shade roof disabled; timber and prop unchanged; actual cues=prop.grab:PropGrab128,prop.release:PropRelease156,wood.large:WoodImpactLarge132",
+      "passed": true
+    },
+    {
+      "name": "BE06 scope is exactly movable plank and both assembly pieces",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual BE06 source prop falls onto sand",
+      "detail": "02 · 짧은 판자",
+      "passed": true
+    },
+    {
+      "name": "Actual BE06 source prop falls onto sand",
+      "detail": "03 · 그림자 조각 A · 선체",
+      "passed": true
+    },
+    {
+      "name": "Actual BE06 source prop falls onto sand",
+      "detail": "03 · 그림자 조각 B · 차양",
+      "passed": true
+    },
+    {
+      "name": "Actual falling bounds cross water surface small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One released prop cannot retrigger splash by bobbing small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual falling bounds cross water surface medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One released prop cannot retrigger splash by bobbing medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual falling bounds cross water surface large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One released prop cannot retrigger splash by bobbing large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual external ocean entry works without a BeachWater component",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Hidden ocean under dry land and water under fixed island do not splash",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Selected ending impact bank and original natural boulder exist",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual natural-rock shoreline fall plays selected HF04/HF08/HF06 small",
+      "detail": "extent=0.6999998 source=rock_small:0.298518",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock shoreline fall suppresses all generic sand/wood/water impacts small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Solver settling after a real rock fall does not chatter small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual falling natural-rock bounds play selected HF23/HF24/HF25 at sea small",
+      "detail": "extent=0.7 bounds=Center: (0.00, 0.24, 100.00), Extents: (0.35, 0.33, 0.32)",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock water entry suppresses the old generic water impact small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One actual released rock cannot repeat its selected splash while bobbing small",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual natural-rock shoreline fall plays selected HF04/HF08/HF06 medium",
+      "detail": "extent=1.8 source=rock_medium:0.298518",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock shoreline fall suppresses all generic sand/wood/water impacts medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Solver settling after a real rock fall does not chatter medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual falling natural-rock bounds play selected HF23/HF24/HF25 at sea medium",
+      "detail": "extent=1.8 bounds=Center: (0.00, 0.77, 100.00), Extents: (0.90, 0.86, 0.81)",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock water entry suppresses the old generic water impact medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One actual released rock cannot repeat its selected splash while bobbing medium",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual natural-rock shoreline fall plays selected HF04/HF08/HF06 large",
+      "detail": "extent=3.5 source=rock_large:0.2189132",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock shoreline fall suppresses all generic sand/wood/water impacts large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual large-rock HF06 source uses the reduced selected gain",
+      "detail": "gain=0.2189132",
+      "passed": true
+    },
+    {
+      "name": "Solver settling after a real rock fall does not chatter large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual falling natural-rock bounds play selected HF23/HF24/HF25 at sea large",
+      "detail": "extent=3.5 bounds=Center: (0.00, 1.58, 100.00), Extents: (1.75, 1.67, 1.57)",
+      "passed": true
+    },
+    {
+      "name": "Natural-rock water entry suppresses the old generic water impact large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "One actual released rock cannot repeat its selected splash while bobbing large",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Shore distance uses exposed water rather than giant ocean bounds",
+      "detail": "dry=8.700092 near=1.014347 island=1.263182",
+      "passed": true
+    },
+    {
+      "name": "115 shore ambience becomes louder near exposed shoreline",
+      "detail": "far=0.1710196 near=0.5086874",
+      "passed": true
+    },
+    {
+      "name": "Selected shore source advances real DSP samples",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Incomplete solar charge has no completion sound",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual aligned mirror completes solar once with 036 and opens gate with 027",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Solved solar gate does not repeat completion or movement sound",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual Ready source silhouettes reveal boat with BC02 exactly once without reusing solar 036",
+      "detail": "coverage=1 charge=1",
+      "passed": true
+    },
+    {
+      "name": "Boat materialization does not repeat BC02 or reuse solar completion",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Native buoyant boat settles and cannot start engine without a rider",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Prepared boat has a genuinely shaded walkable deck",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual shaded rider launch starts BE12 exactly once",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Repeated launch command does not restart engine",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "BE11 engine loop follows the BE12 start",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual hull/pier proximity starts shutdown fade",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Fade stops BE11 then plays BE12 shutdown once",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Stationary berth does not repeat shutdown",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Actual boat restore cancels all engine voices",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "BB01 full official track uses the scene-local two-source music transport",
+      "detail": "seconds=283.3502",
+      "passed": true
+    },
+    {
+      "name": "Actual BB01 source gain increased to 0.14 (+5 dB)",
+      "detail": "gain=0.14",
+      "passed": true
+    },
+    {
+      "name": "BB01 music advances real DSP samples",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Pause synchronously pauses shore and BB01 sources",
+      "detail": "running=False shore=False music=False",
+      "passed": true
+    },
+    {
+      "name": "Paused streaming cursors stay frozen after DSP buffers settle",
+      "detail": "buffer=1024 count=4 shore=12288->12288 music=259660->259660",
+      "passed": true
+    },
+    {
+      "name": "Paused shore distance mix does not advance",
+      "detail": "gain=0.004->0.004 distance=4.00475->4.00475",
+      "passed": true
+    },
+    {
+      "name": "Paused prop interaction produces no selected audio",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Resume continues real shore and BB01 samples",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Full reset leaves one shore loop and no engine leakage",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Full reset preserves BB01 music transport instead of restarting it",
+      "detail": "samples=266246->267187 advance=941 expected=940.799999999975 dspSeconds=0.0213333333333328 tolerance=1881.6 bgmCount=1->1 sameSource=True playing=True",
+      "passed": true
+    },
+    {
+      "name": "Beach owns one shore loop, music transport and one active listener",
+      "detail": "",
+      "passed": true
+    },
+    {
+      "name": "Every counted production cue started a real AudioSource",
+      "detail": "playbacks=110",
+      "passed": true
+    }
+  ],
+  "playback": [
+    {
+      "cue": "bgm",
+      "clip": "BgmBB01_BossaAntigua",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 0.8106666666666666
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 0.8106666666666666
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 0.832
+    },
+    {
+      "cue": "step.sand",
+      "clip": "SandFootstep097",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 0.96
+    },
+    {
+      "cue": "step.sand",
+      "clip": "SandFootstep097",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.0453333333333332
+    },
+    {
+      "cue": "land.sand",
+      "clip": "SandLand085",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2686000168323517,
+      "dsp": 1.1306666666666667
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 1.3226666666666667
+    },
+    {
+      "cue": "step.wood",
+      "clip": "WoodFootstepBE13_01",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.4293333333333333
+    },
+    {
+      "cue": "step.wood",
+      "clip": "WoodFootstepBE13_02",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.5146666666666666
+    },
+    {
+      "cue": "step.wood",
+      "clip": "WoodFootstepBE13_03",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.6213333333333333
+    },
+    {
+      "cue": "step.wood",
+      "clip": "WoodFootstepBE13_04",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.7066666666666668
+    },
+    {
+      "cue": "step.wood",
+      "clip": "WoodFootstepBE13_01",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.10000000149011612,
+      "dsp": 1.7706666666666666
+    },
+    {
+      "cue": "land.wood",
+      "clip": "WoodLand102",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2686000168323517,
+      "dsp": 1.92
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.0906666666666665
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.0906666666666665
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.0906666666666665
+    },
+    {
+      "cue": "sand.small",
+      "clip": "SandImpactSmall091",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.0906666666666665
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.1546666666666665
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.1546666666666665
+    },
+    {
+      "cue": "sand.small",
+      "clip": "SandImpactSmall091",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.1546666666666665
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.24
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.24
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.24
+    },
+    {
+      "cue": "wood.small",
+      "clip": "WoodImpactSmall005",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.2613333333333334
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.368
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.368
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.368
+    },
+    {
+      "cue": "sand.medium",
+      "clip": "SandImpactMedium083",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.368
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.432
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.432
+    },
+    {
+      "cue": "sand.medium",
+      "clip": "SandImpactMedium083",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.432
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.496
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.517333333333333
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.517333333333333
+    },
+    {
+      "cue": "wood.medium",
+      "clip": "WoodImpactMedium008",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.538666666666667
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.624
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.624
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.624
+    },
+    {
+      "cue": "sand.large",
+      "clip": "SandImpactLargeTeamBreak3",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 2.624
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.6666666666666665
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.6666666666666665
+    },
+    {
+      "cue": "sand.large",
+      "clip": "SandImpactLargeTeamBreak3",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 2.688
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.752
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.752
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.752
+    },
+    {
+      "cue": "wood.large",
+      "clip": "WoodImpactLarge132",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.7733333333333334
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.88
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.88
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.88
+    },
+    {
+      "cue": "wood.sand",
+      "clip": "WoodRodSandBE06",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.88
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 2.944
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.944
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 2.944
+    },
+    {
+      "cue": "wood.sand",
+      "clip": "WoodRodSandBE06",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 2.944
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.029333333333333
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.029333333333333
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.029333333333333
+    },
+    {
+      "cue": "wood.sand",
+      "clip": "WoodRodSandBE06",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.33832043409347534,
+      "dsp": 3.050666666666667
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.136
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.136
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.136
+    },
+    {
+      "cue": "water.small",
+      "clip": "WaterImpactSmall124",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 3.136
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.1786666666666665
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.1786666666666665
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.1786666666666665
+    },
+    {
+      "cue": "water.medium",
+      "clip": "WaterImpactMediumTeamEnter1",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 3.1786666666666665
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.2
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.2
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.2
+    },
+    {
+      "cue": "water.large",
+      "clip": "WaterImpactLargeBE10",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 3.2
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.2213333333333334
+    },
+    {
+      "cue": "prop.grab",
+      "clip": "PropGrab128",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.2213333333333334
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.2213333333333334
+    },
+    {
+      "cue": "water.small",
+      "clip": "WaterImpactSmall124",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 3.2426666666666666
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.264
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.264
+    },
+    {
+      "cue": "ending.rock_small",
+      "clip": "rock_small",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.29851803183555603,
+      "dsp": 3.2853333333333334
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.392
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.392
+    },
+    {
+      "cue": "ending.splash_small",
+      "clip": "splash_small",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3199999928474426,
+      "dsp": 3.4133333333333336
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.4133333333333336
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.4133333333333336
+    },
+    {
+      "cue": "ending.rock_medium",
+      "clip": "rock_medium",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.29851803183555603,
+      "dsp": 3.4133333333333336
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.52
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.541333333333333
+    },
+    {
+      "cue": "ending.splash_medium",
+      "clip": "splash_medium",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3199999928474426,
+      "dsp": 3.541333333333333
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.562666666666667
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.562666666666667
+    },
+    {
+      "cue": "ending.rock_large",
+      "clip": "rock_large",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2189132124185562,
+      "dsp": 3.562666666666667
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.6693333333333333
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 3.6693333333333333
+    },
+    {
+      "cue": "ending.splash_large",
+      "clip": "splash_large",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3199999928474426,
+      "dsp": 3.6693333333333333
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 3.712
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 4.053333333333334
+    },
+    {
+      "cue": "complete",
+      "clip": "Completion036",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.23999999463558197,
+      "dsp": 4.245333333333333
+    },
+    {
+      "cue": "gate",
+      "clip": "GateMove027",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 4.245333333333333
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 4.693333333333333
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 4.693333333333333
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 4.693333333333333
+    },
+    {
+      "cue": "boat.complete",
+      "clip": "BoatCompleteBC02",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 4.8853333333333335
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 5.013333333333334
+    },
+    {
+      "cue": "sand.small",
+      "clip": "SandImpactSmall091",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 5.0986666666666665
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 5.290666666666667
+    },
+    {
+      "cue": "prop.release",
+      "clip": "PropRelease156",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.2800000011920929,
+      "dsp": 5.312
+    },
+    {
+      "cue": "water.large",
+      "clip": "WaterImpactLargeBE10",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3400000035762787,
+      "dsp": 5.312
+    },
+    {
+      "cue": "boat.start",
+      "clip": "BoatStartBE12",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3499999940395355,
+      "dsp": 6.1866666666666665
+    },
+    {
+      "cue": "boat.run",
+      "clip": "BoatRunBE11",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 6.229333333333333
+    },
+    {
+      "cue": "boat.stop",
+      "clip": "BoatStopBE12",
+      "playing": true,
+      "sample": 0,
+      "gain": 0.3499999940395355,
+      "dsp": 6.378666666666667
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 6.464
+    },
+    {
+      "cue": "shore",
+      "clip": "ShoreAmbience115",
+      "playing": true,
+      "sample": 0,
+      "gain": 0,
+      "dsp": 7.082666666666666
+    }
+  ],
+  "errors": []
+}

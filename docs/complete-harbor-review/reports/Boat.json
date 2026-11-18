@@ -1,0 +1,305 @@
+{
+  "passed": true,
+  "noCapture": true,
+  "captureUsed": false,
+  "captureCount": 0,
+  "captures": [],
+  "skippedCaptures": [
+    "01-natural-reveal-public-pickup",
+    "02-camera-placed-floating-boat",
+    "03-native-boarded-same-boat"
+  ],
+  "scope": "Focused fresh-scene progression regression. Stage3 entry/player checkpoint and the two shadow solution source poses are explicit initial fixtures. The real shadow solver, .85s confirmation, .65s visible reveal, gravity and settling create the miniature. From reveal onward there is no ResetAll/ResetZone, stage/player teleport, source activation change, held setter or direct boat pose/scale fixture. Camera-ray Interact, native movement/perspective/drop, actual water buoyancy and native boarding must succeed continuously. During manual Script-mode physics, BeachWater components temporarily disable their automatic FixedUpdate while the harness invokes their unchanged real Simulate exactly once per water per Step; original enabled states are restored in cleanup. This isolates the clock without changing buoyancy, boat behavior, collision, shade or boarding criteria. An already active stage3 parasol is separately placed on the real boat roof as a cargo-negative fixture and only that cargo is restored afterward. Not a full unassisted four-puzzle playthrough.",
+  "scene": "Beach",
+  "unity": "6000.3.24f1",
+  "failure": "",
+  "checks": [
+    "Actual Beach scene is included in the Tutorial entry build",
+    "Fresh scene starts with unsolved silhouettes and hidden reward boat",
+    "Real shadow solver creates and settles the miniature without injecting completion state",
+    "Production reveal naturally hides both consumed source pieces",
+    "Reset registry retains all nine current props, both consumed source pieces, the boat and the current finale prop",
+    "Legacy raw registry raycasts reproduce inactive assembly pieces falsely counted as boat cargo",
+    "Interaction host exposes the seven active prop roots including the boat and current finale prop; consumed sources and decorations are absent",
+    "Newly materialized empty boat is picked up through public camera Interact without reset or source toggles",
+    "Ordinary cancel restores the same miniature while consumed pieces remain inactive",
+    "Actual active stage3 cargo rests on the boat and remains a valid cargo candidate",
+    "Real cargo still blocks public boat pickup with the existing remove-cargo message",
+    "Cargo fixture cleanup does not reactivate consumed sources or change the prop registry",
+    "Removing real cargo permits the same public boat pickup",
+    "Native player carries the same completed miniature along the workshop route",
+    "Native perspective enlargement and public Drop place the same boat on actual launch water",
+    "Released boat becomes physically buoyant and Ready without direct water-pose fixture",
+    "Native boarding run-up starts on the real departure pier",
+    "Native running jump leaves the actual pier edge",
+    "Same naturally created, grabbed and water-placed boat supports a real shaded aboard player",
+    "End-to-end pickup/carry/drop/boarding never resets the reveal or reactivates hidden source pieces"
+  ],
+  "details": [
+    "Perspective release attempt target=(0.00, -1.70, 64.00) boat=(0.00, 0.10, 59.69) scale=1.360328 reason= obstacle=",
+    "Manual physics clock isolation: water components=5 native force calls=7190 manual frames=1438; original enabled states restored; FixedUpdate was disabled only while this test explicitly called Simulate once per water per Step."
+  ],
+  "errors": [],
+  "legacyCargoProbes": [
+    {
+      "phase": "newly revealed",
+      "prop": "작은 거울 · 잡아서 확대",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -2.998030662536621,
+        "y": 0.08000002056360245,
+        "z": 7.505364418029785
+      },
+      "hitDistance": 0.08000004291534424
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "01 · 파라솔",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -7.996476650238037,
+        "y": 0.059999980032444,
+        "z": 8.5
+      },
+      "hitDistance": 0.06000000238418579
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "02 · 짧은 판자",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -3,
+        "y": 0.08000000566244125,
+        "z": 29
+      },
+      "hitDistance": 0.07999998331069946
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "02 · 햇빛 가리개",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": 4.003522872924805,
+        "y": 0.059999980032444,
+        "z": 29
+      },
+      "hitDistance": 0.06000000238418579
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "03 · 제작대 파라솔",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": 5.003523349761963,
+        "y": 0.06999997049570084,
+        "z": 51
+      },
+      "hitDistance": 0.06999999284744263
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "03 · 그림자 조각 A · 선체",
+      "belowCollider": "보드 앞 작은 배 받침",
+      "belowProp": "none",
+      "active": false,
+      "assembly": true,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": 9.599227905273438,
+        "y": 0.49000051617622375,
+        "z": 52.02635192871094
+      },
+      "hitDistance": 0.040000539273023605
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "03 · 그림자 조각 B · 차양",
+      "belowCollider": "Boat hull band 0",
+      "belowProp": "그늘 배 · 승선 크기까지 확대 / 갑판에서 E 출항",
+      "active": false,
+      "assembly": true,
+      "hit": true,
+      "blocksBoat": true,
+      "rayOrigin": {
+        "x": 9.673648834228516,
+        "y": 0.49000075459480286,
+        "z": 51.896114349365234
+      },
+      "hitDistance": 0.008500961586833
+    },
+    {
+      "phase": "newly revealed",
+      "prop": "해안 바위 · 자유 원근 조작",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -4,
+        "y": 0.03520003706216812,
+        "z": 78
+      },
+      "hitDistance": 0.035200029611587524
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "작은 거울 · 잡아서 확대",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -2.998030662536621,
+        "y": 0.08000002056360245,
+        "z": 7.505364418029785
+      },
+      "hitDistance": 0.08000004291534424
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "01 · 파라솔",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -7.996476650238037,
+        "y": 0.059999980032444,
+        "z": 8.5
+      },
+      "hitDistance": 0.06000000238418579
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "02 · 짧은 판자",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -3,
+        "y": 0.08000000566244125,
+        "z": 29
+      },
+      "hitDistance": 0.07999998331069946
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "02 · 햇빛 가리개",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": 4.003522872924805,
+        "y": 0.059999980032444,
+        "z": 29
+      },
+      "hitDistance": 0.06000000238418579
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "03 · 제작대 파라솔",
+      "belowCollider": "Boat canopy physical rim",
+      "belowProp": "그늘 배 · 승선 크기까지 확대 / 갑판에서 E 출항",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": true,
+      "rayOrigin": {
+        "x": 10.016120910644531,
+        "y": 1.529325008392334,
+        "z": 51.37309265136719
+      },
+      "hitDistance": 0.039824746549129486
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "03 · 그림자 조각 A · 선체",
+      "belowCollider": "보드 앞 작은 배 받침",
+      "belowProp": "none",
+      "active": false,
+      "assembly": true,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": 9.599227905273438,
+        "y": 0.49000051617622375,
+        "z": 52.02635192871094
+      },
+      "hitDistance": 0.040000539273023605
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "03 · 그림자 조각 B · 차양",
+      "belowCollider": "Boat hull band 0",
+      "belowProp": "그늘 배 · 승선 크기까지 확대 / 갑판에서 E 출항",
+      "active": false,
+      "assembly": true,
+      "hit": true,
+      "blocksBoat": true,
+      "rayOrigin": {
+        "x": 9.673648834228516,
+        "y": 0.49000075459480286,
+        "z": 51.896114349365234
+      },
+      "hitDistance": 0.008500993251800537
+    },
+    {
+      "phase": "real active parasol on boat",
+      "prop": "해안 바위 · 자유 원근 조작",
+      "belowCollider": "마른 모래 둑",
+      "belowProp": "none",
+      "active": true,
+      "assembly": false,
+      "hit": true,
+      "blocksBoat": false,
+      "rayOrigin": {
+        "x": -4,
+        "y": 0.03520003706216812,
+        "z": 78
+      },
+      "hitDistance": 0.035200029611587524
+    }
+  ],
+  "inactiveLegacyBlockers": 1,
+  "propRegistryCount": 9,
+  "frames": 1438,
+  "respawns": 0
+}
