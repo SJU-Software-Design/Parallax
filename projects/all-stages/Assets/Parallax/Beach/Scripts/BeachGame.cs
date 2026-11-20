@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShadeLink.Beach
 {
-    public sealed class BeachGame : MonoBehaviour, IObjectInteractionHost<BeachProp>
+    public sealed partial class BeachGame : MonoBehaviour, IObjectInteractionHost<BeachProp>
     {
         public const string Version="0.29.1-harbor-sound";
         public const float Speed=FirstPersonMotor.Speed, Gravity=FirstPersonMotor.Gravity, JumpHeight=FirstPersonMotor.JumpHeight, Reach=InteractionRaycast.MaximumDistance;
@@ -220,15 +220,16 @@ namespace ShadeLink.Beach
         void Update()
         {
             if(automated)return;
-            if(PlayerControls.PausePressed){if(won){endingMenuVisible=!endingMenuVisible;return;}if(active)Pause();else Resume();return;}
+            if(global::ParallaxGameShell.BlocksGameplay)return;
+            if(!global::ParallaxGameShell.OwnsPauseMenus&&PlayerControls.PausePressed){if(won){endingMenuVisible=!endingMenuVisible;return;}if(active)Pause();else Resume();return;}
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
-            if(Input.GetKeyDown(KeyCode.R)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
-            if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
+            if(PlayerControls.Pressed(PlayerControls.Action.Reset)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
+            if(PlayerControls.Pressed(PlayerControls.Action.Hints))showHints=!showHints;
             if(harborFinale!=null&&harborFinale.Manipulating){harborFinale.HandleInput(Time.deltaTime);Tick(Time.deltaTime,Vector2.zero);return;}
             var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
-            if(checkpoint==2&&held==null&&boat!=null&&Input.GetKeyDown(KeyCode.E))boat.TryLaunch();
-            if(checkpoint==3&&held==null&&skyShip!=null&&Input.GetKeyDown(KeyCode.E))skyShip.TryLaunch();
+            if(checkpoint==2&&held==null&&boat!=null&&PlayerControls.Pressed(PlayerControls.Action.Interact))boat.TryLaunch();
+            if(checkpoint==3&&held==null&&skyShip!=null&&PlayerControls.Pressed(PlayerControls.Action.Interact))skyShip.TryLaunch();
             motor.SmoothKeyboardInput=!controls.UsingGamepad;
             Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;
             if(held!=null&&frame.RotateHeld)

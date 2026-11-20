@@ -105,6 +105,7 @@ namespace ShadeLink.Tutorial
         internal void ApplyView(float now)
         {
             RestoreView();
+            if (!GameShellSettingsRuntime.CameraShake) return;
             float pitch = Sample(now);
             if (pitch <= 0f) return;
 

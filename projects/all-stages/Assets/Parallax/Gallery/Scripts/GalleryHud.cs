@@ -54,6 +54,12 @@ namespace ShadeLink.Gallery
             GUI.Label(new Rect(0,151,area.width,40),size>3.4f?"도식 최대 ×3.4":"회색: 처음 · 초록: 현재",small);
             GUI.EndGroup();
         }
+        static string ControlGuide() => PlayerControls.BindingLabel(PlayerControls.Action.Forward)+"/"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Left)+"/"+PlayerControls.BindingLabel(PlayerControls.Action.Backward)+"/"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Right)+" 이동 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Jump)+" 점프 · "+PlayerControls.BindingLabel(PlayerControls.Action.Grab)+
+            " 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · Esc 메뉴";
         void OnGUI()
         {
             if (ShadeLink.Tutorial.TutorialMuseumElevatorFlow.ArrivalPending || (game != null && game.ElevatorArrival && game.active)) return;
@@ -65,6 +71,8 @@ namespace ShadeLink.Gallery
                 small=new GUIStyle(text){fontSize=17};
                 button=new GUIStyle(GUI.skin.button){font=game.font,fontSize=22};
             }
+            float textScale=global::GameShellSettingsRuntime.TextScale;
+            text.fontSize=Mathf.RoundToInt(21*textScale);title.fontSize=Mathf.RoundToInt(35*textScale);small.fontSize=Mathf.RoundToInt(17*textScale);button.fontSize=Mathf.RoundToInt(22*textScale);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
             Panel(new Rect(28,24,game.conceptLayout?670:555,game.conceptLayout?150:game.checkpoint==1?139:102),new Color(.035f,.065f,.08f,.9f));
             GUI.Label(new Rect(48,35,630,34),"PARALLAX v"+Application.version.Split('-')[0]+"  /  빛과 시선의 미술관",text);
@@ -133,10 +141,13 @@ namespace ShadeLink.Gallery
                 if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
                 if(Time.unscaledTime<game.noticeUntil&&!game.showHints)
                     GUI.Label(new Rect(380,793,900,36),game.notice,small);
-                Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트   ·   Esc 메뉴",small);
+                if(global::GameShellSettingsRuntime.ShowControlHints)
+                {
+                    Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
+                    GUI.Label(new Rect(30,861,1550,36),ControlGuide(),small);
+                }
             }
-            if(!game.active||game.won)
+            if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.045f,.055f,.7f));
                 Panel(new Rect(362,55,876,790),new Color(.04f,.075f,.09f,.96f));

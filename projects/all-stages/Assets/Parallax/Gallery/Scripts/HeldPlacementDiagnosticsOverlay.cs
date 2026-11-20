@@ -13,6 +13,7 @@ namespace ShadeLink.Gallery
         void Update() { if(Input.GetKeyDown(KeyCode.F3))visible=!visible; }
         void OnGUI()
         {
+            if(global::ParallaxGameShell.OwnsPauseMenus&&!global::ParallaxGameShell.Administrator)return;
             if(game==null||!game.active||game.won||game.held==null)return;
             if(text==null)
             {

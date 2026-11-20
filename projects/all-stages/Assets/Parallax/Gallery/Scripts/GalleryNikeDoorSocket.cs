@@ -170,6 +170,14 @@ namespace ShadeLink.Gallery
             SetGuideGlow(0);
         }
 
+        public void RestoreCompletedForCheckpoint()
+        {
+            ResetSocket(); seated = true; time = SeatSeconds + SplitSeconds + 1;
+            foreach (var half in splitPainting) if (half != null) half.SetActive(true);
+            if (canvas != null && canvas.portablePainting != null) canvas.portablePainting.gameObject.SetActive(false);
+            SetGuideGlow(0);
+        }
+
         void SetGuideGlow(int state)
         {
             if (glowState == state) return;

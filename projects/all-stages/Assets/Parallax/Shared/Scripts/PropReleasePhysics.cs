@@ -188,7 +188,7 @@ namespace ShadeLink
                 contactClip = AudioClip.Create("Parallax soft prop contact", count, 1, sampleRate, false);
                 contactClip.hideFlags = HideFlags.HideAndDontSave; contactClip.SetData(samples, 0);
             }
-            source.PlayOneShot(contactClip);
+            { GameShellSettingsRuntime.Route(source); source.PlayOneShot(contactClip); }
         }
 
         void OnDisable()

@@ -204,6 +204,25 @@ namespace ShadeLink.Beach
             if(undoArrival&&Game!=null&&Game.waterGate!=null)Game.waterGate.Restore();
             observedRespawns=Game==null?0:Game.respawns;recovering=false;
         }
+        public void RestoreArrivedForCheckpoint()
+        {
+            EnsureReferences();
+            if (Prop == null || Prop.body == null) throw new InvalidOperationException("Saved arrival requires a physical boat.");
+            Prop.Restore(); Prop.gameObject.SetActive(true);
+            Prop.transform.localScale = Vector3.one * 2f; Prop.RefreshMass();
+            Prop.transform.rotation = Prop.homeRotation;
+            Prop.transform.position = new Vector3(ArrivalMooring.x, .15f, ArrivalMooring.z);
+            Physics.SyncTransforms();
+            if (ArrivalPier != null)
+            {
+                var hull = HullBounds; var pier = ArrivalPier.bounds;
+                Prop.transform.position += new Vector3(pier.center.x - hull.center.x, 0, pier.min.z - .2f - hull.max.z);
+            }
+            Prop.body.position = Prop.transform.position; Prop.body.rotation = Prop.transform.rotation;
+            Prop.Release(); Departed = Arrived = AtBerth = true; Travelled = 15; launchSaved = false;
+            lastPosition = Prop.transform.position; observedRespawns = Game == null ? 0 : Game.respawns;
+            SetMoored(true); Physics.SyncTransforms(); UpdateRope();
+        }
         public Action CaptureState()
         {
             EnsureReferences();Action restoreAudio=Game?.Audio?.CaptureBoatAudioState();

@@ -60,6 +60,17 @@ namespace ShadeLink.Gallery
             portrait?.ResetEvaluation();PositionCurtains();Physics.SyncTransforms();
             PerformanceReset?.Invoke();
         }
+        public void RestoreCompletedForCheckpoint()
+        {
+            ResetGate();
+            if (performance == null) performance = gameObject.AddComponent<GalleryPortraitPerformance>();
+            performance.Begin(this, portrait); performance.SetAbsorption(1); performance.SetExpression(1, 1, 1);
+            Stage = RevealStage.Open; Opened = true; Progress = opening = 1;
+            performanceTime = TotalPerformanceSeconds; MoodRed01 = Smile01 = 1;
+            redNotified = smileNotified = true;
+            if (barrier != null) barrier.enabled = false;
+            SetMood(1); PositionCurtains(); Physics.SyncTransforms();
+        }
         public void ResetPassage(){passageCrossed=false;PassageConfirmed=false;}
         // A completed current gate owns its handoff. Earlier crossing latches
         // may be stale, but every preceding physical gate must still be open.

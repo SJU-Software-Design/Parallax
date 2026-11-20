@@ -238,6 +238,16 @@ namespace ShadeLink.Beach
             if(initialized&&game!=null&&game.lighting!=null)game.lighting.Rebuild();
             UpdateVisuals();
         }
+        public void RestoreCompletedForCheckpoint(bool arrived)
+        {
+            Restore(); Solved = Matching = true; Charge = Coverage = HullCoverage = CanopyCoverage = 1;
+            foreach (var piece in pieces) if (piece != null) piece.gameObject.SetActive(false);
+            if (boat == null || boat.Prop == null) throw new InvalidOperationException("Saved harbor requires its completed boat.");
+            boat.ResetBoat(); boat.Prop.gameObject.SetActive(true);
+            if (arrived) boat.RestoreArrivedForCheckpoint();
+            else boat.Prop.Release();
+            game.lighting.Rebuild(); UpdateVisuals();
+        }
         void OnDestroy()
         {
             Font.textureRebuilt-=RefreshFont;

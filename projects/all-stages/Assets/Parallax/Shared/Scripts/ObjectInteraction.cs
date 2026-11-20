@@ -205,7 +205,7 @@ namespace ShadeLink
             if (Physics.Raycast(host.Controller.transform.position + Vector3.up * .15f, Vector3.down,
                 out var support, .3f, host.InteractionMask, QueryTriggerInteraction.Ignore) &&
                 support.collider.GetComponentInParent<T>() == host.Aimed)
-            { host.Tell("서 있는 사물은 잡을 수 없습니다. 먼저 바닥이나 다른 발판으로 이동하세요."); return; }
+            { host.Tell("서 있는 사물은 잡을 수 없습니다. 먼저 바닥이나 다른 발판으로 이동하세요."); PickupDeniedFeedback.Play(host.Controller); return; }
             foreach (var prop in host.Props)
             {
                 if (prop == null || prop == host.Aimed || !prop.gameObject.activeInHierarchy) continue;
@@ -213,7 +213,7 @@ namespace ShadeLink
                 if (Physics.Raycast(new Vector3(bounds.center.x, bounds.min.y + .04f, bounds.center.z), Vector3.down,
                     out var below, .14f, host.InteractionMask, QueryTriggerInteraction.Ignore) &&
                     below.collider.GetComponentInParent<T>() == host.Aimed)
-                { host.Tell("위에 놓인 사물을 먼저 옮겨 주세요."); return; }
+                { host.Tell("위에 놓인 사물을 먼저 옮겨 주세요."); PickupDeniedFeedback.Play(host.Controller); return; }
             }
 
             host.Held = host.Aimed;

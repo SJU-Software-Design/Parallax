@@ -183,6 +183,25 @@ namespace ShadeLink.Gallery
             if(previewRoot!=null)previewRoot.gameObject.SetActive(false);
             Physics.SyncTransforms();
         }
+        public void RestoreCompletedForCheckpoint()
+        {
+            ResetCourse();
+            if (Art == null || Sculpture == null || Reward == null || !Reward.Available)
+                throw new InvalidOperationException("Saved balance room requires its verified statue, book and sword.");
+            Extracted = Solved = BalanceCaptured = true; Extracting = extractionBlocked = false;
+            StableSeconds = StableSecondsRequired; opening = RelativeLoad = 1; BeamDegrees = 0;
+            Art.SetBalance(0, 1, true);
+            Sculpture.gameObject.SetActive(true); Sculpture.transform.localScale = Vector3.one * TargetSculptureScale;
+            Sculpture.transform.rotation = Quaternion.identity; Sculpture.transform.position = Art.rightPan.position;
+            Physics.SyncTransforms();
+            var pan = Art.rightPan.GetComponent<BoxCollider>().bounds;
+            Sculpture.transform.position += Vector3.up * (pan.max.y - Sculpture.WorldBounds.min.y + .005f);
+            foreach (var part in Sculpture.parts) if (part != null) part.enabled = true;
+            Sculpture.body.position = Sculpture.transform.position; Sculpture.body.rotation = Sculpture.transform.rotation;
+            Sculpture.body.isKinematic = true; Sculpture.body.useGravity = false; Sculpture.placement.ResetPlaced();
+            Reward.RestoreCompletedForCheckpoint(); Door.SetOpening(1); Sounds?.RestoreCompletedForCheckpoint();
+            Physics.SyncTransforms();
+        }
         public void SyncContents()
         {
             if(Extracted||Sculpture==null||Bottle==null)return;

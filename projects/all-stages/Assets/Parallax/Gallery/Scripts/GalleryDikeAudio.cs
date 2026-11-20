@@ -118,6 +118,11 @@ namespace ShadeLink.Gallery
             FirstSwordContactCount=0;FirstSwordContactTime=0;
             bottleImpact?.ResetContact();bookImpact?.ResetContact();
         }
+        public void RestoreCompletedForCheckpoint()
+        {
+            ResetSounds(); scaleSoundAngle = Course != null ? Course.BeamDegrees : 0;
+            doorStarted = true;
+        }
         void OnDestroy()
         {
             MuseumAudio.StopOwner(this);

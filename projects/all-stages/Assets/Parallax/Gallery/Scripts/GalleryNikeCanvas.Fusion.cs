@@ -110,6 +110,20 @@ namespace ShadeLink.Gallery
             SetComplete(false);
         }
 
+        public void RestoreCompletedForCheckpoint(GalleryGame game)
+        {
+            ResetPuzzle(game); StopFusionAudio();
+            fusionPhase = FusionPhase.Complete; phaseTime = 0;
+            SetArtworkReveal(1);
+            if (statue != null) statue.gameObject.SetActive(false);
+            if (portablePainting != null) portablePainting.gameObject.SetActive(false);
+            if (guide != null) guide.gameObject.SetActive(false);
+            if (painting != null) painting.gameObject.SetActive(false);
+            if (fusionGlow != null) fusionGlow.gameObject.SetActive(false);
+            if (wallBacking != null) wallBacking.gameObject.SetActive(true);
+            if (game != null) game.props = Array.FindAll(game.props, p => p != statue && p != portablePainting);
+        }
+
         public void BeginFusion()
         {
             if (fusionPhase != FusionPhase.Waiting) return;

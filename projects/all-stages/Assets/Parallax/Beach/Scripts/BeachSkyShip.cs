@@ -10,6 +10,8 @@ namespace ShadeLink.Beach
         public BeachGame Game;
         public bool Flying { get; private set; }
         public float FlightTime { get; private set; }
+        public bool EclipseTransitionRequested { get; private set; }
+        public bool EclipseTransitionFailed { get; private set; }
         public bool Departing=>Flying&&FlightTime>=DepartureTime;
         public float EndingFade=>Flying?Mathf.SmoothStep(0,1,(FlightTime-(FlightDuration-4.5f))/3.5f):0;
         public float EndingTitleAlpha=>Flying?Mathf.SmoothStep(0,1,(FlightTime-(FlightDuration-2.4f))/1.8f):0;
@@ -83,8 +85,21 @@ namespace ShadeLink.Beach
             Game.SyncView();
             if(FlightTime>=FlightDuration)
             {
-                Game.won=true;Game.Pause();Debug.Log("BEACH_SKY_ENDING_COMPLETE height="+transform.position.y);
+                if (!EclipseTransitionRequested)
+                {
+                    EclipseTransitionFailed=false;
+                    EclipseTransitionRequested=GameProgressRuntime.EnterEclipseFromBeach();
+                    if(EclipseTransitionRequested)Debug.Log("BEACH_ECLIPSE_HANDOFF height="+transform.position.y);
+                    else { FailEclipseTransition(); Game.Tell("일식 구역으로 이동하지 못했습니다. 메뉴에서 돌아가거나 다시 시도할 수 있습니다.",6); }
+                }
             }
+        }
+        public void FailEclipseTransition()
+        {
+            // A failed request must release the menu guard even though the boat
+            // remains at the completed flight pose. Resume retries; restart resets.
+            EclipseTransitionRequested=false; EclipseTransitionFailed=true;
+            if(Game!=null)Game.Pause();
         }
         Vector3 FlightPosition(float seconds)
         {
@@ -143,7 +158,7 @@ namespace ShadeLink.Beach
         {
             if(!initialized)return;
             transform.localScale=homeScale;transform.SetPositionAndRotation(homePosition,homeRotation);
-            Flying=false;FlightTime=0;cameraDetached=false;RestoreViewEnvironment();
+            Flying=false;FlightTime=0;EclipseTransitionRequested=false;EclipseTransitionFailed=false;cameraDetached=false;RestoreViewEnvironment();
             if(Game!=null&&Game.controller!=null)Game.controller.enabled=true;
         }
     }
