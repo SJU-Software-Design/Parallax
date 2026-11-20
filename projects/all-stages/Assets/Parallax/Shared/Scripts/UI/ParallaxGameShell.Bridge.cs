@@ -50,6 +50,7 @@ public partial class ParallaxGameShell : MonoBehaviour
         ResetCreditsViewerForScene();
         ObserveEndingTitleScene(scene);
         settingsOpen = false; exitDialog = false; pausePrompt = null; pauseSelection = 0;
+        ResetAdminTravelMenu();
         notificationUntil = 0; adminGesture.Reset();
         if (scene.name != "MainMenu")
         {
@@ -95,12 +96,13 @@ public partial class ParallaxGameShell : MonoBehaviour
     void UpdateInGameShell()
     {
         bool paused = GameProgressRuntime.Paused;
-        if (paused && !wasPaused) { pauseSelection = 0; pausePrompt = null; }
+        if (paused && !wasPaused) { pauseSelection = 0; pausePrompt = null; ResetAdminTravelMenu(); }
         wasPaused = paused;
         if (GameProgressRuntime.Transitioning || LoadingPresentationActive) return;
         if (!settingsOpen && PlayerControls.PausePressed)
         {
-            if (pausePrompt != null) { pausePrompt = null; PlayUi("back"); }
+            if (AdminTravelMenuOpen) BackAdminTravelMenu();
+            else if (pausePrompt != null) { pausePrompt = null; PlayUi("back"); }
             else if (paused) { GameProgressRuntime.Resume(); PlayUi("back"); }
             else { GameProgressRuntime.Pause(); PlayUi("back"); }
             return;
@@ -131,11 +133,11 @@ public partial class ParallaxGameShell : MonoBehaviour
     void ActivatePause(int i)
     {
         if (GameProgressRuntime.Transitioning || LoadingPresentationActive) return;
+        if (Administrator && i == 3) { OpenAdminTravelMenu(); return; }
         PlayUi("confirm");
         if (i == 0) GameProgressRuntime.Resume();
         else if (i == 1) OpenSettings();
         else if (i == 2) { pausePrompt = "restart"; pausePromptSelection = 0; }
-        else if (Administrator && i == 3) { pausePrompt = "travel"; pausePromptSelection = 0; }
         else { pausePrompt = "save"; pausePromptSelection = 0; }
     }
     void DrawInGameShell()
@@ -198,28 +200,7 @@ public partial class ParallaxGameShell : MonoBehaviour
     }
     void DrawPausePrompt()
     {
-        if (pausePrompt == "travel")
-        {
-            PaintBrush(new Rect(490, 220, 940, 650), new Color(.025f, .025f, .035f, .99f));
-            DrawText(new Rect(590, 275, 740, 75), "맵 이동", 48, Foreground, TextAnchor.MiddleCenter);
-            string[] scenes = { "Tutorial", "Gallery", "Beach", "Eclipse" }, labels = { "튜토리얼", "미술관", "해변", "일식", "돌아가기" };
-            for (int i = 0; i < labels.Length; i++)
-            {
-                Rect rect = new Rect(655, 390 + i * 100, 610, 72);
-                if (pointerMode && rect.Contains(Pointer)) pausePromptSelection = i;
-                if (Button(rect, labels[i], "travel-" + i, pausePromptSelection == i, !GameProgressRuntime.Transitioning, 33))
-                { if (i == scenes.Length) pausePrompt = null; else GameProgressRuntime.AdminTravel(scenes[i]); PlayUi("confirm"); }
-            }
-            Event key = Event.current;
-            if (key.type == EventType.KeyDown)
-            {
-                if (key.keyCode == KeyCode.UpArrow || key.keyCode == KeyCode.DownArrow)
-                { pausePromptSelection = (pausePromptSelection + (key.keyCode == KeyCode.UpArrow ? labels.Length - 1 : 1)) % labels.Length; pointerMode = false; key.Use(); }
-                else if (key.keyCode == KeyCode.Return || key.keyCode == KeyCode.Space)
-                { if (pausePromptSelection == scenes.Length) { pausePrompt = null; PlayUi("back"); } else { PlayUi("confirm"); GameProgressRuntime.AdminTravel(scenes[pausePromptSelection]); } key.Use(); }
-            }
-            return;
-        }
+        if (pausePrompt == "travel") { DrawAdminTravelMenu(); return; }
         PaintBrush(new Rect(395, 320, 1130, 450), new Color(.025f, .025f, .035f, .99f));
         bool restarting = pausePrompt == "restart";
         DrawText(new Rect(465, 375, 990, 85), restarting ? "현재 구간을 다시 시작할까요?" : "저장하고 나갈까요?", 42, Foreground, TextAnchor.MiddleCenter);

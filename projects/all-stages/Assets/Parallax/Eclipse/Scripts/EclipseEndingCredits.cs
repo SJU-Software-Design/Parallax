@@ -22,7 +22,7 @@ namespace ShadeLink.Eclipse
 
     // Ground text and the cinematic use the same clock as the input contract.
     // Only the asset section accepts fast-forward or skip.
-    public sealed class EclipseEndingCredits : MonoBehaviour
+    public sealed partial class EclipseEndingCredits : MonoBehaviour
     {
         public const float IntroDuration = 7f;
         public const float ThanksDuration = 8f;

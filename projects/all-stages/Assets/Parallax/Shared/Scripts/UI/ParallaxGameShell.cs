@@ -9,7 +9,7 @@ using ShadeLink;
 // Shared title, pause and settings presentation. Stage gameplay remains owned by its existing controllers.
 public partial class ParallaxGameShell : MonoBehaviour
 {
-    public const string PreviewVersion = "0.38.0-hand-fall";
+    public const string PreviewVersion = "0.39.0-admin-sections";
     const float ReferenceWidth = 1920f, ReferenceHeight = 1080f, IntroLength = 9.28f;
     public readonly Color Foreground = new Color(.935f, .936f, .925f, 1);
     public readonly Color Muted = new Color(.62f, .62f, .65f, 1);

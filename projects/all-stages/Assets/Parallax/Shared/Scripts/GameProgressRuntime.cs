@@ -90,11 +90,21 @@ namespace ShadeLink
             if (!GameProgress.TryLoad(out var saved)) { Error(GameProgress.LastError, false); return; }
             Runner.BeginLoad(saved.stage, saved, false, false);
         }
-        public static void AdminTravel(string scene)
+        public static void AdminTravel(string scene) => AdminTravel(scene, 0);
+        public static bool AdminTravel(string scene, int sectionIndex)
         {
             actionError = null;
-            if (!global::ParallaxGameShell.Administrator) { Error("관리자 모드에서만 맵을 이동할 수 있습니다.", false); return; }
-            Runner.BeginLoad(scene, null, true, false);
+            if (!global::ParallaxGameShell.Administrator)
+            { Error("관리자 모드에서만 맵을 이동할 수 있습니다.", false); return false; }
+            if (!AdminStageSections.IsValid(scene, sectionIndex))
+            { Error("선택한 맵의 구간이 없습니다.", false); return false; }
+            if (Transitioning || StageTravelMenu.Loading)
+            { Error("맵 이동이 끝난 뒤 다시 선택해 주세요.", false); return false; }
+            GameProgressRecord record;
+            try { record = AdminStageSections.CreateRecord(scene, sectionIndex); }
+            catch (Exception error) { Error(error.Message, false); return false; }
+            Runner.BeginLoad(scene, record, true, false, sectionIndex);
+            return true;
         }
         // The completed ship already owns the black departure fade. Keep its
         // natural handoff separate from the menu's Loading... / Tip presentation.
@@ -184,14 +194,14 @@ namespace ShadeLink
                 if (GameProgress.TrySave(record)) { observedKey = record.CheckpointKey; InvalidateSummary(); Debug.Log("GAME_PROGRESS_AUTOSAVED " + observedKey); }
                 else { nextAutoSave = Time.unscaledTime + 5; Error(GameProgress.LastError, false); }
             }
-            public void BeginLoad(string target, GameProgressRecord restore, bool test, bool fresh)
+            public void BeginLoad(string target, GameProgressRecord restore, bool test, bool fresh, int adminSectionIndex = -1)
             {
                 if (Loading || StageTravelMenu.Loading || TutorialMuseumElevatorFlow.ArrivalPending ||
                     Stage != null && Stage.ProgressTransitioning) return;
                 if (target != "Tutorial" && target != "Gallery" && target != "Beach" && target != "Eclipse")
                 { Error("이동할 맵이 올바르지 않습니다."); return; }
                 if (!Application.CanStreamedLevelBeLoaded(target)) { Error("맵을 실행본에서 찾을 수 없습니다: " + target); return; }
-                StartCoroutine(Load(target, restore, test, fresh));
+                StartCoroutine(Load(target, restore, test, fresh, false, adminSectionIndex));
             }
             public bool BeginBeachEnding()
             {
@@ -246,7 +256,7 @@ namespace ShadeLink
                     }
                 }
             }
-            IEnumerator Load(string target, GameProgressRecord restore, bool test, bool fresh, bool natural = false)
+            IEnumerator Load(string target, GameProgressRecord restore, bool test, bool fresh, bool natural = false, int adminSectionIndex = -1)
             {
                 NaturalLoading = natural; Loading = true;
                 bool completed = false, recoverTitle = false;
@@ -257,7 +267,7 @@ namespace ShadeLink
                     Exception visualFailure = null;
                     if (shell != null && !natural)
                     {
-                        yield return RunLoadingVisual(shell.BeginLoadingTransition(target, restore != null, restore != null && restore.swordEncountered), error => visualFailure = error);
+                        yield return RunLoadingVisual(shell.BeginLoadingTransition(target, restore != null && adminSectionIndex < 0, restore != null && restore.swordEncountered), error => visualFailure = error);
                         if (visualFailure != null) { Error("로딩 화면을 준비하지 못했습니다: " + visualFailure.Message); yield break; }
                     }
                     if (failNextLoadAfterFade)
@@ -292,6 +302,14 @@ namespace ShadeLink
                     catch (Exception error) { failure = "저장된 구간을 복구하지 못했습니다: " + error.Message; }
                     if (failure != null) { recoverTitle = true; Error(failure); yield break; }
                     TestSession = test;
+                    if (adminSectionIndex >= 0)
+                    {
+                        bool selected = false;
+                        try { selected = test && AdminStageSections.ApplyAfterLoad(Stage, adminSectionIndex); }
+                        catch (Exception error) { Error("선택한 구간을 준비하지 못했습니다: " + error.Message); }
+                        if (!selected)
+                        { recoverTitle = true; Error("선택한 구간의 시작 상태를 준비하지 못했습니다.", false); yield break; }
+                    }
                     // Explicit new/admin loads begin a separate history. Natural
                     // stage routes keep the runner and its encounter history.
                     if (!natural) swordEncountered = restore != null && restore.swordEncountered;
@@ -309,7 +327,7 @@ namespace ShadeLink
                     Stage.SetProgressPaused(false);
                     Loading = false; NaturalLoading = false; completed = true;
                     if ((fresh || target == "Eclipse" && restore == null) && !test) SaveCurrent();
-                    Debug.Log("GAME_PROGRESS_STAGE_READY " + target + " test=" + test + " restored=" + (restore != null));
+                    Debug.Log("GAME_PROGRESS_STAGE_READY " + target + " test=" + test + " restored=" + (restore != null) + " adminSection=" + adminSectionIndex);
                 }
                 finally
                 {
