@@ -192,7 +192,8 @@ namespace ShadeLink.Gallery
             if(!automated&&bottleBalance!=null&&Array.IndexOf(Environment.GetCommandLineArgs(),"-gallery-bottle-balance-demo")>=0)
                 StartBottleBalanceDemo();
         }
-        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
+        public int NoticeSerial { get; private set; }
+        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration;NoticeSerial++; }
         public void Resume()
         {
             if(Transitioning)return;

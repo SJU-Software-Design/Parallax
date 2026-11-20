@@ -8,6 +8,39 @@ namespace ShadeLink.Gallery
         GUIStyle text,title,small,button;
         bool stageTravelTab;
         readonly Color mint=new Color(.32f,.95f,.79f), paper=new Color(.94f,.93f,.86f);
+        static string BottomNoticeText(string message)
+        {
+            switch(message)
+            {
+                case "액자가 맞물렸어요. 열린 문으로 들어가세요.": return "액자가 맞물렸어요.";
+                case "얼굴이 이어졌어요. 잠깐 바라봐 주세요.": return "얼굴이 이어졌어요.";
+                case "시점의 초상이 완성되었습니다. 눈·코·입이 하나의 얼굴로 보입니다.": return "시점의 초상이 완성되었습니다.";
+                case "그림자가 붓결을 따라 그림으로 남습니다.":
+                case "그림을 집어 문 중앙의 홈에 크기를 맞춰 끼우세요.":
+                case "홈보다 작아요. 문에서 조금 물러나 그림을 키우세요.":
+                case "홈보다 커요. 문에 조금 다가가 그림을 줄이세요.":
+                case "문 중앙의 홈을 조준해 그림을 가까이 맞추세요.":
+                case "열린 문을 통과했어요. 다음 전시실로 이동하세요.":
+                case "그림을 세워 문 앞의 빛을 가리세요.":
+                case "그림이 출구의 빛을 가렸어요. 그늘 위의 발자국을 따라가세요.":
+                case "그림이 완성됐어요. 발자국을 따라 그늘로 걸어가세요.":
+                case "날개의 그림자가 문에 닿았습니다. 열린 문으로 이동하세요.":
+                case "조각을 꺼냈어요. 오른쪽 접시를 겨냥해 현재 크기로 올려 보세요.":
+                case "균형을 되찾았어요. 디케가 놓아준 검을 집어 방 가운데 대리석 받침에 꽂으세요.":
+                case "검이 홈에 고정됐어요. 봉인이 풀리며 문이 열립니다.":
+                case "검을 받침대의 홈에 맞춰 넣습니다.":
+                case "조각이 접시보다 큽니다. 크기를 줄여 주세요.":
+                case "조각을 저울 가까이 옮긴 뒤 접시 위에 놓아 주세요.":
+                case "벽·천장 또는 미술관 외곽을 벗어납니다.":
+                case "플레이어와 겹칩니다.":
+                case "다른 전시물이나 구조물과 겹칩니다.":
+                case "눈·코·입이 얼굴로 보이면, 작품을 내려놓고 잠깐 바라봐 주세요.":
+                case "하나의 초상이 완성되었습니다. 커튼을 바라봐 주세요.":
+                case "초상이 길을 열었어요. 열린 커튼 사이로 이동하세요.":
+                    return "";
+                default: return message;
+            }
+        }
         void Panel(Rect rect,Color color){GUI.color=color;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=Color.white;}
         void Line(Vector2 a,Vector2 b,Color color,float width=2)
         {
@@ -66,55 +99,50 @@ namespace ShadeLink.Gallery
                 button=new GUIStyle(GUI.skin.button){font=game.font,fontSize=22};
             }
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
-            Panel(new Rect(28,24,game.conceptLayout?670:555,game.conceptLayout?150:game.checkpoint==1?139:102),new Color(.035f,.065f,.08f,.9f));
-            GUI.Label(new Rect(48,35,630,34),"PARALLAX v"+Application.version.Split('-')[0]+"  /  빛과 시선의 미술관",text);
-            GUI.Label(new Rect(48,75,620,30),game.RoomTitle,small);
-            if(game.conceptLayout)GUI.Label(new Rect(48,108,620,49),game.Objective,small);
-            if(game.checkpoint==1&&game.lightGate!=null)GUI.Label(new Rect(48,112,510,34),game.lightGate.illuminated?"센서: 빛 감지 · 문 열림 · 그림자로 이동하세요":"센서: 빛 없음 · 거울의 각도를 바꾸세요",small);
+            if(!GlassTrial.GlassStageNotice.ReplacesHud(game))
+            {
+            float stageWidth=game.conceptLayout?670:555,stageHeight=game.conceptLayout?150:game.checkpoint==1?139:102;
+            GUI.BeginGroup(new Rect(800-stageWidth*.5f,750-52-12-stageHeight,stageWidth,stageHeight));
+            Panel(new Rect(0,0,stageWidth,stageHeight),new Color(.035f,.065f,.08f,.9f));
+            GUI.Label(new Rect(20,11,630,34),"PARALLAX v"+Application.version.Split('-')[0]+"  /  빛과 시선의 미술관",text);
+            GUI.Label(new Rect(20,51,620,30),game.RoomTitle,small);
+            if(game.conceptLayout)GUI.Label(new Rect(20,84,620,49),game.Objective,small);
+            if(game.checkpoint==1&&game.lightGate!=null)GUI.Label(new Rect(20,88,510,34),game.lightGate.illuminated?"센서: 빛 감지 · 문 열림 · 그림자로 이동하세요":"센서: 빛 없음 · 거울의 각도를 바꾸세요",small);
+            GUI.EndGroup();
+            }
             if(game.active&&!game.won)
             {
                 bool bottleHeld=game.bottleBalance!=null&&game.bottleBalance.Manipulating;
                 bool bottleAim=game.bottleBalance!=null&&game.bottleBalance.Targeted;
                 var reward=game.bottleBalance?.Reward;
                 PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null||bottleAim||reward?.Targeted==true,game.held!=null||bottleHeld||reward?.Carrying==true,game.invalid||game.PlacementBlocked,mint,paper);
-                Panel(new Rect(1195,25,377,104),new Color(.035f,.065f,.08f,.9f));
+                if(!GlassTrial.GlassExposureGauge.CanDisplay(game))
+                {
+                Panel(new Rect(611.5f,698,377,104),new Color(.035f,.065f,.08f,.9f));
                 string status=game.bottleBalance!=null&&game.bottleBalance.InRoom?game.bottleBalance.Status:game.exhibitionPreview?"자유 관람":game.conceptLayout&&game.checkpoint>=2?
                     (game.checkpoint==2?(game.portraitGate==null?"눈·코·입을 얼굴처럼 놓아 보세요":game.portraitGate.Status):
                         game.orcusExit!=null&&game.orcusExit.cathedralActivation!=null?game.orcusExit.cathedralActivation.Status:"두 손 사이로 해변이 보입니다"):
                     game.conceptLayout&&game.checkpoint==1&&game.nikeLight!=null?
                         (!game.safe?"빛에 노출 중 · 그늘로 이동하세요":game.nikeLight.Status):
                     game.safe?"그늘 · 안전":"빛에 노출 중 · 그늘로 이동하세요";
-                GUI.Label(new Rect(1215,34,338,61),status,small);
-                Panel(new Rect(1215,110,333,9),new Color(.14f,.22f,.25f));
+                GUI.Label(new Rect(631.5f,707,338,61),status,small);
+                Panel(new Rect(631.5f,783,333,9),new Color(.14f,.22f,.25f));
                 float progress=game.bottleBalance!=null&&game.bottleBalance.InRoom?game.bottleBalance.BalanceProgress:game.conceptLayout&&game.checkpoint==2&&game.portraitGate!=null?
                     (game.portraitGate.Opened?1:game.portraitGate.Performing?game.portraitGate.RevealProgress:game.portraitGate.portrait.Alignment01*.65f+game.portraitGate.Progress*.35f):
                     game.conceptLayout&&game.checkpoint==3&&game.orcusExit!=null?
                         Mathf.Clamp01(game.orcusExit.transform.lossyScale.x/(game.orcusExit.RequiredScale*.9f)):
                     game.conceptLayout&&game.checkpoint==1&&game.nikeLight!=null&&game.safe?
                         (game.NikeCanvasPuzzle&&game.nikeLight.canvas.Fusing?game.nikeLight.canvas.FusionProgress:game.nikeLight.ShadeReadiness):game.exposure;
-                Panel(new Rect(1215,110,333*progress,9),game.checkpoint>=2||game.checkpoint==1&&game.safe?mint:new Color(1,.56f,.25f));
-                if(reward!=null&&(reward.Carrying||reward.Busy))
+                Panel(new Rect(631.5f,783,333*progress,9),game.checkpoint>=2||game.checkpoint==1&&game.safe?mint:new Color(1,.56f,.25f));
+                }
+                if(reward!=null&&reward.Busy&&!reward.Carrying)
                 {
-                    Panel(new Rect(405,622,790,135),new Color(.035f,.065f,.08f,.94f));
-                    GUI.Label(new Rect(427,635,746,34),reward.Status,text);
-                    GUI.Label(new Rect(427,678,746,64),reward.Hint,small);
                 }
                 else if(bottleHeld)
                 {
-                    var course=game.bottleBalance;
-                    Panel(new Rect(405,555,790,230),new Color(.035f,.065f,.08f,.94f));
-                    GUI.Label(new Rect(427,568,526,32),"유리병 실제 크기 ×"+course.BottleSize.ToString("0.00")+" · 입구 "+(GalleryBottleBalanceVessel.MouthRadius(course.Bottle)*2).ToString("0.00")+"m",text);
-                    GUI.Label(new Rect(427,608,526,60),"들고 있을 때 병의 화면 크기는 유지돼요.\n병의 실제 크기만 변하고, 안의 법전 크기는 고정돼요.",small);
-                    GUI.Label(new Rect(427,672,526,54),"먼 표면으로 키우기 · 우클릭+마우스: 기울이고 흔들기\n넓어진 입구를 아래로 향하면 법전이 미끄러져 나와요.",small);
-                    GUI.Label(new Rect(427,736,526,40),course.Placement.Hint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 빈 공간으로 방향을 바꿔 주세요":"왼쪽 클릭: 놓기 · Backspace: 잡기 취소"),small);
-                    BottleSizeComparison(new Rect(970,570,205,200),course.BottleSize,!course.Extracted);
                 }
-                else if(game.held!=null)
+                else if(game.held!=null||reward?.Carrying==true)
                 {
-                    Panel(new Rect(405,590,790,175),new Color(.035f,.065f,.08f,.94f));
-                    GUI.Label(new Rect(427,605,746,32),game.held.title+"  ·  거리 "+game.holdDistance.ToString("0.00")+"m  ·  크기 ×"+game.RequestedScale.ToString("0.00"),text);
-                    GUI.Label(new Rect(427,644,746,63),"WASD: 들고 이동 · 오른쪽 버튼 + 마우스: 상하좌우 회전\n시선으로 크기 조절 · 잡을 때 자동 바로 세우기",small);
-                    GUI.Label(new Rect(427,711,746,40),game.NikeSocketHint??game.bottleBalance?.Placement.Hint??(game.invalid?game.invalidReason:game.PlacementBlocked?"장애물 앞에서 멈춤 · 방향을 바꾸거나 Backspace로 취소":"왼쪽 클릭: 놓기 (중력·회전 적용)  ·  Backspace: 잡기 취소"),small);
                 }
                 else if(game.adjustingMirror&&game.mirror!=null)
                 {
@@ -122,19 +150,25 @@ namespace ShadeLink.Gallery
                     GUI.Label(new Rect(427,635,746,34),"거울 조작 · 각도 "+game.mirror.angle.ToString("0.0")+"°",text);
                     GUI.Label(new Rect(427,678,746,64),"오른쪽 버튼 + 마우스 좌우: 회전 · 클릭 / Backspace: 종료\n센서가 초록색이면 문이 열립니다. 통로의 반사광은 차광판으로 가리세요.",small);
                 }
+                else if(GlassTrial.GlassHoverPrompt.ReplacesHud(game))
+                {
+                }
                 else if(reward!=null&&reward.Targeted)
-                    GUI.Label(new Rect(470,475,760,64),reward.Hint,text);
+                    GUI.Label(new Rect(470,643,760,64),reward.Hint,text);
                 else if(bottleAim)
-                    GUI.Label(new Rect(520,475,650,42),"[왼쪽 클릭] 유리병 잡기 · 다른 사물처럼 옮길 수 있어요",text);
+                    GUI.Label(new Rect(520,654,650,42),"[왼쪽 클릭] 유리병 잡기 · 다른 사물처럼 옮길 수 있어요",text);
                 else if(game.aimedMirror!=null)
-                    GUI.Label(new Rect(550,475,570,42),"[왼쪽 클릭]  거울 각도 조절",text);
+                    GUI.Label(new Rect(550,654,570,42),"[왼쪽 클릭]  거울 각도 조절",text);
                 else if(game.aimed!=null)
-                    GUI.Label(new Rect(570,475,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
+                    GUI.Label(new Rect(570,654,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
-                if(Time.unscaledTime<game.noticeUntil&&!game.showHints)
-                    GUI.Label(new Rect(380,793,900,36),game.notice,small);
+                bool glassAvailable=GlassTrial.GlassExposureGauge.CanDisplay(game);
+                string bottomNotice=GlassTrial.MuseumStageGuide.HideLegacyCommonNotice(game.notice,glassAvailable)||GlassTrial.MuseumStageGuide.SuppressCoveredBottomNotice(game.notice,
+                    GlassTrial.GlassStageNotice.CurrentStage(game),glassAvailable)?"":BottomNoticeText(game.notice);
+                if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&!GlassTrial.GlassStageNotice.EntryRequested(game)&&!string.IsNullOrEmpty(bottomNotice))
+                    GUI.Label(new Rect(380,GlassTrial.GlassExposureGauge.CanDisplay(game)?793:806,900,36),bottomNotice,small);
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트   ·   Esc 메뉴",small);
+                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트"+(GlassTrial.GlassStageNotice.CurrentStage(game)>=0?"   ·   J 스테이지 안내":"")+"   ·   Esc 메뉴",small);
             }
             if(!game.active||game.won)
             {
