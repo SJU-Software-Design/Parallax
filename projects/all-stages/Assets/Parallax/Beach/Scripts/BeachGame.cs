@@ -38,6 +38,7 @@ namespace ShadeLink.Beach
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
+        public event Action<string> UiNoticeIssued;
         public PlacementLesson lesson;
         public Vector3 GrabLocalPoint => Interaction.GrabLocalPoint;
         public Vector3 HeldDirection => Interaction.HeldDirection;
@@ -85,6 +86,8 @@ namespace ShadeLink.Beach
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(counterweightFinale==null||checkpoint!=3),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,BeachLighting.ToSun);
             foreach(var prop in props){var floatingProp=prop;prop.placement.WaterSupport=()=>BeachWater.Supports(floatingProp);}
             gameObject.AddComponent<BeachPlacementPreview>().game=this;
+            gameObject.AddComponent<GlassTrial.BeachGlassHud>();
+            gameObject.AddComponent<GlassTrial.BeachGlassHover>();
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
             if(shadowHarbor!=null)shadowHarbor.InitializeOnGameReady();
@@ -98,7 +101,7 @@ namespace ShadeLink.Beach
         }
         void OnDisable() { if(held!=null&&interaction!=null)interaction.Cancel(true); }
         void OnDestroy() { Time.timeScale=1; }
-        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
+        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration;UiNoticeIssued?.Invoke(text); }
         public void Resume()
         {
             if(won)ResetAll();ClearControlInput();PlayerControls.ConfigureCamera(view);active=started=true;Time.timeScale=1;
