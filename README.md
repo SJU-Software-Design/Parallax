@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="projects/all-stages/Assets/Parallax/Shared/Branding/ParallaxIcon.png" alt="Parallax 퍼즐 P" width="320">
+</p>
+
 # Parallax
 
 최신 통합본은 **0.29.2 · 튜토리얼 → E01 엘리베이터 → 미술관 → 해변 → 해적선 출항·엔딩**입니다.
