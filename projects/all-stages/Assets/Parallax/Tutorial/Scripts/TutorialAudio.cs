@@ -159,7 +159,7 @@ namespace ShadeLink.Tutorial
                 {
                     currentMusic.time = 0;
                     currentMusic.volume = 0;
-                    currentMusic.Play();
+                    { GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }
                     musicStarted = true;
                 }
                 else
@@ -190,14 +190,14 @@ namespace ShadeLink.Tutorial
             {
                 currentMusic.time = 0;
                 currentMusic.volume = 0;
-                currentMusic.Play();
+                { GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }
             }
             float overlap = Mathf.Min(CrossfadeSeconds, currentMusic.clip.length * .2f);
             if (!crossfading && currentMusic.time >= currentMusic.clip.length - overlap)
             {
                 incomingMusic.time = 0;
                 incomingMusic.volume = 0;
-                incomingMusic.Play();
+                { GameShellSettingsRuntime.Route(incomingMusic); incomingMusic.Play(); }
                 crossfading = true;
                 crossfadeElapsed = 0;
             }
@@ -273,7 +273,7 @@ namespace ShadeLink.Tutorial
                 cue.StartsWith("movement.", StringComparison.Ordinal) ? 0f : .55f;
             voice.source.priority = ui ? 100 : cue.StartsWith("movement.", StringComparison.Ordinal) ? 160 : 110;
             voice.until = now + clip.length / voice.source.pitch;
-            voice.source.Play();
+            { GameShellSettingsRuntime.Route(voice.source); voice.source.Play(); }
             return true;
         }
 

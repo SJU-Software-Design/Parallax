@@ -1,0 +1,23 @@
+'Aurora' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+Source: https://www.scottbuckley.com.au/library/aurora/
+License: https://creativecommons.org/licenses/by/4.0/
+
+Use: Parallax Eclipse EXIT entrance and closing black-screen thank-you.
+Original full recording CreditsAurora.mp3 remains unchanged.
+Original MP3 SHA256: 311AE35BF827BE51372DA47693357F79B8022B704D833CD26D547BBF67C117ED
+Derivative file: AuroraClosingCoda.wav, 6.000 seconds, stereo PCM16 / 48000 Hz.
+Derivative SHA256: 269047C203552DEBA9EB785808DB10A04CE5A27695FB6FE22AFB0D9CDDE2C6E2
+
+Changes to the same original recording:
+- Final-chord attack: 478.5 to 481.2 seconds (sample frames 22968000..23097600).
+- Late decay of that chord: 490.9 to 495.2 seconds (sample frames 23563200..23769600).
+- One-second equal-power overlap joins those two parts (2.7 + 4.3 - 1.0 = 6.0 seconds).
+- Late-decay linear gain compensation: 4.0; overall linear gain: 1.79158009841443.
+- Ten-millisecond smooth anti-click edges. Peak 0.5; zero-valued first/last samples.
+- Pitch and time scale are unchanged; all musical material comes from Aurora.
+Runtime crossfades the continuing full track into this edit over 1.2 seconds.
+The final 0.45-second music fade follows the closing thank-you fade, followed by one silent black second.
+
+Offline edit record: aurora-coda-source.json
+Offline edit record SHA256: DD00DD1FEDABBEE216CEEB09F07EBE078F57D4C472E33AF1F24FCD62699DBE75
+Decoded original PCM SHA256: 4FEBA9DF1A911F86BF515685B7ED50892DE605EFEE86F21439E0A82EF87F85AE

@@ -99,7 +99,11 @@ namespace ShadeLink.Gallery
         void Awake()
         {
             Shader.SetGlobalFloat("_MuseumInsertedGalleryLength",0);
-            FirstPersonMotor.Configure(controller,view);movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
+            FirstPersonMotor.Configure(controller,view);
+            // Native recovery reprojects the capsule into overlapping decorative mesh seams and can prevent withdrawal.
+            // Authored clear spawns and ordinary controller sweeps remain authoritative in this gallery.
+            controller.enableOverlapRecovery=false;
+            movementAudio=PlayerMovementAudio.Attach(controller);PlayerControls.ConfigureCamera(view);
             museumAudio=MuseumAudio.Install(gameObject,view.transform);
             var arguments=Environment.GetCommandLineArgs();
             bool mirrorTest=Array.IndexOf(arguments,"-gallery-mirror-test")>=0;
@@ -201,7 +205,7 @@ namespace ShadeLink.Gallery
             if(!automated)MuseumAudio.TryPlay("ui.confirm",this,view.transform.position);
             if(!automated){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
         }
-        public void Pause() { if(Transitioning)return;portraitGate?.ResetPassage();ClearControlInput();active=false;Time.timeScale=0;museumAudio?.SetGameplayRunning(false);Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
+        public void Pause() { if(Transitioning||ElevatorArrival)return;portraitGate?.ResetPassage();ClearControlInput();active=false;Time.timeScale=0;museumAudio?.SetGameplayRunning(false);Cursor.lockState=CursorLockMode.None;Cursor.visible=true; }
         void ClearControlInput()
         {
             motor.ClearInput();controls.Reset();pendingDrop=false;gameJumpHeld=false;
@@ -326,11 +330,18 @@ namespace ShadeLink.Gallery
             if (ShadeLink.Tutorial.TutorialMuseumElevatorFlow.ArrivalPending) return;
             if(Transitioning)return;
             if(automated)return;
-            if(PlayerControls.PausePressed){if(active){MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Pause();}else Resume();return;}
+            if(global::ParallaxGameShell.BlocksGameplay)return;
+            if(!global::ParallaxGameShell.OwnsPauseMenus&&PlayerControls.PausePressed){if(active){MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Pause();}else Resume();return;}
             if(!active||won)return;
-            if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
-            if(Input.GetKeyDown(KeyCode.R)&&!ElevatorArrival){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
-            if(Input.GetKeyDown(KeyCode.H))showHints=!showHints;
+            if(Cursor.lockState!=CursorLockMode.Locked)
+            {
+                // Arrival owns input until the visitor leaves the cabin. A focus
+                // loss must not enter a pause state whose menu is guarded there.
+                if(ElevatorArrival){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;if(Cursor.lockState==CursorLockMode.Locked)ClearControlInput();}
+                else{Pause();return;}
+            }
+            if(PlayerControls.Pressed(PlayerControls.Action.Reset)&&!ElevatorArrival){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
+            if(PlayerControls.Pressed(PlayerControls.Action.Hints))showHints=!showHints;
             var frame=controls.Read(Time.deltaTime,aimed!=null||bottleBalance?.Reward?.Targeted==true,held!=null||bottleBalance?.Reward?.Carrying==true);
             motor.SmoothKeyboardInput=!controls.UsingGamepad;
             Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;

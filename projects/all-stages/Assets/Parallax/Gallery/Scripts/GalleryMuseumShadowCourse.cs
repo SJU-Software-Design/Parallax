@@ -206,6 +206,22 @@ namespace ShadeLink.Gallery
             if(havePreviousFeet)previousFeet=game.player.feet;
         }
 
+        // Rebuild only milestones already committed to a saved checkpoint.
+        public void RestoreForCheckpoint(bool tutorialDone, bool nikeDone)
+        {
+            ResetProgress();
+            TutorialCleared = tutorialCrossed = tutorialDone;
+            if (nikeDone)
+            {
+                nikeLight?.canvas?.RestoreCompletedForCheckpoint(game);
+                nikeSocket?.RestoreCompletedForCheckpoint();
+                NikeCleared = nikeCrossed = NikeUnlocked = true;
+                gateOpening = 1; gateOpeningAudioPlayed = true; ApplyGatePose();
+            }
+            havePreviousFeet = game != null && game.player != null;
+            if (havePreviousFeet) previousFeet = game.player.feet;
+        }
+
         bool CanCloseGate()
         {
             if(game==null||game.player==null)return true;

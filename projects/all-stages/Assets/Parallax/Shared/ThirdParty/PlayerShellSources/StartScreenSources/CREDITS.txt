@@ -1,0 +1,11 @@
+Parallax independent start-screen preview
+Background: existing user-project generated artwork (02-side-hidden-light.png), copied byte-for-byte.
+University mark: Sejong University official identity PNG, original proportions and source retained.
+Title font: Nanum Myeongjo Regular / NHN Corporation / SIL Open Font License 1.1; see NanumMyeongjo-OFL.txt.
+Body font: Nanum Gothic Regular / official Google Fonts ofl/nanumgothic / SIL Open Font License 1.1; see NanumGothic-OFL.txt.
+Switch / startup / crackle: TRP / CC0-1.0 / https://freesound.org/people/TRP/sounds/574100/
+Electrical hum: Rvgerxini / CC0-1.0 / https://freesound.org/people/Rvgerxini/sounds/474312/
+Light-fixture rattle: itickets / CC0-1.0 / https://freesound.org/people/itickets/sounds/522618/
+Audio derivatives: public HQ previews trimmed, mono-resampled, normalized and faded; hum loop crossfaded, rattle highpass 350 Hz.
+Original game sources, existing planning files and AudioReview files are preserved.
+No paid Dark UI package is included; UI will use the separately authored brush-style preview.

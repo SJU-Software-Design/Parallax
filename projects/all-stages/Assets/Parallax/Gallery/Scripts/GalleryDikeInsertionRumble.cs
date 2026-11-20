@@ -60,6 +60,7 @@ namespace ShadeLink.Gallery
         public void ApplySample()
         {
             ClearSample();
+            if (!GameShellSettingsRuntime.CameraShake) return;
             if (Game == null || Game.view == null || !Game.active || Game.won || Game.Transitioning || Intensity <= 0) return;
             GalleryCathedralRumble.Sample(Elapsed, Intensity, out var position, out var rotation);
             sampledCamera = Game.view;

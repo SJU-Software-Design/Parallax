@@ -312,6 +312,7 @@ namespace ShadeLink.Tutorial
 
         void DrawSunlightExposure(float width, float height)
         {
+            DrawSunlightGauge(width, height);
             if (sunlightExposure <= .03f) return;
             Color previous = GUI.color;
             GUI.color = new Color(1f, .52f, .16f, sunlightExposure * .25f);

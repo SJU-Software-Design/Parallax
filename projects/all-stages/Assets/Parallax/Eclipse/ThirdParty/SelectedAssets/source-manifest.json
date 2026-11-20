@@ -1,0 +1,259 @@
+{
+  "date": "2026-11-19",
+  "scope": "User-approved Eclipse ending implementation; only selected free Standard assets, official Sun texture and already acquired Beach pirate ship reused.",
+  "renderer": "Built-in",
+  "sources": [
+    {
+      "id": "Quaternius-Standard",
+      "title": "Modular Sci-Fi MegaKit Standard",
+      "author": "Quaternius",
+      "source": "https://quaternius.com/packs/modularscifimegakit.html",
+      "downloadSource": "https://opengameart.org/content/modular-sci-fi-megakit",
+      "downloadUrl": "https://opengameart.org/sites/default/files/modular_scifi_megakitstandard.zip",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceArchive": "local-provenance/validation/EclipseEnding_20261119/AssetSources/Quaternius/modular_scifi_megakitstandard.zip",
+      "sourceArchiveBytes": 48559316,
+      "sourceArchiveSha256": "4CA9ACBC7A13E7BAA48E24C4853B779889B7AB21587004C36668826E705C8A10",
+      "acquired": true,
+      "originalFreeModelCount": 190,
+      "selectedModelCount": 10,
+      "changes": "Unmodified FBX(Unity) source bytes and original PNG PBR maps; scaled/layout arranged at runtime. Built-in shader interprets original ORM/normal/emissive maps; selected rail tint and lighting are project additions. Source paid engine projects not acquired."
+    },
+    {
+      "id": "SolarSystemScope-Sun",
+      "title": "Sun texture",
+      "author": "Solar System Scope",
+      "source": "https://www.solarsystemscope.com/textures/",
+      "downloadUrl": "https://www.solarsystemscope.com/textures/download/2k_sun.jpg",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "acquired": true,
+      "resource": "Eclipse/Selected/SolarSystemScope/SunSurface",
+      "sourceSha256": "FF0F076BA65E03B5AB518451BC96699325BE38E3CCBDD5869EE1C00F3A0C8816",
+      "optional8KOriginal": "local-provenance/validation/EclipseEnding_20261119/AssetSources/SolarSystemScope/8k_sun.jpg",
+      "optional8KSha256": "F22B1CFB306DDCE72A7E3B628668A0175B745038CE6268557CB2F7F1BDF98B9D",
+      "changes": "Original2K image bytes unchanged. Used on existing project-created solar sphere; exposure/shader and depth-occluded soft corona are project additions. Existing procedural moon is unchanged."
+    },
+    {
+      "id": "Beach-StylizedPirateShip",
+      "title": "Stylized Pirate Ship",
+      "author": "Comeback",
+      "source": "https://assetstore.unity.com/packages/3d/vehicles/sea/stylized-pirate-ship-200192",
+      "license": "Standard Unity Asset Store EULA",
+      "licenseUrl": "https://unity.com/legal/as-terms",
+      "acquired": true,
+      "acquisition": "Existing Beach source reused; no new asset purchase/download",
+      "resource": "Eclipse/Selected/ArrivalPirateShip",
+      "sourcePrefab": "Assets/ThirdParty/StylizedPirateShip/StylShip_Unity.prefab",
+      "changes": "Original meshes/materials reused; existing Beach UV-only reverse-sail derivatives reused when prepared; all colliders/behaviours removed from derivative prefab. Static visual at left of Eclipse deck, scale0.4 as Beach final ship. No boarding/flight gameplay added."
+    },
+    {
+      "id": "vietp6105-ExitSign",
+      "title": "Exit Sign",
+      "author": "vietp6105",
+      "source": "https://sketchfab.com/3d-models/exit-sign-d554b032aa154df295e42f6e29714b70",
+      "license": "CC BY 4.0 per official metadata",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "acquired": true,
+      "selected": true,
+      "officialMetadata": "https://api.sketchfab.com/v3/models/d554b032aa154df295e42f6e29714b70",
+      "downloadAttemptStatus": 401,
+      "reason": "Official logged-in UI Download3DModel -> Original format.fbx completed by root/browser with user authorization. Original Downloads archive preserved. No cookies/tokens/passwords extracted.",
+      "sourceArchive": "local-provenance/validation/EclipseEnding_20261119/AssetSources/ExitSign/exit-sign-original.zip",
+      "sourceArchiveSha256": "ADBDE8252AC34AFA038DD76EE64DF4393302C066268427A41C25F99FEF78F129",
+      "resources": [
+        "Eclipse/Selected/ExitSign/ExitSignOriginal",
+        "Eclipse/Selected/ExitSign/Background"
+      ],
+      "archiveLicenseFile": "None included; official public API metadata declares CC BY4.0",
+      "changes": "Original FBX/PNG bytes retained; actual source mesh is normalized to project SignWidth/Height/depth and triangles clipped around the existing real i-stem opening. Source UV E/x/i/t/runner intervals adapted to align i at fixed DoorX while retaining text-left/runner-right. Existing project SignPart colliders and doorway constants unchanged. Rendering material adapted.",
+      "officialOriginalDownloadStatus": "Completed via logged-in official UI; earlier unauthenticated401 retained as attempt history"
+    }
+  ],
+  "files": [
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/ExitSign/Background.png",
+      "bytes": 47512,
+      "sha256": "423069E5415F4E94C48550B279B3B94D3C0761F9ABD004669AA23AB23327F044"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/ExitSign/ExitSignOriginal.fbx",
+      "bytes": 66780,
+      "sha256": "E13D348384A4588E2FEB52DC368FE9C338FB9AE2C536D5C6CAA1B9A1A141F756"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Column_Astra.fbx",
+      "bytes": 29132,
+      "sha256": "7FA8A9202CD89C8FBE5B29D5E0CAA1D3C757114DA07E88499CF781E8A9194FE7"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Column_Hollow.fbx",
+      "bytes": 65260,
+      "sha256": "1764A21A990B6F8C0EAB73E88F77C039F67404D556F7BE6CA8D136B8058A372E"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Column_Simple.fbx",
+      "bytes": 24348,
+      "sha256": "9EDC0089CCE9B40D456EA6A84CE89627FFC73121351D2F58C0AAFAC0810D1237"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Door_Frame_Square.fbx",
+      "bytes": 24364,
+      "sha256": "2513BD2956C209BF087558ADBDACB96CAF0113DF8FBBBB996B887EE19B3636AC"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Platform_Metal2.fbx",
+      "bytes": 18924,
+      "sha256": "49F1476752B0DC1617DC243F32ACC9E5076DDDFD0B74AA20D3F8C200F4120DCE"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Platform_Simple.fbx",
+      "bytes": 18540,
+      "sha256": "C4B8A836CB4A564B2897286E6C6007463476FAAA7F0F24CF0ED840B46731AE39"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/Prop_Rail_4.fbx",
+      "bytes": 42636,
+      "sha256": "2A843EE5D3059E1C6E8062D44CDA100D7DB5CC53E1176F0AA2492400A0DD8EB0"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/ShortWall_AccentStrip_Straight.fbx",
+      "bytes": 19836,
+      "sha256": "379ACD3E71101CAC880023EC1AACAFAF4D85D90C23E6FCB22E7770AD88F3D1CA"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/ShortWall_DarkPlastic_Straight.fbx",
+      "bytes": 18572,
+      "sha256": "6966FF930B1FD3EC992645F7CAC77D04AF918BD85805CE7ED866DD3BE50B898D"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Models/ShortWall_WhitePlate2_Straight.fbx",
+      "bytes": 18748,
+      "sha256": "210A4EF7A5787C05D52166C93354EA8A415BD7362EBE9A730C2C694E09CC0280"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Decals.png",
+      "bytes": 161794,
+      "sha256": "CFD1DFE9D3C86A7F5F9BC2E516D935599A70854090F413A29AEC0CED1D6C908A"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_PaddedWall_BaseColor.png",
+      "bytes": 2129999,
+      "sha256": "7B431C76896C8D2DE736E33271049FC869F2A8A5C0632678C9F030146E90C650"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_PaddedWall_Normal.png",
+      "bytes": 3491441,
+      "sha256": "141C075EE32A4DDA83C4B954076EA563B86E2A6329D5C536AA7DDCCB6C1328BF"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_PaddedWall_ORM.png",
+      "bytes": 2846320,
+      "sha256": "555039F51A71803BE3D617AC03EAC05E840EC5B36C269DE2115A50E956BFF3B2"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_PaddingWall_Emissive.png",
+      "bytes": 14752,
+      "sha256": "E29DE6549929F2D8BA322E9477A290E63F761CF6AFD51E114AA5232F7AB60F8A"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_BaseColor_Red.png",
+      "bytes": 965873,
+      "sha256": "15FC0E344ED35483BC771AAA95C1C2A0B0EC2349A893CF24AF18B8742F0842AC"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_BaseColor.png",
+      "bytes": 980201,
+      "sha256": "A8F3271BE2AA9C450EF5EF85C15BF8BCAEEAA48F5FC616DF12D1334A96E78605"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_DetailMask.png",
+      "bytes": 12808,
+      "sha256": "3CE977235DC82314CC8BE07DCFE81293A3D0C6B317E267557D3849621DBB47E9"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_Emissive.png",
+      "bytes": 12619,
+      "sha256": "E031D09286C602E5D5BD847A4F84E88A124A800C1EB151C40302650A955F69BB"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_Normal.png",
+      "bytes": 585626,
+      "sha256": "1AEC7AD47A642FC68216B5A3119341B7DCA038C1FC9493DF8A15AD4AA27DDBCF"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_01_ORM.png",
+      "bytes": 3338790,
+      "sha256": "6AB7AD231DF22867652048EBFD602684A9072D45C483CA57DF0FCD4CB2CB4FEB"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_BaseColor_Blue.png",
+      "bytes": 1464045,
+      "sha256": "F5B2289F70FED4997F01E6F774C918BC30813EE9EC37F83F479F9BC36E0B68DE"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_BaseColor_Red.png",
+      "bytes": 1150649,
+      "sha256": "4A08ABF8DC0A5BF558A0AE38DC0D70EDDC328EAA8060725D07B95D7C8A75663C"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_BaseColor.png",
+      "bytes": 1125543,
+      "sha256": "7B13C6A7D82B434314237C4B1930B8E12DDC69A70FFEF28D73CBD178D3FF6293"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_DetailMask.png",
+      "bytes": 14281,
+      "sha256": "CDBB533D3B25E552E528351C19449A840EC7FEEC6A62C4CF49C0E8131AAD7E81"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_Normal.png",
+      "bytes": 756841,
+      "sha256": "7FAAA7059192F43ADED9CC2F93917DD54FD14545509C37318D4E6BF0A8104960"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_02_ORM.png",
+      "bytes": 3994352,
+      "sha256": "2A433E6A7FBCEC375B5C5E5C7AA57DBE1FD23CA6592F48C52D09DDE2D622AAB8"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_03_BaseColor.png",
+      "bytes": 1285125,
+      "sha256": "2A15EADBEDBC928D771ED8F2A7A8C1A16BCE89B2836A0ECF34ECE7E2FAB96769"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_03_Cables.png",
+      "bytes": 779284,
+      "sha256": "758A95BECCDC9F0621D8B8A283EE2593E04B56F1CD32776165EC85E1568E8EB8"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_03_Normal.png",
+      "bytes": 375307,
+      "sha256": "B2C3238CBE2586E44DF0B00179ADF85E5B7AC7FED1713EC0B807482245A30738"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/Quaternius/Textures/T_Trim_03_ORM.png",
+      "bytes": 3009230,
+      "sha256": "C57134B5D496B39B955A87765EA32B93567B1AB494FE6B890DE24C75DCFD6FE4"
+    },
+    {
+      "file": "Assets/Parallax/Eclipse/Resources/Eclipse/Selected/SolarSystemScope/SunSurface.jpg",
+      "bytes": 822427,
+      "sha256": "FF0F076BA65E03B5AB518451BC96699325BE38E3CCBDD5869EE1C00F3A0C8816"
+    }
+  ],
+  "sourceGeometryGuard": {
+    "deck": "26 x72 unchanged",
+    "moon": "BuildMoon/Craters/LunarMesh/LunarTexture text unchanged",
+    "sign": "SignWidth/Height, DoorX/Width/Height/Bottom, SignPart geometry and collision unchanged",
+    "newEnvironment": "Original selected meshes at deck edges; edge/rear boundary collision follows low1.25m rail height. Continuous deck26x72 and below-5 respawn preserved."
+  },
+  "acquisitionAttempts": [
+    "Official itch page429; used creator-published CC0 OGA Standard original instead",
+    "Godot public Standard mirror transfer timed out; partial archive retained as unused evidence",
+    "Sketchfab original download401; source not acquired",
+    "Official logged-in Sketchfab Original format.fbx UI download succeeded; earlier source-authentication block resolved without bypass"
+  ],
+  "backup": "local-provenance/validation/EclipseEnding_20261119/SourceBefore/gallery_details/EclipseFinaleWorld.cs"
+}

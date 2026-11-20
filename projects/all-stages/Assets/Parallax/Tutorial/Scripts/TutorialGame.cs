@@ -133,7 +133,7 @@ namespace ShadeLink.Tutorial
             BuildSunlightCourse();
             BuildMuseumElevator();
             ResetStep();
-            SetPaused(false);
+            SetPaused(StageTravelMenu.ShouldPauseOnArrival("Tutorial"));
             if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "--tutorial-stage3"))
                 StartTutorialStage(3);
             if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "-tutorial-elevator-review" || arg == "-tutorial-elevator-validate"))
@@ -588,14 +588,14 @@ namespace ShadeLink.Tutorial
 
         void Update()
         {
-            if (elevatorDeparted) return;
-            if (PlayerControls.PausePressed)
+            if (elevatorDeparted || global::ParallaxGameShell.BlocksGameplay) return;
+            if (!global::ParallaxGameShell.OwnsPauseMenus && PlayerControls.PausePressed)
             {
                 TutorialAudio.Play("ui.cancel", this, Controller.transform.position);
                 SetPaused(!paused); return;
             }
             if (paused) return;
-            if (Input.GetKeyDown(KeyCode.R))
+            if (PlayerControls.Pressed(PlayerControls.Action.Reset))
             {
                 TutorialAudio.Play("ui.confirm", this, Controller.transform.position);
                 RestartLesson();
@@ -795,7 +795,7 @@ namespace ShadeLink.Tutorial
             if (Camera == null) return;
             float width = Screen.width;
             float height = Screen.height;
-            var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = 20, wordWrap = true, alignment = TextAnchor.MiddleCenter };
+            var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = Mathf.RoundToInt(20 * global::GameShellSettingsRuntime.TextScale), wordWrap = true, alignment = TextAnchor.MiddleCenter };
             style.normal.textColor = Color.white;
             if (inSunlightRoom) DrawSunlightExposure(width, height);
             bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
@@ -835,7 +835,7 @@ namespace ShadeLink.Tutorial
                 GUI.Box(banner, GUIContent.none);
                 GUI.Label(new Rect(banner.x + 12, banner.y, banner.width - 24, banner.height), notice, style);
             }
-            if (paused)
+            if (paused && !global::ParallaxGameShell.OwnsPauseMenus)
             {
                 float menuWidth = Mathf.Min(400f, width - 32f);
                 var menu = new Rect((width - menuWidth) / 2, height / 2 - 202, menuWidth, 404);

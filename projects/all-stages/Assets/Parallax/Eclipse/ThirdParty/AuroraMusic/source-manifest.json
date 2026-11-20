@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "title": "Aurora",
+  "creator": "Scott Buckley",
+  "selectedForEclipse": true,
+  "selectionAuthority": "사용자: 02노래는안쓸거고1번으로적용해보자",
+  "sourcePage": "https://www.scottbuckley.com.au/library/aurora/",
+  "officialDownloadURL": "https://www.scottbuckley.com.au/library/wp-content/uploads/2021/10/Aurora.mp3",
+  "license": "CC BY 4.0",
+  "licenseURL": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "'Aurora' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au",
+  "resource": "Eclipse/Audio/CreditsAurora",
+  "originalSHA256": "311ae35bf827be51372da47693357f79b8022b704d833cd26d547bbf67c117ed",
+  "originalBytes": 19954645,
+  "originalBytesPreserved": true,
+  "runtime": {
+    "component": "EclipseEndingMusic",
+    "start": "Credits begin: selected ambience fades out for2.5s, then Aurora starts from0:00 with3s fade-in",
+    "range": "complete original from0:00",
+    "baseGain": 0.24,
+    "pitch": 1,
+    "fadeInSeconds": 3,
+    "loopCrossfadeSeconds": 1.5,
+    "fadeOut": "1-QuitFadeAlpha during final1.45s exit fade",
+    "pause": "AudioSource.Pause/UnPause while game.paused or PresentationSuspended; fade clock freezes",
+    "routing": "Shared Music group through GameShellSettingsRuntime.Route before Play; clip runtime metadata names BGM to keep generic rescans in Music",
+    "waitForSelectedAmbience": true
+  },
+  "existingBeachWanderlustUnchanged": true,
+  "puzzleBgm": false,
+  "environmentCandidateSelection": "none; not authorized yet"
+}

@@ -9,10 +9,19 @@ namespace ShadeLink.Beach
         bool stageTravelTab;
         readonly Color paper=new Color(.98f,.97f,.91f),accent=new Color(.34f,.82f,1),ink=new Color(.035f,.12f,.17f,.94f);
         void Panel(Rect r,Color c){GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=Color.white;}
+        static string ControlGuide() => PlayerControls.BindingLabel(PlayerControls.Action.Forward)+"/"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Left)+"/"+PlayerControls.BindingLabel(PlayerControls.Action.Backward)+"/"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Right)+" 이동 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Jump)+" 점프 · "+PlayerControls.BindingLabel(PlayerControls.Action.Grab)+
+            " 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Interact)+" 승선/출항 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · Esc 메뉴";
         void OnGUI()
         {
             if(game==null)return;
             if(text==null){text=new GUIStyle(GUI.skin.label){font=game.font,fontSize=22,wordWrap=true};text.normal.textColor=paper;title=new GUIStyle(text){fontSize=38,fontStyle=FontStyle.Bold};small=new GUIStyle(text){fontSize=18};button=new GUIStyle(GUI.skin.button){font=game.font,fontSize=24};goal=new GUIStyle(small){fontStyle=FontStyle.Bold};goal.normal.textColor=new Color(1,.78f,.38f);}
+            float textScale=global::GameShellSettingsRuntime.TextScale;
+            text.fontSize=Mathf.RoundToInt(22*textScale);title.fontSize=Mathf.RoundToInt(38*textScale);small.fontSize=Mathf.RoundToInt(18*textScale);button.fontSize=Mathf.RoundToInt(24*textScale);goal.fontSize=small.fontSize;
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
             if(game.skyShip!=null&&(game.skyShip.Departing||game.won))
             {
@@ -54,9 +63,10 @@ namespace ShadeLink.Beach
                 else if(game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(25,hoist?275:207,630,230),ink);GUI.Label(new Rect(47,hoist?292:224,587,204),BeachWorld.Hints[game.checkpoint],text);}
                 if(Time.unscaledTime<game.noticeUntil)GUI.Label(new Rect(hoist?25:300,hoist?811:789,hoist?1550:1090,hoist?30:50),game.notice,small);
-                Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),hoist?"WASD 이동 · 마우스 시점 · Space 점프 · 클릭 잡기/놓기 · R 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · Esc 메뉴":"WASD 이동 · 마우스 시점 · Space 점프 · 클릭 잡기/놓기 · R 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · T 설치 연습 · Esc 메뉴",small);
+                if(global::GameShellSettingsRuntime.ShowControlHints)
+                {Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),ControlGuide(),small);}
             }
-            if(!game.active||game.won)
+            if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.07f,.10f,.52f));Panel(new Rect(320,55,960,790),ink);
                 if(StageTravelMenu.DrawPauseTabs(new Rect(320,15,960,34),game.font,ref stageTravelTab))
@@ -88,7 +98,7 @@ namespace ShadeLink.Beach
         {
             var ship=game.skyShip;if(ship==null)return;
             if(ship.EndingFade>0)Panel(new Rect(0,0,1600,900),new Color(.012f,.028f,.042f,ship.EndingFade));
-            if(ship.EndingTitleAlpha>0)
+            if(ship.EndingTitleAlpha>0&&!global::ParallaxGameShell.OwnsPauseMenus)
             {
                 var endTitle=new GUIStyle(title){fontSize=62,alignment=TextAnchor.MiddleCenter};
                 var endText=new GUIStyle(text){fontSize=24,alignment=TextAnchor.MiddleCenter};

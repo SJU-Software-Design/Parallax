@@ -1,0 +1,1249 @@
+{
+  "schemaVersion": 1,
+  "team": [
+    {
+      "id": "team-1",
+      "usage": "만든사람들",
+      "title": "안건우 팀장",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "role": "해변·미술관 기획·구현\n해변·미술관 에셋 수정\n튜토리얼 기획, 사운드 적용·구현\n게임 시작화면 기획\n엔딩 기획·구현"
+    },
+    {
+      "id": "team-2",
+      "usage": "만든사람들",
+      "title": "이민섭",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "role": "원근·그림자 판정 구현\n튜토리얼 기획·구현\n미술관 기획, 해변·미술관 에셋 수정\n게임 시작화면 기획"
+    },
+    {
+      "id": "team-3",
+      "usage": "만든사람들",
+      "title": "김태양",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "role": "튜토리얼 기획·구현, 맵 QA\nUI 개편"
+    },
+    {
+      "id": "team-4",
+      "usage": "만든사람들",
+      "title": "이하늘",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "role": "사운드 조사 및 구현, QA\n맵 아이디어 제공 및 자료조사"
+    }
+  ],
+  "assets": [
+    {
+      "id": "art-4cb1a95d03295f",
+      "title": "The Starry Night",
+      "creator": "Vincent van Gogh",
+      "license": "Public domain (PD-Art / Wikimedia Commons Public Domain Mark)",
+      "url": "https://commons.wikimedia.org/wiki/File:Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+      "usage": "미술관 명화 전시실의 벽면 전시 그림",
+      "displayUsage": "미술관 명화 전시실의 벽면 전시 그림"
+    },
+    {
+      "id": "art-4574efb4c7b8be",
+      "title": "The Scream",
+      "creator": "Edvard Munch",
+      "license": "Public domain (PD-Art / Wikimedia Commons Public Domain Mark)",
+      "url": "https://commons.wikimedia.org/wiki/File:The_Scream_by_Edvard_Munch,_1893_-_Nasjonalgalleriet.png",
+      "usage": "미술관 명화 전시실·후반 전시실의 벽면 전시 그림",
+      "displayUsage": "미술관 명화 전시실·후반 전시실의 벽면 전시 그림"
+    },
+    {
+      "id": "art-8e38c58187418e",
+      "title": "Bridge over a Pond of Water Lilies",
+      "creator": "Claude Monet",
+      "license": "Public domain (PD-Art / Wikimedia Commons Public Domain Mark)",
+      "url": "https://commons.wikimedia.org/wiki/File:Bridge_over_a_Pond_of_Water_Lilies_by_Claude_Monet_(1899).jpg",
+      "usage": "미술관 명화 전시실의 벽면 전시 그림",
+      "displayUsage": "미술관 명화 전시실의 벽면 전시 그림"
+    },
+    {
+      "id": "art-f5cce9b8434a8a",
+      "title": "The Ambassadors",
+      "creator": "Hans Holbein the Younger",
+      "license": "Public domain (PD-Art / Wikimedia Commons Public Domain Mark)",
+      "url": "https://commons.wikimedia.org/wiki/File:Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg",
+      "usage": "미술관 명화·니케 전시실의 벽면 전시 그림",
+      "displayUsage": "미술관 명화·니케 전시실의 벽면 전시 그림"
+    },
+    {
+      "id": "art-ebb0cbcd9e074e",
+      "title": "Girl with a Pearl Earring",
+      "creator": "Johannes Vermeer",
+      "license": "Public domain (PD-Art / Wikimedia Commons Public Domain Mark)",
+      "url": "https://commons.wikimedia.org/wiki/File:1665_Girl_with_a_Pearl_Earring.jpg",
+      "usage": "미술관 명화 전시와 원근 그림 조형물의 표면",
+      "displayUsage": "미술관 명화 전시와 원근 그림 조형물의 표면"
+    },
+    {
+      "id": "art-18027289b6e698",
+      "title": "Mae West's Face which May be Used as a Surrealist Apartment",
+      "creator": "Salvador Dalí",
+      "license": "",
+      "url": "https://www.boijmans.nl/en/collection/artworks/122647/mae-west-lips-sofa",
+      "usage": "미술관 초상 방에서 얼굴로 보이는 그림과 시선 기믹",
+      "displayUsage": "미술관 초상 방에서 얼굴로 보이는 그림과 시선 기믹"
+    },
+    {
+      "id": "art-a649eb206dc898",
+      "title": "Mae West Room, installation photograph",
+      "creator": "Salvador Dalí and Òscar Tusquets; photograph via ARTE.it",
+      "license": "",
+      "url": "https://www.arte.it/notizie/mondo/il-teatro-museo-di-figueres-un-sogno-firmato-dal%C3%AC-17233",
+      "usage": "미술관 초상 방의 공간으로 바뀌는 메이 웨스트 설치 사진",
+      "displayUsage": "미술관 초상 방의 공간으로 바뀌는 메이 웨스트 설치 사진"
+    },
+    {
+      "id": "art-b2a545de387fea",
+      "title": "‘The First Knot’. Interlaced Roundel with an Oblong Panel in its Center",
+      "creator": "Albrecht Dürer",
+      "license": "Public Domain / CC0 Open Access",
+      "url": "https://www.metmuseum.org/art/collection/search/388788",
+      "usage": "디케 저울 전시실 왼쪽 앞 벽의 전시 그림",
+      "displayUsage": "디케 저울 전시실 왼쪽 앞 벽의 전시 그림"
+    },
+    {
+      "id": "art-55b82d67d59754",
+      "title": "‘The Sixth Knot’. Interlaced Roundel with Seven Wreaths",
+      "creator": "Albrecht Dürer",
+      "license": "Public Domain / CC0 Open Access",
+      "url": "https://www.metmuseum.org/art/collection/search/388375",
+      "usage": "디케 저울 전시실 왼쪽 뒤 벽의 전시 그림",
+      "displayUsage": "디케 저울 전시실 왼쪽 뒤 벽의 전시 그림"
+    },
+    {
+      "id": "art-22f0aa7120d1b0",
+      "title": "Woman Holding a Balance",
+      "creator": "Johannes Vermeer",
+      "license": "This object’s media is free and in the public domain / Open access images free for any commercial or non-commercial use",
+      "url": "https://www.nga.gov/artworks/1236-woman-holding-balance",
+      "usage": "디케 저울 전시실 오른쪽 앞 벽의 전시 그림",
+      "displayUsage": "디케 저울 전시실 오른쪽 앞 벽의 전시 그림"
+    },
+    {
+      "id": "art-41d73bca7e5926",
+      "title": "A Goldsmith in his Shop",
+      "creator": "Petrus Christus",
+      "license": "Public Domain / CC0 Open Access",
+      "url": "https://www.metmuseum.org/art/collection/search/459052",
+      "usage": "디케 저울 전시실 오른쪽 뒤 벽의 전시 그림",
+      "displayUsage": "디케 저울 전시실 오른쪽 뒤 벽의 전시 그림"
+    },
+    {
+      "id": "art-f0d9029b0ee2c0",
+      "title": "Winged Victory of Samothrace: Skulpturhalle Basel plaster cast",
+      "creator": "Cosmo Wenman (scan)",
+      "license": "CC BY 3.0",
+      "url": "https://www.thingiverse.com/thing:196038",
+      "usage": "미술관에서 움직여 그림자를 맞추는 사모트라케의 니케 조각",
+      "displayUsage": "미술관에서 움직여 그림자를 맞추는 사모트라케의 니케 조각"
+    },
+    {
+      "id": "art-a5ed2a9b82feff",
+      "title": "La Cathedrale (The Cathedral)",
+      "creator": "Auguste Rodin; 3D scan by Migg",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/la-cathedrale-d0ba1f143173484f87961fc50d46bdcf",
+      "usage": "미술관 마지막 방에서 벌어져 해변 통로를 여는 두 손 조각",
+      "displayUsage": "미술관 마지막 방에서 벌어져 해변 통로를 여는 두 손 조각"
+    },
+    {
+      "id": "art-beab710a2c6386",
+      "title": "Aurelius (PhotoScan)",
+      "creator": "ryanfb; Marcus Aurelius bust, Art Institute of Chicago",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/aurelius-photoscan-cad3a072546a457fa1e2e5a90b25063a",
+      "usage": "니케 전시실에서 빛을 가리는 이동 가능한 흉상",
+      "displayUsage": "니케 전시실에서 빛을 가리는 이동 가능한 흉상"
+    },
+    {
+      "id": "art-bd3107eae6188e",
+      "title": "Marble Bust 01",
+      "creator": "Rico Cilliers / Poly Haven",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/marble_bust_01",
+      "usage": "미술관 전시실과 복도의 장식용 대리석 흉상",
+      "displayUsage": "미술관 전시실과 복도의 장식용 대리석 흉상"
+    },
+    {
+      "id": "art-cb17ec7504ab58",
+      "title": "Potted Plant 02",
+      "creator": "Rico Cilliers / Poly Haven",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/potted_plant_02",
+      "usage": "미술관 전시 공간의 화분과 식물 장식",
+      "displayUsage": "미술관 전시 공간의 화분과 식물 장식"
+    },
+    {
+      "id": "art-020a8728cd7838",
+      "title": "Lady Justice",
+      "creator": "Kenny Maguire / Kenny Maguire Studio",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/lady-justice-67b91f4d07ee423b9c5c53a08d8aa454",
+      "usage": "병·책·저울 퍼즐의 디케 몸체와 저울 조각",
+      "displayUsage": "병·책·저울 퍼즐의 디케 몸체와 저울 조각"
+    },
+    {
+      "id": "art-2b8c4056b40949",
+      "title": "Realistic Medieval Long Sword / Brescia Spadona",
+      "creator": "Izkeas",
+      "license": "CC0 1.0",
+      "url": "https://izkeas.itch.io/realistic-medieval-long-sword",
+      "usage": "디케 저울 보상으로 떨어지고 받침에 꽂는 검",
+      "displayUsage": "디케 저울 보상으로 떨어지고 받침에 꽂는 검"
+    },
+    {
+      "id": "art-fd144f5b474e34",
+      "title": "Book Encyclopedia Set 01",
+      "creator": "John Malcolm / Poly Haven",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/book_encyclopedia_set_01",
+      "usage": "유리병 안에서 꺼내 저울에 올리는 책",
+      "displayUsage": "유리병 안에서 꺼내 저울에 올리는 책"
+    },
+    {
+      "id": "art-80a8c103d07634",
+      "title": "Rock 09",
+      "creator": "Jenelle van Heerden / Poly Haven",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/rock_09",
+      "usage": "해변에서 키워 추 받침에 올리는 해안 바위",
+      "displayUsage": "해변에서 키워 추 받침에 올리는 해안 바위"
+    },
+    {
+      "id": "art-b8ec51e3292912",
+      "title": "Pedestal: Palace of Versailles pink marble pedestal",
+      "creator": "Treleau",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/pedestal-39c98c97598547d9951be09a1d8fb2fb",
+      "usage": "디케의 검을 꽂아 문을 여는 중앙 석재 받침",
+      "displayUsage": "디케의 검을 꽂아 문을 여는 중앙 석재 받침"
+    },
+    {
+      "id": "art-7c66a083ac17a7",
+      "title": "Simple Elevator with Animation",
+      "creator": "lhaegy.fu",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/simple-elevator-with-animation-770488a2f94a453fb90a7445bda63cd0",
+      "usage": "튜토리얼에서 지하 미술관으로 이동하는 탑승 엘리베이터",
+      "displayUsage": "튜토리얼에서 지하 미술관으로 이동하는 탑승 엘리베이터"
+    },
+    {
+      "id": "art-e25c0286f1cb1b",
+      "title": "Medieval Library Kit: open wooden worktable",
+      "creator": "Rinku Choudhary",
+      "license": "Free Standard (NoAI)",
+      "url": "https://sketchfab.com/3d-models/medieval-library-kit-c018093ba87d45f28f30ec8acf2f6604",
+      "usage": "튜토리얼에서 주사위를 올려놓는 목재 연습 탁자",
+      "displayUsage": "튜토리얼에서 주사위를 올려놓는 목재 연습 탁자"
+    },
+    {
+      "id": "art-168ee5da0b997b",
+      "title": "Beige Wall 001",
+      "creator": "Dimitrios Savva; Rico Cilliers",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/beige_wall_001",
+      "usage": "미술관 벽·회벽·기둥의 표면 재질",
+      "displayUsage": "미술관 벽·회벽·기둥의 표면 재질"
+    },
+    {
+      "id": "art-6638e5a184d413",
+      "title": "Marble 01",
+      "creator": "Rob Tuytel",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/marble_01",
+      "usage": "미술관 바닥·석재 받침의 표면 재질",
+      "displayUsage": "미술관 바닥·석재 받침의 표면 재질"
+    },
+    {
+      "id": "art-238c88970e4232",
+      "title": "Mocha Oak Veneer",
+      "creator": "Jenelle van Heerden",
+      "license": "CC0 1.0",
+      "url": "https://polyhaven.com/a/mocha_oak_veneer",
+      "usage": "미술관 목재 소품·전시 가구의 표면 재질",
+      "displayUsage": "미술관 목재 소품·전시 가구의 표면 재질"
+    },
+    {
+      "id": "art-ddc55d37256eaa",
+      "title": "Yughues Free Sand Materials",
+      "creator": "Nobiax / Yughues",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/2d/textures-materials/nature/yughues-free-sand-materials-12964",
+      "usage": "해변 모래성·해안 지형의 모래 재질 / 해변 모래바닥의 노멀·반사 표면 재질",
+      "displayUsage": "해변 모래성·해안 지형의 모래 재질 / 해변 모래바닥의 노멀·반사 표면 재질"
+    },
+    {
+      "id": "art-ea4ce3e7ccc7df",
+      "title": "Plank Textures PBR",
+      "creator": "A dog's life software",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/2d/textures-materials/wood/plank-textures-pbr-72318",
+      "usage": "해변의 판자·나무 다리·해안 목재 소품 재질",
+      "displayUsage": "해변의 판자·나무 다리·해안 목재 소품 재질"
+    },
+    {
+      "id": "art-c0e743e8949d58",
+      "title": "Simple Water Shader URP (source textures/mesh)",
+      "creator": "IgniteCoders",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/2d/textures-materials/water/simple-water-shader-urp-191449",
+      "usage": "해변 바닷물의 원본 수면 메시·표면 텍스처",
+      "displayUsage": "해변 바닷물의 원본 수면 메시·표면 텍스처"
+    },
+    {
+      "id": "art-6799312cbc8c1f",
+      "title": "Stylized Pirate Ship",
+      "creator": "Comeback",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/3d/vehicles/sea/stylized-pirate-ship-200192",
+      "usage": "해변의 출발 배·마지막 하늘행 배 및 일식 공간 왼쪽에 재사용한 배",
+      "displayUsage": "해변의 출발 배·마지막 하늘행 배 및 일식 공간 왼쪽에 재사용한 배"
+    },
+    {
+      "id": "art-ad3740ce88e90a",
+      "title": "DEMO: Low Poly Flower Pack",
+      "creator": "Emilulz",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/3d/vegetation/flowers/demo-low-poly-flower-pack-325074",
+      "usage": "해변의 꽃 화분과 해안 장식",
+      "displayUsage": "해변의 꽃 화분과 해안 장식"
+    },
+    {
+      "id": "art-32a3878ca3c8be",
+      "title": "ToonTastic - Beach Props Pack",
+      "creator": "Akduman",
+      "license": "Standard Unity Asset Store EULA",
+      "url": "https://assetstore.unity.com/packages/3d/props/exterior/toontastic-beach-props-pack-309713",
+      "usage": "해변에서 키워 그늘을 만드는 파라솔",
+      "displayUsage": "해변에서 키워 그늘을 만드는 파라솔"
+    },
+    {
+      "id": "art-d195f90b0f97df",
+      "title": "Beach Surf and Paddle Kit",
+      "creator": "3DAssets.dev",
+      "license": "CC0 1.0 Universal",
+      "url": "https://3dassets.dev/packs/beach-surf-and-paddle-kit",
+      "usage": "해변의 수건·접이의자·공·서핑보드·유목 소품",
+      "displayUsage": "해변의 수건·접이의자·공·서핑보드·유목 소품"
+    },
+    {
+      "id": "art-622601637326af",
+      "title": "Nike shadow study completion painting",
+      "creator": "Parallax / OpenAI",
+      "license": "",
+      "url": "",
+      "usage": "니케 그림자가 합쳐진 뒤 완성되는 이동 가능한 그림",
+      "displayUsage": "니케 그림자가 합쳐진 뒤 완성되는 이동 가능한 그림"
+    },
+    {
+      "id": "art-b056e4f9e9260b",
+      "title": "Matte bronze plaque albedo",
+      "creator": "Parallax / OpenAI",
+      "license": "",
+      "url": "",
+      "usage": "미술관의 작품명·작가를 적은 청동 명판 표면",
+      "displayUsage": "미술관의 작품명·작가를 적은 청동 명판 표면"
+    },
+    {
+      "id": "art-197e8c438d0039",
+      "title": "Side-hidden-light start screen background",
+      "creator": "Parallax / OpenAI",
+      "license": "",
+      "url": "",
+      "usage": "시작 메뉴의 주사위·크기·그림자 고정 배경",
+      "displayUsage": "시작 메뉴의 주사위·크기·그림자 고정 배경"
+    },
+    {
+      "id": "art-35f14f84c1c6ff",
+      "title": "Sejong University official identity mark",
+      "creator": "Sejong University",
+      "license": "",
+      "url": "https://www.sejong.ac.kr/_res/sejong/news/img/promotion/img-logo01.png",
+      "usage": "게임 시작 전 세종대학교 프로젝트 인트로의 공식 교표",
+      "displayUsage": "게임 시작 전 세종대학교 프로젝트 인트로의 공식 교표"
+    },
+    {
+      "id": "art-51ff23babb0268",
+      "title": "Modular Sci-Fi Megakit — Standard FREE",
+      "creator": "Quaternius",
+      "license": "CC0 1.0",
+      "url": "https://quaternius.com/packs/modularscifimegakit.html",
+      "usage": "일식 엔딩 공간 양옆의 낮은 벽·난간·기둥·금속 발판",
+      "displayUsage": "일식 엔딩 공간 양옆의 낮은 벽·난간·기둥·금속 발판"
+    },
+    {
+      "id": "art-77f142b14f8911",
+      "title": "Solar System Scope — Sun 2K",
+      "creator": "Solar System Scope / INOVE",
+      "license": "CC BY 4.0",
+      "url": "https://www.solarsystemscope.com/textures/",
+      "usage": "달로 가리는 일식 태양 구체의 표면 텍스처",
+      "displayUsage": "달로 가리는 일식 태양 구체의 표면 텍스처"
+    },
+    {
+      "id": "art-7691e59b12ba8d",
+      "title": "Exit Sign",
+      "creator": "vietp6105",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/exit-sign-d554b032aa154df295e42f6e29714b70",
+      "usage": "일식 · 마지막 Exit 표지판과 i 통로",
+      "displayUsage": "일식 · 마지막 Exit 표지판과 i 통로"
+    },
+    {
+      "id": "music-336344769e5818",
+      "title": "Equatorial Complex",
+      "creator": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2300008",
+      "usage": "튜토리얼에서 원근과 그림자 수업을 진행하는 동안",
+      "displayUsage": "튜토리얼에서 원근과 그림자 수업을 진행하는 동안"
+    },
+    {
+      "id": "music-3ac53d078b99fe",
+      "title": "Hard Boiled",
+      "creator": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700076",
+      "usage": "미술관 전시실의 퍼즐을 탐색하는 동안",
+      "displayUsage": "미술관 전시실의 퍼즐을 탐색하는 동안"
+    },
+    {
+      "id": "music-dab176c34edc16",
+      "title": "Bossa Antigua",
+      "creator": "Kevin MacLeod",
+      "license": "CC BY 4.0",
+      "url": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700069",
+      "usage": "해변에서 반사광·그림자·수로·천막 다리 퍼즐을 진행하는 동안",
+      "displayUsage": "해변에서 반사광·그림자·수로·천막 다리 퍼즐을 진행하는 동안"
+    },
+    {
+      "id": "music-996f6d5fb42ca9",
+      "title": "Wanderlust",
+      "creator": "Scott Buckley",
+      "license": "CC BY 4.0",
+      "url": "https://www.scottbuckley.com.au/library/wanderlust/",
+      "usage": "마지막 배에 승선해 출항하고 해변 위 하늘을 항해하는 동안",
+      "displayUsage": "마지막 배에 승선해 출항하고 해변 위 하늘을 항해하는 동안"
+    },
+    {
+      "id": "music-db3d6829926c1d",
+      "title": "Aurora",
+      "creator": "Scott Buckley",
+      "license": "CC BY 4.0",
+      "url": "https://www.scottbuckley.com.au/library/aurora/",
+      "usage": "일식 엔딩 크레딧 BGM·EXIT 진입·마지막 감사 인사 — 원곡 종지·잔향 편집",
+      "displayUsage": "일식 엔딩 크레딧 BGM·EXIT 진입·마지막 감사 인사 — 원곡 종지·잔향 편집"
+    },
+    {
+      "id": "sfx-199e8b75a04e72",
+      "title": "Picking up small box with items inside",
+      "creator": "WiesenWiesel",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/WiesenWiesel/sounds/216629/",
+      "usage": "튜토리얼에서 주사위·사물을 집어 들 때",
+      "displayUsage": "튜토리얼에서 주사위·사물을 집어 들 때"
+    },
+    {
+      "id": "sfx-506c2116de1d2f",
+      "title": "rolling dice 1.wav",
+      "creator": "nettimato",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/nettimato/sounds/353975/",
+      "usage": "튜토리얼에서 작은 주사위가 바닥에 떨어질 때",
+      "displayUsage": "튜토리얼에서 작은 주사위가 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-5d32d546ea0dff",
+      "title": "hollow plastic box, dropped",
+      "creator": "Lemato",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Lemato/sounds/697092/",
+      "usage": "튜토리얼에서 중간 크기 주사위가 바닥에 떨어질 때",
+      "displayUsage": "튜토리얼에서 중간 크기 주사위가 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-1104bf3bd5f9bd",
+      "title": "Footsteps Metallic Muffled.wav",
+      "creator": "RutgerMuller",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/RutgerMuller/sounds/50723/",
+      "usage": "튜토리얼의 금속성 바닥을 걸을 때",
+      "displayUsage": "튜토리얼의 금속성 바닥을 걸을 때"
+    },
+    {
+      "id": "sfx-c08edefd69d997",
+      "title": "Jump_Metal_2.wav",
+      "creator": "GiocoSound",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/GiocoSound/sounds/421138/",
+      "usage": "튜토리얼에서 점프하거나 낙하한 뒤 착지할 때",
+      "displayUsage": "튜토리얼에서 점프하거나 낙하한 뒤 착지할 때"
+    },
+    {
+      "id": "sfx-7c4a8455e7ba35",
+      "title": "Large piece of wood being dropped 04",
+      "creator": "Jagadamba",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/Jagadamba/sounds/258062/",
+      "usage": "튜토리얼에서 큰 주사위가 바닥에 떨어질 때",
+      "displayUsage": "튜토리얼에서 큰 주사위가 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-2b1af2c0433582",
+      "title": "Put down item",
+      "creator": "qubodup",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/qubodup/sounds/792930/",
+      "usage": "튜토리얼에서 들고 있던 사물을 놓을 때 / 미술관에서 들고 있던 전시품·소품을 놓을 때 / 해변에서 들고 있던 사물을 놓을 때",
+      "displayUsage": "튜토리얼·미술관·해변에서 들고 있던 사물을 놓을 때"
+    },
+    {
+      "id": "sfx-d39f0eb853bab8",
+      "title": "100 CC0 metal and wood SFX — metal_open_01.ogg",
+      "creator": "rubberduck",
+      "license": "CC0 1.0",
+      "url": "https://opengameart.org/content/100-cc0-metal-and-wood-sfx",
+      "usage": "튜토리얼 수업 목표를 달성해 다음 문이 열릴 때",
+      "displayUsage": "튜토리얼 수업 목표를 달성해 다음 문이 열릴 때"
+    },
+    {
+      "id": "sfx-0da91db3003587",
+      "title": "Interface Sounds — confirmation_003.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "usage": "튜토리얼 수업의 배치·그림자 목표를 달성할 때 / 해변에서 두 반사광 수신기를 연결하는 목표를 달성할 때",
+      "displayUsage": "튜토리얼 수업 목표 달성 / 해변 반사광 수신기 연결 완료"
+    },
+    {
+      "id": "sfx-e981c2e12bf216",
+      "title": "Interface Sounds — select_001.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "usage": "튜토리얼 입장·재개·수업 이동을 확인할 때 / 미술관 입장·재개를 확인할 때 / 시작·일시정지·환경설정 메뉴에서 선택·적용을 확인할 때",
+      "displayUsage": "공통 메뉴 선택·적용 확인 / 튜토리얼·미술관 입장·재개"
+    },
+    {
+      "id": "sfx-5d70d819308168",
+      "title": "UI Audio (UI SFX Set) — mouserelease1.ogg",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/ui-audio",
+      "usage": "튜토리얼에서 들고 있던 사물 조작을 취소할 때 / 미술관에서 사물 조작을 취소할 때 / 공통 메뉴에서 취소·뒤로가기·게임 재개를 선택할 때",
+      "displayUsage": "공통 메뉴 취소·뒤로가기·재개 / 튜토리얼·미술관의 사물 조작 취소"
+    },
+    {
+      "id": "sfx-55bf2451dfb256",
+      "title": "Interface Sounds — error_006.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/interface-sounds",
+      "usage": "튜토리얼에서 허용되지 않는 사물 조작을 알릴 때 / 미술관에서 저울 배치·사물 놓기가 불가능함을 알릴 때 / 플레이어나 다른 물체가 위에 놓인 밑 사물의 잡기를 거부할 때 및 공통 메뉴의 불가 입력",
+      "displayUsage": "플레이어·사물이 올라간 밑 사물 잡기 거부 / 불가능한 배치·조작 안내"
+    },
+    {
+      "id": "sfx-5c10aa528a01a4",
+      "title": "Elevator door opening",
+      "creator": "LukaCafuka",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/LukaCafuka/sounds/843023/",
+      "usage": "튜토리얼·미술관 엘리베이터의 문이 열릴 때",
+      "displayUsage": "튜토리얼·미술관 엘리베이터의 문이 열릴 때"
+    },
+    {
+      "id": "sfx-be69e533189e44",
+      "title": "Elevator door closing",
+      "creator": "LukaCafuka",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/LukaCafuka/sounds/843022/",
+      "usage": "튜토리얼 엘리베이터에서 출발 전 문이 닫힐 때",
+      "displayUsage": "튜토리얼 엘리베이터에서 출발 전 문이 닫힐 때"
+    },
+    {
+      "id": "sfx-3938ec720da5cf",
+      "title": "doorlatch.wav",
+      "creator": "j1987",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/j1987/sounds/335747/",
+      "usage": "엘리베이터가 하강하기 전 문 잠금이 걸릴 때",
+      "displayUsage": "엘리베이터가 하강하기 전 문 잠금이 걸릴 때"
+    },
+    {
+      "id": "sfx-07d53f9d137654",
+      "title": "Elevator Starting 1.wav",
+      "creator": "maxmaxmaxmaxmaxmaxmax",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/maxmaxmaxmaxmaxmaxmax/sounds/439424/",
+      "usage": "엘리베이터 하강 모터가 처음 움직일 때",
+      "displayUsage": "엘리베이터 하강 모터가 처음 움직일 때"
+    },
+    {
+      "id": "sfx-57213667ad986f",
+      "title": "Elevator ride.wav",
+      "creator": "schafferdavid",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/schafferdavid/sounds/419319/",
+      "usage": "엘리베이터를 타고 지하 미술관으로 하강하는 동안",
+      "displayUsage": "엘리베이터를 타고 지하 미술관으로 하강하는 동안"
+    },
+    {
+      "id": "sfx-fafb8e8d8319e0",
+      "title": "elevator_stop.wav",
+      "creator": "simpsi",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/simpsi/sounds/175668/",
+      "usage": "엘리베이터가 미술관 층에 도착해 멈출 때",
+      "displayUsage": "엘리베이터가 미술관 층에 도착해 멈출 때"
+    },
+    {
+      "id": "sfx-ce907d0ab5b0db",
+      "title": "toaster oven or lift/elevator bell",
+      "creator": "azumarill",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/azumarill/sounds/564623/",
+      "usage": "엘리베이터가 미술관 층 도착을 종으로 알릴 때",
+      "displayUsage": "엘리베이터가 미술관 층 도착을 종으로 알릴 때"
+    },
+    {
+      "id": "sfx-f1ad823d816509",
+      "title": "Old Elevator Fan Sound",
+      "creator": "MainQND",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/MainQND/sounds/855000/",
+      "usage": "엘리베이터 안에서 환풍기 소리가 이어질 때",
+      "displayUsage": "엘리베이터 안에서 환풍기 소리가 이어질 때"
+    },
+    {
+      "id": "sfx-e5df2969fe4b20",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Tile_Walk_04.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "미술관 전시실 바닥을 걸을 때",
+      "displayUsage": "미술관 전시실 바닥을 걸을 때"
+    },
+    {
+      "id": "sfx-1186182da18400",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Tile_Jump_Land_03.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "미술관에서 점프·낙하 뒤 바닥에 착지할 때",
+      "displayUsage": "미술관에서 점프·낙하 뒤 바닥에 착지할 때"
+    },
+    {
+      "id": "sfx-64436f1572dcee",
+      "title": "Wood Grab 1",
+      "creator": "CJspellsfish",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/CJspellsfish/sounds/669472/",
+      "usage": "미술관의 이동 가능한 전시품·소품을 집을 때 / 해변에서 판자·파라솔·바위 등 사물을 집을 때",
+      "displayUsage": "미술관 전시품·소품 및 해변 판자·파라솔·바위를 집을 때"
+    },
+    {
+      "id": "sfx-b6218ac963abeb",
+      "title": "Impact Sounds — impactWood_light_000.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "usage": "미술관의 가벼운 목재 소품이 부딪힐 때 / 해변에서 작은 목재 사물이 판자·갑판에 부딪힐 때",
+      "displayUsage": "미술관의 가벼운 목재 충돌 / 해변의 작은 목재가 판자·갑판에 부딪힐 때"
+    },
+    {
+      "id": "sfx-0fdd79156dc772",
+      "title": "Impact Sounds — impactWood_medium_001.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "usage": "미술관의 중간 목재 소품이 부딪힐 때 / 해변에서 중간 목재 사물이 판자·갑판에 부딪힐 때",
+      "displayUsage": "미술관의 중간 목재 충돌 / 해변의 중간 목재가 판자·갑판에 부딪힐 때"
+    },
+    {
+      "id": "sfx-3380a252d00d4d",
+      "title": "Wooden Thud (Mono)",
+      "creator": "Breviceps",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Breviceps/sounds/449955/",
+      "usage": "미술관의 무거운 목재 소품이 바닥에 부딪힐 때 / 해변에서 큰 목재 사물이 판자·갑판에 부딪힐 때",
+      "displayUsage": "미술관의 무거운 목재 충돌 / 해변의 큰 목재가 판자·갑판에 부딪힐 때"
+    },
+    {
+      "id": "sfx-68f1c3bf4cf39b",
+      "title": "Impact Sounds — impactMetal_light_000.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "usage": "미술관의 가벼운 금속 소품이 부딪힐 때",
+      "displayUsage": "미술관의 가벼운 금속 소품이 부딪힐 때"
+    },
+    {
+      "id": "sfx-ad82f47722cb09",
+      "title": "Impact Sounds — impactMetal_medium_001.ogg",
+      "creator": "Kenney",
+      "license": "CC0 1.0",
+      "url": "https://kenney.nl/assets/impact-sounds",
+      "usage": "미술관의 중간 금속 소품이 부딪힐 때",
+      "displayUsage": "미술관의 중간 금속 소품이 부딪힐 때"
+    },
+    {
+      "id": "sfx-8a7ed78db1313a",
+      "title": "Heavy Metal Thud on Ground",
+      "creator": "7of9Designs",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/7of9Designs/sounds/640204/",
+      "usage": "미술관의 무거운 금속 소품이 바닥에 부딪힐 때",
+      "displayUsage": "미술관의 무거운 금속 소품이 바닥에 부딪힐 때"
+    },
+    {
+      "id": "sfx-cbe0c6662b4d71",
+      "title": "two large cobblestone blocks",
+      "creator": "jobel0092",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/jobel0092/sounds/268055/",
+      "usage": "미술관의 무거운 석재 소품이 바닥에 부딪힐 때",
+      "displayUsage": "미술관의 무거운 석재 소품이 바닥에 부딪힐 때"
+    },
+    {
+      "id": "sfx-f7196790b3bdb6",
+      "title": "Atmospheric Interaction Sound Pack — link.wav",
+      "creator": "legoluft (krank game sounds); qubodup (OpenGameArt submission)",
+      "license": "CC0 1.0",
+      "url": "https://opengameart.org/content/atmospheric-interaction-sound-pack",
+      "usage": "니케 전시에서 그림자가 맞아들고 그림으로 흡수되기 시작할 때",
+      "displayUsage": "니케 전시에서 그림자가 맞아들고 그림으로 흡수되기 시작할 때"
+    },
+    {
+      "id": "sfx-4beee012f6ff5c",
+      "title": "Paint Brush 2",
+      "creator": "BenDrain",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/BenDrain/sounds/487809/",
+      "usage": "니케의 그림자가 캔버스 위에 그림으로 그려질 때",
+      "displayUsage": "니케의 그림자가 캔버스 위에 그림으로 그려질 때"
+    },
+    {
+      "id": "sfx-8ff54ba5160384",
+      "title": "Door Creak",
+      "creator": "coosemek",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/coosemek/sounds/460542/",
+      "usage": "니케 그림자 기믹을 해결해 전시실 출구 문이 열릴 때 / 디케의 검 기믹을 해결해 다음 전시실 문이 열릴 때",
+      "displayUsage": "니케 그림자·디케 검 퍼즐을 해결해 다음 전시실 문이 열릴 때"
+    },
+    {
+      "id": "sfx-a4e09177120d2f",
+      "title": "Phantom",
+      "creator": "Beast_Toil",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Beast_Toil/sounds/249413/",
+      "usage": "메이 웨스트 초상 방의 얼굴이 붉어지는 반응이 시작될 때",
+      "displayUsage": "메이 웨스트 초상 방의 얼굴이 붉어지는 반응이 시작될 때"
+    },
+    {
+      "id": "sfx-f26ace226b801c",
+      "title": "Stone Door",
+      "creator": "bonebrah",
+      "license": "CC0 1.0",
+      "url": "https://opengameart.org/content/stone-door",
+      "usage": "마지막 전시실에서 두 손 조각이 벌어져 통로를 열 때",
+      "displayUsage": "마지막 전시실에서 두 손 조각이 벌어져 통로를 열 때"
+    },
+    {
+      "id": "sfx-6cc41d483f7cf1",
+      "title": "Thuds",
+      "creator": "NeoSpica",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/NeoSpica/sounds/512244/",
+      "usage": "벌어진 두 손 조각이 끝 위치에 멈춰 자리 잡을 때",
+      "displayUsage": "벌어진 두 손 조각이 끝 위치에 멈춰 자리 잡을 때"
+    },
+    {
+      "id": "sfx-6e827eaddeed81",
+      "title": "glass jar_tap_knuckle.wav",
+      "creator": "ekfink",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/ekfink/sounds/235496/",
+      "usage": "디케 전시실에서 병 안의 책이 유리병 안쪽에 부딪힐 때",
+      "displayUsage": "디케 전시실에서 병 안의 책이 유리병 안쪽에 부딪힐 때"
+    },
+    {
+      "id": "sfx-50a5644226e2da",
+      "title": "Small_Glass_Bottle_Wood_Floor.wav",
+      "creator": "tcrocker68",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/tcrocker68/sounds/235602/",
+      "usage": "디케 전시실에서 작은·중간 유리병이 바닥에 떨어질 때",
+      "displayUsage": "디케 전시실에서 작은·중간 유리병이 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-7e7e8e40c3934e",
+      "title": "Large_GlassBottle_Fall_WoodFloor.wav",
+      "creator": "tcrocker68",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/tcrocker68/sounds/235596/",
+      "usage": "디케 전시실에서 큰 유리병이 바닥에 떨어질 때",
+      "displayUsage": "디케 전시실에서 큰 유리병이 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-b1a982bfa06a1d",
+      "title": "book hits floor.wav",
+      "creator": "buzbe20",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/buzbe20/sounds/389757/",
+      "usage": "디케 전시실에서 병에서 꺼낸 작은 책이 바닥에 떨어질 때",
+      "displayUsage": "디케 전시실에서 병에서 꺼낸 작은 책이 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-3a80273fa17e63",
+      "title": "Book Drop - 3",
+      "creator": "SpaceJoe",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/SpaceJoe/sounds/484899/",
+      "usage": "디케 전시실에서 병에서 꺼낸 중간·큰 책이 바닥에 떨어질 때",
+      "displayUsage": "디케 전시실에서 병에서 꺼낸 중간·큰 책이 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-e7f316ae707732",
+      "title": "Metal Creak 1.wav",
+      "creator": "ingudios",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/ingudios/sounds/119465/",
+      "usage": "디케 전시실에서 저울의 막대가 기울어 움직일 때",
+      "displayUsage": "디케 전시실에서 저울의 막대가 기울어 움직일 때"
+    },
+    {
+      "id": "sfx-7b634a526965a7",
+      "title": "Magic Whoosh",
+      "creator": "DustyWind",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/DustyWind/sounds/715784/",
+      "usage": "디케의 저울이 균형을 이루어 조각상에 빛이 생길 때",
+      "displayUsage": "디케의 저울이 균형을 이루어 조각상에 빛이 생길 때"
+    },
+    {
+      "id": "sfx-9525cc97825c5b",
+      "title": "Metal Object Dropping 03.wav",
+      "creator": "Tim_Verberne",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Tim_Verberne/sounds/537758/",
+      "usage": "저울 보상으로 풀린 검이 처음 바닥에 떨어질 때",
+      "displayUsage": "저울 보상으로 풀린 검이 처음 바닥에 떨어질 때"
+    },
+    {
+      "id": "sfx-0e8a55505acfb7",
+      "title": "knife_pick_up 01.wav",
+      "creator": "ShadowSilhouette",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/ShadowSilhouette/sounds/489756/",
+      "usage": "디케의 보상 검을 집어 들 때",
+      "displayUsage": "디케의 보상 검을 집어 들 때"
+    },
+    {
+      "id": "sfx-514cc111a553fb",
+      "title": "Metal Scrape Slide on Metal",
+      "creator": "steprock",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/steprock/sounds/860672/",
+      "usage": "검을 받침의 검집에 맞춰 밀어 넣는 동안",
+      "displayUsage": "검을 받침의 검집에 맞춰 밀어 넣는 동안"
+    },
+    {
+      "id": "sfx-a388b3dbb76011",
+      "title": "metal-click.wav",
+      "creator": "newagesoup",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/newagesoup/sounds/337865/",
+      "usage": "검이 검집 안의 끝 위치에 꽂혀 고정될 때 / 해변에서 추 바위의 무게가 받침에 걸려 장치가 잠길 때",
+      "displayUsage": "디케 검의 최종 고정 소리층 / 해변 추 받침 장치가 잠길 때"
+    },
+    {
+      "id": "sfx-93b53580b02648",
+      "title": "SFX Metal Shed Door - Hits, Clangs, Rattle",
+      "creator": "EpicWizard",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/EpicWizard/sounds/264889/",
+      "usage": "검이 검집 안의 끝 위치에 꽂혀 고정될 때",
+      "displayUsage": "검이 검집 안의 끝 위치에 꽂혀 고정될 때"
+    },
+    {
+      "id": "sfx-500ab61d904631",
+      "title": "Heavy Stone Push",
+      "creator": "msavioti",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/msavioti/sounds/558254/",
+      "usage": "검이 꽂힌 뒤 석재 받침의 내부 장치가 작동할 때 / 해변 마지막 구역에서 중간 추 바위가 육지에 떨어질 때 / 올라온 천막 다리가 최종 위치에 고정될 때",
+      "displayUsage": "검 받침 내부의 석재 작동 / 추 바위 낙하·천막 다리 고정의 석재층"
+    },
+    {
+      "id": "sfx-a2f576da85bea4",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Sand_Walk_06.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변의 모래바닥을 걸을 때",
+      "displayUsage": "해변의 모래바닥을 걸을 때"
+    },
+    {
+      "id": "sfx-0773c05b57fbb8",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Sand_Jump_Land_04.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변의 모래바닥에 착지할 때",
+      "displayUsage": "해변의 모래바닥에 착지할 때"
+    },
+    {
+      "id": "sfx-74d96e1a096a40",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Sand_Run_02.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변에서 작은 사물이 모래에 떨어질 때",
+      "displayUsage": "해변에서 작은 사물이 모래에 떨어질 때"
+    },
+    {
+      "id": "sfx-24aa0bbeb04c98",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Sand_Jump_Land_02.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변에서 중간 사물이 모래에 떨어질 때",
+      "displayUsage": "해변에서 중간 사물이 모래에 떨어질 때"
+    },
+    {
+      "id": "sfx-8caae74ffa3a14",
+      "title": "(해변 작은거 떨굼2)break3.wav",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "usage": "해변에서 큰 사물이 모래에 떨어질 때",
+      "displayUsage": "해변에서 큰 사물이 모래에 떨어질 때"
+    },
+    {
+      "id": "sfx-98327707909a97",
+      "title": "sfx-wood-1.wav",
+      "creator": "davilca",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/davilca/sounds/159494/",
+      "usage": "해변의 목재 막대·배 소품이 모래에 부딪힐 때",
+      "displayUsage": "해변의 목재 막대·배 소품이 모래에 부딪힐 때"
+    },
+    {
+      "id": "sfx-b224fd958f567c",
+      "title": "Footsteps over Wooden Bridge (WAV)",
+      "creator": "OBXJohn",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/OBXJohn/sounds/253090/",
+      "usage": "해변의 나무 판자·다리·갑판을 걸을 때",
+      "displayUsage": "해변의 나무 판자·다리·갑판을 걸을 때"
+    },
+    {
+      "id": "sfx-def205ec7282a4",
+      "title": "Footsteps - Essentials / Essentials Series — Footsteps_Wood_Jump_Land_02.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변의 나무 판자·갑판에 착지할 때",
+      "displayUsage": "해변의 나무 판자·갑판에 착지할 때"
+    },
+    {
+      "id": "sfx-68e2091adbd388",
+      "title": "Water Splash and sand footsteps",
+      "creator": "Peludo",
+      "license": "CC0",
+      "url": "https://opengameart.org/content/water-splash-and-sand-footsteps",
+      "usage": "해변에서 작은 사물이 물에 빠질 때",
+      "displayUsage": "해변에서 작은 사물이 물에 빠질 때"
+    },
+    {
+      "id": "sfx-58d668dd7d053d",
+      "title": "(물에 중간거 빠짐2)enter1.wav",
+      "creator": "",
+      "license": "",
+      "url": "",
+      "usage": "해변에서 중간 사물이 물에 빠질 때",
+      "displayUsage": "해변에서 중간 사물이 물에 빠질 때"
+    },
+    {
+      "id": "sfx-d00cc60812f8fa",
+      "title": "Rock Splash",
+      "creator": "Fission9",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Fission9/sounds/583348/",
+      "usage": "해변에서 큰 사물이 물에 빠질 때 / 물속 천막 다리가 수면 위로 떠오를 때 / 해변 마지막 구역에서 중간 추 바위가 바다에 빠질 때 / 해변 마지막 구역에서 큰 추 바위가 바다에 빠질 때",
+      "displayUsage": "해변의 큰 사물·추 바위 입수 / 천막 다리 수면 상승의 물보라층"
+    },
+    {
+      "id": "sfx-58ed389062b1dd",
+      "title": "100 CC0 metal and wood SFX — door_open_01.ogg",
+      "creator": "rubberduck",
+      "license": "CC0 1.0",
+      "url": "https://opengameart.org/content/100-cc0-metal-and-wood-sfx",
+      "usage": "해변에서 반사광 수신기 기믹의 게이트가 열릴 때",
+      "displayUsage": "해변에서 반사광 수신기 기믹의 게이트가 열릴 때"
+    },
+    {
+      "id": "sfx-f27d8730eacfd4",
+      "title": "Nature - Essentials / Iceland - Flows — Ambiance_Sea_Loop_Stereo.wav",
+      "creator": "Nox Sound Design",
+      "license": "CC0",
+      "url": "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound",
+      "usage": "해변을 탐험하는 동안 배경에서 파도가 들릴 때 / 마지막 배가 갑판과 함께 하늘로 떠오르기 시작할 때",
+      "displayUsage": "해변의 파도 배경음 / 마지막 배 이륙 효과의 해안 소리층"
+    },
+    {
+      "id": "sfx-6618e2fccca77f",
+      "title": "Lobster Boat Starting and Stopping",
+      "creator": "bone666138",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/bone666138/sounds/398416/",
+      "usage": "해변의 작은 배를 출발시켜 수로를 건너기 시작할 때 / 수로를 건넌 작은 배가 도착 부두에 정박할 때",
+      "displayUsage": "해변 작은 배의 수로 출발·도착 정박"
+    },
+    {
+      "id": "sfx-277de559024cae",
+      "title": "Motor Boat Sound Effect",
+      "creator": "Legnalegna55",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Legnalegna55/sounds/577425/",
+      "usage": "해변의 작은 배를 타고 수로를 건너는 동안",
+      "displayUsage": "해변의 작은 배를 타고 수로를 건너는 동안"
+    },
+    {
+      "id": "sfx-042d45df914bf8",
+      "title": "Level Up Bells",
+      "creator": "Qvantor",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Qvantor/sounds/878595/",
+      "usage": "그림자 항구의 배·차양 그림자를 맞춰 실제 배가 나타날 때",
+      "displayUsage": "그림자 항구의 배·차양 그림자를 맞춰 실제 배가 나타날 때"
+    },
+    {
+      "id": "sfx-cc81f0955dc6a5",
+      "title": "실제 자갈 낙하·잔돌",
+      "creator": "Joseph SARDIN",
+      "license": "CC0-1.0",
+      "url": "https://bigsoundbank.com/fall-of-stone-s1022.html",
+      "usage": "해변 마지막 구역에서 작은 추 바위가 육지에 떨어질 때 / 해변 마지막 구역에서 중간 추 바위가 육지에 떨어질 때 / 해변 마지막 구역에서 크게 키운 추 바위가 육지에 떨어질 때",
+      "displayUsage": "해변 마지막 구역에서 추 바위가 육지에 떨어질 때의 자갈층"
+    },
+    {
+      "id": "sfx-644971b9103ad9",
+      "title": "Moving Boulder",
+      "creator": "themightyglider; source recordings IDLauncher and magnuswaker",
+      "license": "CC0 1.0",
+      "url": "https://opengameart.org/content/moving-boulder",
+      "usage": "해변 마지막 구역에서 크게 키운 추 바위가 육지에 떨어질 때",
+      "displayUsage": "해변 마지막 구역에서 크게 키운 추 바위가 육지에 떨어질 때"
+    },
+    {
+      "id": "sfx-b5f8880305e7e1",
+      "title": "실제 수동 체인 호이스트",
+      "creator": "Joseph SARDIN",
+      "license": "CC0-1.0",
+      "url": "https://bigsoundbank.com/manual-chain-hoist-downhill-s1134.html",
+      "usage": "해변에서 물속 천막 다리를 체인·도르래로 끌어올리는 동안",
+      "displayUsage": "해변에서 물속 천막 다리를 체인·도르래로 끌어올리는 동안"
+    },
+    {
+      "id": "sfx-1ac87708faffd3",
+      "title": "큰 물통으로 흐르는 물",
+      "creator": "Joseph SARDIN",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/flowing-water-s1522.html",
+      "usage": "물속 천막 다리가 수면 위로 떠오를 때",
+      "displayUsage": "물속 천막 다리가 수면 위로 떠오를 때"
+    },
+    {
+      "id": "sfx-63520d613f6fb0",
+      "title": "금속 장치 닫힘·고정",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "url": "https://opengameart.org/content/100-cc0-metal-and-wood-sfx",
+      "usage": "올라온 천막 다리가 최종 위치에 고정될 때",
+      "displayUsage": "올라온 천막 다리가 최종 위치에 고정될 때"
+    },
+    {
+      "id": "sfx-96a4bb06acbe9f",
+      "title": "여러 물방울이 떨어지는 잔향",
+      "creator": "Joseph SARDIN",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/drops-of-water-1-s1384.html",
+      "usage": "물에서 건져 올린 천막 다리에서 물방울이 떨어질 때",
+      "displayUsage": "물에서 건져 올린 천막 다리에서 물방울이 떨어질 때"
+    },
+    {
+      "id": "sfx-5ba55c8ca001b6",
+      "title": "Water Splash and sand footsteps",
+      "creator": "Peludo",
+      "license": "CC0",
+      "url": "https://opengameart.org/content/water-splash-and-sand-footsteps",
+      "usage": "해변 마지막 구역에서 작은 추 바위가 바다에 빠질 때",
+      "displayUsage": "해변 마지막 구역에서 작은 추 바위가 바다에 빠질 때"
+    },
+    {
+      "id": "sfx-983f9edbdac2a2",
+      "title": "헛간 걸쇠 철컥",
+      "creator": "Joseph SARDIN",
+      "license": "CC0-1.0",
+      "url": "https://bigsoundbank.com/barn-lock-unlocking-s1539.html",
+      "usage": "마지막 하늘행 배가 계류를 풀고 출항을 시작할 때",
+      "displayUsage": "마지막 하늘행 배가 계류를 풀고 출항을 시작할 때"
+    },
+    {
+      "id": "sfx-e009c3ad9431bd",
+      "title": "굵은 로프의 낮은 삐걱임",
+      "creator": "Joseph SARDIN & Axeline T.",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/big-rope-s3426.html",
+      "usage": "마지막 하늘행 배가 계류를 풀고 출항을 시작할 때",
+      "displayUsage": "마지막 하늘행 배가 계류를 풀고 출항을 시작할 때"
+    },
+    {
+      "id": "sfx-c701dbe1ed1162",
+      "title": "부드럽게 설계한 바람",
+      "creator": "Joseph SARDIN",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/wind-s0595.html",
+      "usage": "마지막 배가 갑판과 함께 하늘로 떠오르기 시작할 때 / 마지막 배가 해변 위 하늘을 항해하는 동안 / 일식 EXIT 통로를 지나갈 때의 바람 / 미술관 손 포털 안으로 떨어질 때의 하강 바람",
+      "displayUsage": "마지막 하늘행 배의 이륙·항해 바람층 / 일식 EXIT 통과 바람 / 미술관→해변 손 포털 낙하 바람"
+    },
+    {
+      "id": "sfx-b0056bdddebe56",
+      "title": "바람에 펄럭이는 천",
+      "creator": "Joseph SARDIN",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/flag-in-the-wind-1-s1632.html",
+      "usage": "마지막 배가 갑판과 함께 하늘로 떠오르기 시작할 때 / 마지막 배가 해변 위 하늘을 항해하는 동안 / 일식 EXIT 통로를 지나갈 때의 바람",
+      "displayUsage": "마지막 하늘행 배의 이륙·항해 천 펄럭임층 / 일식 EXIT 통과 바람"
+    },
+    {
+      "id": "sfx-7e2a6ca4e67fc1",
+      "title": "짧은 목재 삐걱임",
+      "creator": "DenisChardonnet",
+      "license": "CC0 1.0",
+      "url": "https://bigsoundbank.com/creaking-closet-door-s0305.html",
+      "usage": "마지막 배가 갑판과 함께 하늘로 떠오르기 시작할 때",
+      "displayUsage": "마지막 배가 갑판과 함께 하늘로 떠오르기 시작할 때"
+    },
+    {
+      "id": "sfx-28c53d527ef6db",
+      "title": "Light switch fluorescent flickering electric bulb BANFF 190107.flac",
+      "creator": "TRP",
+      "license": "CC0-1.0",
+      "url": "https://freesound.org/people/TRP/sounds/574100/",
+      "usage": "시작화면에서 제목이 나타난 뒤 전등 스위치를 켤 때 / 시작화면의 오래된 전등이 지지직거리며 켜질 때 / 시작 메뉴의 전등이 주기적으로 깜빡이며 지지직거릴 때",
+      "displayUsage": "시작화면 전등 스위치·점등 지지직 / 메뉴 전등의 주기적 깜빡임"
+    },
+    {
+      "id": "sfx-515a03251beb83",
+      "title": "Fluorescent light buzzing",
+      "creator": "Rvgerxini",
+      "license": "CC0-1.0",
+      "url": "https://freesound.org/people/Rvgerxini/sounds/474312/",
+      "usage": "시작 메뉴에 켜진 전등의 낮은 전기 잡음이 이어질 때",
+      "displayUsage": "시작 메뉴에 켜진 전등의 낮은 전기 잡음이 이어질 때"
+    },
+    {
+      "id": "sfx-0e1a6c612bf952",
+      "title": "Ceiling Rattle",
+      "creator": "itickets",
+      "license": "CC0-1.0",
+      "url": "https://freesound.org/people/itickets/sounds/522618/",
+      "usage": "시작화면 전등이 켜지거나 주기적으로 흔들리며 딸랑거릴 때",
+      "displayUsage": "시작화면 전등이 켜지거나 주기적으로 흔들리며 딸랑거릴 때"
+    },
+    {
+      "id": "sfx-cac9d706975127",
+      "title": "Sunlight warning",
+      "creator": "Parallax",
+      "license": "",
+      "url": "",
+      "usage": "튜토리얼에서 햇빛 노출이 위험 수준에 이르렀을 때의 경고음",
+      "displayUsage": "튜토리얼에서 햇빛 노출이 위험 수준에 이르렀을 때의 경고음"
+    },
+    {
+      "id": "sfx-f34502ebb71064",
+      "title": "Nike frame ejection",
+      "creator": "Parallax",
+      "license": "",
+      "url": "",
+      "usage": "니케 그림이 완성된 뒤 액자가 밖으로 튀어나올 때",
+      "displayUsage": "니케 그림 완성 후 액자가 앞으로 나올 때"
+    },
+    {
+      "id": "sfx-b79d3914ed0b35",
+      "title": "Low machine ambience",
+      "creator": "Parallax",
+      "license": "",
+      "url": "",
+      "usage": "일식 퍼즐 구간의 낮은 기계 공간음 · 크레딧 시작 시 페이드 아웃",
+      "displayUsage": "일식 퍼즐 구간의 낮은 기계 공간음 · 크레딧 시작 시 페이드 아웃"
+    },
+    {
+      "id": "sfx-eclipse-space-deck-movement",
+      "title": "우주 갑판 발걸음",
+      "creator": "3조 Parallax",
+      "license": "",
+      "url": "",
+      "usage": "일식맵 우주 갑판의 걷기 4종·점프 이륙·착지",
+      "displayUsage": "일식맵 우주 갑판의 걷기 4종·점프 이륙·착지"
+    },
+    {
+      "id": "font-ee13b64ff0deeb",
+      "title": "Nanum Myeongjo Regular/Bold",
+      "creator": "NHN Corporation; designed by Fontrix",
+      "license": "SIL Open Font License 1.1",
+      "url": "https://github.com/google/fonts/tree/main/ofl/nanummyeongjo",
+      "usage": "시작화면 제목과 미술관 작품 설명 명판의 글꼴 / 일식 엔딩의 작품 소개·마지막 감사 인사 글꼴",
+      "displayUsage": "시작 제목·미술관 작품 명판 / 일식 엔딩 작품 소개·마지막 감사 인사"
+    },
+    {
+      "id": "font-a51ef91b8c0674",
+      "title": "Nanum Gothic Regular",
+      "creator": "NHN Corporation",
+      "license": "SIL Open Font License 1.1",
+      "url": "https://github.com/google/fonts/tree/main/ofl/nanumgothic",
+      "usage": "시작·일시정지·설정·로딩·엔딩 크레딧의 한글 글꼴 / 일식 엔딩의 팀 역할·자료 출처 크레딧 글꼴",
+      "displayUsage": "시작·일시정지·설정·로딩 / 일식 엔딩 팀 역할·자료 출처 글꼴"
+    },
+    {
+      "id": "tool-adb7045911c817",
+      "title": "Unity",
+      "creator": "Unity Technologies",
+      "license": "",
+      "url": "https://unity.com/",
+      "usage": "게임의 3D 장면·물리·렌더링·오디오·실행본 제작",
+      "displayUsage": "게임의 3D 장면·물리·렌더링·오디오·실행본 제작"
+    },
+    {
+      "id": "tool-07e4fbf18c6aab",
+      "title": "OpenAI Codex",
+      "creator": "OpenAI",
+      "license": "",
+      "url": "https://openai.com/codex/",
+      "usage": "게임 코드 작성·디버깅·검증·출처 조사 보조",
+      "displayUsage": "게임 코드 작성·디버깅·검증·출처 조사 보조"
+    },
+    {
+      "id": "tool-83780bed0e9d1a",
+      "title": "OpenAI 이미지 생성",
+      "creator": "OpenAI",
+      "license": "",
+      "url": "",
+      "usage": "시작화면 배경·미술관 명판 표면·니케 완성 그림 제작 보조",
+      "displayUsage": "시작화면 배경·미술관 명판 표면·니케 완성 그림 제작 보조"
+    }
+  ]
+}

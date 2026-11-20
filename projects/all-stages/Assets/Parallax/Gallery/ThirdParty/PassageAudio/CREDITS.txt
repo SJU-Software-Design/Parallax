@@ -1,0 +1,11 @@
+PARALLAX - Museum hand portal falling rush
+Source: Wind (BSB0595), Joseph SARDIN
+https://bigsoundbank.com/wind-s0595.html
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Preserved original: local-provenance/audio-review/Beach_Ending_20261115/audio/new-water-flight/BSB0595_wind.mp3
+Source SHA256: 973D17D891126979F81A41DF6F5B25F815400D0A3544E6D7D0326026DA1B0390
+Derived asset: Gallery/PassageAudio/fall_rush.wav
+Edits: original 8-24 seconds, mono PCM16 48000 Hz; global linear peak normalization to 0.75 and 40ms smooth edge fades. No cloth, voice, extra sound, time stretch, baked pitch or filter. Source remains unchanged.
+Runtime: a single non-looping 16-second source; Effects/Master routing, gradual gain and brightness rise with actual falling progress, mild pitch change, 0.55-second smooth release at landing, pause/focus handling and cleanup.
+The same BSB0595 source already has game credits ID sfx-c701dbe1ed1162; add this use to that entry, not a duplicate source credit.
+See source-derivation.json for exact frames, normalization gain, PCM hashes and numeric checks. No subjective listening performed.

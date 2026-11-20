@@ -34,6 +34,7 @@ namespace ShadeLink
         {
             // The museum owns independent one-shot voices. In particular,
             // changing from a step to a landing must not retune a step's tail.
+            if(ShadeLink.Eclipse.EclipseMovementAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(ShadeLink.Beach.BeachAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(MuseumAudio.TryPlayMovement(cue,impact,transform.position))return;
             if(ShadeLink.Tutorial.TutorialAudio.TryPlayMovement(cue,impact,transform.position))return;
@@ -59,7 +60,7 @@ namespace ShadeLink
                 contact=AudioClip.Create("Parallax soft movement",count,1,rate,false);
                 contact.hideFlags=HideFlags.HideAndDontSave;contact.SetData(samples,0);
             }
-            source.PlayOneShot(contact);
+            { GameShellSettingsRuntime.Route(source); source.PlayOneShot(contact); }
         }
     }
 }

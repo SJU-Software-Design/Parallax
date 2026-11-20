@@ -131,6 +131,11 @@ namespace ShadeLink.Beach
             if (dropRenderer != null) dropRenderer.enabled = false;
         }
 
+        public void RestoreDryForCheckpoint()
+        {
+            ResetState(); HasEmerged = true; dryTime = DrySeconds; previousProgress = 1;
+        }
+
         public void Tick(float dt)
         {
             if (!configured || finale == null || dt <= 0 || float.IsNaN(dt) || float.IsInfinity(dt)) return;

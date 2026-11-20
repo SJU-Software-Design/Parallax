@@ -14,6 +14,7 @@ namespace ShadeLink.Tutorial
         void OnPreCull()
         {
             Restore();
+            if (!GameShellSettingsRuntime.CameraShake) return;
             if (Ride == null || Ride.Paused || !Ride.IsTravelling) return;
             float envelope = Ride.Phase == ElevatorPhase.Stopping
                 ? 1 - Mathf.Clamp01(Ride.PhaseElapsed / Mathf.Max(.1f, Ride.StopDuration))

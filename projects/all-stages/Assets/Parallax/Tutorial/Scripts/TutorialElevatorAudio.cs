@@ -161,7 +161,7 @@ namespace ShadeLink.Tutorial
             slot.source.pitch = 1;
             if (!slot.source.loop)
                 slot.source.time = Mathf.Clamp(progress, 0, .995f) * slot.clip.length;
-            slot.source.Play();
+            { GameShellSettingsRuntime.Route(slot.source); slot.source.Play(); }
             slot.count++;
             history.Add(new Playback { id = id, clip = slot.clip.name, dspTime = AudioSettings.dspTime,
                 phase = ride.Phase, sample = slot.source.timeSamples, volume = gain });

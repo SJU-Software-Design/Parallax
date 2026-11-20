@@ -98,7 +98,7 @@ namespace ShadeLink.Beach
             source.Stop();paused.Remove(source);source.transform.position=position;
             source.pitch=1;source.loop=loop;gains[key]=gain;source.volume=gain*EndingEnvelope;
             source.time=Mathf.Clamp(startOffset,0,Mathf.Max(0,source.clip.length-.05f));
-            source.Play();counts[key]=CountFor(key)+1;CuePlayed?.Invoke(key,source);return true;
+            { GameShellSettingsRuntime.Route(source); source.Play(); }counts[key]=CountFor(key)+1;CuePlayed?.Invoke(key,source);return true;
         }
         public void SetRunning(bool value)
         {
@@ -118,6 +118,12 @@ namespace ShadeLink.Beach
             foreach(string key in RequiredFiles)gains[key]=0;
             Drips?.ResetState();bank?.SetFinaleMix(1,1,1);
         }
+        public void RestoreCompletedHoistForCheckpoint()
+        {
+            ResetState(); loadSeen = emergedSeen = readySeen = true;
+            Drips?.RestoreDryForCheckpoint();
+        }
+
         public void Tick(float dt)
         {
             if(!Running||dt<=0||game==null)return;

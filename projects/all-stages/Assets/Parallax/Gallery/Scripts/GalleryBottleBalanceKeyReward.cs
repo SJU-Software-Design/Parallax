@@ -216,6 +216,22 @@ namespace ShadeLink.Gallery
             Physics.SyncTransforms();
         }
 
+        public void RestoreCompletedForCheckpoint()
+        {
+            if (!Available || sword == null || socket == null)
+                throw new InvalidOperationException("Cannot restore the verified sword socket milestone.");
+            Reset(); StopPhysics();
+            float scaleY = Mathf.Abs(swordWorldScale.y);
+            float depth = Mathf.Min(.58f, swordBounds.size.y * scaleY * .58f);
+            sword.SetParent(socket, true); RestoreWorldScale();
+            sword.SetPositionAndRotation(socket.position - socket.up * (swordBounds.min.y * scaleY + depth), socket.rotation);
+            Stage = RewardStage.Unlocked; SeatedTime = DoorReleaseDelaySeconds;
+            FlashProgress = FallProgress = InsertionProgress = ReleasePoseProgress = 1;
+            TargetedKey = TargetedLock = false; SetSwordVisible(true);
+            if (swordPick != null) swordPick.enabled = false;
+            Physics.SyncTransforms();
+        }
+
         public void CompleteBalance()
         {
             if (!Available || Stage != RewardStage.WaitingBalance) return;

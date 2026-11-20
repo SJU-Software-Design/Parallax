@@ -1,0 +1,72 @@
+{
+  "version": "0.33.0-eclipse-polish",
+  "addedEntry": {
+    "id": "sfx-1d99a434197c4f",
+    "title": "Parallax soft movement",
+    "creator": "Parallax",
+    "license": "",
+    "url": "",
+    "usage": "일식맵에서 걷기·점프·착지할 때",
+    "displayUsage": "일식맵 걷기·점프·착지"
+  },
+  "sourceCode": "Assets\\Parallax\\Shared\\Scripts\\PlayerMovementAudio.cs",
+  "sourceCodeSha256": "1D99A434197C4F8A96A770114486C275E0207A1F8874D0CE7D7974F2D7B5CBFF",
+  "kind": "proceduralAudio",
+  "sampleRate": 22050,
+  "sampleCount": 1764,
+  "durationSeconds": 0.08,
+  "selection": "Use existing shared PlayerMovementAudio fallback for Eclipse movement",
+  "originalAuditPreserved": true,
+  "note": "Internal implementation/provenance evidence; not player credit text.",
+  "reusedExitWhoosh": {
+    "resourceKey": "Beach/EndingAudio/flight",
+    "existingSelection": {
+      "fileName": "flight.wav",
+      "resourceKey": "Beach/EndingAudio/flight",
+      "selectedId": "HF31",
+      "title": "비행 A · 얇은 바람과 돛",
+      "sourceReviewFile": "audio/previews/HF31.wav",
+      "sourceReviewSha256": "11c28fbd03e79b63420a1db159a3b99ef96d51d134ecf1d49d81eca8051b45c2",
+      "outputSha256": "3c9f5bed58075bdb960b0f06047a9097d1708087e0280f9a8f6554fe7f8ec5d0",
+      "frames": 529200,
+      "sampleRate": 44100,
+      "channels": 1,
+      "durationSeconds": 12.0,
+      "peak": 0.8000183,
+      "rms": 0.1671891,
+      "streaming": false,
+      "loop": false,
+      "outputProcessing": "Audition candidate downmixed by arithmetic channel mean to mono PCM16. Original sample rate, duration, pitch and candidate editing preserved. Runtime gain reduction remains separate.",
+      "auditionCandidateProcessing": "바람+깃발 천 대용 · 12초",
+      "sources": [
+        {
+          "title": "부드럽게 설계한 바람",
+          "author": "Joseph SARDIN",
+          "url": "https://bigsoundbank.com/wind-s0595.html",
+          "license": "CC0 1.0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "origin": "new-free",
+          "file": "audio/new-water-flight/BSB0595_wind.mp3",
+          "preservedOriginalRelativeToReview": "audio/new-water-flight/BSB0595_wind.mp3",
+          "preservedOriginalSha256": "973d17d891126979f81a41df6f5b25f815400d0a3544e6d7d0326026da1b0390"
+        },
+        {
+          "title": "바람에 펄럭이는 천",
+          "author": "Joseph SARDIN",
+          "url": "https://bigsoundbank.com/flag-in-the-wind-1-s1632.html",
+          "license": "CC0 1.0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "origin": "new-free",
+          "file": "audio/new-water-flight/BSB1632_flag-in-the-wind-1.mp3",
+          "preservedOriginalRelativeToReview": "audio/new-water-flight/BSB1632_flag-in-the-wind-1.mp3",
+          "preservedOriginalSha256": "12f7749d31e37e579f0b2dc6d8737baa58b38d31d5a52da138d9ef51023f988c"
+        }
+      ]
+    },
+    "actualUse": "일식 EXIT 통로 진입 바람",
+    "startOffsetSeconds": 2,
+    "presentationSeconds": 3.8,
+    "originalAudioBytesUnchanged": true,
+    "newDownload": false
+  }
+}

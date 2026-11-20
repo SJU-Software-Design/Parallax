@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-19",
+  "title": "Low machine ambience — internal synthetic candidate02",
+  "creator": "프로젝트 내부 합성 · NumPy DSP / Codex 작업 보조",
+  "externalRecording": false,
+  "externalLicense": false,
+  "license": "프로젝트 내부 제작",
+  "selectedForGame": true,
+  "selectedCandidate": 2,
+  "selectionAuthority": "사용자가 환경음 후보2 적용을 명시 승인",
+  "sourceResource": "Eclipse/Audio/LowMachineAmbienceLoop",
+  "originalAudition": "local-provenance/audio-review/EclipseCredits_20261119/AmbienceCandidates_20261119/02_low_machine_synthetic_20s.wav",
+  "originalAuditionSHA256": "a82ac8212e2d59e8bb578d7c22443cdaff3ddc214114ff0b7d55df4d0e1b3cff",
+  "originalAuditionSeconds": 20,
+  "originalAuditionBytesPreserved": true,
+  "loopFile": "projects/all-stages/Assets/Parallax/Eclipse/Resources/Eclipse/Audio/LowMachineAmbienceLoop.wav",
+  "loopSHA256": "c1bc9b6e06bd8579049bc480c3081547601394257d801de736029dac4fff943b",
+  "loopDurationSeconds": 18.32,
+  "format": "WAV /48000Hz /mono /PCM16",
+  "edits": {
+    "auditionFadeTrimEachEndSeconds": 0.8,
+    "seamCrossfadeSeconds": 0.08,
+    "seamMethod": "Equal-power overlap of the tail and head, output starts at the adjacent source sample after the head overlap. No replayed audition edge fade.",
+    "normalization": false,
+    "pitchChange": false,
+    "externalOrSyntheticExtraLayersAdded": false
+  },
+  "runtime": {
+    "component": "EclipseEndingAmbience",
+    "baseGain": 0.18,
+    "loop": true,
+    "initialFadeSeconds": 1.25,
+    "creditsFadeSeconds": 2.5,
+    "handoff": "Aurora waits for ReadyForCreditsMusic, then starts its own3s fade-in",
+    "pauseAndFocus": "AudioSource.Pause/UnPause; envelope clock freezes",
+    "legacyTone": "World.SetLegacyAmbienceEnabled(false) before any selected ambience Play; original42/63/105Hz room tone does not overlap",
+    "routing": "Shared Ambient group through GameShellSettingsRuntime.Route before Play; Master/Ambient handled only in mixer"
+  },
+  "verification": {
+    "fullDecodePassed": true,
+    "samples": 879360,
+    "rms": 0.0447614717741949,
+    "peak": 0.192108154296875,
+    "loopBoundaryStep": 0.00152587890625,
+    "clippedSampleCount": 0,
+    "actualSpeakerPlayback": false,
+    "subjectiveListeningPerformed": false
+  }
+}

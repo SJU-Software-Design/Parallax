@@ -163,7 +163,7 @@ namespace ShadeLink.Beach
                 if(voices.Count>=24)return false;
                 voice=new Voice{source=Source("Beach one shot",true,false,1)};voices.Add(voice);
             }
-            var s=voice.source;s.transform.position=position;s.pitch=1;voice.gain=Gain(cue)*gain;s.volume=voice.gain*finaleWorldEnvelope;s.clip=clip;s.loop=false;s.Play();voice.paused=false;Count(cue,s);return true;
+            var s=voice.source;s.transform.position=position;s.pitch=1;voice.gain=Gain(cue)*gain;s.volume=voice.gain*finaleWorldEnvelope;s.clip=clip;s.loop=false;{ GameShellSettingsRuntime.Route(s); s.Play(); }voice.paused=false;Count(cue,s);return true;
         }
         static float Gain(string cue)
         {
@@ -189,7 +189,7 @@ namespace ShadeLink.Beach
                 if(s==null)continue;
                 if(value)s.UnPause();else s.Pause();
             }
-            if(value&&shore!=null&&shore.clip!=null&&!shore.isPlaying){shore.volume=0;shore.Play();Count("shore",shore);}
+            if(value&&shore!=null&&shore.clip!=null&&!shore.isPlaying){shore.volume=0;{ GameShellSettingsRuntime.Route(shore); shore.Play(); }Count("shore",shore);}
         }
         void SetMusicRunning(bool value)
         {
@@ -198,7 +198,7 @@ namespace ShadeLink.Beach
             {
                 if(!musicStarted)
                 {
-                    currentMusic.time=0;currentMusic.volume=0;currentMusic.Play();musicStarted=true;
+                    currentMusic.time=0;currentMusic.volume=0;{ GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }musicStarted=true;
                     Count("bgm",currentMusic);
                 }
                 else
@@ -219,13 +219,13 @@ namespace ShadeLink.Beach
             if(!running||currentMusic==null||currentMusic.clip==null||!musicStarted)return;
             if(!musicCrossfading&&!currentMusic.isPlaying)
             {
-                currentMusic.time=0;currentMusic.volume=0;currentMusic.Play();
+                currentMusic.time=0;currentMusic.volume=0;{ GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }
                 Count("bgm.restart",currentMusic);
             }
             float overlap=Mathf.Min(MusicCrossfadeSeconds,currentMusic.clip.length*.2f);
             if(!musicCrossfading&&currentMusic.time>=currentMusic.clip.length-overlap)
             {
-                incomingMusic.time=0;incomingMusic.volume=0;incomingMusic.Play();
+                incomingMusic.time=0;incomingMusic.volume=0;{ GameShellSettingsRuntime.Route(incomingMusic); incomingMusic.Play(); }
                 musicCrossfading=true;musicCrossfadeElapsed=0;Count("bgm.loop",incomingMusic);
             }
             if(!musicCrossfading){currentMusic.volume=MusicGain*PuzzleMusicEnvelope;return;}
@@ -265,7 +265,7 @@ namespace ShadeLink.Beach
         {
             if(boat==null)return;CancelBoat();engine=Engine.Starting;boatTime=0;
             boatStart.transform.position=boatRun.transform.position=boatStop.transform.position=boat.transform.position;
-            if(running&&boatStart.clip!=null){boatStart.volume=.35f;boatStart.Play();Count("boat.start",boatStart);}
+            if(running&&boatStart.clip!=null){boatStart.volume=.35f;{ GameShellSettingsRuntime.Route(boatStart); boatStart.Play(); }Count("boat.start",boatStart);}
         }
         public void BoatDocked(BeachBoat boat)
         {
@@ -285,7 +285,7 @@ namespace ShadeLink.Beach
                 {
                     var source=sources[i];source.volume=gains[i];
                     if(!live[i]||source.clip==null)continue;
-                    source.timeSamples=Mathf.Clamp(samples[i],0,source.clip.samples-1);source.Play();
+                    source.timeSamples=Mathf.Clamp(samples[i],0,source.clip.samples-1);{ GameShellSettingsRuntime.Route(source); source.Play(); }
                     if(!running)source.Pause();
                 }
             };
@@ -312,7 +312,7 @@ namespace ShadeLink.Beach
                 float startLength=boatStart.clip==null?0:boatStart.clip.length;
                 if(boatTime>=Mathf.Max(0,startLength-.20f))
                 {
-                    if(!boatRunStarted&&boatRun.clip!=null){boatRun.volume=0;boatRun.Play();boatRunStarted=true;Count("boat.run",boatRun);}
+                    if(!boatRunStarted&&boatRun.clip!=null){boatRun.volume=0;{ GameShellSettingsRuntime.Route(boatRun); boatRun.Play(); }boatRunStarted=true;Count("boat.run",boatRun);}
                     boatRun.volume=Mathf.MoveTowards(boatRun.volume,.24f,dt*.8f);
                     if(boatTime>=startLength+.25f){engine=Engine.Running;boatTime=0;}
                 }
@@ -324,7 +324,7 @@ namespace ShadeLink.Beach
                 if(boatTime>=.75f)
                 {
                     boatRun.Stop();boatStart.Stop();
-                    if(boatStop.clip!=null){boatStop.volume=.35f;boatStop.Play();Count("boat.stop",boatStop);}
+                    if(boatStop.clip!=null){boatStop.volume=.35f;{ GameShellSettingsRuntime.Route(boatStop); boatStop.Play(); }Count("boat.stop",boatStop);}
                     engine=Engine.Stopped;boatTime=0;
                 }
             }

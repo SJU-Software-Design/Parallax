@@ -1,0 +1,6 @@
+'Aurora' by Scott Buckley - released under CC-BY 4.0. www.scottbuckley.com.au
+Source: https://www.scottbuckley.com.au/library/aurora/
+License: https://creativecommons.org/licenses/by/4.0/
+Use: 일식 크레딧 시작부터 Exit 퇴장 전; final exit fade-out.
+Changes: Full original MP3 bytes preserved, beginning at 0:00; runtime source gain0.24, pitch1, 3s fade-in and 1.5s loop crossfade. No source trim, waveform edit or synthetic mixing.
+Selection: Explicit user approval 2026-11-19. This selection does not replace the existing Beach Wanderlust recording.

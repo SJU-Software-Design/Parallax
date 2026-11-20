@@ -5,6 +5,34 @@ namespace ShadeLink
     /// <summary>Legacy Input adapter. Look values are radians accumulated during this frame.</summary>
     public sealed class PlayerControls
     {
+        // Stable order matches the eleven configurable controls in the game shell.
+        public enum Action { Forward, Backward, Left, Right, Jump, Grab, Rotate, Interact, Cancel, Reset, Hints }
+        static KeyCode[] bindings = DefaultBindings();
+        public static KeyCode[] DefaultBindings()
+        { return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
+            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.J }; }
+        public static KeyCode KeyFor(Action action) { return bindings[(int)action]; }
+        public static bool Held(Action action) { return Input.GetKey(KeyFor(action)); }
+        public static bool Pressed(Action action) { return Input.GetKeyDown(KeyFor(action)); }
+        public static string BindingLabel(Action action)
+        {
+            KeyCode key = KeyFor(action);
+            if (key == KeyCode.Mouse0) return "마우스 왼쪽";
+            if (key == KeyCode.Mouse1) return "마우스 오른쪽";
+            if (key == KeyCode.Mouse2) return "마우스 가운데";
+            if (key == KeyCode.LeftShift) return "왼쪽 Shift";
+            if (key == KeyCode.RightShift) return "오른쪽 Shift";
+            return key.ToString();
+        }
+        public static void ApplyBindings(KeyCode[] value)
+        {
+            if (value == null || value.Length != 11) throw new System.ArgumentException("Eleven input bindings are required.");
+            var unique = new System.Collections.Generic.HashSet<KeyCode>();
+            foreach (KeyCode key in value)
+                if (!System.Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || key == KeyCode.Escape || !unique.Add(key))
+                    throw new System.ArgumentException("Bindings must be unique and Esc is reserved.");
+            bindings = (KeyCode[])value.Clone();
+        }
         public struct Frame
         {
             public Vector2 Move, Look;
@@ -24,6 +52,7 @@ namespace ShadeLink
         static bool optionsLoaded;
         static Options options;
         static Camera configuredCamera;
+        public static Camera ConfiguredCamera { get { return configuredCamera; } }
         Vector2 previousStick, lookRamp;
         bool suppressNextRead = true, previousGrabTrigger;
         public bool UsingGamepad { get; private set; }
@@ -47,18 +76,23 @@ namespace ShadeLink
                 }
                 return options;
             }
-            set
-            {
-                options = value;
-                options.Sensitivity = ClampSensitivity(options.Sensitivity);
-                options.FieldOfView = ClampFieldOfView(options.FieldOfView);
-                optionsLoaded = true;
-                PlayerPrefs.SetFloat(PreferencePrefix + "Sensitivity", options.Sensitivity);
-                PlayerPrefs.SetFloat(PreferencePrefix + "FieldOfView", options.FieldOfView);
-                PlayerPrefs.SetInt(PreferencePrefix + "InvertX", options.InvertX ? 1 : 0);
-                PlayerPrefs.SetInt(PreferencePrefix + "InvertY", options.InvertY ? 1 : 0);
-                PlayerPrefs.Save();
-            }
+            set { ApplyRuntimeOptions(value, true); }
+        }
+
+        /// <summary>Live edits do not write PlayerPrefs; accepted JSON config synchronizes legacy values once.</summary>
+        public static void ApplyRuntimeOptions(Options value, bool persist = false)
+        {
+            options = value;
+            options.Sensitivity = ClampSensitivity(options.Sensitivity);
+            options.FieldOfView = ClampFieldOfView(options.FieldOfView);
+            optionsLoaded = true;
+            if (configuredCamera != null) configuredCamera.fieldOfView = options.FieldOfView;
+            if (!persist) return;
+            PlayerPrefs.SetFloat(PreferencePrefix + "Sensitivity", options.Sensitivity);
+            PlayerPrefs.SetFloat(PreferencePrefix + "FieldOfView", options.FieldOfView);
+            PlayerPrefs.SetInt(PreferencePrefix + "InvertX", options.InvertX ? 1 : 0);
+            PlayerPrefs.SetInt(PreferencePrefix + "InvertY", options.InvertY ? 1 : 0);
+            PlayerPrefs.Save();
         }
 
         static bool Finite(float value) { return !float.IsNaN(value) && !float.IsInfinity(value); }
@@ -114,7 +148,7 @@ namespace ShadeLink
         public static bool PausePressed
         { get { return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button6) || Input.GetKeyDown(KeyCode.Joystick1Button7); } }
         public static bool RotationHeld
-        { get { return Input.GetMouseButton(1) || Input.GetKey(KeyCode.Joystick1Button4) || Input.GetAxisRaw(Triggers) < -.5f; } }
+        { get { return Held(Action.Rotate) || Input.GetKey(KeyCode.Joystick1Button4) || Input.GetAxisRaw(Triggers) < -.5f; } }
 
         public Frame Read(float dt, bool aimedGrabbable, bool held)
         {
@@ -127,10 +161,8 @@ namespace ShadeLink
                 return new Frame(); // Do not replay a resume click or a cursor-lock mouse delta.
             }
             var settings = CurrentOptions;
-            Vector2 keys = new Vector2((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) -
-                (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0),
-                (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) -
-                (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0));
+            Vector2 keys = new Vector2((Held(Action.Right) ? 1 : 0) - (Held(Action.Left) ? 1 : 0),
+                (Held(Action.Forward) ? 1 : 0) - (Held(Action.Backward) ? 1 : 0));
             Vector2 move = ApplyRadialDeadzone(new Vector2(Input.GetAxisRaw(MoveX), Input.GetAxisRaw(MoveY)), StickDeadzone);
             Vector2 dpad = new Vector2(Input.GetAxisRaw(DpadX), Input.GetAxisRaw(DpadY));
             if (dpad.sqrMagnitude > .25f) move = Vector2.ClampMagnitude(dpad, 1);
@@ -147,18 +179,18 @@ namespace ShadeLink
             var frame = new Frame
             {
                 Move = move, Look = look,
-                JumpPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0),
-                JumpHeld = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Joystick1Button0),
-                GrabPressed = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+                JumpPressed = Pressed(Action.Jump) || Input.GetKeyDown(KeyCode.Joystick1Button0),
+                JumpHeld = Held(Action.Jump) || Input.GetKey(KeyCode.Joystick1Button0),
+                GrabPressed = Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
                     Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick1Button5) || (grabTrigger && !previousGrabTrigger),
                 RotateHeld = held && RotationHeld,
-                CancelPressed = Input.GetKeyDown(KeyCode.Backspace)
+                CancelPressed = Pressed(Action.Cancel)
             };
             if (keys.sqrMagnitude > 0)
                 UsingGamepad = false;
             else if (move.sqrMagnitude > 0)
                 UsingGamepad = true;
-            else if (mouse.sqrMagnitude > 0 || Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            else if (mouse.sqrMagnitude > 0 || Held(Action.Jump) || Held(Action.Grab) || Held(Action.Rotate))
                 UsingGamepad = false;
             else if (stick.sqrMagnitude > 0 || Mathf.Abs(trigger) > .5f ||
                 Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Joystick1Button1) ||

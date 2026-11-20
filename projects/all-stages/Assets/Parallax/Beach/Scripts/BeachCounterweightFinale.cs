@@ -134,6 +134,26 @@ namespace ShadeLink.Beach
             LastRockShadeSamples=0;LastAssistOffset=Vector3.zero;
             if(rock!=null&&rock.body!=null)rock.Restore();ApplyMechanism(0,false);SetLamps(false);game?.lighting?.Synchronize();
         }
+        public void RestoreCompletedForCheckpoint()
+        {
+            if (!initialized) Initialize();
+            ResetPuzzle();
+            rock.RefreshMass();
+            float factor = Mathf.Max(1, Mathf.Pow(minimumLoadMass * 1.05f / Mathf.Max(.001f, rock.body.mass), 1f / 3f));
+            rock.transform.localScale *= factor; rock.RefreshMass();
+            rock.transform.rotation = rock.homeRotation;
+            rock.transform.position = cradleFloor.bounds.center;
+            Physics.SyncTransforms();
+            rock.transform.position += Vector3.up * (CradleTop - rock.WorldBounds.min.y + .004f);
+            carrierPosition = cradle.InverseTransformPoint(rock.transform.position);
+            carrierRotation = Quaternion.Inverse(cradle.rotation) * rock.transform.rotation;
+            PropReleasePhysics.Attach(rock.body).CancelPendingRelease();
+            rock.body.isKinematic = true; rock.body.useGravity = false;
+            rock.body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            carrying = loadLatched = loadSupported = enoughWeight = ready = true;
+            liftProgress = 1; movementBlocked = false; ApplyMechanism(1, true); SetLamps(true);
+            game?.lighting?.Rebuild();
+        }
         public void OnPickedUp(BeachProp value)
         {
             if(value!=rock||loadLatched)return;

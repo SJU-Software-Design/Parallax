@@ -1,0 +1,36 @@
+Parallax — Approved team credit roles
+
+This is a checked-in role transcript and approval record, not the original presentation.
+The original private presentation is not required or distributed by this fixture.
+
+Presentation provenance (recorded from the prior local inspection):
+  SHA-256: 5AB8C7C11753965DFDCDA762A287551AA37BE3461F8A630DD0B1998DFD56AA0D
+  Ordered slide: 8
+  Package entry: ppt/slides/slide8.xml
+  Slide title: 팀 구현과 외부 자료
+
+Subsequent explicit user corrections:
+2026-11-20 사용자 승인: 엔딩 기획·구현은 안건우 팀장, 게임 시작화면 기획은 안건우·이민섭. 2026-11-19 김태양 UI 상태 괄호 제거 유지. 다른 기존 역할은 보존.
+
+Approved complete credit captions and roles:
+
+team-1 — 안건우 팀장
+해변·미술관 기획·구현
+해변·미술관 에셋 수정
+튜토리얼 기획, 사운드 적용·구현
+게임 시작화면 기획
+엔딩 기획·구현
+
+team-2 — 이민섭
+원근·그림자 판정 구현
+튜토리얼 기획·구현
+미술관 기획, 해변·미술관 에셋 수정
+게임 시작화면 기획
+
+team-3 — 김태양
+튜토리얼 기획·구현, 맵 QA
+UI 개편
+
+team-4 — 이하늘
+사운드 조사 및 구현, QA
+맵 아이디어 제공 및 자료조사

@@ -135,7 +135,7 @@ namespace ShadeLink.Gallery
             }
             if (!wind.isPlaying)
             {
-                if (paused) wind.UnPause(); else wind.Play();
+                if (paused) wind.UnPause(); else { GameShellSettingsRuntime.Route(wind); wind.Play(); }
                 paused = false;
             }
             float target = WindVolumeAtDistance(Vector3.Distance(game.view.transform.position, MouthPosition));

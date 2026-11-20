@@ -2,9 +2,9 @@
   "status": "SOURCE_READY_FOR_D_UNITY_BUILD",
   "implementedUtc": "2026-11-14T12:13:31.313234+00:00",
   "version": "0.26.4-tutorial-audio-refresh",
-  "authority": "source-record://audio-review/Tutorial_Current_Selection.json",
+  "authority": "local-provenance/audio-review/Tutorial_Current_Selection.json",
   "authoritySha256": "e49204ce983d44016b1e470e3ffa494c45b8597fee2b0c8f4af984acca2250f3",
-  "gitPreservationProof": "source-record://migration-20261114/git-d-repair-validation.json",
+  "gitPreservationProof": "D:/ParallaxWork/Migration_20261114/git-d-repair-validation.json",
   "selections": {
     "dicePickup": "T02",
     "diceSmallImpact": "T04",
@@ -19,7 +19,7 @@
   "newAudio": [
     {
       "selection": "T02",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T02_216629.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T02_216629.mp3",
       "inputSha256": "01eb7da4fd2bea0d62e8d41bae8396559671f041eab544491256bc58dfadc790",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T02_Pickup.wav",
       "outputSha256": "defe44f4ee4c02b0354dd5fe355b78a2b5667bd77765023154f79d83ec870f09",
@@ -40,7 +40,7 @@
     },
     {
       "selection": "T04",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T04_353975.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T04_353975.mp3",
       "inputSha256": "21869daba2dd9f7d913b4f22ca4130ce05f3053547d06f17a2b30d5b65e52259",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T04_DieSmall.wav",
       "outputSha256": "e4fad721e8e05e7dca15444573bf7a73ab3cb9ceecedb1d43c4a2936265c76c2",
@@ -61,7 +61,7 @@
     },
     {
       "selection": "T07",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T07_697092.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-dice/Originals/T07_697092.mp3",
       "inputSha256": "b65f7e095b8c525c711b69e34a73afdad44b291c9301a5ca12a95bef744729bc",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T07_DieMedium.wav",
       "outputSha256": "561b079cc82cc8bf35dc52c61e31fe77b49c86083a62d72b797e1f0da9b24884",
@@ -82,7 +82,7 @@
     },
     {
       "selection": "T14",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
       "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep01.wav",
       "outputSha256": "28b522cf567df7addf42f605503cce8f93060c707cc597e6793113df55f25caa",
@@ -103,7 +103,7 @@
     },
     {
       "selection": "T14",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
       "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep02.wav",
       "outputSha256": "be3133313e20c02a29d04fed15843cd9f0599a5727554b1521d71d32c53884fa",
@@ -124,7 +124,7 @@
     },
     {
       "selection": "T14",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
       "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep03.wav",
       "outputSha256": "07393f5a965ccc76e0cf1ead85092d8c612ed3d06f3801205605dc10298e15f7",
@@ -145,7 +145,7 @@
     },
     {
       "selection": "T14",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T14_50723.mp3",
       "inputSha256": "178dd699d2456f2a8897cf2610009f901a85610bb020dc6ee79a34072e2ba358",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T14_Footstep04.wav",
       "outputSha256": "0a0263a4893eddbd1316426f9a93583067be78c4b02dc0a44204da9a40048cf0",
@@ -166,7 +166,7 @@
     },
     {
       "selection": "T19",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T19_421138.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-movement/Originals/T19_421138.mp3",
       "inputSha256": "c7ebd22f5ea60b7bcff752e74953c5db52a8a579a30f994cac8457e5c8815d62",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T19_JumpLand.wav",
       "outputSha256": "41fea3e7c6cd8da3adabc91d65f737c47c84f85c99828d98c2480a44ac371b66",
@@ -187,7 +187,7 @@
     },
     {
       "selection": "T26",
-      "inputPath": "source-record://audio-review/Tutorial_20261114_Round3/Previews/T26_ShortContact.wav",
+      "inputPath": "local-provenance/audio-review/Tutorial_20261114_Round3/Previews/T26_ShortContact.wav",
       "inputSha256": "2cfd76835d37d2ec5e02419354ab1b6b22a9708c1d3a1d9aeed67f1aa2da5344",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\T26_DieLarge.wav",
       "outputSha256": "2cfd76835d37d2ec5e02419354ab1b6b22a9708c1d3a1d9aeed67f1aa2da5344",
@@ -200,7 +200,7 @@
     },
     {
       "selection": "TB01",
-      "inputPath": "source-record://workspace-assets/Audio_Tutorial_Refresh_20261114/research-bgm/Originals/TB01_Equatorial_Complex.mp3",
+      "inputPath": "local-provenance/project/에셋/Audio_Tutorial_Refresh_20261114/research-bgm/Originals/TB01_Equatorial_Complex.mp3",
       "inputSha256": "b31de67f7422c0a48eb9faf16f3d2379dd568f9b37f275c537d320194e327f2c",
       "outputPath": "Assets\\Parallax\\Tutorial\\Resources\\TutorialAudio\\Refresh\\BgmTB01_000_179.wav",
       "outputSha256": "f308dc55c40d9456a1c8dbafa5c00fcb3a07599f983a8a91c4df3ad94d37a28e",

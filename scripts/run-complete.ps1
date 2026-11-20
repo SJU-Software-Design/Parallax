@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [switch]$BuildOnly,
     [switch]$Run,
@@ -80,7 +80,7 @@ function File-SHA256([string]$Path) {
 }
 function Source-Fingerprint {
     $lines = New-Object 'System.Collections.Generic.List[string]'
-    $lines.Add('Parallax complete course v1')
+    $lines.Add('Parallax complete course player shell v2')
     $lines.Add($requiredUnity)
     $lines.Add((File-SHA256 $PSCommandPath))
     foreach ($folder in $inputFolders) {
@@ -240,10 +240,15 @@ try {
         $logFile = Join-Path $logs ($buildId + '-unity.log')
         $arguments = @('-batchmode','-quit','-force-d3d11','-buildTarget','StandaloneWindows64',
             '-standaloneBuildSubtarget','Player','-projectPath',$buildProject,
-            '-executeMethod','ShadeLink.Editor.TutorialElevatorBuild.BuildWindows',
-            '-elevator-output',$candidate,'-logFile',$logFile)
+            '-executeMethod','PlayerShellBuild.BuildWindows',
+            '-generated-project',$buildProject,'-source-project',$sourceDir,
+            '-parallaxBuildOutput',(Join-Path $candidate 'Parallax.exe'),
+            '-player-shell-result',(Join-Path $candidate 'build-result.json'),
+            '-controlsReport',(Join-Path $candidate 'EditorRegression\controls-results.json'),
+            '-interactionReport',(Join-Path $candidate 'EditorRegression\interaction-results.json'),
+            '-logFile',$logFile)
         $argumentLine = ($arguments | ForEach-Object { '"' + $_ + '"' }) -join ' '
-        Write-Host "Building complete Tutorial -> Museum -> Beach player. Log: $logFile"
+        Write-Host "Building complete MainMenu -> Tutorial -> Museum -> Beach -> Eclipse player. Log: $logFile"
         $oldTemp = $env:TEMP; $oldTmp = $env:TMP
         try {
             $env:TEMP = $tempDir; $env:TMP = $tempDir
@@ -254,12 +259,28 @@ try {
         $reportPath = Join-Path $candidate 'build-result.json'
         if (!(Test-Path -LiteralPath $reportPath -PathType Leaf)) { throw "Build result missing; see $logFile" }
         $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
-        if ($report.result -ne 'Succeeded' -or $report.errors -ne 0 -or !(Test-Player $candidate)) {
-            throw "Build failed or is incomplete; latest was not replaced. See $logFile"
+        $expectedScenes = @('Assets/Parallax/Shared/Scenes/MainMenu.unity',
+            'Assets/Parallax/Tutorial/Scenes/Tutorial.unity','Assets/Parallax/Gallery/Scenes/Gallery.unity',
+            'Assets/Parallax/Beach/Scenes/Beach.unity','Assets/Parallax/Eclipse/Scenes/Eclipse.unity')
+        if ($report.result -ne 'Succeeded' -or $report.errors -ne 0 -or !(Test-Player $candidate) -or
+            $report.unityVersion -ne $requiredUnity -or $report.target -ne 'StandaloneWindows64' -or
+            $report.backend -ne 'Mono2x' -or $report.scene -ne $expectedScenes[0] -or
+            (@($report.scenes) -join '|') -ne ($expectedScenes -join '|') -or
+            !$report.project -or !$report.output -or
+            ![string]::Equals((Full-Path $report.project),$buildProject,[StringComparison]::OrdinalIgnoreCase) -or
+            ![string]::Equals((Full-Path $report.output),(Join-Path $candidate 'Parallax.exe'),[StringComparison]::OrdinalIgnoreCase)) {
+            throw "Build failed, targets unexpected paths/scenes, or is incomplete; latest was not replaced. See $logFile"
+        }
+        $regressionPath = Join-Path $candidate 'EditorRegression\editor-regression-results.json'
+        if (!(Test-Path -LiteralPath $regressionPath -PathType Leaf)) { throw "Required Editor regression report is missing: $regressionPath" }
+        $regression = Get-Content -LiteralPath $regressionPath -Raw | ConvertFrom-Json
+        if (!$regression.passed -or @($regression.suites).Count -ne 3 -or
+            @($regression.suites | Where-Object { !$_.passed }).Count -ne 0) {
+            throw "Required Editor regressions failed; latest was not replaced. See $regressionPath"
         }
         if ((Source-Fingerprint) -ne $fingerprint) { throw 'Source changed during the build; candidate was not promoted.' }
         [ordered]@{ fingerprint=$fingerprint; unity=$requiredUnity; buildId=$buildId; builtAt=[DateTime]::UtcNow.ToString('o');
-            entry='Tutorial'; scenes=@('Tutorial','Gallery','Beach'); validation='Unity build/report/player-file checks; native gameplay suites are separate' } |
+            entry='MainMenu'; scenes=@('MainMenu','Tutorial','Gallery','Beach','Eclipse'); validation='Unity build/report/player-file checks; native gameplay suites are separate' } |
             ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $candidate 'complete-build-state.json') -Encoding UTF8
         Promote-Candidate
         Write-Host "Build succeeded: $(Join-Path $latest 'Parallax.exe')"
@@ -269,5 +290,5 @@ if (!$BuildOnly) {
     if (!(Test-Player $latest)) { throw 'No complete successful player is available to run.' }
     $playerLog = Join-Path $logs ([DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ') + '-player.log')
     Start-Process -FilePath (Join-Path $latest 'Parallax.exe') -WorkingDirectory $latest -ArgumentList ('-logFile "' + $playerLog + '"') -WindowStyle Normal | Out-Null
-    Write-Host "Started at Tutorial lesson 1. Player log: $playerLog"
+    Write-Host "Started at the MainMenu title screen. Player log: $playerLog"
 }

@@ -40,6 +40,7 @@ namespace ShadeLink.Gallery
                 ForgetSample(); activation?.ClearRumble(); return;
             }
             ClearSample();
+            if (!GameShellSettingsRuntime.CameraShake) return;
             if (game == null || game.view == null || activation == null) return;
             if (!game.active || game.won) { activation.ClearRumble(); return; }
             float amount = activation.Rumble01;

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 2,
+  "passed": true,
+  "hashMode": "utf8-lf",
+  "sharedMovementCadenceAndOtherRoutesTextPreserved": true,
+  "sharedMovementSourcePath": "../../Assets/Parallax/Shared/Scripts/PlayerMovementAudio.cs",
+  "sharedMovementOriginalPath": "PlayerMovementAudio.before-eclipse.txt",
+  "sharedMovementSourceSha256": "E707397B7BC3E941FD2576559EF280CE991552246CD0E0EF3479B37FEAE67D32",
+  "sharedMovementOriginalSha256": "1D99A434197C4F8A96A770114486C275E0207A1F8874D0CE7D7974F2D7B5CBFF",
+  "scope": "This fixture compares the current shared movement source against the captured pre-Eclipse source text after removing exactly one Eclipse audio-routing line. UTF-8 BOM and CRLF are normalized for portable Git checkouts. It verifies source content, cadence and other stage routes, not original sound-file provenance or subjective listening."
+}

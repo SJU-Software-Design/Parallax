@@ -146,7 +146,7 @@ namespace ShadeLink
             bool indoor=position.z>=14&&!ui;voice.reverb.enabled=indoor;
             voice.source.priority=ui?100:cue.StartsWith("movement.",StringComparison.Ordinal)?160:110;
             voice.until=AudioSettings.dspTime+clip.length/voice.source.pitch+(indoor?.7:0);
-            voice.source.Play();return true;
+            { GameShellSettingsRuntime.Route(voice.source); voice.source.Play(); }return true;
         }
         Voice FreeVoice()
         {
@@ -198,7 +198,7 @@ namespace ShadeLink
             if(musicA==null||musicClip==null||!Application.isPlaying)return;
             if(!running||PortraitFadeOutComplete){musicA.Pause();musicB.Pause();return;}
             if(!musicStarted)
-            {currentMusic=musicA;incomingMusic=musicB;currentMusic.time=0;currentMusic.volume=0;currentMusic.Play();musicStarted=true;musicFade=0;}
+            {currentMusic=musicA;incomingMusic=musicB;currentMusic.time=0;currentMusic.volume=0;{ GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }musicStarted=true;musicFade=0;}
             else {currentMusic.UnPause();if(crossfading)incomingMusic.UnPause();}
         }
         void Update()
@@ -218,10 +218,10 @@ namespace ShadeLink
                 }
             }
             else musicFade=Mathf.MoveTowards(musicFade,1,Time.unscaledDeltaTime/.5f);
-            if(!crossfading&&!currentMusic.isPlaying){currentMusic.time=0;currentMusic.Play();musicFade=0;}
+            if(!crossfading&&!currentMusic.isPlaying){currentMusic.time=0;{ GameShellSettingsRuntime.Route(currentMusic); currentMusic.Play(); }musicFade=0;}
             float seconds=Mathf.Min(MusicCrossfadeSeconds,musicClip.length*.2f);
             if(!crossfading&&currentMusic.time>=musicClip.length-seconds)
-            {incomingMusic.time=0;incomingMusic.volume=0;incomingMusic.Play();crossfading=true;crossfadeTime=0;}
+            {incomingMusic.time=0;incomingMusic.volume=0;{ GameShellSettingsRuntime.Route(incomingMusic); incomingMusic.Play(); }crossfading=true;crossfadeTime=0;}
             if(crossfading)
             {
                 crossfadeTime+=Time.unscaledDeltaTime;float t=Mathf.Clamp01(crossfadeTime/seconds);
