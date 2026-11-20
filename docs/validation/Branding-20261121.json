@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-21",
+  "unityVersion": "6000.3.24f1",
+  "result": "Succeeded",
+  "iconPath": "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+  "iconGuid": "a814a81d650a451bbdd83b6528ef1364",
+  "sourceSha256": "048954564958005245ED6589705E7B7199370C8F8D6C085AAD25AEFB45329155",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "importer": {
+    "alphaSource": "FromInput",
+    "alphaIsTransparency": true,
+    "sRgb": true,
+    "mipmaps": false,
+    "npotScale": "None",
+    "textureCompression": "Uncompressed",
+    "standaloneOverride": true,
+    "standaloneFormat": "RGBA32"
+  },
+  "slots": [
+    {
+      "target": "Default",
+      "kind": "Application",
+      "usedAnyFallback": false,
+      "sizes": [
+        128
+      ],
+      "readBackPaths": [
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png"
+      ],
+      "readBackGuids": [
+        "a814a81d650a451bbdd83b6528ef1364"
+      ]
+    },
+    {
+      "target": "Standalone",
+      "kind": "Application",
+      "usedAnyFallback": false,
+      "sizes": [
+        1024,
+        512,
+        256,
+        128,
+        64,
+        48,
+        32,
+        16
+      ],
+      "readBackPaths": [
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png",
+        "Assets/Parallax/Shared/Branding/ParallaxIcon.png"
+      ],
+      "readBackGuids": [
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364",
+        "a814a81d650a451bbdd83b6528ef1364"
+      ]
+    }
+  ],
+  "sourcePngBytesPreserved": true,
+  "onlyPlayerSettingsIconSectionsChanged": true,
+  "gameplayChanged": false,
+  "existingExeRebuilt": false,
+  "socialPreviewChanged": false,
+  "scope": "Isolated Unity 6000.3.24f1 Editor applies and reads back Default and Standalone application icon slots. Only icon sections are transplanted into source PlayerSettings; no product/version/controls/gameplay changes. Existing executables are unchanged until rebuilt."
+}

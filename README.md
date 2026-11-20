@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="projects/all-stages/Assets/Parallax/Shared/Branding/ParallaxIcon.png" alt="Parallax 퍼즐 P" width="320">
+</p>
+
 # Parallax
 
 최신 통합 소스는 **0.39.0 · 시작화면 → 튜토리얼 → 미술관 → 해변 → 일식 엔딩**입니다. 시작화면, 일시정지·환경설정·조작키, 체크포인트 저장·이어하기와 크레딧을 연결하고, 관리자는 맵을 선택한 뒤 14개 하위 구간에서 테스트할 수 있습니다.
