@@ -124,11 +124,11 @@ namespace ShadeLink.Tutorial
                     new Vector2(banner.x + 144 * scale, banner.yMax - 16 * scale), Mint, 2 * scale);
                 style.alignment = TextAnchor.MiddleLeft;
                 GUI.Label(new Rect(banner.x + 164 * scale, banner.y + 48 * scale, banner.width - 182 * scale, banner.height - 58 * scale),
-                    "우클릭을 누른 채\n상하좌우로 움직여 회전해 보세요.", style);
+                    "우클릭을 누른 채 마우스를 움직여보세요", style);
             }
             else
                 GUI.Label(new Rect(banner.x + 14 * scale, banner.y + 46 * scale, banner.width - 28 * scale, banner.height - 50 * scale),
-                    "다른 면도 볼 수 있어요.\n이제 먼 벽에 더 크게 놓아 보세요.", style);
+                    "이제 먼 벽에 더 크게 놓아보세요", style);
             GUI.color = previous;
             return true;
         }

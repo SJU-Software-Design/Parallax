@@ -294,7 +294,9 @@ namespace GlassTrial
             if (!requested && visibility <= 0) transition.Reset();
             bool warning = showCommon && commonNotice.Current.Kind == MuseumStageGuide.NoticeKind.Warning;
             if (requested) transition.Update(new MuseumHudTextTransition.View { Mode = danger ? 1 : 0, Caption = notice }, Time.unscaledDeltaTime, warning || danger);
-            exposureMorph = Mathf.MoveTowards(exposureMorph, danger ? 1 : 0, Time.unscaledDeltaTime / .36f);
+            // Sunlight is urgent: show the gauge immediately, then ease back
+            // to the suspended guide after the exposure has recovered.
+            exposureMorph = danger ? 1f : Mathf.MoveTowards(exposureMorph, 0, Time.unscaledDeltaTime / .36f);
             var hover = GetComponent<TutorialGlassHover>();
             capture.captureEnabled = visibility > 0 || game.RotationGlassCaptureNeeded || (hover != null && hover.NeedsCapture);
             canvas.enabled = visibility > 0 && capture.blurred != null;
@@ -304,6 +306,9 @@ namespace GlassTrial
             caption.text = transition.Current.Caption ?? "";
             float gaugeAlpha = renderGauge ? Mathf.Clamp01(exposureMorph) : 0;
             caption.canvasRenderer.SetAlpha(transition.Alpha * (1 - gaugeAlpha));
+            if (game.CornerGuideActive && !danger && !showCommon && gaugeAlpha <= .001f &&
+                transition.Alpha >= .999f && caption.text == game.CurrentBottomNotice)
+                game.AdvanceCornerGuide(Time.deltaTime);
             float available = Mathf.Max(120, ((RectTransform)canvas.transform).rect.width - 56);
             float noticeWidth = Mathf.Min(available, Mathf.Max(180, caption.preferredWidth + 84));
             float wanted = Mathf.Lerp(noticeWidth, Mathf.Min(268, available), gaugeAlpha);

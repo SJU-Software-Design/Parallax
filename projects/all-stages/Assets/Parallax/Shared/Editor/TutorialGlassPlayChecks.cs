@@ -54,7 +54,7 @@ namespace ShadeLink.Editor
                     var glass = game.GetComponent<TutorialGlassNotice>();
                     if (glass == null) return;
                     game.CheckpointNotice += (reset, text) => { noticeCount++; lastReset = reset; lastNotice = text; };
-                    Require(game.CurrentBottomNotice == "주사위를 클릭해서 잡아보세요", "stage 1 starts with pickup guidance");
+                    Require(game.CurrentBottomNotice == "주사위를 잡아보세요", "stage 1 starts with pickup guidance");
                     var firstDie = (ShadeLink.Gallery.GalleryProp)Field("die");
                     var initialFeet = game.Controller.transform.position;
                     var initialCameraRotation = game.Camera.transform.rotation;
@@ -66,7 +66,7 @@ namespace ShadeLink.Editor
                     Physics.SyncTransforms();
                     var openingInteraction = (ShadeLink.ObjectInteraction<ShadeLink.Gallery.GalleryProp>)Field("interaction");
                     openingInteraction.Interact();
-                    Require(game.Held == null && game.CurrentBottomNotice == "주사위를 클릭해서 잡아보세요", "failed pickup keeps opening guidance");
+                    Require(game.Held == null && game.CurrentBottomNotice == "주사위를 잡아보세요", "failed pickup keeps opening guidance");
                     game.Controller.enabled = false;
                     game.Controller.transform.position = initialFeet;
                     game.Controller.enabled = true;
@@ -243,15 +243,15 @@ namespace ShadeLink.Editor
                     Call("StartTutorialStage", 2);
                     Require(!lastReset && lastNotice == "02 구역 저장", "stage 2 checkpoint notification");
                     Require((bool)Field("inClimbRoom"), "stage 2 begins");
-                    Require(game.CurrentBottomNotice.Contains("주사위가 차례로"), "stage 2 arrival notice");
+                    Require(game.CurrentBottomNotice.Contains("주사위가 떨어질 때"), "stage 2 arrival notice");
                     Call("RestartLesson");
                     Require(lastReset && lastNotice == "현재 구역을 초기화했습니다.", "stage 2 reset notification");
-                    Require((bool)Field("inClimbRoom") && game.CurrentBottomNotice.Contains("주사위가 차례로"), "stage 2 reset retained");
+                    Require((bool)Field("inClimbRoom") && game.CurrentBottomNotice.Contains("주사위가 떨어질 때"), "stage 2 reset retained");
                     int beforeStageThree = noticeCount;
                     Call("StartTutorialStage", 3);
                     Require(noticeCount == beforeStageThree + 1 && !lastReset && lastNotice == "03 구역 저장", "stage 3 entry checkpoint notification");
                     Require((bool)Field("inSunlightRoom"), "stage 3 begins");
-                    Require(game.CurrentBottomNotice.StartsWith("햇빛이 닿으면"), "stage 3 entry notice");
+                    Require(game.CurrentBottomNotice.StartsWith("주사위를 키워 다음 지붕까지"), "stage 3 entry notice");
                     Set("exitUnlocked", true);
                     Set("messageUntil", 0f);
                     Require(game.CurrentBottomNotice == null, "stage 1 completion notice cannot leak into stage 3");
@@ -259,7 +259,7 @@ namespace ShadeLink.Editor
                     Set("inSunlightRoom", false);
                     Require(game.CurrentBottomNotice == null, "stage 1 completion notice cannot leak into stage 2");
                     Set("inClimbRoom", false);
-                    Require(game.CurrentBottomNotice != null && game.CurrentBottomNotice.StartsWith("주사위 한 변"), "stage 1 exit guidance remains");
+                    Require(game.CurrentBottomNotice != null && game.CurrentBottomNotice.StartsWith("오른쪽 문으로 이동하세요"), "stage 1 exit guidance remains");
                     Set("inSunlightRoom", true);
                     Set("exitUnlocked", false);
                     if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
@@ -274,6 +274,19 @@ namespace ShadeLink.Editor
                         updateGlass.Invoke(sunGlass, null);
                         var stateText = GlassField<Text>(sunGlass, "caption");
                         Require(stateText.text == "그늘 · 안전", "safe indicator appears without other notice");
+                        Call("StartCornerGuide");
+                        GlassField<MuseumHudTextTransition>(sunGlass, "transition").Reset();
+                        updateGlass.Invoke(sunGlass, null);
+                        Require(stateText.text == "길이 왼쪽으로 꺾였어요", "first corner guide is rendered");
+                        float remainingBeforeDanger = (float)Field("cornerGuideRemaining");
+                        Set("sunlightSafe", false); Set("sunlightExposure", .45f);
+                        updateGlass.Invoke(sunGlass, null);
+                        Require(GlassField<Image>(sunGlass, "exposureSun").color.a >= .999f && Mathf.Approximately((float)Field("cornerGuideRemaining"), remainingBeforeDanger), "sunlight interrupts corner guide immediately without consuming it");
+                        Set("sunlightSafe", true); Set("sunlightExposure", 0f);
+                        game.AdvanceCornerGuide(3f);
+                        Require(game.CurrentBottomNotice == "햇빛이 오는 쪽에 주사위를 놓아보세요", "second corner guide follows first");
+                        game.AdvanceCornerGuide(4f);
+                        Require(!game.CornerGuideActive, "corner guide completes");
                         game.Tell("퍼즐 안내", 10);
                         float originalUntil = (float)Field("messageUntil");
                         common.Trigger(new MuseumStageGuide.Notice(MuseumStageGuide.NoticeKind.Warning, "경고", 3), GlassField<float>(sunGlass, "noticeClock"), false);
@@ -305,7 +318,7 @@ namespace ShadeLink.Editor
                     var placedPosition = sunDice[0].transform.position;
                     int beforeReset = noticeCount;
                     Call("RestartLesson");
-                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "마지막 쉼터로 돌아왔어요.", "stage 3 return notification");
+                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "쉼터로 돌아왔어요", "stage 3 return notification");
                     Require((int)Field("sunlightCheckpoint") == 1 && game.CurrentBottomNotice == null, "stage 3 reset suppresses legacy notice");
                     Require(Vector3.Distance(sunDice[0].transform.position, placedPosition) < .001f, "stage 3 placed object stays put");
                     Set("sunlightExposure", .99f);
@@ -315,25 +328,25 @@ namespace ShadeLink.Editor
                     game.Controller.enabled = true;
                     beforeReset = noticeCount;
                     Call("TickSunlight", .05f);
-                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "마지막 쉼터로 돌아왔어요.", "sunlight exposure reset notification");
+                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "쉼터로 돌아왔어요", "sunlight exposure reset notification");
                     Require((int)Field("sunlightCheckpoint") == 1 && game.CurrentBottomNotice == null, "exposure reset uses saved shelter without legacy notice");
                     game.Controller.enabled = false;
                     game.Controller.transform.position = sunOrigin + new Vector3(10f, -3f, 9.5f);
                     game.Controller.enabled = true;
                     beforeReset = noticeCount;
                     Call("TickSunlight", .05f);
-                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "마지막 쉼터로 돌아왔어요.", "player fall reset notification");
+                    Require(noticeCount == beforeReset + 1 && lastReset && lastNotice == "쉼터로 돌아왔어요", "player fall reset notification");
                     Require((int)Field("sunlightCheckpoint") == 1 && game.CurrentBottomNotice == null, "fall uses saved shelter without legacy notice");
                     Require(Vector3.Distance(sunDice[0].transform.position, placedPosition) < .001f, "automatic returns preserve placed object");
                     var glassNotice = game.GetComponent<TutorialGlassNotice>();
                     glassNotice.enabled = false;
                     beforeReset = noticeCount;
                     Call("RespawnSunlight");
-                    Require(noticeCount == beforeReset + 1 && game.CurrentBottomNotice == "마지막 쉼터로 돌아왔어요.", "fallback notice when glass is disabled");
+                    Require(noticeCount == beforeReset + 1 && game.CurrentBottomNotice == "쉼터로 돌아왔어요", "fallback notice when glass is disabled");
                     glassNotice.enabled = true;
                     Call("StartTutorialStage", 1);
                     Require(!(bool)Field("inClimbRoom") && !(bool)Field("inSunlightRoom"), "stage 1 restart");
-                    Require(game.CurrentBottomNotice == "주사위를 클릭해서 잡아보세요", "stage 1 restart restores pickup guidance");
+                    Require(game.CurrentBottomNotice == "주사위를 잡아보세요", "stage 1 restart restores pickup guidance");
                     Finish();
                 }
             }

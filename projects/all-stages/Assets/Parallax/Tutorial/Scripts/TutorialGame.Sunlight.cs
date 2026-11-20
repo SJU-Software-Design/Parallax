@@ -226,11 +226,12 @@ namespace ShadeLink.Tutorial
             SetSunlightLighting(true);
             firstSign.SetActive(false); shrinkSign.SetActive(false); secondSign.SetActive(false);
             primaryTarget.gameObject.SetActive(false); tabletopTarget.gameObject.SetActive(false); secondaryTarget.gameObject.SetActive(false);
-            Tell("햇빛이 닿으면 그늘로 돌아오세요. 주사위를 크게 놓아 다음 지붕까지 그늘을 만들어 봐요.", 9f);
+            Tell("주사위를 키워 다음 지붕까지 그늘을 이어보세요", 9f);
         }
 
         void ResetSunlightCourse()
         {
+            ClearCornerGuide();
             ResetMuseumElevator();
             sunlightCheckpoint = 0;
             sunlightExposure = 0;
@@ -249,6 +250,7 @@ namespace ShadeLink.Tutorial
 
         void RespawnSunlight()
         {
+            ClearCornerGuide();
             ResetMuseumElevator();
             ClearLandingFeedback();
             if (Held != null) interaction.Cancel(true);
@@ -259,10 +261,10 @@ namespace ShadeLink.Tutorial
             MoveToSunlightCheckpoint();
             message = null;
             messageUntil = 0;
-            NotifyCheckpoint(true, "마지막 쉼터로 돌아왔어요.");
+            NotifyCheckpoint(true, "쉼터로 돌아왔어요");
             var glassNotice = GetComponent<GlassTrial.TutorialGlassNotice>();
             if (glassNotice == null || !glassNotice.isActiveAndEnabled)
-                Tell("마지막 쉼터로 돌아왔어요.", 3f);
+                Tell("쉼터로 돌아왔어요", 3f);
         }
 
         bool SunlightSafe(Vector3 feet)
@@ -314,13 +316,13 @@ namespace ShadeLink.Tutorial
             {
                 sunlightCheckpoint = 1;
                 NotifyCheckpoint(false, "마지막 쉼터 저장");
-                Tell("첫 쉼터에 도착했어요. 새 주사위로 다음 그늘을 이어 보세요.", 6f);
+                Tell("새 주사위로 다음 그늘을 이어보세요", 6f);
             }
             if (sunlightCheckpoint < 2 && local.x > 24f && local.x < 29.8f && Mathf.Abs(local.z - 9.5f) < 2f)
             {
                 sunlightCheckpoint = 2;
                 NotifyCheckpoint(false, "마지막 쉼터 저장");
-                Tell("모퉁이 쉼터예요. 왼쪽으로 꺾인 길을 보고, 햇빛이 오는 쪽에 주사위를 놓아 보세요.", 7f);
+                StartCornerGuide();
             }
             // Completion now belongs to the closed elevator departure. Merely
             // entering the sheltered approach must not load the next scene.

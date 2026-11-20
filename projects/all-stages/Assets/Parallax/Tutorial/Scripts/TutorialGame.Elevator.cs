@@ -46,6 +46,7 @@ namespace ShadeLink.Tutorial
             if (Held != null) interaction.Cancel(true);
             if (Aimed != null) Aimed.Highlight(false, false);
             Aimed = null;
+            ClearCornerGuide();
             elevatorDeparted = true;
             sunlightComplete = true;
             sunlightExposure = 0;
@@ -74,7 +75,7 @@ namespace ShadeLink.Tutorial
             Controller.enabled = true;
             motor.Reset(); controls.Reset(); yaw = 0; pitch = 0;
             SyncView();
-            Tell("엘리베이터 앞으로 다가가 탑승해 보세요.", 7);
+            Tell("엘리베이터에 탑승하세요", 7);
         }
     }
 }

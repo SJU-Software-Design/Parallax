@@ -61,6 +61,10 @@ namespace ShadeLink.Tutorial
         bool paused;
         bool firstDiePickedUp;
         string message;
+        int cornerGuideStep;
+        float cornerGuideRemaining;
+        const string CornerGuideFirst = "길이 왼쪽으로 꺾였어요";
+        const string CornerGuideSecond = "햇빛이 오는 쪽에 주사위를 놓아보세요";
         public event System.Action<bool, string> CheckpointNotice;
         public event System.Action<string> InteractionWarning;
         readonly System.Collections.Generic.Queue<System.Collections.Generic.KeyValuePair<bool, string>> pendingCheckpointNotices =
@@ -497,7 +501,7 @@ namespace ShadeLink.Tutorial
             if (sunlightWarningClip != null) Destroy(sunlightWarningClip);
         }
 
-        void OnDisable() { ClearLandingFeedback(); ClearRotationHintTransient(); ClearShadowPreview(); }
+        void OnDisable() { ClearLandingFeedback(); ClearRotationHintTransient(); ClearShadowPreview(); ClearCornerGuide(); }
 
         void RefreshLesson()
         {
@@ -768,11 +772,11 @@ namespace ShadeLink.Tutorial
             {
                 firstSize = size;
                 var wallCheckpoint = new Vector3(0, size * .5f, Room.max.z - size * .5f - .32f);
-                AdvanceLesson(wallCheckpoint, size, "키운 주사위를 멀리서 다시 집어 가까운 탁자에 놓아 보세요.");
+                AdvanceLesson(wallCheckpoint, size, "주사위를 다시 잡아 가까운 탁자에 놓아보세요");
             }
             else if (step == 1)
             {
-                AdvanceLesson(TableHome, StartSize, "주사위를 가까이서 집고 먼 벽에 더 크게 놓아 보세요.");
+                AdvanceLesson(TableHome, StartSize, "가까이서 잡아 먼 벽에 크게 놓아보세요");
             }
             else
             {
@@ -786,11 +790,11 @@ namespace ShadeLink.Tutorial
         string SizeFeedback(float size)
         {
             if (step == 1)
-                return size > ShrinkMaximumSize ? "주사위를 더 가까운 곳에 놓아 작게 만들어 보세요." : null;
+                return size > ShrinkMaximumSize ? "주사위를 더 가까이 놓아 줄여보세요" : null;
             if (size > (step == 0 ? OrangeTargetSize : MintMaximumSize))
-                return "주사위가 커요. 든 채 벽 쪽으로 조금 다가가 보세요.";
+                return "주사위가 커요 · 벽에 가까이 다가가세요";
             if (size < (step == 0 ? OrangeMinimumSize : MintMinimumSize))
-                return "주사위가 작아요. 더 가까이서 집거나, 든 채 벽에서 조금 물러나 보세요.";
+                return "주사위가 작아요 · 가까이서 다시 잡거나 벽에서 물러나세요";
 
             return null;
         }
@@ -821,18 +825,41 @@ namespace ShadeLink.Tutorial
                 if (InteractionWarning != null && glass != null && glass.isActiveAndEnabled) { InteractionWarning(text); return; }
                 duration = GlassTrial.TutorialGlassNotice.ClassifyInteractionWarning(text).Seconds;
             }
+            cornerGuideStep = 0;
+            cornerGuideRemaining = 0;
             message = text;
             messageUntil = Time.time + duration;
         }
 
+        public bool CornerGuideActive => cornerGuideStep != 0;
+        void StartCornerGuide()
+        {
+            cornerGuideStep = 1;
+            cornerGuideRemaining = 3f;
+            message = null;
+            messageUntil = 0;
+        }
+        public void AdvanceCornerGuide(float deltaTime)
+        {
+            if (cornerGuideStep == 0 || deltaTime <= 0) return;
+            cornerGuideRemaining -= deltaTime;
+            while (cornerGuideRemaining <= 0 && cornerGuideStep != 0)
+            {
+                if (cornerGuideStep == 1) { cornerGuideStep = 2; cornerGuideRemaining += 4f; }
+                else { cornerGuideStep = 0; cornerGuideRemaining = 0; }
+            }
+        }
+        void ClearCornerGuide() { cornerGuideStep = 0; cornerGuideRemaining = 0; }
+
         // Keep the original notice priority and timing in one place for both
         // the glass presentation and the legacy fallback.
-        public string CurrentBottomNotice => sunlightComplete && inSunlightRoom ? "3스테이지 완료 · 직접 만든 그늘로 출구까지 도착했어요. ESC에서 다시 연습할 수 있어요." :
-            climbComplete && !inSunlightRoom ? "튜토리얼 2스테이지 완료  ·  R로 발판 연습 다시 시작" :
+        public string CurrentBottomNotice => sunlightComplete && inSunlightRoom ? "그늘 연습 완료 · Esc에서 다시 시작" :
+            climbComplete && !inSunlightRoom ? "발판 연습 완료 · R로 다시 시작" :
             Time.time < messageUntil ? message :
-            inSunlightRoom && Held != null ? "빗금은 예상 그늘이에요. 주사위를 놓으면 실제 그늘이 생겨요." :
-            exitUnlocked && !inClimbRoom && !inSunlightRoom ? $"주사위 한 변 {firstSize:0.00} m → {die.transform.localScale.x:0.00} m  ·  오른쪽 문으로 다음 스테이지에 들어가세요." :
-            step == 0 && !inClimbRoom && !inSunlightRoom && !firstDiePickedUp && Held == null ? "주사위를 클릭해서 잡아보세요" :
+            cornerGuideStep == 1 ? CornerGuideFirst : cornerGuideStep == 2 ? CornerGuideSecond :
+            inSunlightRoom && Held != null ? "빗금은 예상 그늘 · 놓으면 실제 그늘이 생겨요" :
+            exitUnlocked && !inClimbRoom && !inSunlightRoom ? "오른쪽 문으로 이동하세요" :
+            step == 0 && !inClimbRoom && !inSunlightRoom && !firstDiePickedUp && Held == null ? "주사위를 잡아보세요" :
             null;
         public bool BottomNoticeVisible => !paused && !elevatorDeparted && (MuseumElevator == null || !MuseumElevator.ContainsPlayer);
 
@@ -877,6 +904,9 @@ namespace ShadeLink.Tutorial
                 var banner = new Rect((width - bannerWidth) * .5f, height - 92, bannerWidth, 64);
                 GUI.Box(banner, GUIContent.none);
                 GUI.Label(new Rect(banner.x + 12, banner.y, banner.width - 24, banner.height), notice, style);
+                if (Event.current.type == EventType.Repaint && CornerGuideActive && BottomNoticeVisible && notice == CurrentBottomNotice &&
+                    (!SunlightHudActive || (SunlightHudSafe && SunlightHudExposure <= 0)))
+                    AdvanceCornerGuide(Time.deltaTime);
             }
             if (paused)
             {
