@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-21",
+  "version": "0.39.0-admin-sections",
+  "base": "799d8f807e34758feb4e825baecf73054a128179",
+  "canonicalBaseline": {
+    "assemblySha256": "206296476DAAC7C3429D64701DA79400BB524521B3931C92F6C8AA0ACE27003F",
+    "editorChecks": 125,
+    "nativeChecks": 2235,
+    "scope": "Previously verified canonical build; distinct from the portable PR build below."
+  },
+  "portablePrBuild": {
+    "assemblySha256": "768A979B62F67B811D3FE714454069B30BFB40EDAEF0DDFFE46427DBF1447C62",
+    "result": "Succeeded",
+    "unityVersion": "6000.3.24f1",
+    "target": "StandaloneWindows64",
+    "backend": "Mono2x",
+    "errors": 0,
+    "warnings": 21,
+    "warningScope": "9 existing shader warnings, 11 selected Eclipse FBX animation-module warnings, and 1 preserved OldWoodenDoor FBX animation-module warning.",
+    "scenes": [
+      "MainMenu",
+      "Tutorial",
+      "Gallery",
+      "Beach",
+      "Eclipse"
+    ],
+    "editorChecks": 125,
+    "editorSuites": [
+      "PlayerControlsTests.Run",
+      "ObjectInteractionTests.Run",
+      "ReleasePhysicsTests.Run"
+    ],
+    "nativePassed": true,
+    "nativeChecks": 2235,
+    "distinctProcessCount": 7,
+    "phases": [
+      {
+        "suite": "ending",
+        "phase": "exercise",
+        "passed": true,
+        "checks": 533,
+        "expectedChecks": 533,
+        "reportSha256": "168755BC6F1C4F8011F03F13E125C8B0DF1AB6B8BF31A9A950FE5801B620673D",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "ending",
+        "phase": "reload",
+        "passed": true,
+        "checks": 26,
+        "expectedChecks": 26,
+        "reportSha256": "A2223A4D91AB668C8F79A14602BBC9518EC9232F73F25D6B94BCC9CDD19E7923",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "shell",
+        "phase": "exercise",
+        "passed": true,
+        "checks": 361,
+        "expectedChecks": 361,
+        "reportSha256": "7064A100CBCF6DF312F0A89B2570DFBAE7873EE3703722212CB3BF86478A125D",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "shell",
+        "phase": "reload",
+        "passed": true,
+        "checks": 144,
+        "expectedChecks": 144,
+        "reportSha256": "3EBF5654E229FB7B2277337CB9C6F95B14C007892C1E33FE2626F7D74F9DCFF4",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "gallery",
+        "phase": "fall",
+        "passed": true,
+        "checks": 66,
+        "expectedChecks": 66,
+        "reportSha256": "4891765D4F75FAC191D00B6E87791E58E240D4186411127275087A0FB9194D29",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "admin",
+        "phase": "full",
+        "passed": true,
+        "checks": 1087,
+        "expectedChecks": 1087,
+        "reportSha256": "560D43AAB1123F9D203A07354C3337B3ECE4A28E05FA5BCF3E98CE0B0FA0E160",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      },
+      {
+        "suite": "startup",
+        "phase": "startup",
+        "passed": true,
+        "checks": 18,
+        "expectedChecks": 18,
+        "reportSha256": "A7F0749C0D70A2C9FD070B192768821FDDF05646B4B726A2305E9A332E8CFE95",
+        "errors": 0,
+        "captureCount": 0,
+        "exitCode": 0,
+        "productionStorageUnchanged": true
+      }
+    ],
+    "productionStorageFiles": 8,
+    "productionStorageUnchanged": true,
+    "captureCount": 0,
+    "osInputCount": 0,
+    "existingUserAppsTerminated": 0,
+    "renderedPixelsVerified": false,
+    "subjectiveListeningVerified": false,
+    "startedUtc": "2026-11-20T15:30:50.6858264Z",
+    "completedUtc": "2026-11-20T15:33:54.0922115Z",
+    "postBuildFormattingOnly": "One trailing space after a Camera AddComponent statement was removed from EclipseFinaleGame.cs before commit. No C# tokens, line endings, fixtures or runtime behavior changed; all native tests used the DLL identified above."
+  },
+  "portableLauncher": {
+    "mockChecks": 22,
+    "passed": true,
+    "windowsPowerShell51Utf8ReportReadVerified": true
+  },
+  "package": {
+    "canonicalHeadIndexAndDirtyStatePreserved": true,
+    "originalScenesAndMainOptimizationsRetained": true,
+    "unityGuidDuplicates": 0,
+    "generatedExecutablesCachesPersonalSavesAndPptIncluded": false,
+    "rawNativeReportsCommitted": false
+  },
+  "scope": "Explicit data/real PhysX fixtures, source-image CPU samples, camera and glyph projection, audio PCM/mixer checks. No screenshot appearance approval, subjective listening or unassisted manual full-game playthrough. The intermediate functional commits were not independently built."
+}

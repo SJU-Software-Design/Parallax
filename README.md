@@ -1,30 +1,17 @@
 # Parallax
 
-최신 통합본은 **0.29.2 · 튜토리얼 → E01 엘리베이터 → 미술관 → 해변 → 해적선 출항·엔딩**입니다.
-원근으로 바위를 키워 수중 천막 다리를 인양하고 실제 그늘을 건너 해적선에 승선합니다. 출항 효과음과 **HB02 Wanderlust** 전환·비행·암전까지 포함합니다.
-
-## Windows에서 바로 플레이
-
-[Windows 실행본 다운로드](https://github.com/SJU-Software-Design/Parallax/releases/tag/complete-harbor-preview-20261117)에서 **Parallax-CompleteHarbor-Windows-x64.zip**을 받으세요.
-ZIP 전체를 새 폴더에 압축 해제한 뒤 **Parallax.exe**를 실행하면 튜토리얼 첫 방에서 시작합니다. Unity 설치는 필요 없습니다. exe만 따로 옮기지 말고 `Parallax_Data`, `MonoBleedingEdge`, `UnityPlayer.dll`과 크레딧 파일을 함께 두세요. 이 배포는 통합 PR 미리보기입니다.
-
-## 소스를 받아 빌드·실행
+최신 통합 소스는 **0.39.0 · 시작화면 → 튜토리얼 → 미술관 → 해변 → 일식 엔딩**입니다. 시작화면, 일시정지·환경설정·조작키, 체크포인트 저장·이어하기와 크레딧을 연결하고, 관리자는 맵을 선택한 뒤 14개 하위 구간에서 테스트할 수 있습니다.
 
 Unity **6000.3.24f1 / Built-in / Mono + Windows Build Support**가 필요합니다. 통합 소스는 **projects/all-stages**입니다.
-저장소 루트의 **[run-complete.cmd](run-complete.cmd)**를 더블클릭하면 별도 생성 프로젝트에서 세 맵을 준비하고 빌드한 뒤 실행합니다. 성공한 동일 소스 빌드가 있으면 재사용합니다. 처음 임포트·빌드는 시간이 걸립니다.
 
-```powershell
-.\scripts\run-complete.ps1
-.\scripts\run-complete.ps1 -BuildOnly
-.\scripts\run-complete.ps1 -Rebuild -UnityEditor 'X:\Unity\6000.3.24f1\Editor\Unity.exe' -WorkspaceRoot 'X:\ParallaxBuilds'
-```
+~~~powershell
+./scripts/run-complete.ps1 -BuildOnly
+./scripts/run-complete.ps1 -Run
+~~~
 
-- 튜토리얼: 원근 조작·발판·그늘 수업 → E01 엘리베이터로 미술관 이동.
-- 미술관: 니케 → 병·법전·디케 저울과 검·P02 받침 → 눈코입 → 손 포털로 해변 이동.
-- 해변: 태양광 수신기 → 물길·그늘 → 그림자 배 조립·승선 → 바위·도르래로 수중 천막 다리 인양 → 해적선 갑판에서 E → 출항·비행·END.
-- **Esc → 맵 이동**에서 튜토리얼 / 미술관 / 해변으로 이동합니다. WASD 이동, 마우스 시점, 좌클릭 잡기·놓기, 우클릭+마우스 회전, Space 점프입니다.
+저장소 루트의 **[run-complete.cmd](run-complete.cmd)**로도 빌드하고 실행할 수 있습니다. 빌드는 별도 생성 폴더에서 진행하며 성공한 동일 소스 빌드는 재사용합니다. 자세한 조작·관리자 구간·엔딩·검증·출처는 **[0.39 통합본 안내](docs/PlayerShellAndEnding.md)**를 확인하세요. 팀원이 작업 중인 별도 글래스 HUD 시안 PR은 포함하지 않습니다.
 
-상세 빌드·검증 범위·출처는 **[통합 코스 안내](docs/CompleteCourse.md)**를 확인하세요. 소스/실행본은 기존 미술관·튜토리얼 UI를 사용하며 별도 UI 시안 PR은 포함하지 않습니다. 팀 제공 TEAM11/TEAM12의 원 출처·라이선스 미확인 상태 및 기존 작품 권리 고지는 보존했습니다.
+[기존 Windows 릴리스](https://github.com/SJU-Software-Design/Parallax/releases/tag/complete-harbor-preview-20261117)는 **0.29.2의 이전 미리보기**입니다. 이 PR의 0.39 변경은 위 명령으로 소스에서 빌드하세요.
 
 ---
 ## 이전 버전 기록 · 레거시 실행 경로
