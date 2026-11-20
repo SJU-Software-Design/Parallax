@@ -1,0 +1,29 @@
+PARALLAX - ISOLATED START SCREEN PREVIEW UI AUDIO
+2026-11-18
+
+Confirm / UIConfirm42 / original select_001.ogg
+Interface Sounds (1.0) by Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+Selection 42 remains tentative in the user selection record. The existing Tutorial and Gallery already use it; this reuse is not a new final selection.
+Resources: Preview/UI/Confirm | runtime gain .22 | 2D | pitch 1
+
+Back / UICancel142 / original mouserelease1.ogg
+UI Audio (UI SFX Set) by Kenney Vleugels (Kenney.nl)
+https://kenney.nl/assets/ui-audio
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+Selection 142: selected.
+Resources: Preview/UI/Back | runtime gain .22 | 2D | pitch 1
+
+Denied / UIError145 / original error_006.ogg
+Interface Sounds (1.0) by Kenney
+https://kenney.nl/assets/interface-sounds
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+Selection 145: selected.
+Resources: Preview/UI/Denied | runtime gain .20 | 2D | pitch 1
+
+All three OGG files are byte-identical copies of existing canonical Tutorial selected assets and match their original source recording hashes.
+No new download, purchase, sound synthesis, gain bake, pitch edit, trimming or format conversion.
+Hover remains silent: no dedicated hover clip has been selected.
+Original license notices are preserved byte-for-byte as InterfaceSounds-LICENSE.txt and UIAudio-LICENSE.txt.
+Detailed provenance, selection status and SHA256: selection-manifest.json.

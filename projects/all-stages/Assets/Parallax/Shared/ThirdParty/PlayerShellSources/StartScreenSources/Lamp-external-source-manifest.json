@@ -1,0 +1,46 @@
+[
+  {
+    "id": "startup-TRP-574100",
+    "page": "https://freesound.org/people/TRP/sounds/574100/",
+    "previewURL": "https://cdn.freesound.org/previews/574/574100_97550-hq.mp3",
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "local-provenance/audio-review/StartScreen_Lamp_20261118/sources/startup-TRP-574100.mp3",
+    "bytes": 500448,
+    "sha256": "32d98678c552c427c41f2427adbfecfc4e777070abc6205fa087f71d28446942",
+    "sourceType": "Public HQ listening preview, not authenticated original download"
+  },
+  {
+    "id": "hum-kents-777053",
+    "page": "https://freesound.org/people/kentspublicdomain/sounds/777053/",
+    "previewURL": "https://cdn.freesound.org/previews/777/777053_5583936-hq.mp3",
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "local-provenance/audio-review/StartScreen_Lamp_20261118/sources/hum-kents-777053.mp3",
+    "bytes": 203151,
+    "sha256": "a401ba1f4981c965701c9144cd04f5d407999620b669f1501e50089724ae105f",
+    "sourceType": "Public HQ listening preview, not authenticated original download"
+  },
+  {
+    "id": "hum-Rvgerxini-474312",
+    "page": "https://freesound.org/people/Rvgerxini/sounds/474312/",
+    "previewURL": "https://cdn.freesound.org/previews/474/474312_9453283-hq.mp3",
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "local-provenance/audio-review/StartScreen_Lamp_20261118/sources/hum-Rvgerxini-474312.mp3",
+    "bytes": 90004,
+    "sha256": "961021b048416a45ed6d8f65ac9165eba20f8b6f8fab8f49fcc7dca41963a569",
+    "sourceType": "Public HQ listening preview, not authenticated original download"
+  },
+  {
+    "id": "rattle-itickets-522618",
+    "page": "https://freesound.org/people/itickets/sounds/522618/",
+    "previewURL": "https://cdn.freesound.org/previews/522/522618_9638973-hq.mp3",
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "local-provenance/audio-review/StartScreen_Lamp_20261118/sources/rattle-itickets-522618.mp3",
+    "bytes": 610339,
+    "sha256": "4ffbf12e4192c247412238c08743d49ec1c8206f2e516285e31e45ad5fe3ae2c",
+    "sourceType": "Public HQ listening preview, not authenticated original download"
+  }
+]

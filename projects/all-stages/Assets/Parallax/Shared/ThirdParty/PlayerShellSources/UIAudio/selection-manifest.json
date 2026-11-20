@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-18",
+  "scope": "Isolated Unity start-screen preview only; existing game source/assets unchanged.",
+  "selectionAuthority": "local-provenance/project/에셋/Audio_External_20261111/reviews/museum-current-selection.json",
+  "hover": {
+    "enabled": false,
+    "clip": null,
+    "reason": "No dedicated hover sound is currently selected or used by the existing three-stage UI; hover remains silent."
+  },
+  "clips": [
+    {
+      "role": "confirm",
+      "resourcesKey": "Preview/UI/Confirm",
+      "file": "Assets/Resources/Preview/UI/Confirm.ogg",
+      "sourceCanonicalFile": "projects/all-stages/Assets/Parallax/Tutorial/Resources/TutorialAudio/Selected/UIConfirm42.ogg",
+      "sourceOriginalFile": "local-provenance/project/에셋/Audio_External_20261111/Common/kenney_interface-sounds/Audio/select_001.ogg",
+      "sourcePack": "Interface Sounds",
+      "creator": "Kenney",
+      "sourceUrl": "https://kenney.nl/assets/interface-sounds",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "aec0c31ea934a35936ae0d2ab8fac8123c93aa5647f935853a58dbaf90278b7a",
+      "canonicalAndOriginalHashMatch": true,
+      "bytes": 5468,
+      "selectionNumber": 42,
+      "selectionStatus": "tentative",
+      "selectionNote": "Already used by existing game; first-round tentative selection remains in selection record, not final approval.",
+      "runtimeGain": 0.22,
+      "spatialBlend": 0,
+      "pitch": 1,
+      "processing": "Byte-identical copy of existing canonical Tutorial selected OGG; no edit, transcode, trim, gain bake or synthesis."
+    },
+    {
+      "role": "back",
+      "resourcesKey": "Preview/UI/Back",
+      "file": "Assets/Resources/Preview/UI/Back.ogg",
+      "sourceCanonicalFile": "projects/all-stages/Assets/Parallax/Tutorial/Resources/TutorialAudio/Selected/UICancel142.ogg",
+      "sourceOriginalFile": "local-provenance/project/에셋/Audio_External_20261111/UIReview2/kenney_ui-audio/Audio/mouserelease1.ogg",
+      "sourcePack": "UI Audio (UI SFX Set)",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "sourceUrl": "https://kenney.nl/assets/ui-audio",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "23cb78cea76d8f1bb1266af228101a09b5d62063f4ac87ead15b1d395c6181f0",
+      "canonicalAndOriginalHashMatch": true,
+      "bytes": 4775,
+      "selectionNumber": 142,
+      "selectionStatus": "selected",
+      "selectionNote": "Selected in existing user audio review.",
+      "runtimeGain": 0.22,
+      "spatialBlend": 0,
+      "pitch": 1,
+      "processing": "Byte-identical copy of existing canonical Tutorial selected OGG; no edit, transcode, trim, gain bake or synthesis."
+    },
+    {
+      "role": "denied",
+      "resourcesKey": "Preview/UI/Denied",
+      "file": "Assets/Resources/Preview/UI/Denied.ogg",
+      "sourceCanonicalFile": "projects/all-stages/Assets/Parallax/Tutorial/Resources/TutorialAudio/Selected/UIError145.ogg",
+      "sourceOriginalFile": "local-provenance/project/에셋/Audio_External_20261111/Common/kenney_interface-sounds/Audio/error_006.ogg",
+      "sourcePack": "Interface Sounds",
+      "creator": "Kenney",
+      "sourceUrl": "https://kenney.nl/assets/interface-sounds",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sha256": "a97513d7fd2b12b1210c423be943b4c1ab0e899b11db95855e9b74836e646ae0",
+      "canonicalAndOriginalHashMatch": true,
+      "bytes": 8288,
+      "selectionNumber": 145,
+      "selectionStatus": "selected",
+      "selectionNote": "Selected in existing user audio review.",
+      "runtimeGain": 0.2,
+      "spatialBlend": 0,
+      "pitch": 1,
+      "processing": "Byte-identical copy of existing canonical Tutorial selected OGG; no edit, transcode, trim, gain bake or synthesis."
+    }
+  ],
+  "licenseFiles": [
+    {
+      "file": "InterfaceSounds-LICENSE.txt",
+      "sourceFile": "local-provenance/project/에셋/Audio_External_20261111/Common/kenney_interface-sounds/License.txt",
+      "sha256": "f7966c773bbed0eca6a9c75081c44a178b38eae112724dbb5fdfbd4192d118a9",
+      "byteIdentical": true
+    },
+    {
+      "file": "UIAudio-LICENSE.txt",
+      "sourceFile": "local-provenance/project/에셋/Audio_External_20261111/UIReview2/kenney_ui-audio/License.txt",
+      "sha256": "4f88ab3c885c87874834441a0d009cea8942f57461d7b870be65cf4e31362073",
+      "byteIdentical": true
+    }
+  ],
+  "existingCanonicalModified": false,
+  "assetPurchase": false,
+  "newAudioDownload": false,
+  "desktopCapture": false
+}

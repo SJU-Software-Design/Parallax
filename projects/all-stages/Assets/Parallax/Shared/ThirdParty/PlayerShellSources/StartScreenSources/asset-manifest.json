@@ -1,0 +1,214 @@
+{
+  "date": "2026-11-18",
+  "scope": "Independent start-screen Unity preview assets only. No original game assets, scenes or builds are modified.",
+  "project": "local-provenance/start-screen-preview",
+  "captureCount": 0,
+  "assets": [
+    {
+      "resource": "Preview/Background",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Background.png",
+      "bytes": 1816872,
+      "sha256": "E74EE281307E54DAE9CAE0125BD784850C9D454790A3B8ED3939E84F2D64957F",
+      "sourceFile": "local-provenance/project/기획안/시작화면_원근과그림자_20261118/02-side-hidden-light.png",
+      "sourceURL": "",
+      "role": "Static generated background, side view/offscreen light",
+      "license": "User project generated artwork",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/SchoolLogo",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/SchoolLogo.png",
+      "bytes": 41017,
+      "sha256": "383C4B9F4C551D355A6C6363CC05C879C7300C158895002AD416424235B59EA6",
+      "sourceFile": "local-provenance/project/기획안/학교로고_인트로_20261118/sources/img-logo01.png",
+      "sourceURL": "https://www.sejong.ac.kr/_res/sejong/news/img/promotion/img-logo01.png",
+      "role": "Original official Sejong University symbol",
+      "license": "Official university identity mark; source retained, no new permissive license claimed",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/TitleFont",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/TitleFont.ttf",
+      "bytes": 3058408,
+      "sha256": "7ED9E8653A8ED04285D51DC343FFEA6EB3D9C73AFC27383EA8929EE4FFD03205",
+      "sourceFile": "projects/all-stages/Assets/Parallax/Gallery/Resources/MuseumTypography/NanumMyeongjo-Regular.ttf",
+      "sourceURL": "https://raw.githubusercontent.com/google/fonts/main/ofl/nanummyeongjo/NanumMyeongjo-Regular.ttf",
+      "role": "Full static Nanum Myeongjo Regular title font",
+      "license": "SIL OFL 1.1",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/Lamp/Switch",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Lamp/Switch.wav",
+      "bytes": 7982,
+      "sha256": "9A8E2AAFB3295A3472C5F5F88FE803D2EF0B9E465100BE19B9023006D5AFE0BF",
+      "sourceFile": "local-provenance/project/기획안/시작화면_전등사운드_20261118/audio/switch.wav",
+      "sourceURL": "https://freesound.org/people/TRP/sounds/574100/",
+      "role": "Switch lamp sound",
+      "license": "CC0-1.0",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/Lamp/Startup",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Lamp/Startup.wav",
+      "bytes": 114704,
+      "sha256": "7C71F2EC70B9B4E2D575A3F9689E6739B9253EF9925DEEB7E49786190D40090A",
+      "sourceFile": "local-provenance/project/기획안/시작화면_전등사운드_20261118/audio/startup.wav",
+      "sourceURL": "https://freesound.org/people/TRP/sounds/574100/",
+      "role": "Startup lamp sound",
+      "license": "CC0-1.0",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/Lamp/Hum",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Lamp/Hum.wav",
+      "bytes": 146456,
+      "sha256": "FA78B2B07CF00A2DEF9406B35FEC868F6A24D26B1C20CCB3EB2CF256F5E463E3",
+      "sourceFile": "local-provenance/project/기획안/시작화면_전등사운드_20261118/audio/hum.wav",
+      "sourceURL": "https://freesound.org/people/Rvgerxini/sounds/474312/",
+      "role": "Hum lamp sound",
+      "license": "CC0-1.0",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/Lamp/Rattle",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Lamp/Rattle.wav",
+      "bytes": 30032,
+      "sha256": "F155502BB203C39931FBB9829BBAD8A17510E0699D09FBC874130E1B6797514E",
+      "sourceFile": "local-provenance/project/기획안/시작화면_전등사운드_20261118/audio/rattle.wav",
+      "sourceURL": "https://freesound.org/people/itickets/sounds/522618/",
+      "role": "Rattle lamp sound",
+      "license": "CC0-1.0",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/Lamp/Crackle",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/Lamp/Crackle.wav",
+      "bytes": 12392,
+      "sha256": "2D32724230B697BE881A2D5A6EAD25879B0F5CE85ED75E16546ADCFF0BEE863C",
+      "sourceFile": "local-provenance/project/기획안/시작화면_전등사운드_20261118/audio/crackle.wav",
+      "sourceURL": "https://freesound.org/people/TRP/sounds/574100/",
+      "role": "Crackle lamp sound",
+      "license": "CC0-1.0",
+      "sourceBytesPreserved": true
+    },
+    {
+      "resource": "Preview/BodyFont",
+      "file": "projects/all-stages/Assets/Parallax/Shared/Resources/Preview/BodyFont.ttf",
+      "bytes": 2054744,
+      "sha256": "76F45EF4A6BCFF344C837C95A7DCC26E017E38B5846D5AE0CDCB5B86BE2E2D31",
+      "sourceURL": "https://raw.githubusercontent.com/google/fonts/main/ofl/nanumgothic/NanumGothic-Regular.ttf",
+      "role": "Full static Nanum Gothic Regular body font, downloaded from official Google Fonts repository",
+      "license": "SIL OFL 1.1",
+      "subset": false
+    }
+  ],
+  "licenses": [
+    {
+      "sha256": "EEACF16032901D0ED0456876EC77B8F0FDA6B3FECEC7D972F8543EB602E6C30F",
+      "file": "NanumGothic-OFL.txt",
+      "name": "Nanum Gothic",
+      "sourceURL": "https://raw.githubusercontent.com/google/fonts/main/ofl/nanumgothic/OFL.txt"
+    },
+    {
+      "sha256": "8EB1C1019FE7FE6D0B6E7D7BBBBA1D9CBDD969D8C5F26455708F6CFB8A77284C",
+      "file": "NanumMyeongjo-OFL.txt",
+      "name": "Nanum Myeongjo"
+    }
+  ],
+  "audioNotes": [
+    "WAV derivatives are already peak normalized; do not multiply preparation normalization_gain again.",
+    "Original sources were official public HQ MP3 listening previews, not authenticated original WAV/FLAC downloads.",
+    "All five WAV files are PCM16 mono at 22050 Hz.",
+    "BGM is not included."
+  ],
+  "status": "PASS",
+  "validation": {
+    "fonts": [
+      {
+        "resource": "Preview/TitleFont",
+        "unicodeCmapFormats": [
+          4
+        ],
+        "modernHangulRange": "U+AC00-U+D7A3",
+        "modernHangulSyllables": 11172,
+        "all11172": true,
+        "variableFont": false
+      },
+      {
+        "resource": "Preview/BodyFont",
+        "unicodeCmapFormats": [
+          4
+        ],
+        "modernHangulRange": "U+AC00-U+D7A3",
+        "modernHangulSyllables": 11172,
+        "all11172": true,
+        "variableFont": false
+      }
+    ],
+    "assetHashChecks": [
+      {
+        "resource": "Preview/Background",
+        "sha256": "E74EE281307E54DAE9CAE0125BD784850C9D454790A3B8ED3939E84F2D64957F",
+        "passed": true
+      },
+      {
+        "resource": "Preview/SchoolLogo",
+        "sha256": "383C4B9F4C551D355A6C6363CC05C879C7300C158895002AD416424235B59EA6",
+        "passed": true
+      },
+      {
+        "resource": "Preview/TitleFont",
+        "sha256": "7ED9E8653A8ED04285D51DC343FFEA6EB3D9C73AFC27383EA8929EE4FFD03205",
+        "passed": true
+      },
+      {
+        "resource": "Preview/Lamp/Switch",
+        "sha256": "9A8E2AAFB3295A3472C5F5F88FE803D2EF0B9E465100BE19B9023006D5AFE0BF",
+        "passed": true
+      },
+      {
+        "resource": "Preview/Lamp/Startup",
+        "sha256": "7C71F2EC70B9B4E2D575A3F9689E6739B9253EF9925DEEB7E49786190D40090A",
+        "passed": true
+      },
+      {
+        "resource": "Preview/Lamp/Hum",
+        "sha256": "FA78B2B07CF00A2DEF9406B35FEC868F6A24D26B1C20CCB3EB2CF256F5E463E3",
+        "passed": true
+      },
+      {
+        "resource": "Preview/Lamp/Rattle",
+        "sha256": "F155502BB203C39931FBB9829BBAD8A17510E0699D09FBC874130E1B6797514E",
+        "passed": true
+      },
+      {
+        "resource": "Preview/Lamp/Crackle",
+        "sha256": "2D32724230B697BE881A2D5A6EAD25879B0F5CE85ED75E16546ADCFF0BEE863C",
+        "passed": true
+      },
+      {
+        "resource": "Preview/BodyFont",
+        "sha256": "76F45EF4A6BCFF344C837C95A7DCC26E017E38B5846D5AE0CDCB5B86BE2E2D31",
+        "passed": true
+      }
+    ],
+    "licenseChecks": [
+      {
+        "font": "Nanum Gothic",
+        "file": "NanumGothic-OFL.txt",
+        "sha256": "EEACF16032901D0ED0456876EC77B8F0FDA6B3FECEC7D972F8543EB602E6C30F",
+        "ofl11": true
+      },
+      {
+        "font": "Nanum Myeongjo",
+        "file": "NanumMyeongjo-OFL.txt",
+        "sha256": "8EB1C1019FE7FE6D0B6E7D7BBBBA1D9CBDD969D8C5F26455708F6CFB8A77284C",
+        "ofl11": true
+      }
+    ],
+    "copiedSourceBytesPreserved": true,
+    "unityExecuted": false,
+    "captureCount": 0
+  }
+}

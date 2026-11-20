@@ -1,0 +1,96 @@
+[
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Column_Simple",
+    "originalPackagePath": "FBX (Unity)/Columns/Column_Simple.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_01",
+      "MI_Trim_02"
+    ],
+    "sha256": "9EDC0089CCE9B40D456EA6A84CE89627FFC73121351D2F58C0AAFAC0810D1237",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Column_Astra",
+    "originalPackagePath": "FBX (Unity)/Columns/Column_Astra.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_03",
+      "MI_Trim_02",
+      "MI_Trim_01"
+    ],
+    "sha256": "7FA8A9202CD89C8FBE5B29D5E0CAA1D3C757114DA07E88499CF781E8A9194FE7",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Prop_Rail_4",
+    "originalPackagePath": "FBX (Unity)/Props/Prop_Rail_4.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_02_Rails"
+    ],
+    "sha256": "2A843EE5D3059E1C6E8062D44CDA100D7DB5CC53E1176F0AA2492400A0DD8EB0",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/ShortWall_WhitePlate2_Straight",
+    "originalPackagePath": "FBX (Unity)/Walls/ShortWall_WhitePlate2_Straight.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_03"
+    ],
+    "sha256": "210A4EF7A5787C05D52166C93354EA8A415BD7362EBE9A730C2C694E09CC0280",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/ShortWall_AccentStrip_Straight",
+    "originalPackagePath": "FBX (Unity)/Walls/ShortWall_AccentStrip_Straight.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_01"
+    ],
+    "sha256": "379ACD3E71101CAC880023EC1AACAFAF4D85D90C23E6FCB22E7770AD88F3D1CA",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/ShortWall_DarkPlastic_Straight",
+    "originalPackagePath": "FBX (Unity)/Walls/ShortWall_DarkPlastic_Straight.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_03_Dark"
+    ],
+    "sha256": "6966FF930B1FD3EC992645F7CAC77D04AF918BD85805CE7ED866DD3BE50B898D",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Column_Hollow",
+    "originalPackagePath": "FBX (Unity)/Columns/Column_Hollow.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_02",
+      "MI_Trim_01"
+    ],
+    "sha256": "1764A21A990B6F8C0EAB73E88F77C039F67404D556F7BE6CA8D136B8058A372E",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Platform_Simple",
+    "originalPackagePath": "FBX (Unity)/Platforms/Platform_Simple.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_03"
+    ],
+    "sha256": "C4B8A836CB4A564B2897286E6C6007463476FAAA7F0F24CF0ED840B46731AE39",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Platform_Metal2",
+    "originalPackagePath": "FBX (Unity)/Platforms/Platform_Metal2.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_02"
+    ],
+    "sha256": "49F1476752B0DC1617DC243F32ACC9E5076DDDFD0B74AA20D3F8C200F4120DCE",
+    "sourceBytesPreserved": true
+  },
+  {
+    "resource": "Eclipse/Selected/Quaternius/Models/Door_Frame_Square",
+    "originalPackagePath": "FBX (Unity)/Platforms/Door_Frame_Square.fbx",
+    "originalMaterialNames": [
+      "MI_Trim_01"
+    ],
+    "sha256": "2513BD2956C209BF087558ADBDACB96CAF0113DF8FBBBB996B887EE19B3636AC",
+    "sourceBytesPreserved": true
+  }
+]

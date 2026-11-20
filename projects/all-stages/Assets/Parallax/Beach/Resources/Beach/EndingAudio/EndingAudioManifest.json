@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "selectionDate": "2026-11-15",
   "scope": "User-selected final beach bridge and sailing ending audio only.",
-  "reviewCatalog": "source-record://audio-review/Beach_Ending_20261115/catalog.json",
+  "reviewCatalog": "local-provenance/audio-review/Beach_Ending_20261115/catalog.json",
   "recordCount": 15,
   "records": [
     {

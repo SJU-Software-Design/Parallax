@@ -1,0 +1,37 @@
+PARALLAX ECLIPSE ENDING - SELECTED VISUAL SOURCES
+
+Modular Sci-Fi MegaKit Standard - Quaternius - CC0 1.0 Universal
+https://quaternius.com/packs/modularscifimegakit.html
+https://opengameart.org/content/modular-sci-fi-megakit
+https://creativecommons.org/publicdomain/zero/1.0/
+The FREE Standard190 model original was acquired, not the paid Source engine project.
+Original FBX(Unity) meshes/UVs and PBR source image bytes are preserved. Runtime scale/layout,
+Built-in material interpretation, selected rail tint and presentation lighting are project adaptations.
+Use: low side panels, rails, columns and edge floor panels around the smooth credits deck.
+See Quaternius-CC0-License.txt and Quaternius-selected-models.json.
+
+Sun texture - Solar System Scope - CC BY4.0
+https://www.solarsystemscope.com/textures/
+https://www.solarsystemscope.com/textures/download/2k_sun.jpg
+https://creativecommons.org/licenses/by/4.0/
+Original2K image bytes unchanged, wrapped on the existing project solar sphere.
+Exposure/material interpretation and soft depth-occluded corona are project additions.
+The unchanged original procedural moon is separate from this texture attribution.
+
+Stylized Pirate Ship - Comeback - Standard Unity Asset Store EULA
+https://assetstore.unity.com/packages/3d/vehicles/sea/stylized-pirate-ship-200192
+https://unity.com/legal/as-terms
+The already acquired Beach ship meshes/materials and existing UV-only sail derivatives are reused.
+Rendering-only arrival ship at the left of Eclipse deck; no new ship purchase or boarding gameplay.
+Existing full source notice: Assets/ThirdParty/StylizedPirateShip/source.json.
+
+Exit Sign - vietp6105 - CC BY4.0
+https://sketchfab.com/3d-models/exit-sign-d554b032aa154df295e42f6e29714b70
+https://creativecommons.org/licenses/by/4.0/
+Official Original format.fbx was downloaded through the normal logged-in UI with user approval.
+The original archive contains source/eX2.fbx and textures/Background.png, without a separate license text.
+Official public metadata states CC Attribution4.0. The original FBX/PNG source bytes are preserved.
+Changes: source geometry fitted to the project sign dimensions; actual source triangles cut around the
+established i-stem passage; UV intervals adjusted so the original letter i aligns with that fixed opening,
+keeping source text on the left and the running-person pictogram on the right. Materials adapted.
+The existing real doorway collision constants and project SignPart colliders are preserved.

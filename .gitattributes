@@ -6,3 +6,19 @@ projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeProps/po
 projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceDikeStatue/lucas-public.html -whitespace
 projects/all-stages/Assets/Parallax/Gallery/ThirdParty/BottleBalanceKeyReward/savino-antique-key-source.html -whitespace
 projects/all-stages/Assets/Parallax/Gallery/Resources/BottleBalance/Models/original_oval_brass_keyhole_plate.mtl -whitespace
+
+# Preserve Unity serializer output; empty scalar values use trailing spaces.
+projects/all-stages/Assets/**/*.meta -whitespace
+projects/all-stages/Assets/**/*.asset -whitespace
+projects/all-stages/Assets/**/*.mixer -whitespace
+projects/all-stages/Assets/**/*.prefab -whitespace
+projects/all-stages/Assets/**/*.unity -whitespace
+
+# Preserve selected upstream license/source documents without text conversion.
+projects/all-stages/Assets/Parallax/Eclipse/ThirdParty/AuroraMusic/OfficialSources/aurora-official.html -text -whitespace
+projects/all-stages/Assets/Parallax/Eclipse/ThirdParty/AuroraMusic/OfficialSources/using-this-music-official.html -text -whitespace
+projects/all-stages/Assets/Parallax/Eclipse/ThirdParty/SelectedAssets/Quaternius-CC0-License.txt -text -whitespace
+projects/all-stages/Assets/Parallax/Shared/ThirdParty/PlayerShellSources/StartScreenSources/NanumGothic-OFL.txt -text -whitespace
+projects/all-stages/Assets/Parallax/Shared/ThirdParty/PlayerShellSources/StartScreenSources/NanumMyeongjo-OFL.txt -text -whitespace
+projects/all-stages/Assets/Parallax/Shared/ThirdParty/PlayerShellSources/UIAudio/InterfaceSounds-LICENSE.txt -text -whitespace
+projects/all-stages/Assets/Parallax/Shared/ThirdParty/PlayerShellSources/UIAudio/UIAudio-LICENSE.txt -text -whitespace
