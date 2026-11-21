@@ -204,7 +204,7 @@ namespace ShadeLink.Gallery
                     "첫 전시실과 니케 방의 문 앞에서는 빛을 피해 건너세요.":"앞의 두 전시실에서는 밝은 빛을 피해 이동하세요."):game.exhibitionPreview?
                     "미술관 구상안을 기준으로 새로 구성한 전시 공간입니다.\n실제 명화와 니케의 실물 3D 스캔을 가까이에서 감상하세요.\n\n해변맵과 같은 최신 이동·사물 조작을 사용합니다.\n이젤의 복제작품과 시점 설치물은 크기와 위치를 바꿀 수 있습니다.\n\n현재는 공간 디자인 검토 버전입니다.\n출구 조각과 퍼즐 진행은 제작 중입니다.":game.won?
                     "높이와 그늘을 함께 설계해 출구에 도착했습니다.\n\n클리어 시간  "+System.TimeSpan.FromSeconds(game.elapsed).ToString(@"mm\:ss")+"   /   재시도  "+game.respawns+"회":
-                    "명화와 조각 사이에서 그늘을 이어 이동하세요.\n시선이 향한 표면의 거리에 따라 사물의 실제 크기가 바뀝니다.\n\n거울로 빛의 방향을 바꾸고, 시점의 전시를 맞춰 보세요.\n마지막 조각의 바람을 따라, 커진 입 안으로 들어갑니다.\n\n왼쪽 클릭 잡기 / 놓기 · 오른쪽 버튼 + 마우스 회전\nBackspace 취소 · R 구역 초기화 · H 힌트 · T 설치 연습",text);
+                    "명화와 조각 사이에서 그늘을 이어 이동하세요.\n시선이 향한 표면의 거리에 따라 사물의 실제 크기가 바뀝니다.\n\n거울로 빛의 방향을 바꾸고, 시점의 전시를 맞춰 보세요.\n마지막 조각의 바람을 따라, 커진 입 안으로 들어갑니다.\n\n왼쪽 클릭 잡기 / 놓기 · 오른쪽 버튼 + 마우스 회전\nBackspace 취소 · R 구역 초기화 · H 힌트",text);
                 PlayerControls.DrawOptions(new Rect(412,440,770,143),game.font);
                 if(GUI.Button(new Rect(412,615,370,62),game.won?"처음부터 다시 전시 보기":game.started?"계속하기":"미술관 입장",button))game.Resume();
                 if(GUI.Button(new Rect(812,615,370,62),"종료",button))Application.Quit();

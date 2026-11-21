@@ -42,7 +42,7 @@ namespace ShadeLink.Library
                 if(Time.unscaledTime<game.noticeUntil&&!game.showHints)
                     GUI.Label(new Rect(380,793,900,36),game.notice,small);
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   청록색 표시 책·가구 잡기   ·   R 구역 초기화   ·   H 힌트 · T 설치 연습   ·   Esc 메뉴",small);
+                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   청록색 표시 책·가구 잡기   ·   R 구역 초기화   ·   H 힌트   ·   Esc 메뉴",small);
             }
             if(!game.active||game.won)
             {
