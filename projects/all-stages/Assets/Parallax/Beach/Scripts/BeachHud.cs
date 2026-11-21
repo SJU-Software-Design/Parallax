@@ -14,7 +14,8 @@ namespace ShadeLink.Beach
             PlayerControls.BindingLabel(PlayerControls.Action.Right)+" 이동 · "+
             PlayerControls.BindingLabel(PlayerControls.Action.Jump)+" 점프 · "+PlayerControls.BindingLabel(PlayerControls.Action.Grab)+
             " 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Interact)+" 승선/출항 · "+
-            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · Shift+"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 전체 초기화 · "+
             PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · Esc 메뉴";
         void OnGUI()
         {
@@ -31,17 +32,24 @@ namespace ShadeLink.Beach
                 {GUI.Label(new Rect(600,800,600,35),"Esc · 메뉴 / 맵 이동",small);return;}
             }
             bool hoist=game.checkpoint==3&&game.counterweightFinale!=null;
+            var glass=game.GetComponent<GlassTrial.BeachGlassHud>();
+            bool glassReady=glass!=null&&glass.Ready;
+            var hover=game.GetComponent<GlassTrial.BeachGlassHover>();
+            bool hoverReady=hover!=null&&hover.Ready;
+            if(!glassReady)
+            {
             Panel(new Rect(25,22,690,hoist?236:168),ink);GUI.Label(new Rect(47,32,646,34),"PARALLAX  /  마지막 해변  v"+Application.version,text);GUI.Label(new Rect(47,70,646,32),BeachWorld.Titles[game.checkpoint],text);
             GUI.Label(new Rect(47,106,646,29),hoist?"최종 목표  ·  물속 다리를 올려 배에 타기":"최종 목표  ·  그늘을 따라 하늘행 배로",goal);
             string status=game.checkpoint==0?FirstGateStatus():game.checkpoint==2?HarborStatus():game.checkpoint==3?(game.counterweightFinale!=null?game.counterweightFinale.Status:game.harborFinale!=null?game.harborFinale.Status:"해안가의 바위를 살펴보세요") : "판자는 통로 · 파라솔은 그늘";
             GUI.Label(new Rect(47,143,646,31),status,small);
 
             if(hoist)DrawHoistLink(game.counterweightFinale.LiftProgress);
+            }
             if(game.active&&!game.won&&(game.skyShip==null||!game.skyShip.Departing))
             {
                 PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null||(game.harborFinale!=null&&game.harborFinale.HasAimTarget(game.view)),game.held!=null,game.invalid||game.PlacementBlocked,accent,paper);
-                Panel(new Rect(1195,22,380,91),ink);GUI.Label(new Rect(1215,32,335,33),game.safe?"그늘 · 안전":"빛 노출 · 그늘로 이동",text);Panel(new Rect(1215,82,333,9),new Color(.19f,.3f,.35f));Panel(new Rect(1215,82,333*game.exposure,9),new Color(1,.46f,.2f));
-                if(game.held!=null)
+                if(!glassReady){Panel(new Rect(1195,22,380,91),ink);GUI.Label(new Rect(1215,32,335,33),game.safe?"그늘 · 안전":"빛 노출 · 그늘로 이동",text);Panel(new Rect(1215,82,333,9),new Color(.19f,.3f,.35f));Panel(new Rect(1215,82,333*game.exposure,9),new Color(1,.46f,.2f));}
+                if(!glassReady&&game.held!=null)
                 {
                     if(hoist)
                     {
@@ -58,13 +66,15 @@ namespace ShadeLink.Beach
                     }
                 }
                 else if(game.harborFinale!=null&&game.harborFinale.Manipulating)GUI.Label(new Rect(360,650,900,90),"모형 조작 중 · WASD 위치 · Q/E 회전 · 휠로 회전 조절 · 클릭으로 마치기",text);
-                else if(game.checkpoint==3&&game.skyShip!=null&&game.skyShip.IsAboard)GUI.Label(new Rect(460,650,800,60),game.skyShip.Status,text);
+                else if(!glassReady&&game.checkpoint==3&&game.skyShip!=null&&game.skyShip.IsAboard)GUI.Label(new Rect(460,650,800,60),game.skyShip.Status,text);
                 else if(game.harborFinale!=null&&game.harborFinale.HasAimTarget(game.view))GUI.Label(new Rect(460,475,780,50),game.harborFinale.AimText(game.view),text);
-                else if(game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
+                else if(!hoverReady&&game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
                 if(game.showHints){Panel(new Rect(25,hoist?275:207,630,230),ink);GUI.Label(new Rect(47,hoist?292:224,587,204),BeachWorld.Hints[game.checkpoint],text);}
-                if(Time.unscaledTime<game.noticeUntil)GUI.Label(new Rect(hoist?25:300,hoist?811:789,hoist?1550:1090,hoist?30:50),game.notice,small);
+                if(!glassReady&&Time.unscaledTime<game.noticeUntil)GUI.Label(new Rect(hoist?25:300,hoist?811:789,hoist?1550:1090,hoist?30:50),game.notice,small);
                 if(global::GameShellSettingsRuntime.ShowControlHints)
-                {Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),ControlGuide(),small);}
+                {
+                Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),ControlGuide(),small);
+                }
             }
             if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)
             {

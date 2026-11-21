@@ -147,7 +147,6 @@ namespace ShadeLink.Gallery
             }
             if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
             gameObject.AddComponent<GalleryHud>().game=this;
-            gameObject.AddComponent<HeldPlacementDiagnosticsOverlay>().game=this;
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint==0),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
@@ -193,10 +192,12 @@ namespace ShadeLink.Gallery
         void OnPortraitReset(){MuseumAudio.StopOwner(portraitGate);museumAudio?.SetPortraitSilence(false);}
         void Start()
         {
+            GlassTrial.GlassPanelPreview.EnsureInstalled(this);
             if(!automated&&bottleBalance!=null&&Array.IndexOf(Environment.GetCommandLineArgs(),"-gallery-bottle-balance-demo")>=0)
                 StartBottleBalanceDemo();
         }
-        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration; }
+        public int NoticeSerial { get; private set; }
+        public void Tell(string text,float duration=4) { notice=text;noticeUntil=Time.unscaledTime+duration;NoticeSerial++; }
         public void Resume()
         {
             if(Transitioning)return;

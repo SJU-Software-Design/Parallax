@@ -132,6 +132,8 @@ namespace ShadeLink.Eclipse
             ExitPresentation = gameObject.AddComponent<EclipseExitPresentation>();
             ExitPresentation.Initialize(this);
             gameObject.AddComponent<EclipseFinaleHud>().game = this;
+            gameObject.AddComponent<GlassTrial.EclipseGlassHud>();
+            gameObject.AddComponent<GlassTrial.EclipseGlassHover>();
             ResetGame(false);
             // The old validator takes screenshots; the new focused mode never attaches it.
             if (automated && !ValidationQuitSuppressed) gameObject.AddComponent<EclipseFinaleValidation>().game = this;
@@ -557,7 +559,7 @@ namespace ShadeLink.Eclipse
                 // ease the presentation to darkness even with a remaining rim.
                 anchoredCoverage = MoonAnchored && MoonAlignmentConfirmed ? 1 : 0;
                 MoonFalling = !MoonAnchored; moonFallVelocity = moonFallTime = 0;
-                if (!MoonAlignmentConfirmed) Tell(MoonAlignmentHint, 4);
+                if (!MoonAlignmentConfirmed && !MoonFloorConstrained) Tell(MoonAlignmentHint, 4);
             }
             else
             {
