@@ -120,13 +120,14 @@ namespace ShadeLink.Tutorial
             if (Aimed != null) Aimed.Highlight(false, false);
             Aimed = null;
             inClimbRoom = true;
+            NotifyCheckpoint(false, "02 구역 저장");
             Props = climbDice;
             motor.MantleReachFor = ClimbMantleReach;
             door.position = new Vector3(Room.max.x + .1f, DoorHeight * .5f, DoorCenter);
             BeginClimbArrival();
         }
 
-        void TellClimbHint() => Tell("큰 주사위는 문 아래에, 낮은 주사위는 그 앞에 놓아 보세요. 모서리를 향해 앞으로 뛰면 잡고 올라가요.", 9f);
+        void TellClimbHint() => Tell("큰 주사위 앞에 낮은 주사위를 놓고, 계단을 만들어 보세요", 9f);
 
         void BeginClimbArrival()
         {
@@ -135,7 +136,7 @@ namespace ShadeLink.Tutorial
             nextClimbDrop = 0;
             climbDropDelay = .35f;
             climbArrivalPlaying = true;
-            Tell("왼쪽, 오른쪽 주사위가 차례로 떨어져요. 착지할 때 소리와 진동을 비교해 보세요.", 7f);
+            Tell("주사위가 떨어질 때의 소리와 진동을 느껴보세요", 7f);
         }
 
         void SuspendClimbDie(GalleryProp prop)

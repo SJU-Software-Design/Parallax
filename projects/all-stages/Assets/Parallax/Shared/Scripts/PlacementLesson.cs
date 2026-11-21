@@ -9,6 +9,13 @@ namespace ShadeLink
         Vector3 sun,origin,originalScale;PlacementSupport tracked;int previousDrops;
         public int Step {get;private set;}
         public bool Visible {get;private set;}=true;
+        public bool SuppressDefaultHud {get;set;}
+        public bool IsActive => active!=null&&active();
+        public bool HasHeldObject => held!=null&&held()!=null;
+        public bool ShouldShow => IsActive&&(Visible||HasHeldObject);
+        public string CurrentTitle => Visible?Titles[Step]:"운반 중 · 예상 그늘";
+        public string CurrentDetail => Details[Step];
+        public string CurrentStatus { get { var current=held!=null?held():null; var state=current!=null?current:tracked; return state!=null?state.Status:"T 안내 접기 / 펼치기"; } }
         static readonly string[] Titles={"1 / 4  ·  잡고 이동하기","2 / 4  ·  크기를 바꿔 놓기","3 / 4  ·  안착 확인하기","4 / 4  ·  설치한 그늘로 이동","연습 완료"};
         static readonly string[] Details={"안전한 쉼터에서 사물을 잡고 걸어 보세요. 운반 중에도 WASD와 점프를 사용할 수 있습니다.","시선을 먼 바닥으로 옮겨 크기를 바꾼 뒤 놓으세요. 파란 빗금은 예상 그늘이며 아직 보호되지 않습니다.","바닥·다른 설치된 사물·물 위의 지지가 필요합니다. 0.35초 동안 안정되면 실제 그늘과 발판이 활성화됩니다.","놓은 사물의 실제 그늘로 이동해 보세요. 발밑의 안전 표시를 확인하세요. 다시 잡으면 보호가 즉시 사라집니다.","이제 그늘을 설치하고 다음 쉼터로 이동하세요. T를 누르면 안내를 접거나 다시 볼 수 있습니다."};
         public void Configure(Font value,Func<bool> running,Func<PlacementSupport> carrying,Func<Vector3> position,Func<int> released,Func<bool> protectedNow,Vector3 toSun)
@@ -33,6 +40,7 @@ namespace ShadeLink
         void Update(){if(active!=null&&active()&&Input.GetKeyDown(KeyCode.T))Visible=!Visible;}
         void OnGUI()
         {
+            if(SuppressDefaultHud)return;
             if(active==null||!active())return;var current=held();if(!Visible&&current==null)return;
             var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
             var panel=new Rect(1195,130,377,Visible?260:132);GUI.color=new Color(.035f,.08f,.14f,.94f);GUI.DrawTexture(panel,Texture2D.whiteTexture);GUI.color=Color.white;
