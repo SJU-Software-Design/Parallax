@@ -75,6 +75,16 @@ namespace GlassTrial
         static void Install()
         {
             var game = FindFirstObjectByType<GalleryGame>();
+            if (game != null)
+            {
+                var lessonNotice = game.GetComponent<GlassLessonNotice>();
+                if (lessonNotice != null)
+                {
+                    lessonNotice.enabled = false;
+                    if (game.lesson != null) game.lesson.SuppressDefaultHud = false;
+                    UnityEngine.Object.Destroy(lessonNotice);
+                }
+            }
             if (game != null && game.GetComponent<GlassPanelPreview>() == null)
                 game.gameObject.AddComponent<GlassPanelPreview>();
             if (game != null && game.GetComponent<GlassExposureGauge>() == null)

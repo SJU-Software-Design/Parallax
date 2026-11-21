@@ -147,7 +147,6 @@ namespace ShadeLink.Gallery
             }
             if(orcusExit!=null)orcusExit.Entered+=BeginOrcusTransition;
             gameObject.AddComponent<GalleryHud>().game=this;
-            gameObject.AddComponent<HeldPlacementDiagnosticsOverlay>().game=this;
             lesson=gameObject.AddComponent<PlacementLesson>();lesson.Configure(font,()=>active&&!won&&(!conceptLayout||checkpoint==0),()=>held==null?null:held.placement,()=>player.feet,()=>drops,()=>safe,GalleryLighting.ToSun);
             Cursor.visible=true;Cursor.lockState=CursorLockMode.None;
             Time.timeScale=0;
