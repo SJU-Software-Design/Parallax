@@ -326,7 +326,7 @@ namespace GlassTrial
             if (!ready) return;
             bool visible = CanDisplay(game);
             canvas.enabled = visible;
-            if (!visible) { observedNoticeSerial = game.NoticeSerial; commonNotice.CancelPending(); commonNotice.Update(Time.unscaledTime, true); puzzleReminder.Reset(); resetGaugeHandoff.Reset(); textTransition.Reset(); previousContext = -1; completionUntil = 0; morph = 0; stageMorph = 0; fadingDanger = false; wasStageRequested = false; animatedWidth = 0; return; }
+            if (!visible) { observedNoticeSerial = game.NoticeSerial; commonNotice.CancelPending(); commonNotice.Update(Time.unscaledTime, true); resetGaugeHandoff.Reset(); textTransition.Reset(); previousContext = -1; completionUntil = 0; morph = 0; stageMorph = 0; fadingDanger = false; wasStageRequested = false; animatedWidth = 0; return; }
 
             backdrop.texture = preview.Capture.blurred;
             ApplyGlassSettings();
