@@ -14,11 +14,11 @@ namespace GlassTrial
 
         static readonly Content[] Entries =
         {
-            new Content("01", "명화 전시실", "<color=#FDE68A>청동 조형물</color>을 키워 그늘로 빛 구간을 건너세요"),
-            new Content("02", "빛과 그림자", "<color=#FDE68A>빈 캔버스</color>와 <color=#FDE68A>주변 전시물</color>을 살펴보세요"),
-            new Content("03", "병 속의 추", "<color=#FDE68A>병</color>을 옮겨 키우고 <color=#FDE68A>좁은 입구</color>를 넓혀 보세요"),
-            new Content("04", "시점의 방", "<color=#FDE68A>양쪽 벽의 작품</color>을 보고 <color=#FDE68A>눈·코·입</color>으로 얼굴을 만들어 보세요"),
-            new Content("05", "두 손 사이의 문", "<color=#FDE68A>조각</color>을 조금 더 키워 보세요")
+            new Content("01", "명화 전시실", ""),
+            new Content("02", "빛과 그림자", ""),
+            new Content("03", "병 속의 추", ""),
+            new Content("04", "시점의 방", ""),
+            new Content("05", "두 손 사이의 문", "")
         };
 
         public static int StageFor(bool conceptLayout, bool exhibitionPreview, int checkpoint, bool inBottleRoom)
@@ -56,7 +56,7 @@ namespace GlassTrial
                 case "위에 놓인 사물을 먼저 옮겨 주세요.":
                 case "현재 크기로 조준한 위치에 놓을 공간이 없습니다.":
                 case "잡기 전 위치에 서 있습니다. 옆으로 이동한 뒤 취소하세요.": return new Notice(NoticeKind.Warning, message, 3);
-                case "빛에 노출되어 현재 구역의 쉼터로 돌아왔습니다.": return new Notice(NoticeKind.Reset, message, 3);
+                case "빛에 노출되어 현재 구역의 쉼터로 돌아왔습니다.": return new Notice(NoticeKind.Reset, "쉼터로 돌아왔어요", 3);
                 case "병과 저울을 초기화했습니다. 니케 전시실의 진행은 유지됩니다.": return new Notice(NoticeKind.Reset, message, 3);
                 case "현재 구역의 전시물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.": return new Notice(NoticeKind.Reset, "현재 구역의 전시물과 위치를 초기화했습니다.", 3);
             }
@@ -117,12 +117,55 @@ namespace GlassTrial
         // The initial objective is persistent only while the actual opening is too narrow.
         public static string BottleObjective(bool needsEnlargement, string currentStatus)
         {
-            return needsEnlargement ? Entries[2].Objective : currentStatus;
+            return needsEnlargement ? "" : DisplayCaption(2, currentStatus);
         }
 
         public static string CathedralInitialCaption(string currentStatus)
         {
-            return currentStatus == "조각을 조금 더 키워 보세요" ? "조각을 좀 더 키워보세요" : null;
+            return null;
+        }
+
+        // Convert only presentation text; puzzle Status strings remain unchanged.
+        public static string DisplayCaption(int stage, string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            if (stage == 3)
+            {
+                switch (text)
+                {
+                    case "완성된 초상이 커튼에 스며들고 있어요.": return "초상이 커튼에 스며들어요";
+                    case "초상이 천천히 미소 짓고 있어요.": return "초상이 미소 짓고 있어요";
+                    case "웃는 커튼이 천천히 열리고 있어요.": return "웃는 커튼이 열리고 있어요";
+                    default: return "";
+                }
+            }
+            if (stage == 1 && (text == "빈 캔버스와 주변 전시물을 살펴보세요" || text == "빈 캔버스와 주변 전시물을 살펴보세요.")) return "";
+            if (stage == 2)
+            {
+                switch (text)
+                {
+                    case "병을 옮겨 키우고 좁은 입구를 넓혀 보세요":
+                    case "입구가 넓어졌어요 · 병을 들어 아래로 기울여 보세요":
+                    case "입구를 향해 움직이고 있어요 · 조금 더 기울여 보세요": return "";
+                    case "꺼낸 법전을 오른쪽 저울에 올려 보세요": return "법전을 오른쪽 저울에 올려보세요";
+                    case "수평이에요 · 조각을 내려놓고 잠깐 기다리세요": return "수평이에요 · 내려놓고 기다려주세요";
+                    case "균형을 되찾았어요 · 디케가 검을 놓아줍니다": return "균형을 되찾았어요 · 디케가 검을 놓아줘요";
+                    case "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요": return "가운데 받침대의 홈을 클릭하세요";
+                    case "검이 고정됐어요 · 봉인이 풀리고 있어요": return "봉인이 풀리고 있어요";
+                }
+            }
+            if (stage == 4)
+            {
+                switch (text)
+                {
+                    case "조각을 조금 더 키워 보세요":
+                    case "조각을 좀 더 키워보세요": return "";
+                    case "조각을 조금 더 바로 세워 주세요": return "조각을 바로 세워주세요";
+                    case "주변이 넓은 바닥으로 옮겨 주세요": return "넓은 바닥으로 옮겨주세요";
+                    case "두 손 사이로 해변이 보입니다": return "두 손 사이로 해변이 보여요";
+                }
+            }
+            return text;
         }
 
         // Three notices follow the actual performance clock at a 4.5s cadence.

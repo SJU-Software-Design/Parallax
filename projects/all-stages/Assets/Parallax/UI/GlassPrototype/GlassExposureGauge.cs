@@ -29,7 +29,6 @@ namespace GlassTrial
         bool wasStageRequested;
         string captionAtStageRequest;
         readonly MuseumCommonNoticeState commonNotice = new MuseumCommonNoticeState();
-        readonly MuseumPuzzleReminderState puzzleReminder = new MuseumPuzzleReminderState();
         readonly MuseumResetGaugeHandoff resetGaugeHandoff = new MuseumResetGaugeHandoff();
         readonly MuseumHudTextTransition textTransition = new MuseumHudTextTransition();
         int observedNoticeSerial;
@@ -343,7 +342,10 @@ namespace GlassTrial
                 game.conceptLayout && game.checkpoint == 2 && game.portraitGate != null ? game.portraitGate.Status :
                 game.conceptLayout && game.checkpoint == 3 && game.orcusExit != null && game.orcusExit.cathedralActivation != null ? game.orcusExit.cathedralActivation.Status :
                 game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null ? game.Objective : caption.text;
+            int displayStage = GlassStageNotice.CurrentStage(game);
             if (!inBottleRoom) caption.text = PanelText(caption.text);
+            caption.text = MuseumStageGuide.DisplayCaption(displayStage, caption.text);
+            puzzleCaption = MuseumStageGuide.DisplayCaption(displayStage, puzzleCaption);
             if (!inBottleRoom && game.conceptLayout && game.checkpoint == 3 &&
                 game.orcusExit != null && game.orcusExit.cathedralActivation != null)
             {
@@ -358,10 +360,15 @@ namespace GlassTrial
                 game.bottleBalance.Door.Opening < 1f;
             bool balanceGuide = reward != null && game.bottleBalance.InRoom &&
                 reward.Stage == GalleryBottleBalanceKeyReward.RewardStage.Flashing;
+            bool balanceLevelGuide = inBottleRoom && game.bottleBalance.Status == "수평이에요 · 조각을 내려놓고 잠깐 기다리세요";
+            if (balanceLevelGuide)
+                caption.text = MuseumStageGuide.DisplayCaption(2, game.bottleBalance.Status);
             if (swordGuide)
-                caption.text = "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요";
+                caption.text = "가운데 받침대의 홈을 클릭하세요";
             else if (doorGuide)
-                caption.text = "검이 고정됐어요 · 봉인이 풀리고 있어요";
+                caption.text = "봉인이 풀리고 있어요";
+            else if (balanceGuide)
+                caption.text = "균형을 되찾았어요 · 디케가 검을 놓아줘요";
 
             int context = 0;
             bool started = false, complete = false;
@@ -402,7 +409,7 @@ namespace GlassTrial
                 // Keep the original canvas guide available whenever alignment stops.
                 // Fusion and completed artwork retain their own presentation.
                 if (nikeCanvas != null && !fusing && !complete)
-                    caption.text = "빈 캔버스와 주변 전시물을 살펴보세요.";
+                    caption.text = "";
                 if (nikeCanvas != null && (nikeCanvas.Drawing || (fusing && nikeCanvas.BrushProgress >= 1f)))
                 {
                     // Keep the real brush animation unchanged; only remap the UI.
@@ -445,7 +452,7 @@ namespace GlassTrial
             previousStarted = started;
             if (danger) completionUntil = 0;
             bool celebrating = !danger && Time.unscaledTime < completionUntil;
-            bool showGauge = danger || (!swordGuide && !doorGuide && !balanceGuide &&
+            bool showGauge = danger || (!swordGuide && !doorGuide && !balanceGuide && !balanceLevelGuide &&
                 (started || (celebrating && context != 1)));
             // During the portrait performance, briefly morph back to its current
             // stage caption on a regular beat; never change the actual progress.
@@ -495,21 +502,15 @@ namespace GlassTrial
             if (showGauge && !protectedStage) GlassStageNotice.InterruptStage(game);
             showGauge = MuseumStageGuide.ShowGauge(stage, requested, entry, showGauge);
             bool showStage = GlassStageNotice.StageRequested(game) && !showGauge;
-            bool reminderEligible = showGauge && started && !danger && !showStage && !requested && !showCommon &&
-                !swordGuide && !doorGuide && !balanceGuide && (portraitGate == null || !portraitGate.Performing) &&
-                !string.IsNullOrWhiteSpace(puzzleCaption);
-            bool showReminder = puzzleReminder.Update(context, reminderEligible, Time.unscaledDeltaTime);
-            if (showReminder) { caption.text = puzzleCaption; showGauge = false; }
             wasStageRequested = showStage;
             string stageNumberText = null, stageTitleText = null, stageObjectiveText = null;
             if (stage >= 0)
             {
                 var content = MuseumStageGuide.Get(stage);
-                stageNumberText = content.Number; stageTitleText = content.Title; stageObjectiveText = content.Objective;
-                if (inBottleRoom && stage == 2 && !entry)
-                    stageObjectiveText = MuseumStageGuide.BottleObjective(game.bottleBalance.NeedsBottleEnlargement, game.bottleBalance.Status);
+                stageNumberText = content.Number; stageTitleText = content.Title; stageObjectiveText = "";
                 displayedStage = stage;
             }
+            if (!showStage && !showGauge && !showCommon && string.IsNullOrWhiteSpace(caption.text)) caption.text = "그늘 · 안전";
             var targetView = new MuseumHudTextTransition.View
             {
                 Mode = showStage ? 2 : showGauge ? 1 : 0,
@@ -558,7 +559,7 @@ namespace GlassTrial
             float height = Mathf.Lerp(descriptionHeight, 42, shape);
             float stageWidth = Mathf.Min(available, Mathf.Max(430f, stageObjective.preferredWidth + 48f, stageTitle.preferredWidth + stageNumber.preferredWidth * 2f + 48f));
             width = Mathf.Lerp(width, stageWidth, stageShape);
-            height = Mathf.Lerp(height, 86f, stageShape);
+            height = Mathf.Lerp(height, 52f, stageShape);
             if (animatedWidth <= 0) animatedWidth = width;
             if (textTransition.Resizing)
             {

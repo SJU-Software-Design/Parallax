@@ -81,8 +81,6 @@ namespace GlassTrial
                 game.gameObject.AddComponent<GlassExposureGauge>();
             if (game != null && game.GetComponent<GlassStageNotice>() == null)
                 game.gameObject.AddComponent<GlassStageNotice>();
-            if (game != null && game.GetComponent<GlassLessonNotice>() == null)
-                game.gameObject.AddComponent<GlassLessonNotice>();
             if (game != null && game.GetComponent<GlassHoverPrompt>() == null)
                 game.gameObject.AddComponent<GlassHoverPrompt>();
         }
@@ -162,7 +160,7 @@ namespace GlassTrial
         {
             if (capture == null || canvas == null || panelMaterial == null) return;
             bool visible = displayAlpha > 0f && !ArrivalBlocksHud(game);
-            capture.captureEnabled = visible || GlassExposureGauge.CanDisplay(game) || GlassStageNotice.NeedsCapture(game) || GlassLessonNotice.NeedsCapture(game) || GlassHoverPrompt.NeedsCapture(game); capture.blurStrength = blurStrength;
+            capture.captureEnabled = visible || GlassExposureGauge.CanDisplay(game) || GlassStageNotice.NeedsCapture(game) || GlassHoverPrompt.NeedsCapture(game); capture.blurStrength = blurStrength;
             canvas.enabled = visible; canvasGroup.alpha = displayAlpha;
             float w = showPreview ? Mathf.Max(120f, panelSize.x) : 230f;
             float h = showPreview ? Mathf.Max(100f, panelSize.y) : 56f;

@@ -91,8 +91,9 @@ namespace ShadeLink.Gallery
             PlayerControls.BindingLabel(PlayerControls.Action.Left)+"/"+PlayerControls.BindingLabel(PlayerControls.Action.Backward)+"/"+
             PlayerControls.BindingLabel(PlayerControls.Action.Right)+" 이동 · "+
             PlayerControls.BindingLabel(PlayerControls.Action.Jump)+" 점프 · "+PlayerControls.BindingLabel(PlayerControls.Action.Grab)+
-            " 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · "+
-            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · Esc 메뉴";
+            " 전시물 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · Shift+"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 처음부터 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 힌트 · Esc 메뉴";
         void OnGUI()
         {
             if (ShadeLink.Tutorial.TutorialMuseumElevatorFlow.ArrivalPending || (game != null && game.ElevatorArrival && game.active)) return;
@@ -178,7 +179,7 @@ namespace ShadeLink.Gallery
                 if(global::GameShellSettingsRuntime.ShowControlHints)
                 {
                 Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),"WASD 이동   ·   마우스 시점   ·   Space 점프   ·   클릭 전시물 잡기/놓기   ·   R 구역 초기화   ·   Shift+R 처음부터   ·   H 힌트"+(GlassTrial.GlassStageNotice.CurrentStage(game)>=0?"   ·   J 스테이지 안내":"")+"   ·   Esc 메뉴",small);
+                GUI.Label(new Rect(30,861,1550,36),ControlGuide()+(GlassTrial.GlassStageNotice.CurrentStage(game)>=0?"   ·   J 스테이지 안내":""),small);
                 }
             }
             if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)

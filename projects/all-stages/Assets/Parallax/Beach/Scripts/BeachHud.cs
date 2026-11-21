@@ -9,13 +9,14 @@ namespace ShadeLink.Beach
         bool stageTravelTab;
         readonly Color paper=new Color(.98f,.97f,.91f),accent=new Color(.34f,.82f,1),ink=new Color(.035f,.12f,.17f,.94f);
         void Panel(Rect r,Color c){GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=Color.white;}
-        static string ControlGuide() => PlayerControls.BindingLabel(PlayerControls.Action.Forward)+"/"+
+        static string ControlGuide(bool hoist) => PlayerControls.BindingLabel(PlayerControls.Action.Forward)+"/"+
             PlayerControls.BindingLabel(PlayerControls.Action.Left)+"/"+PlayerControls.BindingLabel(PlayerControls.Action.Backward)+"/"+
             PlayerControls.BindingLabel(PlayerControls.Action.Right)+" 이동 · "+
             PlayerControls.BindingLabel(PlayerControls.Action.Jump)+" 점프 · "+PlayerControls.BindingLabel(PlayerControls.Action.Grab)+
             " 잡기/놓기 · "+PlayerControls.BindingLabel(PlayerControls.Action.Interact)+" 승선/출항 · "+
-            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · "+
-            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · Esc 메뉴";
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 구역 초기화 · Shift+"+
+            PlayerControls.BindingLabel(PlayerControls.Action.Reset)+" 전체 초기화 · "+
+            PlayerControls.BindingLabel(PlayerControls.Action.Hints)+" 안내 · "+(!hoist ? "T 설치 연습 · " : "")+"Esc 메뉴";
         void OnGUI()
         {
             if(game==null)return;
@@ -72,7 +73,7 @@ namespace ShadeLink.Beach
                 if(!glassReady&&Time.unscaledTime<game.noticeUntil)GUI.Label(new Rect(hoist?25:300,hoist?811:789,hoist?1550:1090,hoist?30:50),game.notice,small);
                 if(global::GameShellSettingsRuntime.ShowControlHints)
                 {
-                Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),hoist?"WASD 이동 · 마우스 시점 · Space 점프 · 클릭 잡기/놓기 · R 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · Esc 메뉴":"WASD 이동 · 마우스 시점 · Space 점프 · 클릭 잡기/놓기 · R 구역 초기화 · Shift+R 전체 초기화 · H 힌트 · T 설치 연습 · Esc 메뉴",small);
+                Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),ControlGuide(hoist),small);
                 }
             }
             if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)

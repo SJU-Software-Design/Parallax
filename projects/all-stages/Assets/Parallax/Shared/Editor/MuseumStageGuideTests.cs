@@ -16,14 +16,7 @@ namespace ShadeLink.Editor
             int[] checkpoints = { 0, 1, 1, 2, 3 };
             string[] numbers = { "01", "02", "03", "04", "05" };
             string[] titles = { "명화 전시실", "빛과 그림자", "병 속의 추", "시점의 방", "두 손 사이의 문" };
-            string[] objectives =
-            {
-                "<color=#FDE68A>청동 조형물</color>을 키워 그늘로 빛 구간을 건너세요",
-                "<color=#FDE68A>빈 캔버스</color>와 <color=#FDE68A>주변 전시물</color>을 살펴보세요",
-                "<color=#FDE68A>병</color>을 옮겨 키우고 <color=#FDE68A>좁은 입구</color>를 넓혀 보세요",
-                "<color=#FDE68A>양쪽 벽의 작품</color>을 보고 <color=#FDE68A>눈·코·입</color>으로 얼굴을 만들어 보세요",
-                "<color=#FDE68A>조각</color>을 조금 더 키워 보세요"
-            };
+            string[] objectives = { "", "", "", "", "" };
             var state = new MuseumStageGuideState();
             for (int i = 0; i < numbers.Length; i++)
             {
@@ -78,7 +71,7 @@ namespace ShadeLink.Editor
                 "현재 구역의 전시물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.",
                 "02 구역 저장 · R로 이 구역만 다시 시작할 수 있습니다."
             };
-            string[] commonText = { "서 있는 사물은 잡을 수 없습니다.", commonSource[1], commonSource[2], commonSource[3], commonSource[4], "현재 구역의 전시물과 위치를 초기화했습니다.", "02 구역 저장" };
+            string[] commonText = { "서 있는 사물은 잡을 수 없습니다.", commonSource[1], commonSource[2], commonSource[3], "쉼터로 돌아왔어요", "현재 구역의 전시물과 위치를 초기화했습니다.", "02 구역 저장" };
             float[] commonSeconds = { 2, 3, 3, 3, 3, 3, 2.5f };
             var common = new MuseumCommonNoticeState();
             for (int i = 0; i < commonSource.Length; i++)
@@ -199,7 +192,7 @@ namespace ShadeLink.Editor
             Require(repeatedEntry.Requested && repeatedEntry.Entry, "J during entry preserves entry priority");
             repeatedEntry.Update(1, true, false, true, 3.6f, 3);
             Require(repeatedEntry.Requested && repeatedEntry.Entry, "new room restarts protected entry");
-            Require(MuseumStageGuide.BottleObjective(true, "병을 옮겨 키우고 좁은 입구를 넓혀 보세요") == objectives[2], "narrow bottle retains highlighted objective");
+            Require(MuseumStageGuide.BottleObjective(true, "병을 옮겨 키우고 좁은 입구를 넓혀 보세요") == "", "narrow bottle opening objective stays hidden");
             string[] bottleStatuses =
             {
                 "입구가 넓어졌어요 · 병을 들어 아래로 기울여 보세요",
@@ -210,12 +203,14 @@ namespace ShadeLink.Editor
                 "검으로 봉인을 풀었어요 · 열린 문으로 이동하세요"
             };
             foreach (string status in bottleStatuses)
-                Require(MuseumStageGuide.BottleObjective(false, status) == status, "bottle objective follows status: " + status);
-            Require(MuseumStageGuide.BottleObjective(true, bottleStatuses[0]) == objectives[2], "reset restores narrow bottle objective");
-            Require(MuseumStageGuide.CathedralInitialCaption("조각을 조금 더 키워 보세요") == "조각을 좀 더 키워보세요", "cathedral initial caption");
+                Require(MuseumStageGuide.BottleObjective(false, status) == MuseumStageGuide.DisplayCaption(2, status), "bottle objective follows status: " + status);
+            Require(MuseumStageGuide.BottleObjective(true, bottleStatuses[0]) == "", "bottle reset keeps opening objective hidden");
+            Require(MuseumStageGuide.CathedralInitialCaption("조각을 조금 더 키워 보세요") == null, "cathedral opening hint stays off the caption");
             Require(MuseumStageGuide.CathedralInitialCaption("충분히 커졌어요 · 이제 내려놓으세요") == null, "cathedral sizing complete clears initial caption");
             Require(MuseumStageGuide.CathedralInitialCaption("주변이 넓은 바닥으로 옮겨 주세요") == null, "cathedral obstruction clears initial caption");
             Require(MuseumStageGuide.CathedralInitialCaption("계단을 올라 두 손 사이로 들어가세요") == null, "cathedral opened clears initial caption");
+            Require(MuseumStageGuide.DisplayCaption(3, "\uC644\uC131\uB41C \uCD08\uC0C1\uC774 \uCEE4\uD2BC\uC5D0 \uC2A4\uBA70\uB4E4\uACE0 \uC788\uC5B4\uC694.") == "\uCD08\uC0C1\uC774 \uCEE4\uD2BC\uC5D0 \uC2A4\uBA70\uB4E4\uC5B4\uC694", "portrait caption is concise");
+            Require(MuseumStageGuide.DisplayCaption(4, "\uC870\uAC01\uC744 \uC870\uAE08 \uB354 \uD0A4\uC6CC \uBCF4\uC138\uC694") == "", "portrait growth hint stays off the opening caption");
             float[] cueStarts = { 0f, 4.5f, 9f };
             int[] cueStages = { 1, 3, 4 };
             for (int i = 0; i < cueStarts.Length; i++)
