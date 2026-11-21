@@ -33,7 +33,9 @@ namespace GlassTrial
         readonly MuseumHudTextTransition transition = new MuseumHudTextTransition();
         readonly MuseumCommonNoticeState commonNotice = new MuseumCommonNoticeState();
         readonly System.Collections.Generic.Queue<MuseumStageGuide.Notice> queuedNotices = new System.Collections.Generic.Queue<MuseumStageGuide.Notice>();
-        float visibility, width, noticeClock, exposureMorph;
+        float visibility, width, noticeClock, exposureMorph, widthVelocity, resizeStartWidth, captionReveal;
+        bool wasResizing;
+        string revealCaption;
         bool wasDanger;
         bool initialized;
         // Keep the legacy notice until a captured background actually exists.
@@ -305,18 +307,36 @@ namespace GlassTrial
             bool renderGauge = danger || exposureMorph > 0;
             caption.text = transition.Current.Caption ?? "";
             float gaugeAlpha = renderGauge ? Mathf.Clamp01(exposureMorph) : 0;
-            caption.canvasRenderer.SetAlpha(transition.Alpha * (1 - gaugeAlpha));
             if (game.CornerGuideActive && !danger && !showCommon && gaugeAlpha <= .001f &&
-                transition.Alpha >= .999f && caption.text == game.CurrentBottomNotice)
+                transition.Alpha >= .999f && captionReveal >= .999f && caption.text == game.CurrentBottomNotice)
                 game.AdvanceCornerGuide(Time.deltaTime);
-            float available = Mathf.Max(120, ((RectTransform)canvas.transform).rect.width - 56);
-            float noticeWidth = Mathf.Min(available, Mathf.Max(180, caption.preferredWidth + 84));
-            float wanted = Mathf.Lerp(noticeWidth, Mathf.Min(268, available), gaugeAlpha);
-            if (width <= 0) width = wanted;
-            width = Mathf.MoveTowards(width, wanted, Time.unscaledDeltaTime * 1800);
-            var settings = caption.GetGenerationSettings(new Vector2(Mathf.Max(1, width - 76), 0));
+            // Measure the caption at its final width, as in the museum HUD.
+            float available = Mathf.Max(1f, ((RectTransform)canvas.transform).rect.width - 56f);
+            float textWidth = Mathf.Min(Mathf.Max(1f, available - 76f), Mathf.Max(1f, caption.preferredWidth));
+            var settings = caption.GetGenerationSettings(new Vector2(textWidth, 0));
             float textHeight = caption.cachedTextGeneratorForLayout.GetPreferredHeight(caption.text, settings) / caption.pixelsPerUnit;
-            float height = Mathf.Lerp(NoticeHeight(textHeight), 42, gaugeAlpha);
+            float descriptionWidth = Mathf.Min(available, Mathf.Max(120f, textWidth + 76f));
+            float shape = Mathf.SmoothStep(0, 1, gaugeAlpha);
+            float wanted = Mathf.Lerp(descriptionWidth, Mathf.Min(268f, available), shape);
+            if (width <= 0) width = wanted;
+            if (transition.Resizing)
+            {
+                if (!wasResizing) resizeStartWidth = width;
+                width = Mathf.Lerp(resizeStartWidth, wanted, Mathf.SmoothStep(0, 1, transition.ResizeAmount));
+                widthVelocity = 0;
+            }
+            else width = Mathf.SmoothDamp(width, wanted, ref widthVelocity, .08f, Mathf.Infinity, Time.unscaledDeltaTime);
+            wasResizing = transition.Resizing;
+            width = Mathf.Min(available, width);
+            float height = Mathf.Lerp(Mathf.Max(52f, textHeight + 24f), 42f, shape);
+            var captionRect = (RectTransform)caption.transform;
+            captionRect.anchorMin = captionRect.anchorMax = captionRect.pivot = new Vector2(.5f, .5f);
+            captionRect.anchoredPosition = new Vector2(18f, 0);
+            captionRect.sizeDelta = new Vector2(textWidth, textHeight);
+            if (revealCaption != caption.text) { revealCaption = caption.text; captionReveal = 0f; }
+            bool captionFits = !string.IsNullOrEmpty(caption.text) && width >= descriptionWidth - .5f && gaugeAlpha <= .001f;
+            if (captionFits) captionReveal = Mathf.MoveTowards(captionReveal, 1f, Time.unscaledDeltaTime / .16f);
+            caption.canvasRenderer.SetAlpha(transition.Alpha * (1f - gaugeAlpha) * captionReveal);
             var panel = (RectTransform)backdrop.transform;
             panel.sizeDelta = new Vector2(width, height);
             shadowRect.sizeDelta = new Vector2(width + ShadowPadding * 2, height + ShadowPadding * 2);

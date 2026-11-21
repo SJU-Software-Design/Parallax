@@ -405,6 +405,7 @@ namespace GlassTrial
                 bool fusing = game.NikeCanvasPuzzle && nikeCanvas != null && nikeCanvas.Fusing;
                 complete = game.NikeCanvasPuzzle && nikeCanvas != null && nikeCanvas.Complete;
                 progress = fusing ? nikeCanvas.FusionProgress : light.ShadeReadiness;
+                if (nikeCanvas != null && !fusing && !complete) progress = Mathf.Clamp01(progress) * .9f;
                 started = !complete && (fusing || progress > 0);
                 // Keep the original canvas guide available whenever alignment stops.
                 // Fusion and completed artwork retain their own presentation.

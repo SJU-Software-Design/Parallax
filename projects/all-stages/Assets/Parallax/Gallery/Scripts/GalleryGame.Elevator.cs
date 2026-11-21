@@ -32,7 +32,6 @@ namespace ShadeLink.Gallery
                 ElevatorArrival = false;
                 museumAudio?.SetCheckpoint(0);
                 museumAudio?.SetGameplayRunning(true);
-                Tell("B1 · 미술관에 도착했어요. 첫 전시실로 이동해 보세요.", 6);
                 return false;
             }
             return true;

@@ -898,7 +898,7 @@ namespace ShadeLink.Tutorial
             string notice = CurrentBottomNotice;
             DrawRotationHint(width, height);
             var glassNotice = GetComponent<GlassTrial.TutorialGlassNotice>();
-            if (notice != null && (glassNotice == null || !glassNotice.Ready))
+            if (notice != null && (glassNotice == null || !glassNotice.isActiveAndEnabled))
             {
                 float bannerWidth = Mathf.Min(width - 36, 1040);
                 var banner = new Rect((width - bannerWidth) * .5f, height - 92, bannerWidth, 64);

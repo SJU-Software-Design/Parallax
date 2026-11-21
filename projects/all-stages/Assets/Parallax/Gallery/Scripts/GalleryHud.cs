@@ -141,7 +141,7 @@ namespace ShadeLink.Gallery
                     game.conceptLayout&&game.checkpoint==3&&game.orcusExit!=null?
                         Mathf.Clamp01(game.orcusExit.transform.lossyScale.x/(game.orcusExit.RequiredScale*.9f)):
                     game.conceptLayout&&game.checkpoint==1&&game.nikeLight!=null&&game.safe?
-                        (game.NikeCanvasPuzzle&&game.nikeLight.canvas.Fusing?game.nikeLight.canvas.FusionProgress:game.nikeLight.ShadeReadiness):game.exposure;
+                        (game.NikeCanvasPuzzle&&game.nikeLight.canvas.Fusing?game.nikeLight.canvas.FusionProgress:game.NikeCanvasPuzzle&&!game.nikeLight.canvas.Complete?Mathf.Clamp01(game.nikeLight.ShadeReadiness)*.9f:game.nikeLight.ShadeReadiness):game.exposure;
                 Panel(new Rect(631.5f,783,333*progress,9),game.checkpoint>=2||game.checkpoint==1&&game.safe?mint:new Color(1,.56f,.25f));
                 }
                 if(reward!=null&&reward.Busy&&!reward.Carrying)

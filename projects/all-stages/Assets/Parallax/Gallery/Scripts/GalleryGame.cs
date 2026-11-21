@@ -192,6 +192,7 @@ namespace ShadeLink.Gallery
         void OnPortraitReset(){MuseumAudio.StopOwner(portraitGate);museumAudio?.SetPortraitSilence(false);}
         void Start()
         {
+            GlassTrial.GlassPanelPreview.EnsureInstalled(this);
             if(!automated&&bottleBalance!=null&&Array.IndexOf(Environment.GetCommandLineArgs(),"-gallery-bottle-balance-demo")>=0)
                 StartBottleBalanceDemo();
         }

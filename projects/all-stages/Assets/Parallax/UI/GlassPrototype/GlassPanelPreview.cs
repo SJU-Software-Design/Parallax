@@ -74,7 +74,10 @@ namespace GlassTrial
         static void OnSceneLoaded(Scene scene, LoadSceneMode mode) { Install(); }
         static void Install()
         {
-            var game = FindFirstObjectByType<GalleryGame>();
+            EnsureInstalled(FindFirstObjectByType<GalleryGame>());
+        }
+        public static void EnsureInstalled(GalleryGame game)
+        {
             if (game != null)
             {
                 var lessonNotice = game.GetComponent<GlassLessonNotice>();
