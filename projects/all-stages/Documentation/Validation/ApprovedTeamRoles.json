@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "sourceKind": "approved-role-transcript",
   "sourcePath": "ApprovedTeamRoles.txt",
-  "sourceSha256": "D3DCC6441A4EB800CC5929FDB003DC09C6B656AC45DAB1DA42DBAB4E8A08C197",
+  "sourceSha256": "D993C0ED9EFC7F80D90565B559AA89680D42ECC088F2207A35B9E6DA282D1D3E",
   "presentationSha256": "5AB8C7C11753965DFDCDA762A287551AA37BE3461F8A630DD0B1998DFD56AA0D",
   "presentationEntry": "ppt/slides/slide8.xml",
   "orderedSlide": 8,
   "slideTitle": "팀 구현과 외부 자료",
-  "userApprovedChange": "2026-11-20 사용자 승인: 엔딩 기획·구현은 안건우 팀장, 게임 시작화면 기획은 안건우·이민섭. 2026-11-19 김태양 UI 상태 괄호 제거 유지. 다른 기존 역할은 보존.",
+  "userApprovedChange": "2026-11-20 사용자 승인: 엔딩 기획·구현은 안건우 팀장, 게임 시작화면 기획은 안건우·이민섭. 2026-11-19 김태양 UI 상태 괄호 제거 유지. 다른 기존 역할은 보존.\n2026-11-24 사용자 승인: 김태양은 UI 총괄을 첫 줄에 표시하고 튜토리얼 기획·구현, 맵 QA 및 외부 플레이어 QA 수집, 맵 아이디어 제안을 기재한다. 이하늘은 사운드 조사 및 구현, 외부 플레이어 QA 수집, 맵 아이디어 제안 및 자료조사로 구체화한다. 안건우·이민섭 역할 및 외부 자료 출처는 보존한다.",
   "creditTeam": [
     {
       "id": "team-1",
@@ -34,7 +34,7 @@
       "creator": "",
       "license": "",
       "url": "",
-      "role": "튜토리얼 기획·구현, 맵 QA\nUI 개편"
+      "role": "UI 총괄\n튜토리얼 기획·구현\n맵 QA 및 외부 플레이어 QA 수집\n맵 아이디어 제안"
     },
     {
       "id": "team-4",
@@ -43,7 +43,7 @@
       "creator": "",
       "license": "",
       "url": "",
-      "role": "사운드 조사 및 구현, QA\n맵 아이디어 제공 및 자료조사"
+      "role": "사운드 조사 및 구현\n외부 플레이어 QA 수집\n맵 아이디어 제안 및 자료조사"
     }
   ],
   "scope": "The SHA-256 verifies the checked-in UTF-8 approval transcript after CRLF/BOM normalization for portable Git checkouts. The presentation hash and slide are provenance from the earlier local inspection, not a fresh verification or redistribution of the private presentation. Product credit captions are compared in full against the approved roles.",

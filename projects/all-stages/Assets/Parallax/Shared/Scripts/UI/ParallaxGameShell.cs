@@ -74,23 +74,19 @@ public partial class ParallaxGameShell : MonoBehaviour
     void ApplyMenuPointer()
     {
         var source = Resources.Load<Texture2D>("ParallaxCursor/cursor_menu");
-        if (source == null || SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null) return;
-        var previous = RenderTexture.active;
-        var buffer = RenderTexture.GetTemporary(48, 48, 0, RenderTextureFormat.ARGB32);
-        try
-        {
-            Graphics.Blit(source, buffer);
-            RenderTexture.active = buffer;
-            menuPointer = new Texture2D(48, 48, TextureFormat.RGBA32, false);
-            menuPointer.ReadPixels(new Rect(0, 0, 48, 48), 0, 0);
-            menuPointer.Apply();
+        if (source == null || !source.isReadable) return;
+        // Read only the imported cursor asset; no GPU render target is needed.
+        const int size = 48;
+        var pixels = new Color32[size * size];
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+                pixels[y * size + x] = source.GetPixelBilinear((x + .5f) / size, (y + .5f) / size);
+        menuPointer = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        menuPointer.SetPixels32(pixels);
+        menuPointer.Apply(false, false);
+        if (!validationMode && !Application.isBatchMode &&
+            SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
             Cursor.SetCursor(menuPointer, new Vector2(16, 7), CursorMode.Auto);
-        }
-        finally
-        {
-            RenderTexture.active = previous;
-            RenderTexture.ReleaseTemporary(buffer);
-        }
     }
 
     void Awake()
@@ -102,11 +98,11 @@ public partial class ParallaxGameShell : MonoBehaviour
         Application.runInBackground = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        ApplyMenuPointer();
         string[] args = Environment.GetCommandLineArgs();
         int check = Array.IndexOf(args, "-preview-validate");
         validationMode = check >= 0 || Array.IndexOf(args, "-player-shell-validate") >= 0 || Array.IndexOf(args, "-eclipse-ending-validate") >= 0;
         validationPath = check >= 0 && check + 1 < args.Length ? args[check + 1] : null;
+        ApplyMenuPointer();
         background = Resources.Load<Texture2D>("Preview/Background");
         schoolLogo = Resources.Load<Texture2D>("Preview/SchoolLogo");
         bodyFont = Resources.Load<Font>("Preview/BodyFont");
@@ -616,6 +612,7 @@ public partial class ParallaxGameShell : MonoBehaviour
         if (brushShort != null) Destroy(brushShort);
         if (brushPanel != null) Destroy(brushPanel);
         if (circleTexture != null) Destroy(circleTexture);
+        if (menuPointer != null) Destroy(menuPointer);
     }
     IEnumerator ValidatePreview()
     {
