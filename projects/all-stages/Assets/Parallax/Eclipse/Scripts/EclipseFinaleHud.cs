@@ -63,7 +63,7 @@ namespace ShadeLink.Eclipse
                     if (!ParallaxGameShell.OwnsPauseMenus) StandaloneMenu();
                     return;
                 }
-                if (GameShellSettingsRuntime.ShowControlHints)
+                if (GameShellSettingsRuntime.ShowControlHints && !GlassTrial.EclipseGlassHud.ReplacesHud(game))
                 {
                     Label(new Rect(38, 28, 440, 48), "PARALLAX  /  ECLIPSE", 22, ivory);
                     string status = game.ExitUnlocked ? "마지막 출구" : game.InShelter ? "안전한 출발 지점" : game.Safe ? "그늘 안" : "직사광선";
@@ -73,10 +73,10 @@ namespace ShadeLink.Eclipse
                     game.held != FinaleItem.None, false, ivory, new Color(.95f, .95f, .9f, .65f));
                 if (GameShellSettingsRuntime.ShowControlHints)
                 {
-                    if (game.aimed != FinaleItem.None)
+                    if (!GlassTrial.EclipseGlassHud.ReplacesHud(game) && game.aimed != FinaleItem.None)
                         Label(new Rect(650, 566, 620, 48),
                             (game.aimed == FinaleItem.Moon ? "달" : "Exit") + " · " + Key(PlayerControls.Action.Grab) + " 잡기", 22, ivory, TextAnchor.MiddleCenter);
-                    if (game.held != FinaleItem.None)
+                    if (!GlassTrial.EclipseGlassHud.ReplacesHud(game) && game.held != FinaleItem.None)
                     {
                         string manipulation = game.held == FinaleItem.Moon ? game.MoonAlignmentHint : game.ExitPlacementBlocked ? "놓을 공간이 없습니다. 조준 방향을 조금 바꿔 보세요." : "가까이서 잡아 먼 곳에 놓으면 커집니다";
                         Color manipulationColor = game.held == FinaleItem.Moon && !game.MoonPlacementBlocked && game.CurrentMoonAlignment.Complete ? green : ivory;
@@ -92,9 +92,9 @@ namespace ShadeLink.Eclipse
                         Key(PlayerControls.Action.Jump) + " 점프    " + Key(PlayerControls.Action.Hints) + " 힌트    ESC 일시정지",
                         19, new Color(.80f, .81f, .79f, .8f));
                 }
-                if (game.noticeUntil > Time.unscaledTime)
+                if (!GlassTrial.EclipseGlassHud.ReplacesHud(game) && game.noticeUntil > Time.unscaledTime)
                     Label(new Rect(370, 132, 1180, 78), game.notice, 25, ivory, TextAnchor.MiddleCenter);
-                if (game.exposure > .035f)
+                if (!GlassTrial.EclipseGlassHud.ReplacesHud(game) && game.exposure > .035f)
                 {
                     Fill(new Rect(1495, 960, 360, 5), new Color(.28f, .23f, .19f, .75f));
                     Fill(new Rect(1495, 960, 360 * Mathf.Clamp01(game.exposure), 5), new Color(1, .62f, .28f));

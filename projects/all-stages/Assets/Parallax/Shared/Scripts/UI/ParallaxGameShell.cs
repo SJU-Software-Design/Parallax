@@ -69,6 +69,30 @@ public partial class ParallaxGameShell : MonoBehaviour
     }
     float Now { get { return Time.unscaledTime; } }
 
+    Texture2D menuPointer;
+
+    void ApplyMenuPointer()
+    {
+        var source = Resources.Load<Texture2D>("ParallaxCursor/cursor_menu");
+        if (source == null || SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null) return;
+        var previous = RenderTexture.active;
+        var buffer = RenderTexture.GetTemporary(48, 48, 0, RenderTextureFormat.ARGB32);
+        try
+        {
+            Graphics.Blit(source, buffer);
+            RenderTexture.active = buffer;
+            menuPointer = new Texture2D(48, 48, TextureFormat.RGBA32, false);
+            menuPointer.ReadPixels(new Rect(0, 0, 48, 48), 0, 0);
+            menuPointer.Apply();
+            Cursor.SetCursor(menuPointer, new Vector2(16, 7), CursorMode.Auto);
+        }
+        finally
+        {
+            RenderTexture.active = previous;
+            RenderTexture.ReleaseTemporary(buffer);
+        }
+    }
+
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -78,6 +102,7 @@ public partial class ParallaxGameShell : MonoBehaviour
         Application.runInBackground = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        ApplyMenuPointer();
         string[] args = Environment.GetCommandLineArgs();
         int check = Array.IndexOf(args, "-preview-validate");
         validationMode = check >= 0 || Array.IndexOf(args, "-player-shell-validate") >= 0 || Array.IndexOf(args, "-eclipse-ending-validate") >= 0;
