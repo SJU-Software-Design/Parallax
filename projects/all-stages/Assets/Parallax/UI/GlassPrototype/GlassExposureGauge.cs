@@ -15,7 +15,7 @@ namespace GlassTrial
         RawImage backdrop;
         Text caption, stageNumber, stageTitle, stageObjective;
         RectTransform textMask;
-        CanvasGroup captionGroup, stageNumberGroup, stageTitleGroup, stageObjectiveGroup;
+        CanvasGroup panelGroup, captionGroup, stageNumberGroup, stageTitleGroup, stageObjectiveGroup;
         Image bar, sun, safeIndicator, safeHalo, safeRing;
         RawImage noticeTimer, noticeTimerGlow;
         Material glass, gauge;
@@ -85,6 +85,8 @@ namespace GlassTrial
             var panel = Rect("Glass panel", root.transform, Vector2.zero, new Vector2(268, 52));
             panel.anchorMin = panel.anchorMax = new Vector2(.5f, 1f / 6f);
             panel.pivot = new Vector2(.5f, .5f);
+            panelGroup = panel.gameObject.AddComponent<CanvasGroup>();
+            panelGroup.alpha = 0f; panelGroup.blocksRaycasts = false; panelGroup.interactable = false;
             backdrop = panel.gameObject.AddComponent<RawImage>();
             backdrop.material = glass;
             backdrop.color = new Color(1, 1, 1, .97f);
@@ -326,7 +328,7 @@ namespace GlassTrial
             if (!ready) return;
             bool visible = CanDisplay(game);
             canvas.enabled = visible;
-            if (!visible) { observedNoticeSerial = game.NoticeSerial; commonNotice.CancelPending(); commonNotice.Update(Time.unscaledTime, true); resetGaugeHandoff.Reset(); textTransition.Reset(); previousContext = -1; completionUntil = 0; morph = 0; stageMorph = 0; fadingDanger = false; wasStageRequested = false; animatedWidth = 0; return; }
+            if (!visible) { panelGroup.alpha = 0f; observedNoticeSerial = game.NoticeSerial; commonNotice.CancelPending(); commonNotice.Update(Time.unscaledTime, true); resetGaugeHandoff.Reset(); textTransition.Reset(); previousContext = -1; completionUntil = 0; morph = 0; stageMorph = 0; fadingDanger = false; wasStageRequested = false; animatedWidth = 0; return; }
 
             backdrop.texture = preview.Capture.blurred;
             ApplyGlassSettings();
@@ -364,11 +366,11 @@ namespace GlassTrial
             if (balanceLevelGuide)
                 caption.text = MuseumStageGuide.DisplayCaption(2, game.bottleBalance.Status);
             if (swordGuide)
-                caption.text = "가운데 받침대의 홈을 클릭하세요";
+                caption.text = "";
             else if (doorGuide)
-                caption.text = "봉인이 풀리고 있어요";
+                caption.text = "";
             else if (balanceGuide)
-                caption.text = "균형을 되찾았어요 · 디케가 검을 놓아줘요";
+                caption.text = "";
 
             int context = 0;
             bool started = false, complete = false;
@@ -393,9 +395,10 @@ namespace GlassTrial
             {
                 context = 3;
                 var activation = game.orcusExit.cathedralActivation;
-                progress = activation.Progress;
+                // The assisted placement threshold is the player's full-size target.
+                progress = activation.NearEnough ? 1f : Mathf.Clamp01(activation.ScaleReadiness / Mathf.Max(.001f, activation.assistanceRatio));
                 complete = activation.Opened;
-                started = progress > 0 && !complete;
+                started = !complete;
             }
             else if (game.conceptLayout && game.checkpoint == 1 && game.nikeLight != null)
             {
@@ -432,28 +435,30 @@ namespace GlassTrial
             }
 
             bool danger = !game.safe || game.exposure > 0;
+            // Reaching the displayed size target is separate from opening the door.
+            float completionProgress = context == 3 ? game.orcusExit.cathedralActivation.Progress : progress;
             if (previousContext != context)
             {
                 previousContext = context;
                 completionUntil = 0;
-                completionArmed = progress < 1f;
+                completionArmed = completionProgress < 1f;
             }
             else
             {
-                if (progress <= 0f) completionArmed = true;
-                // The displayed progress, rather than a separate solved flag, owns the 100% edge.
-                if (CompletionEdge(completionArmed, started, previousStarted, previousProgress, progress))
+                if (completionProgress <= 0f) completionArmed = true;
+                // Completion feedback follows the actual opening progress in the final room.
+                if (CompletionEdge(completionArmed, started, previousStarted, previousProgress, completionProgress))
                 {
                     completionArmed = false;
                     if (!danger) completionUntil = Time.unscaledTime + .65f;
                 }
-                if (started && progress < 1f) completionUntil = 0;
+                if (started && completionProgress < 1f) completionUntil = 0;
             }
-            previousProgress = progress;
+            previousProgress = completionProgress;
             previousStarted = started;
             if (danger) completionUntil = 0;
             bool celebrating = !danger && Time.unscaledTime < completionUntil;
-            bool showGauge = danger || (!swordGuide && !doorGuide && !balanceGuide && !balanceLevelGuide &&
+            bool showGauge = danger || (!balanceLevelGuide &&
                 (started || (celebrating && context != 1)));
             // During the portrait performance, briefly morph back to its current
             // stage caption on a regular beat; never change the actual progress.
@@ -511,7 +516,8 @@ namespace GlassTrial
                 stageNumberText = content.Number; stageTitleText = content.Title; stageObjectiveText = "";
                 displayedStage = stage;
             }
-            if (!showStage && !showGauge && !showCommon && string.IsNullOrWhiteSpace(caption.text)) caption.text = "그늘 · 안전";
+            if (!showStage && !showGauge && !showCommon)
+                caption.text = MuseumStageGuide.SafeCaption(stage, caption.text);
             var targetView = new MuseumHudTextTransition.View
             {
                 Mode = showStage ? 2 : showGauge ? 1 : 0,
@@ -558,7 +564,7 @@ namespace GlassTrial
             float shape = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.4f, 1f, morph));
             float width = Mathf.Lerp(descriptionWidth, gaugeWidth, shape);
             float height = Mathf.Lerp(descriptionHeight, 42, shape);
-            float stageWidth = Mathf.Min(available, Mathf.Max(430f, stageObjective.preferredWidth + 48f, stageTitle.preferredWidth + stageNumber.preferredWidth * 2f + 48f));
+            float stageWidth = Mathf.Min(available, Mathf.Max(stageObjective.preferredWidth + 48f, stageTitle.preferredWidth + stageNumber.preferredWidth + 8f + 64f));
             width = Mathf.Lerp(width, stageWidth, stageShape);
             height = Mathf.Lerp(height, 52f, stageShape);
             if (animatedWidth <= 0) animatedWidth = width;
@@ -579,12 +585,15 @@ namespace GlassTrial
             textMask.anchoredPosition = new Vector2(padding, -4f);
             textMask.sizeDelta = new Vector2(Mathf.Max(1, width - padding * 2f), Mathf.Max(1, height - 8f));
             var titleRect = (RectTransform)stageTitle.transform;
-            titleRect.anchoredPosition = new Vector2(-padding, -8f);
-            titleRect.sizeDelta = new Vector2(width, 28f);
             var numberRect = (RectTransform)stageNumber.transform;
             float numberWidth = Mathf.Max(1f, stageNumber.preferredWidth);
-            numberRect.anchoredPosition = new Vector2(Mathf.Max(0f, (width - stageTitle.preferredWidth) * .5f - numberWidth - 8f) - padding, -8f);
+            const float stageGap = 8f;
+            float titleWidth = Mathf.Min(stageTitle.preferredWidth, Mathf.Max(1f, width - padding * 2f - numberWidth - stageGap));
+            float stageLeft = (width - numberWidth - stageGap - titleWidth) * .5f - padding;
+            numberRect.anchoredPosition = new Vector2(stageLeft, -8f);
             numberRect.sizeDelta = new Vector2(numberWidth, 28f);
+            titleRect.anchoredPosition = new Vector2(stageLeft + numberWidth + stageGap, -8f);
+            titleRect.sizeDelta = new Vector2(titleWidth, 28f);
             var objectiveRect = (RectTransform)stageObjective.transform;
             objectiveRect.anchoredPosition = new Vector2(12f - padding, -40f);
             objectiveRect.sizeDelta = new Vector2(Mathf.Max(1f, width - 24f), 30f);
@@ -600,7 +609,7 @@ namespace GlassTrial
             captionRect.anchoredPosition += new Vector2(textWidth * .5f, -textHeight * .5f);
             captionRect.localScale = Vector3.one * captionScale;
             titleRect.pivot = numberRect.pivot = objectiveRect.pivot = new Vector2(.5f, .5f);
-            titleRect.anchoredPosition += new Vector2(width * .5f, -14f);
+            titleRect.anchoredPosition += new Vector2(titleWidth * .5f, -14f);
             numberRect.anchoredPosition += new Vector2(numberWidth * .5f, -14f);
             objectiveRect.anchoredPosition += new Vector2((width - 24f) * .5f, -15f);
             titleRect.localScale = numberRect.localScale = objectiveRect.localScale = Vector3.one * Mathf.Lerp(.96f, 1f, stageAlpha);
@@ -615,7 +624,9 @@ namespace GlassTrial
             float barLeft = redGauge ? 50 : 14;
             ((RectTransform)bar.transform).anchoredPosition = new Vector2(barLeft, gaugeY + 7);
             ((RectTransform)bar.transform).sizeDelta = new Vector2(Mathf.Max(1, width - barLeft - 14), 14);
-            backdrop.enabled = !string.IsNullOrEmpty(caption.text) || morph > .001f || stageMorph > .001f;
+            bool panelRequested = renderStage || renderGauge || !string.IsNullOrEmpty(caption.text);
+            panelGroup.alpha = danger ? 1f : Mathf.MoveTowards(panelGroup.alpha, panelRequested ? 1f : 0f, Time.unscaledDeltaTime / .2f);
+            backdrop.enabled = panelGroup.alpha > .001f;
             captionGroup.alpha = captionAlpha;
             bar.color = new Color(1, 1, 1, gaugeAlpha);
             sun.color = new Color(1, .12f, .10f, redGauge ? gaugeAlpha : 0);

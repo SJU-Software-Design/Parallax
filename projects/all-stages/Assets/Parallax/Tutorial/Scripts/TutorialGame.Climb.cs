@@ -136,7 +136,6 @@ namespace ShadeLink.Tutorial
             nextClimbDrop = 0;
             climbDropDelay = .35f;
             climbArrivalPlaying = true;
-            Tell("주사위가 떨어질 때의 소리와 진동을 느껴보세요", 7f);
         }
 
         void SuspendClimbDie(GalleryProp prop)

@@ -37,6 +37,12 @@ namespace GlassTrial
 
         public static Content Get(int stage) => Entries[stage];
 
+        public static string SafeCaption(int stage, string caption)
+        {
+            if (stage > 0 && (string.IsNullOrWhiteSpace(caption) || caption == "그늘 · 안전")) return "";
+            return string.IsNullOrWhiteSpace(caption) ? "그늘 · 안전" : caption;
+        }
+
         public enum NoticeKind { None, Hidden, Warning, Reset, Save }
         public struct Notice
         {
@@ -149,9 +155,11 @@ namespace GlassTrial
                     case "입구를 향해 움직이고 있어요 · 조금 더 기울여 보세요": return "";
                     case "꺼낸 법전을 오른쪽 저울에 올려 보세요": return "법전을 오른쪽 저울에 올려보세요";
                     case "수평이에요 · 조각을 내려놓고 잠깐 기다리세요": return "수평이에요 · 내려놓고 기다려주세요";
-                    case "균형을 되찾았어요 · 디케가 검을 놓아줍니다": return "균형을 되찾았어요 · 디케가 검을 놓아줘요";
-                    case "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요": return "가운데 받침대의 홈을 클릭하세요";
-                    case "검이 고정됐어요 · 봉인이 풀리고 있어요": return "봉인이 풀리고 있어요";
+                    case "검이 떨어지고 있어요 · 아래 받침에서 집을 수 있어요":
+                    case "디케가 놓아준 검을 클릭해 집으세요":
+                    case "균형을 되찾았어요 · 디케가 검을 놓아줍니다": return "";
+                    case "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요": return "";
+                    case "검이 고정됐어요 · 봉인이 풀리고 있어요": return "";
                 }
             }
             if (stage == 4)

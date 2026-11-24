@@ -205,7 +205,7 @@ namespace ShadeLink.Beach
                 }
                 if(!found)foreach(var p in props)if(p.zone==checkpoint)p.Restore();
             }
-            PlacePlayer(spawn);exposure=0;respawns++;Tell(returnedBoat?"쉼터로 복귀했습니다 · 배는 출발 위치에 다시 정박했습니다.":returnedCastle?"중간 성벽으로 복귀 · 복구한 첫 성벽은 유지됩니다.":"빛·물 위험에서 현재 쉼터로 복귀했습니다. 놓은 사물 배치는 유지됩니다.");
+            PlacePlayer(spawn);exposure=0;respawns++;Tell(returnedBoat?"쉼터로 복귀했습니다 · 배는 출발 위치에 다시 정박했습니다.":returnedCastle?"중간 성벽으로 복귀 · 복구한 첫 성벽은 유지됩니다.":"쉼터로 돌아왔어요");
         }
         public bool CanStand(Vector3 feet)
         {
@@ -597,7 +597,6 @@ namespace ShadeLink.Beach
                 // The helper only runs for the two source pieces, and this
                 // callback confirms the ordinary release actually succeeded.
                 shadowHarbor.NotifyAssistApplied(assistedPiece);
-                Tell("윤곽 근처의 조각을 살짝 정렬해 놓았습니다.",3);
             }
             counterweightFinale?.OnInteractionFinished(released);
             assistedDrop=false;assistedPiece=null;lighting.Synchronize();

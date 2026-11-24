@@ -108,7 +108,7 @@ namespace ShadeLink.Gallery
             float textScale=global::GameShellSettingsRuntime.TextScale;
             text.fontSize=Mathf.RoundToInt(21*textScale);title.fontSize=Mathf.RoundToInt(35*textScale);small.fontSize=Mathf.RoundToInt(17*textScale);button.fontSize=Mathf.RoundToInt(22*textScale);
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
-            if(!GlassTrial.GlassStageNotice.ReplacesHud(game))
+            if((!game.conceptLayout || game.exhibitionPreview) && !GlassTrial.GlassStageNotice.ReplacesHud(game))
             {
             float stageWidth=game.conceptLayout?670:555,stageHeight=game.conceptLayout?150:game.checkpoint==1?139:102;
             GUI.BeginGroup(new Rect(800-stageWidth*.5f,750-52-12-stageHeight,stageWidth,stageHeight));

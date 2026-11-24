@@ -71,8 +71,10 @@ namespace GlassTrial
                     return new MuseumStageGuide.Notice(MuseumStageGuide.NoticeKind.Reset, "현재 구역의 사물과 위치를 초기화했습니다.", 3f);
                 case "쉼터로 복귀했습니다 · 배는 출발 위치에 다시 정박했습니다.":
                 case "중간 성벽으로 복귀 · 복구한 첫 성벽은 유지됩니다.":
-                case "빛·물 위험에서 현재 쉼터로 복귀했습니다. 놓은 사물 배치는 유지됩니다.":
                     return new MuseumStageGuide.Notice(MuseumStageGuide.NoticeKind.Reset, text, 3f);
+                case "쉼터로 돌아왔어요":
+                case "빛·물 위험에서 현재 쉼터로 복귀했습니다. 놓은 사물 배치는 유지됩니다.":
+                    return new MuseumStageGuide.Notice(MuseumStageGuide.NoticeKind.Reset, "쉼터로 돌아왔어요", 3f);
             }
             const string suffix = " 구역 저장 · R 구역 재시도";
             if (text.EndsWith(suffix, StringComparison.Ordinal))

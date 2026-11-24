@@ -22,6 +22,9 @@ namespace ShadeLink.Editor
             {
                 int stage = MuseumStageGuide.StageFor(true, false, checkpoints[i], i == 2);
                 var content = MuseumStageGuide.Get(stage);
+                Require(MuseumStageGuide.SafeCaption(stage, "") == (i == 0 ? "그늘 · 안전" : ""), "safe fallback for stage " + numbers[i]);
+                Require(MuseumStageGuide.SafeCaption(stage, "그늘 · 안전") == (i == 0 ? "그늘 · 안전" : ""), "safe caption for stage " + numbers[i]);
+                Require(MuseumStageGuide.SafeCaption(stage, "퍼즐 안내") == "퍼즐 안내", "puzzle caption preserved for stage " + numbers[i]);
                 Require(stage == i && content.Number == numbers[i] && content.Title == titles[i] && content.Objective == objectives[i], "mapping or content for stage " + numbers[i]);
                 state.Update(stage, true, false, false, i * 10, 3);
                 Require(state.Requested, "entry " + numbers[i]);

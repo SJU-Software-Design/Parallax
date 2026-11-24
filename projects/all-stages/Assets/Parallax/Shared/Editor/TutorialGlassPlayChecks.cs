@@ -243,10 +243,10 @@ namespace ShadeLink.Editor
                     Call("StartTutorialStage", 2);
                     Require(!lastReset && lastNotice == "02 구역 저장", "stage 2 checkpoint notification");
                     Require((bool)Field("inClimbRoom"), "stage 2 begins");
-                    Require(game.CurrentBottomNotice.Contains("주사위가 떨어질 때"), "stage 2 arrival notice");
+                    Require(game.CurrentBottomNotice == null || !game.CurrentBottomNotice.Contains("주사위가 떨어질 때"), "stage 2 arrival notice removed");
                     Call("RestartLesson");
                     Require(lastReset && lastNotice == "현재 구역을 초기화했습니다.", "stage 2 reset notification");
-                    Require((bool)Field("inClimbRoom") && game.CurrentBottomNotice.Contains("주사위가 떨어질 때"), "stage 2 reset retained");
+                    Require((bool)Field("inClimbRoom") && (game.CurrentBottomNotice == null || !game.CurrentBottomNotice.Contains("주사위가 떨어질 때")), "stage 2 reset without arrival notice");
                     int beforeStageThree = noticeCount;
                     Call("StartTutorialStage", 3);
                     Require(noticeCount == beforeStageThree + 1 && !lastReset && lastNotice == "03 구역 저장", "stage 3 entry checkpoint notification");

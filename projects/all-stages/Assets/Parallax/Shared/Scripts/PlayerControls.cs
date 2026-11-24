@@ -238,8 +238,38 @@ namespace ShadeLink
 
         static void Mark(Rect rect, Color color)
         { GUI.color = color; GUI.DrawTexture(rect, Texture2D.whiteTexture); }
+        static Texture2D cursorDefault, cursorHover, cursorGrab;
+        static bool cursorTexturesLoaded;
+
         public static void DrawCursor(Vector2 center, bool aimedGrabbable, bool held, bool blocked, Color accent, Color idle)
         {
+            if (!cursorTexturesLoaded)
+            {
+                cursorDefault = Resources.Load<Texture2D>("ParallaxCursor/cursor_default");
+                cursorHover = Resources.Load<Texture2D>("ParallaxCursor/cursor_hover");
+                cursorGrab = Resources.Load<Texture2D>("ParallaxCursor/cursor_grab");
+                cursorTexturesLoaded = true;
+            }
+            Texture2D cursor = held ? cursorGrab : aimedGrabbable ? cursorHover : cursorDefault;
+            if (cursor != null)
+            {
+                Color oldColor = GUI.color;
+                float size = !held && !aimedGrabbable ? 32f : 48f;
+                GUI.color = Color.white;
+                GUI.DrawTexture(new Rect(center.x - size * .5f, center.y - size * .5f, size, size), cursor, ScaleMode.ScaleToFit, true);
+                if (held && RotationHeld)
+                {
+                    Mark(new Rect(center.x - 18, center.y - 18, 6, 2), accent);
+                    Mark(new Rect(center.x + 12, center.y + 16, 6, 2), accent);
+                }
+                if (held && blocked)
+                {
+                    Color warning = new Color(1, .3f, .12f, .88f + .12f * Mathf.Sin(Time.unscaledTime * 7));
+                    Mark(new Rect(center.x - 12, center.y + 17, 24, 3), warning);
+                }
+                GUI.color = oldColor;
+                return;
+            }
             Color previous = GUI.color;
             bool rotate = held && RotationHeld;
             Color color = held && blocked ? new Color(1, .3f, .12f) : aimedGrabbable || held ? accent : idle;

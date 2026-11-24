@@ -45,7 +45,9 @@ namespace ShadeLink.Editor
             var reset = BeachHudState.ClassifyCommonNotice("현재 구역의 사물과 위치를 초기화했습니다. 이전 구역은 유지됩니다.");
             Require(reset.Kind == MuseumStageGuide.NoticeKind.Reset && reset.Text == "현재 구역의 사물과 위치를 초기화했습니다." && reset.Seconds == 3f, "reset notice follows museum");
             var recovery = BeachHudState.ClassifyCommonNotice("빛·물 위험에서 현재 쉼터로 복귀했습니다. 놓은 사물 배치는 유지됩니다.");
-            Require(recovery.Kind == MuseumStageGuide.NoticeKind.Reset && recovery.Seconds == 3f, "danger recovery notice");
+            Require(recovery.Kind == MuseumStageGuide.NoticeKind.Reset && recovery.Text == "쉼터로 돌아왔어요" && recovery.Seconds == 3f, "danger recovery notice");
+            var shortRecovery = BeachHudState.ClassifyCommonNotice("쉼터로 돌아왔어요");
+            Require(shortRecovery.Kind == MuseumStageGuide.NoticeKind.Reset && shortRecovery.Text == "쉼터로 돌아왔어요" && shortRecovery.Seconds == 3f, "short danger recovery notice");
             Require(BeachHudState.ClassifyCommonNotice("복귀 위치에서 오른쪽으로 이동하세요").Kind == MuseumStageGuide.NoticeKind.None, "unrelated text is not classified by substring");
             Require(BeachHudState.Select(true, 0, null, false, 0, null, null).Text == "그늘 · 안전", "safe default");
             Require(BeachHudState.Select(false, .4f, "경고", true, .8f, "인양중", null).Mode == BeachHudState.Mode.Sunlight, "sunlight priority");

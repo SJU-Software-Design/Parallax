@@ -36,15 +36,6 @@ namespace ShadeLink.Beach
             bool glassReady=glass!=null&&glass.Ready;
             var hover=game.GetComponent<GlassTrial.BeachGlassHover>();
             bool hoverReady=hover!=null&&hover.Ready;
-            if(!glassReady)
-            {
-            Panel(new Rect(25,22,690,hoist?236:168),ink);GUI.Label(new Rect(47,32,646,34),"PARALLAX  /  마지막 해변  v"+Application.version,text);GUI.Label(new Rect(47,70,646,32),BeachWorld.Titles[game.checkpoint],text);
-            GUI.Label(new Rect(47,106,646,29),hoist?"최종 목표  ·  물속 다리를 올려 배에 타기":"최종 목표  ·  그늘을 따라 하늘행 배로",goal);
-            string status=game.checkpoint==0?FirstGateStatus():game.checkpoint==2?HarborStatus():game.checkpoint==3?(game.counterweightFinale!=null?game.counterweightFinale.Status:game.harborFinale!=null?game.harborFinale.Status:"해안가의 바위를 살펴보세요") : "판자는 통로 · 파라솔은 그늘";
-            GUI.Label(new Rect(47,143,646,31),status,small);
-
-            if(hoist)DrawHoistLink(game.counterweightFinale.LiftProgress);
-            }
             if(game.active&&!game.won&&(game.skyShip==null||!game.skyShip.Departing))
             {
                 PlayerControls.DrawCursor(new Vector2(800,450),game.aimed!=null||(game.harborFinale!=null&&game.harborFinale.HasAimTarget(game.view)),game.held!=null,game.invalid||game.PlacementBlocked,accent,paper);
