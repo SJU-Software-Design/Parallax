@@ -172,7 +172,7 @@ namespace ShadeLink
             Vector2 start = new Vector2(RampStart(lookRamp.x, previousStick.x, stick.x), RampStart(lookRamp.y, previousStick.y, stick.y));
             Vector2 average = new Vector2(stick.x == 0 ? 0 : AverageRamp(start.x, dt), stick.y == 0 ? 0 : AverageRamp(start.y, dt));
             lookRamp = StepLookRamp(lookRamp, previousStick, stick, dt); previousStick = stick;
-            Vector2 mouse = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+            Vector2 mouse = GlassTrial.HelpHudController.PointerInUse ? Vector2.zero : new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
             Vector2 look = MouseLookDelta(mouse,
                 settings.Sensitivity, settings.InvertX, settings.InvertY) + GamepadLookDelta(stick, average, dt,
                 aimedGrabbable, held, settings.Sensitivity, settings.InvertX, settings.InvertY);
@@ -181,9 +181,9 @@ namespace ShadeLink
                 Move = move, Look = look,
                 JumpPressed = Pressed(Action.Jump) || Input.GetKeyDown(KeyCode.Joystick1Button0),
                 JumpHeld = Held(Action.Jump) || Input.GetKey(KeyCode.Joystick1Button0),
-                GrabPressed = Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+                GrabPressed = (!GlassTrial.HelpHudController.PointerInUse || (KeyFor(Action.Grab) != KeyCode.Mouse0 && KeyFor(Action.Grab) != KeyCode.Mouse1 && KeyFor(Action.Grab) != KeyCode.Mouse2)) && Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
                     Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick1Button5) || (grabTrigger && !previousGrabTrigger),
-                RotateHeld = held && RotationHeld,
+                RotateHeld = held && (!GlassTrial.HelpHudController.PointerInUse || (KeyFor(Action.Rotate) != KeyCode.Mouse0 && KeyFor(Action.Rotate) != KeyCode.Mouse1 && KeyFor(Action.Rotate) != KeyCode.Mouse2)) && RotationHeld,
                 CancelPressed = Pressed(Action.Cancel)
             };
             if (keys.sqrMagnitude > 0)
@@ -243,6 +243,7 @@ namespace ShadeLink
 
         public static void DrawCursor(Vector2 center, bool aimedGrabbable, bool held, bool blocked, Color accent, Color idle)
         {
+            if (GlassTrial.HelpHudController.PointerInUse) return;
             if (!cursorTexturesLoaded)
             {
                 cursorDefault = Resources.Load<Texture2D>("ParallaxCursor/cursor_default");

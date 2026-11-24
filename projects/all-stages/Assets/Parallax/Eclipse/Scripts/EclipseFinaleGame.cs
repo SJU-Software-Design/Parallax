@@ -226,7 +226,7 @@ namespace ShadeLink.Eclipse
             if (paused) return;
             if (PlayerControls.Pressed(PlayerControls.Action.Reset)) { ResetGame(); return; }
             if (PlayerControls.Pressed(PlayerControls.Action.Hints) && GameShellSettingsRuntime.ShowControlHints) hint = (hint + 1) % 4;
-            if (Cursor.lockState != CursorLockMode.Locked) { Pause(); return; }
+            if (Cursor.lockState != CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse) { Pause(); return; }
             float dt = Time.deltaTime;
             UpdateAim();
             PlayerControls.Frame frame = controls.Read(dt, aimed != FinaleItem.None, held != FinaleItem.None);

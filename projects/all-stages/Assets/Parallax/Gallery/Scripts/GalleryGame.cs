@@ -334,7 +334,7 @@ namespace ShadeLink.Gallery
             if(global::ParallaxGameShell.BlocksGameplay)return;
             if(!global::ParallaxGameShell.OwnsPauseMenus&&PlayerControls.PausePressed){if(active){MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Pause();}else Resume();return;}
             if(!active||won)return;
-            if(Cursor.lockState!=CursorLockMode.Locked)
+            if(Cursor.lockState!=CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse)
             {
                 // Arrival owns input until the visitor leaves the cabin. A focus
                 // loss must not enter a pause state whose menu is guarded there.

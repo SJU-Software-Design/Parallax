@@ -226,7 +226,7 @@ namespace ShadeLink.Beach
             if(global::ParallaxGameShell.BlocksGameplay)return;
             if(!global::ParallaxGameShell.OwnsPauseMenus&&PlayerControls.PausePressed){if(won){endingMenuVisible=!endingMenuVisible;return;}if(active)Pause();else Resume();return;}
             if(!active||won)return;
-            if(Cursor.lockState!=CursorLockMode.Locked){Pause();return;}
+            if(Cursor.lockState!=CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse){Pause();return;}
             if(PlayerControls.Pressed(PlayerControls.Action.Reset)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
             if(PlayerControls.Pressed(PlayerControls.Action.Hints))showHints=!showHints;
             if(harborFinale!=null&&harborFinale.Manipulating){harborFinale.HandleInput(Time.deltaTime);Tick(Time.deltaTime,Vector2.zero);return;}

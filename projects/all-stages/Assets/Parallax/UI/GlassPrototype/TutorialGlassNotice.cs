@@ -312,7 +312,9 @@ namespace GlassTrial
                 game.AdvanceCornerGuide(Time.deltaTime);
             // Measure the caption at its final width, as in the museum HUD.
             float available = Mathf.Max(1f, ((RectTransform)canvas.transform).rect.width - 56f);
-            float textWidth = Mathf.Min(Mathf.Max(1f, available - 76f), Mathf.Max(1f, caption.preferredWidth));
+            // Leave a little room for font metrics and pixel rounding so short
+            // notices do not wrap despite apparently fitting their measured width.
+            float textWidth = Mathf.Min(Mathf.Max(1f, available - 76f), Mathf.Max(1f, caption.preferredWidth + 8f));
             var settings = caption.GetGenerationSettings(new Vector2(textWidth, 0));
             float textHeight = caption.cachedTextGeneratorForLayout.GetPreferredHeight(caption.text, settings) / caption.pixelsPerUnit;
             float descriptionWidth = Mathf.Min(available, Mathf.Max(120f, textWidth + 76f));
