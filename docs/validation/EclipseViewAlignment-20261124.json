@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "dateKorea": "2026-11-24",
+  "basePullRequest": 53,
+  "testedBaseHead": "43501ce3f1e7c36c9717e2030b7242c07cb18757",
+  "testedLocalPatchSha256": "0DEE7297FE62879B4873AE123B91872CB1E3B285D4A0B2D4ED8A3259C74A8F81",
+  "assemblySha256": "F6185441C2516E9EE703926C1D04E04CDC5F41F6629340D383937CB516B90C44",
+  "changes": [
+    "Maintain post-solve totality while the observer moves laterally, returns from credits or approaches EXIT.",
+    "Keep the physical Moon, gameplay Sun position, lighting direction and accepted release sample unchanged; restore the Sun surface when the solve is reset or the Moon is picked up again.",
+    "Update the approved Kim Taeyang and Lee Haneul credit roles; preserve the other team roles and all 134 asset attributions.",
+    "Prepare the 48x48 menu cursor through CPU texture sampling and skip hardware cursor changes in validation or batch mode."
+  ],
+  "windowsBuild": {"unity": "6000.3.24f1", "scenes": 5, "errors": 0, "existingWarnings": 21},
+  "editorCoreSuites": {"passed": true, "count": 3},
+  "uiStaticAndCursorSuites": {"passed": true, "count": 4},
+  "nativeRegression": {
+    "passed": true,
+    "checks": 2249,
+    "independentProcesses": 7,
+    "phaseChecks": [546, 27, 361, 144, 66, 1087, 18],
+    "observerSamplesPerSolvedMoonRoute": 74,
+    "solvedMoonRoutes": ["annular", "large"],
+    "administratorSectionsLoaded": 14,
+    "productionSaveAndSettingsFilesUnchanged": true,
+    "osInputCount": 0,
+    "gameScreenshotCount": 0
+  },
+  "uiPlayChecks": {
+    "beach": "passed",
+    "tutorialOriginal": "failed: the inherited offsetMin.x >= 56 assertion assumes a stretched anchor but the caption uses a centered anchor",
+    "tutorialDiagnostic": "passed: a generated-project-only one-line assertion compares the visible caption and indicator rectangles in common panel coordinates",
+    "sourceTutorialTestModified": false,
+    "productUiChangedForDiagnostic": false
+  },
+  "boundaries": [
+    "Native checks validate runtime state, geometry, actual scene transitions and PhysX; they are not rendered-pixel or subjective audio approval.",
+    "UI Play checks use temporary in-memory camera RenderTextures for readiness, without pixel readback or saved game images.",
+    "The Beach flight route uses an explicit terminal-time fixture; it is not a manual completion of every Beach puzzle or a full timed voyage.",
+    "The pre-existing Eclipse glass text-scaling and placement-warning issues are outside this follow-up."
+  ]
+}
