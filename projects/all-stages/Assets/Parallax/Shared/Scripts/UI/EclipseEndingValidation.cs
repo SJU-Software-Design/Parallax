@@ -127,6 +127,7 @@ public sealed class EclipseEndingValidation : MonoBehaviour
         var light = game.world.GetComponentsInChildren<Light>(true).FirstOrDefault(item => item.type == LightType.Directional);
         solarPresentationStable &= Finite(ratio) && error < .0005f &&
             Vector3.Distance(sun, game.world.SunRenderer.transform.position) < .0001f &&
+            game.world.SunSurfaceSuppressed && !game.world.SunRenderer.enabled &&
             light != null && Vector3.Dot(light.transform.forward, -sun.normalized) > .99999f && game.Safe &&
             game.MoonAlignmentConfirmed && game.ReleasedMoonAlignment.Complete &&
             Mathf.Abs(game.ReleasedMoonAlignment.Coverage - acceptedReleaseCoverage) < .000001f &&
@@ -439,9 +440,13 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             document.assets.Count(x => x.title == "Aurora") == 1 &&
             document.assets.Where(x => x.id == "sfx-c701dbe1ed1162" || x.id == "sfx-b0056bdddebe56").Count(x => x.usage.Contains("EXIT")) == 2,
             "The six actual space movement cues and both original EXIT wind layers are credited once at their actual use");
-        Check(document.team.Any(entry => entry.title == "김태양" && entry.role.Contains("UI 개편") &&
-            !entry.role.Contains("진행 중") && !entry.role.Contains("수정중")),
-            "Only the requested UI status parenthesis is removed from Kim Taeyang's approved role");
+        Check(document.team.Any(entry => entry.title == "김태양" && entry.role.StartsWith("UI 총괄\n", StringComparison.Ordinal) &&
+            entry.role.Contains("튜토리얼 기획·구현") && entry.role.Contains("맵 QA 및 외부 플레이어 QA 수집") &&
+            entry.role.Contains("맵 아이디어 제안") && !entry.role.Contains("진행 중") && !entry.role.Contains("수정중")),
+            "Kim Taeyang's approved UI leadership is shown first with tutorial, QA and map contributions retained");
+        Check(document.team.Any(entry => entry.title == "이하늘" && entry.role.Contains("사운드 조사 및 구현") &&
+            entry.role.Contains("외부 플레이어 QA 수집") && entry.role.Contains("맵 아이디어 제안 및 자료조사")),
+            "Lee Haneul's approved sound, external-player QA and map research contributions are explicit");
     }
     void ValidateSelectedAssets(EclipseFinaleGame game)
     {
@@ -606,6 +611,19 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             Check(game.Drop() && game.MoonAnchored && game.MoonAlignmentConfirmed && game.ReleasedMoonAlignment.Complete &&
                 Mathf.Abs(game.ReleasedMoonAlignment.Coverage - held.Coverage) < .000001f,
                 "Actual Drop accepts the annular Moon and preserves its measured partial-coverage snapshot without replacing it with a perfect-alignment sample");
+            // Exercise the real regrab/cancel lifecycle before protected credits
+            // start: totality suppression must never hide the unsolved Sun.
+            for (int i = 0; i < 24; i++) game.Tick(Dt, Vector2.zero, false);
+            Check(game.totality && game.world.SunSurfaceSuppressed && !game.world.SunRenderer.enabled,
+                "An actually released complete Moon suppresses only the bright solar surface during totality");
+            game.AimAt(game.moon.position); game.Interact(); game.UpdateEclipse(0);
+            Check(game.held == FinaleItem.Moon && !game.totality && !game.world.SunSurfaceSuppressed && game.world.SunRenderer.enabled,
+                "An actual pre-credit Moon regrab restores the bright Sun for the active perspective puzzle");
+            game.Cancel();
+            for (int i = 0; i < 24; i++) game.Tick(Dt, Vector2.zero, false);
+            Check(game.held == FinaleItem.None && game.totality && game.world.SunSurfaceSuppressed && !game.world.SunRenderer.enabled &&
+                Mathf.Abs(game.ReleasedMoonAlignment.Coverage - held.Coverage) < .000001f,
+                "Cancel restores the accepted actual release and its totality presentation after the normal settling gate");
             for (int i = 0; i < 600 && !game.EndingSequenceActive; i++)
             { game.Tick(Dt, Vector2.zero, false); if (i % 15 == 0) yield return null; }
             Check(game.totality && game.EndingSequenceActive && game.Credits.Section == EndingCreditSection.Intro &&
@@ -632,6 +650,7 @@ public sealed class EclipseEndingValidation : MonoBehaviour
                 game.MoonPreviewCoverage >= MoonAlignmentRules.RequiredCoverage,
                 "The annular route completes protected credits, receives full cinematic coverage, then restores its original nonblocking Moon and measured visible-rim solve",
                 "protectedTicks=" + annularFrames + " returnedCoverage=" + game.MoonPreviewCoverage);
+            ValidateCompletedEclipseViewpoints(game, "Actual annular solve");
             Check(Hash(GameProgress.SavePath) == saveBefore && !GameCompletionState.CreditsUnlocked,
                 "Starting credits through the annular path neither rewrites Continue nor unlocks completion before EXIT");
         }
@@ -646,6 +665,8 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             Vector3.Distance(game.moon.position, originalMoon) < .0001f && Vector3.Distance(game.moon.localScale, originalScale) < .0001f &&
             Quaternion.Angle(game.moon.rotation, originalRotation) < .001f,
             "The declared annular route resets to the exact unsolved original Moon before the independent complete ending route");
+        Check(!game.world.SunSurfaceSuppressed && game.world.SunRenderer.enabled,
+            "Reset restores the original bright Sun instead of retaining a stale totality-only render state");
     }
     IEnumerator SolveMoon(EclipseFinaleGame game)
     {
@@ -1045,6 +1066,7 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             "The actual large-Moon solve moves its blocking scene sphere into the sky without changing the accepted raw release or losing the eclipse",
             "rawMoon=" + moon + " gameplayMoon=" + game.moon.position + " actualCoverage=" + game.MoonPreviewCoverage);
         ValidateReturnedMoonRoute(game);
+        ValidateCompletedEclipseViewpoints(game, "Actual large-Moon solve");
         Check(solarPresentationStable && readingMoonFramingStable && Vector3.Distance(EclipseFinaleGame.SunPosition, originalSun) < .0001f &&
             Vector3.Distance(game.world.SunRenderer.transform.position, originalSun) < .0001f,
             "Return restores the exact original low puzzle Sun after keeping all Team/Assets/Thanks lunar limb samples framed",
@@ -1064,6 +1086,94 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             "Resume keeps the same ending music active for the actual EXIT walk");
         Check(!game.paused && Bool(game, "ExitUnlocked") && !ParallaxGameShell.BlocksGameplay,
             "Resume after credits keeps the unlocked EXIT without restarting the mandatory roll");
+    }
+    static bool EclipsePresentationMatchesEye(EclipseFinaleGame game)
+    {
+        var world = game.world;
+        Vector3 eye = game.view.transform.position, moonRay = game.moon.position - eye;
+        Vector3 haloRay = world.CoronaRenderer.transform.position - eye;
+        return game.totality && game.MoonAlignmentConfirmed && world.SunSurfaceSuppressed && !world.SunRenderer.enabled &&
+            world.CoronaTracksMoonRim && world.VisibleCoronaMargin > 0 &&
+            Vector3.Distance(eye, world.CoronaReferenceEye) < .0001f &&
+            haloRay.magnitude > moonRay.magnitude &&
+            // Cross residual is stable for nearly collinear float vectors.
+            // acos(normalized-dot) can report 0.0198 degrees for the same ray;
+            // 1e-4 here is a stricter ~0.0057-degree alignment tolerance.
+            Vector3.Cross(moonRay.normalized, haloRay.normalized).magnitude <= .0001f &&
+            Vector3.Dot(moonRay.normalized, haloRay.normalized) > .99999f;
+    }
+    void ValidateCompletedEclipseViewpoints(EclipseFinaleGame game, string route)
+    {
+        Vector3 eye = game.view.transform.position, feet = game.body.transform.position;
+        Quaternion rotation = game.view.transform.rotation, moonRotation = game.moon.rotation;
+        Vector3 moonPosition = game.moon.position, moonScale = game.moon.localScale;
+        MoonAlignmentSample release = game.ReleasedMoonAlignment;
+        bool hidden = true, aligned = true; int samples = 0;
+        float maximumCrossResidual = 0, maximumReportedAngle = 0;
+        float minimumHaloDepthGap = float.PositiveInfinity, minimumCoronaMargin = float.PositiveInfinity;
+        var observerFailures = new List<string>();
+        Action observe = () =>
+        {
+            var world = game.world;
+            Vector3 at = game.view.transform.position, moonRay = game.moon.position - at;
+            Vector3 haloRay = world.CoronaRenderer.transform.position - at;
+            float cross = Vector3.Cross(moonRay.normalized, haloRay.normalized).magnitude;
+            float angle = Vector3.Angle(moonRay, haloRay);
+            maximumCrossResidual = Mathf.Max(maximumCrossResidual, cross);
+            maximumReportedAngle = Mathf.Max(maximumReportedAngle, angle);
+            minimumHaloDepthGap = Mathf.Min(minimumHaloDepthGap, haloRay.magnitude - moonRay.magnitude);
+            minimumCoronaMargin = Mathf.Min(minimumCoronaMargin, world.VisibleCoronaMargin);
+            bool matches = EclipsePresentationMatchesEye(game);
+            hidden &= world.SunSurfaceSuppressed && !world.SunRenderer.enabled;
+            aligned &= matches; samples++;
+            if (!matches && observerFailures.Count < 4)
+                observerFailures.Add("eye=" + at.ToString("F5") + " moon=" + game.moon.position.ToString("F5") +
+                    " sun=" + EclipseFinaleGame.SunPosition.ToString("F5") + " halo=" + world.CoronaRenderer.transform.position.ToString("F5") +
+                    " radius=" + game.MoonRadius + " moonDistance=" + moonRay.magnitude +
+                    " sunDistance=" + Vector3.Distance(at, EclipseFinaleGame.SunPosition) + " haloDistance=" + haloRay.magnitude +
+                    " referenceEye=" + world.CoronaReferenceEye.ToString("F5") + " tracks=" + world.CoronaTracksMoonRim +
+                    " margin=" + world.VisibleCoronaMargin + " cross=" + cross + " reportedAngle=" + angle +
+                    " totality=" + game.totality + " confirmed=" + game.MoonAlignmentConfirmed +
+                    " suppressed=" + world.SunSurfaceSuppressed + " sunEnabled=" + world.SunRenderer.enabled);
+        };
+        try
+        {
+            // Observer-only geometry probes cover side steps and the entire
+            // authored approach/corridor. No body teleport or solve flags change.
+            for (int column = 0; column < 5; column++) for (int station = 0; station < 14; station++)
+            {
+                game.view.transform.position = new Vector3(-4 + column * 2,
+                    .06f + EclipseFinaleGame.EyeHeight + .12f, Mathf.Lerp(7, 72, station / 13f));
+                game.world.SetLight(game.darkness, game.totality);
+                observe();
+            }
+            foreach (Vector3 position in new[] { new Vector3(-10, eye.y, 1), new Vector3(10, eye.y, 1),
+                new Vector3(-10, eye.y, 45), new Vector3(10, eye.y, 45) })
+            {
+                game.view.transform.position = position;
+                game.world.SetLight(game.darkness, game.totality);
+                observe();
+            }
+        }
+        finally
+        {
+            game.view.transform.SetPositionAndRotation(eye, rotation);
+            game.world.SetLight(game.darkness, game.totality);
+        }
+        Check(hidden && samples == 74,
+            route + ": the bright Sun cannot reappear after credits at lateral and near/far EXIT observer positions",
+            "observerSamples=" + samples + "; renderer state, not captured pixels");
+        Check(aligned && EclipsePresentationMatchesEye(game),
+            route + ": every moved observer retains a positive corona rim centered behind the unchanged opaque Moon",
+            "observerSamples=" + samples + " maximumCrossResidual=" + maximumCrossResidual +
+            " maximumReportedAcosAngle=" + maximumReportedAngle + " minimumHaloDepthGap=" + minimumHaloDepthGap +
+            " minimumCoronaMargin=" + minimumCoronaMargin + " firstFailures=[" + string.Join(" | ", observerFailures) +
+            "]; halo/limb angular geometry, not rendered-pixel approval");
+        Check(Vector3.Distance(feet, game.body.transform.position) < .000001f &&
+            Vector3.Distance(eye, game.view.transform.position) < .000001f && Quaternion.Angle(rotation, game.view.transform.rotation) < .001f &&
+            Vector3.Distance(moonPosition, game.moon.position) < .000001f && Quaternion.Angle(moonRotation, game.moon.rotation) < .001f &&
+            Vector3.Distance(moonScale, game.moon.localScale) < .000001f && game.ReleasedMoonAlignment.Equals(release),
+            route + ": observer probes restore the camera and preserve the actual player, Moon shape/pose and original successful release snapshot");
     }
     void ValidateReturnedMoonRoute(EclipseFinaleGame game)
     {
@@ -1265,6 +1375,7 @@ public sealed class EclipseEndingValidation : MonoBehaviour
         Vector3 fixedFeet = game.body.transform.position, previousEye = game.view.transform.position;
         float fov = game.view.fieldOfView, previousAlpha = presentation.BlackAlpha, previousDistance = presentation.ForwardDistance;
         bool gradual = true, darkIntermediateSeen = false, clearLeadInSeen = false, bodyStable = true;
+        bool entranceTotalityStable = true; int entranceObserverSamples = 0;
         int guard = 0;
         while (presentation.Phase == EclipseExitPhase.Enter)
         {
@@ -1277,12 +1388,21 @@ public sealed class EclipseEndingValidation : MonoBehaviour
             previousEye = game.view.transform.position; previousAlpha = presentation.BlackAlpha; previousDistance = presentation.ForwardDistance;
             CheckNoPrematureQuit(game, presentation);
             if (++guard > 600) throw new TimeoutException("Exit entrance did not finish.");
-            if (guard % 10 == 0) yield return null;
+            if (guard % 10 == 0)
+            {
+                // A real frame executes World.LateUpdate after the entrance's
+                // camera motion; do not refresh through SetLight in this probe.
+                yield return null;
+                entranceTotalityStable &= EclipsePresentationMatchesEye(game); entranceObserverSamples++;
+            }
         }
         Check(gradual && bodyStable && clearLeadInSeen && darkIntermediateSeen && presentation.Phase == EclipseExitPhase.BlackThanks &&
             presentation.Elapsed >= EclipseExitPresentation.EnterDuration - Dt && presentation.ForwardDistance > 4 && presentation.BlackAlpha > .999f,
             attempt + ": entry advances gradually for 3.8 seconds, then settles to full black without moving the player body",
             "elapsed=" + presentation.Elapsed + " forward=" + presentation.ForwardDistance);
+        Check(entranceTotalityStable && entranceObserverSamples > 0,
+            attempt + ": actual LateUpdate keeps the solved eclipse aligned while the final entrance camera moves beyond normal gameplay ticks",
+            "lateFrameSamples=" + entranceObserverSamples + "; camera/corona geometry and bright-surface visibility only");
         var music = game.GetComponent<EclipseEndingMusic>();
         Check(music != null && music.CodaClip != null && music.CodaSource != null,
             attempt + ": the approved original-song ending coda has its own loaded voice");

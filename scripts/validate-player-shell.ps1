@@ -114,8 +114,8 @@ $completed = @()
 $failure = $null
 $seenPids = New-Object 'System.Collections.Generic.HashSet[int]'
 $specifications = @(
-    [PSCustomObject]@{suite='ending';phase='exercise';report='eclipse-ending-results.json';checks=533},
-    [PSCustomObject]@{suite='ending';phase='reload';report='eclipse-ending-reload-results.json';checks=26},
+    [PSCustomObject]@{suite='ending';phase='exercise';report='eclipse-ending-results.json';checks=546},
+    [PSCustomObject]@{suite='ending';phase='reload';report='eclipse-ending-reload-results.json';checks=27},
     [PSCustomObject]@{suite='shell';phase='exercise';report='player-shell-exercise-results.json';checks=361},
     [PSCustomObject]@{suite='shell';phase='reload';report='player-shell-reload-results.json';checks=144},
     [PSCustomObject]@{suite='gallery';phase='fall';report='gallery-clean-transition-results.json';checks=66},

@@ -73,7 +73,7 @@ namespace ShadeLink.Eclipse
         public float CoronaRimRadius {get;private set;}
         public Vector3 CoronaReferenceEye {get;private set;}
         public bool CoronaTracksMoonRim {get;private set;}
-        bool coronaReferenceValid;
+        public bool SunSurfaceSuppressed {get;private set;}
         public string AssetStatus => (selectedEnvironment!=null?selectedEnvironment.Status:"Environment not built")+
             " sunSurface="+SunSurfaceReady+" selectedExitOriginal="+ExitOriginalAssetReady;
 
@@ -233,7 +233,6 @@ namespace ShadeLink.Eclipse
             if(float.IsNaN(position.x)||float.IsNaN(position.y)||float.IsNaN(position.z)||
                 float.IsInfinity(position.x)||float.IsInfinity(position.y)||float.IsInfinity(position.z)||position.sqrMagnitude<.001f)
                 position=EclipseFinaleGame.PuzzleSunPosition;
-            if((position-CurrentSunPosition).sqrMagnitude>.000001f)coronaReferenceValid=false;
             CurrentSunPosition=position;
             if(SunRenderer!=null)SunRenderer.transform.position=position;
             if(sunlight!=null)sunlight.transform.rotation=Quaternion.LookRotation(-position.normalized);
@@ -531,18 +530,27 @@ namespace ShadeLink.Eclipse
         public void SetEnding(bool value){corridor.gameObject.SetActive(value);}
         void UpdateCoronaPresentation(bool totality)
         {
+            // A solved eclipse is an authored totality presentation. The accepted
+            // release stays physical and immutable, but a finite-distance Sun
+            // must not reappear around it as the observer walks towards EXIT.
+            // Suppress only its bright surface; lighting and source transforms
+            // remain owned by the original puzzle/cinematic logic.
+            SunSurfaceSuppressed=totality&&game!=null&&game.MoonAnchored;
+            if(SunRenderer!=null)SunRenderer.enabled=!SunSurfaceSuppressed;
             if(CoronaRenderer==null||game==null||game.view==null||game.moon==null)return;
             var root=CoronaRenderer.transform;
-            if(!totality||!game.MoonAnchored)
+            if(!SunSurfaceSuppressed)
             {
-                coronaReferenceValid=false;CoronaTracksMoonRim=false;VisibleCoronaMargin=0;
+                CoronaTracksMoonRim=false;VisibleCoronaMargin=0;
                 root.position=CurrentSunPosition;
                 root.rotation=Quaternion.LookRotation(-CurrentSunPosition.normalized);
                 root.localScale=Vector3.one;CoronaRimRadius=EclipseFinaleGame.SunRadius*1.04f;
                 return;
             }
-            if(!coronaReferenceValid||(game.Credits!=null&&game.Credits.Active))
-            {CoronaReferenceEye=game.view.transform.position;coronaReferenceValid=true;}
+            // Keep the same observer for the lunar silhouette and its halo in
+            // credits, ordinary walking and the moving final entrance camera.
+            CoronaReferenceEye=game.view.transform.position;
+            CoronaTracksMoonRim=false;VisibleCoronaMargin=0;
             Vector3 toMoon=game.moon.position-CoronaReferenceEye;
             float moonDistance=toMoon.magnitude;
             float sunDistance=Vector3.Distance(CurrentSunPosition,CoronaReferenceEye);
@@ -582,6 +590,13 @@ namespace ShadeLink.Eclipse
             trimMat.color=Color.Lerp(new Color(.43f,.48f,.44f),new Color(.08f,.48f,.25f),t);
         }
         void OnDestroy(){foreach(var material in shelterMaterials)if(material!=null){if(Application.isPlaying)Destroy(material);else DestroyImmediate(material);}}
+        void LateUpdate()
+        {
+            // EXIT moves the camera after the normal eclipse tick has stopped.
+            // Refresh after all camera movement, without retesting the solve or
+            // moving the player, lunar mesh, Sun source or directional light.
+            if(game!=null)UpdateCoronaPresentation(game.totality);
+        }
         void Update()
         {
             if(ambience!=null&&legacyAmbienceEnabled)
