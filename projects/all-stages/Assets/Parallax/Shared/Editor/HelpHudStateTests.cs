@@ -26,6 +26,11 @@ namespace ShadeLink.Editor
             state.Reset();
             Check(!state.IsActive && state.Direction == 0 && state.Expansion == 0, "scene cleanup");
             Check(Math.Abs(HelpHudState.ExpandSeconds - .42f) < .0001f && Math.Abs(HelpHudState.TurnSeconds - .44f) < .0001f, "reference timing");
+            Check(NikeHintGuide.Stage(false, false) == 0 && NikeHintGuide.Stage(true, false) == 1 && NikeHintGuide.Stage(true, true) == 2, "Nike hint stages follow artwork and door state");
+            for (int stage = 0; stage < 3; stage++) for (int page = 1; page <= 3; page++)
+                Check(!string.IsNullOrWhiteSpace(NikeHintGuide.Text(stage, page)), "Nike hint content " + stage + "/" + page);
+            foreach (string key in new[] { "tutorial.size.0", "tutorial.size.1", "tutorial.size.2", "tutorial.size.3", "tutorial.climb", "tutorial.sun", "gallery.first", "gallery.nike.alternate", "gallery.bottle.extract", "gallery.bottle.balance", "gallery.bottle.sword", "gallery.bottle.exit", "gallery.portrait", "gallery.portrait.exit", "gallery.hands", "gallery.hands.exit", "beach.receivers", "beach.receivers.exit", "beach.bridges", "beach.boat.shadow", "beach.boat.prepare", "beach.boat.travel", "beach.boat.exit", "beach.lift", "beach.lift.exit", "eclipse.moon", "eclipse.exit" })
+                for (int page = 1; page <= 3; page++) Check(!string.IsNullOrWhiteSpace(HintCatalogue.Text(key, page)), "hint content " + key + "/" + page);
             foreach (int direction in new[] { -1, 1 })
             {
                 var target = Quaternion.Euler(0, HelpHudFaces.PivotRotation(direction, 1), 0) * HelpHudFaces.FacePosition(direction);

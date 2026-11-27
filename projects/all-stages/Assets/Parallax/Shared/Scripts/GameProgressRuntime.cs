@@ -83,7 +83,7 @@ namespace ShadeLink
             failNextLoadAfterFade = true;
             return true;
         }
-        public static void NewGame() { actionError = null; Runner.BeginLoad("Tutorial", null, false, true); }
+        public static void NewGame() { actionError = null; GlassTrial.HelpHudController.RequestTutorialIntro(); Runner.BeginLoad("Tutorial", null, false, true); }
         public static void ContinueGame()
         {
             actionError = null;

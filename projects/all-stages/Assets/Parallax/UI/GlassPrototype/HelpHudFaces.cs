@@ -51,14 +51,14 @@ namespace GlassTrial
             pivot = Rect("Cube pivot", root.transform, new Vector2(Width, Height), Vector2.zero);
             pivot.localPosition = new Vector3(0, 0, HalfWidth);
             roundedStage = MakeRoundedStage();
-            string[] titles = { "WASD 이동  →  스페이스바 점프", "마우스 좌클릭 잡기  →  우클릭 회전", "R 초기화  →  SHIFT + R 전체 초기화" };
+            string[] titles = { "<color=#00CDE6>WASD</color> 이동  →  <color=#00CDE6>스페이스바</color> 점프", "마우스 <color=#00CDE6>좌클릭</color> 잡기  →  <color=#00CDE6>우클릭</color> 회전", "<color=#00CDE6>R</color> 초기화  →  <color=#00CDE6>SHIFT + R</color> 전체 초기화" };
             string[] descriptions = { "공간을 이동하고 점프해 퍼즐의 단서를 탐색하세요.", "사물을 잡고 회전해 원하는 방향으로 놓아보세요.", "사물의 배치를 다시 시작할 수 있어요." };
             for (int i = 0; i < 3; i++)
             {
                 faces[i] = Rect("Page " + (i + 1), pivot, new Vector2(Width, Height), Vector2.zero);
                 groups[i] = faces[i].gameObject.AddComponent<CanvasGroup>(); groups[i].blocksRaycasts = false;
-                MakeVideo(i, faces[i]); Caption(faces[i], titles[i], 20, new Vector2(0, -104), true);
-                Caption(faces[i], descriptions[i], 13, new Vector2(0, -132), false);
+                MakeVideo(i, faces[i]); Caption(faces[i], titles[i], 23, new Vector2(0, -104), true);
+                Caption(faces[i], descriptions[i], 16, new Vector2(0, -132), false);
                 faces[i].gameObject.SetActive(false);
             }
             var screenRect = Rect("Perspective page output", displayParent, new Vector2(Width, Height), new Vector2(0, -2));
@@ -78,7 +78,10 @@ namespace GlassTrial
         void Caption(Transform face, string text, int size, Vector2 pos, bool bold)
         {
             var r = Rect("Caption", face, new Vector2(610, 34), pos); var label = r.gameObject.AddComponent<Text>();
-            label.font = font; label.text = text; label.fontSize = size; label.fontStyle = bold ? FontStyle.Bold : FontStyle.Normal;
+            var boldFont = bold ? Resources.Load<Font>("HelpHudFonts/NotoSansKR-Bold") : null;
+            label.font = boldFont != null ? boldFont : font; label.text = text; label.fontSize = size;
+            label.supportRichText = true;
+            label.fontStyle = bold && boldFont == null ? FontStyle.Bold : FontStyle.Normal;
             label.alignment = TextAnchor.MiddleCenter; label.color = Color.white; label.raycastTarget = false;
             label.horizontalOverflow = HorizontalWrapMode.Overflow; label.verticalOverflow = VerticalWrapMode.Overflow;
             var shadow = r.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .35f); shadow.effectDistance = new Vector2(.6f, -.6f);

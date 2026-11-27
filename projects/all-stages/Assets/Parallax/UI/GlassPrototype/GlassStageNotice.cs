@@ -88,7 +88,7 @@ namespace GlassTrial
             panel.anchorMin = panel.anchorMax = new Vector2(.5f, 1f / 6f);
             panel.pivot = new Vector2(.5f, 0);
             backdrop = panel.gameObject.AddComponent<RawImage>(); backdrop.material = material; backdrop.color = new Color(1, 1, 1, .97f); backdrop.raycastTarget = false;
-            Font font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            Font font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             heading = Label(panel, font, 21, new Vector2(20, -11), new Vector2(630, 31));
             room = Label(panel, font, 17, new Vector2(20, -51), new Vector2(620, 30));
             objective = Label(panel, font, 17, new Vector2(20, -84), new Vector2(620, 49));

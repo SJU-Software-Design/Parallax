@@ -26,7 +26,7 @@ public partial class ParallaxGameShell : MonoBehaviour
     readonly Dictionary<string, GUIStyle> textStyles = new Dictionary<string, GUIStyle>();
     readonly List<string> soundTrace = new List<string>();
     Texture2D background, schoolLogo, brushShort, brushPanel, circleTexture;
-    Font bodyFont, titleFont;
+    Font bodyFont, titleFont, logoFont;
     AudioClip switchClip, startupClip, humClip, rattleClip, crackleClip, confirmClip, backClip, deniedClip;
     AudioSource humSource, lampSource, uiSource;
     float startAt, renderAlpha = 1, lastUiAt = -10, humFadeAt, nextFlickerAt, flickerAt = -100;
@@ -105,8 +105,9 @@ public partial class ParallaxGameShell : MonoBehaviour
         ApplyMenuPointer();
         background = Resources.Load<Texture2D>("Preview/Background");
         schoolLogo = Resources.Load<Texture2D>("Preview/SchoolLogo");
-        bodyFont = Resources.Load<Font>("Preview/BodyFont");
-        titleFont = Resources.Load<Font>("Preview/TitleFont");
+        bodyFont = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? Resources.Load<Font>("Preview/BodyFont");
+        titleFont = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Bold") ?? Resources.Load<Font>("Preview/TitleFont");
+        logoFont = Resources.Load<Font>("Preview/TitleFont") ?? titleFont;
         switchClip = Resources.Load<AudioClip>("Preview/Lamp/Switch");
         startupClip = Resources.Load<AudioClip>("Preview/Lamp/Startup");
         humClip = Resources.Load<AudioClip>("Preview/Lamp/Hum");
@@ -481,12 +482,13 @@ public partial class ParallaxGameShell : MonoBehaviour
     {
         if (string.IsNullOrEmpty(text)) return;
         if (!title) size = Mathf.RoundToInt(size * PreviewTextScale);
-        string key = size + ":" + (int)alignment + ":" + title;
+        bool logo = title && text == "Parallax" && rect == MainTitleRect;
+        string key = size + ":" + (int)alignment + ":" + title + ":" + logo;
         GUIStyle style;
         if (!textStyles.TryGetValue(key, out style))
         {
             style = new GUIStyle(GUI.skin.label) {
-                font = title ? titleFont : bodyFont, fontSize = size,
+                font = logo ? logoFont : title ? titleFont : bodyFont, fontSize = size,
                 fontStyle = FontStyle.Normal, alignment = alignment, wordWrap = true,
                 clipping = TextClipping.Clip, richText = false, padding = new RectOffset(0, 0, 0, 0)
             };

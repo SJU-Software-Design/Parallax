@@ -60,6 +60,9 @@ namespace ShadeLink.Tutorial
         int step;
         bool paused;
         bool firstDiePickedUp;
+        string activeHintKey;
+        int hintPage;
+        string CurrentHintKey => inSunlightRoom ? "tutorial.sun" : inClimbRoom ? "tutorial.climb" : "tutorial.size." + (exitUnlocked ? 3 : Mathf.Clamp(step, 0, 2));
         string message;
         int cornerGuideStep;
         float cornerGuideRemaining;
@@ -635,6 +638,10 @@ namespace ShadeLink.Tutorial
                 return;
             }
 
+            string hintKey = CurrentHintKey;
+            if (hintKey != activeHintKey) { activeHintKey = hintKey; if (hintPage > 0) hintPage = 1; }
+            if (PlayerControls.Pressed(PlayerControls.Action.Hints) && !GlassTrial.HelpHudController.IsPresented && !GlassTrial.HelpHudController.EclipseHintTransitioning)
+                hintPage = (hintPage + 1) % 4;
             var frame = controls.Read(Time.deltaTime, Aimed != null, Held != null);
             bool practicedRotation = false;
             Quaternion beforeRotation = Held != null ? Held.transform.rotation : Quaternion.identity;
@@ -868,9 +875,10 @@ namespace ShadeLink.Tutorial
         {
             if (elevatorDeparted || (MuseumElevator != null && MuseumElevator.ContainsPlayer && !paused)) return;
             if (Camera == null) return;
+            var uiFont = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? font;
             float width = Screen.width;
             float height = Screen.height;
-            var style = new GUIStyle(GUI.skin.label) { font = font, fontSize = Mathf.RoundToInt(20 * global::GameShellSettingsRuntime.TextScale), wordWrap = true, alignment = TextAnchor.MiddleCenter };
+            var style = new GUIStyle(GUI.skin.label) { font = uiFont, fontSize = Mathf.RoundToInt(20 * global::GameShellSettingsRuntime.TextScale), wordWrap = true, alignment = TextAnchor.MiddleCenter };
             style.normal.textColor = Color.white;
             bool sizeReady = Held != null && step < LessonCount && !exitUnlocked &&
                 interaction.ProjectionApplied && interaction.ReleaseRestriction == null &&
@@ -895,6 +903,8 @@ namespace ShadeLink.Tutorial
                 DrawReference(rect, Reference);
             }
             PlayerControls.DrawCursor(new Vector2(width / 2, height / 2), Aimed != null, Held != null, false, Accent, Color.white);
+            if (!paused && hintPage > 0 && !string.IsNullOrEmpty(activeHintKey))
+                GlassTrial.HelpHudController.DrawEclipseHintPanel("HINT " + hintPage + " / 3", GlassTrial.HintCatalogue.Text(activeHintKey, hintPage), hintPage, width - 30, height - 50, Mathf.Min(520, width - 60));
             string notice = CurrentBottomNotice;
             DrawRotationHint(width, height);
             var glassNotice = GetComponent<GlassTrial.TutorialGlassNotice>();
@@ -912,11 +922,11 @@ namespace ShadeLink.Tutorial
             {
                 float menuWidth = Mathf.Min(400f, width - 32f);
                 var menu = new Rect((width - menuWidth) / 2, height / 2 - 202, menuWidth, 404);
-                var button = new GUIStyle(GUI.skin.button) { font = font, fontSize = 20, wordWrap = true };
+                var button = new GUIStyle(GUI.skin.button) { font = uiFont, fontSize = 20, wordWrap = true };
                 GUI.Box(menu, GUIContent.none);
-                if (StageTravelMenu.DrawPauseTabs(new Rect(menu.x, menu.y - 46, menu.width, 38), font, ref stageTravelTab))
+                if (StageTravelMenu.DrawPauseTabs(new Rect(menu.x, menu.y - 46, menu.width, 38), uiFont, ref stageTravelTab))
                 {
-                    StageTravelMenu.DrawDestinations(new Rect(menu.x, menu.y + 8, menu.width, menu.height - 16), font);
+                    StageTravelMenu.DrawDestinations(new Rect(menu.x, menu.y + 8, menu.width, menu.height - 16), uiFont);
                     return;
                 }
                 GUI.Label(new Rect(menu.x + 20, menu.y + 12, menu.width - 40, 32), "튜토리얼 일시정지", style);

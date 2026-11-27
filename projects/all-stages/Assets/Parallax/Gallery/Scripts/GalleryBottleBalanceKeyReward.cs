@@ -74,7 +74,7 @@ namespace ShadeLink.Gallery
         public event Action<float> SwordReleasePoseRequested;
 
         public string Status => !Available ? AvailabilityReason : Unlocked ?
-            (DoorReleaseReady ? "검으로 봉인을 풀었어요 · 열린 문으로 이동하세요" :
+            (DoorReleaseReady ? "" :
                 "검이 고정됐어요 · 봉인이 풀리고 있어요") : Busy ?
             "검을 받침대의 홈에 맞춰 넣고 있어요" : Carrying ?
             "검을 들었어요 · 방 가운데 대리석 받침대의 홈을 클릭하세요" : SwordAvailable ?

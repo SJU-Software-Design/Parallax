@@ -15,7 +15,7 @@ public sealed class GameShellConfig
     public static KeyCode[] DefaultBindings()
     {
         return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
-            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.J };
+            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.H };
     }
     public static GameShellConfig Defaults() { return new GameShellConfig(); }
     public GameShellConfig DeepCopy()
@@ -83,7 +83,14 @@ public partial class ParallaxGameShell : MonoBehaviour
                 var saved = JsonUtility.FromJson<GameShellConfig>(File.ReadAllText(settingsSavePath));
                 var failures = new List<string>();
                 CheckConfig(saved, failures);
-                if (failures.Count == 0) { appliedConfig = saved.DeepCopy(); loadedSavedSettings = true; }
+                if (failures.Count == 0)
+                {
+                    appliedConfig = saved.DeepCopy(); loadedSavedSettings = true;
+                    // Migrate the former default hint key when H is available.
+                    int hint = (int)ShadeLink.PlayerControls.Action.Hints;
+                    if (appliedConfig.bindings[hint] == KeyCode.J && Array.IndexOf(appliedConfig.bindings, KeyCode.H) < 0)
+                        appliedConfig.bindings[hint] = KeyCode.H;
+                }
                 else Notify("저장된 설정을 읽지 못해 기본값을 사용합니다.");
             }
         }

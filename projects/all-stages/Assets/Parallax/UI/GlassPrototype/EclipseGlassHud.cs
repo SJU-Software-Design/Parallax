@@ -145,7 +145,7 @@ namespace GlassTrial
         }
 
         static Text Label(string name, Transform parent, int size)
-        { var r = Rect(name, parent); var t = r.gameObject.AddComponent<Text>(); t.font = Resources.Load<Font>("Preview/BodyFont"); if (t.font == null) t.font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "Arial" }, size); t.fontSize = size; t.color = Color.white; t.raycastTarget = false; t.horizontalOverflow = HorizontalWrapMode.Wrap; t.verticalOverflow = VerticalWrapMode.Overflow; var s = r.gameObject.AddComponent<Shadow>(); s.effectColor = new Color(0, 0, 0, .7f); s.effectDistance = Vector2.one; return t; }
+        { var r = Rect(name, parent); var t = r.gameObject.AddComponent<Text>(); t.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? Resources.Load<Font>("Preview/BodyFont"); if (t.font == null) t.font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "Arial" }, size); t.fontSize = size; t.color = Color.white; t.raycastTarget = false; t.horizontalOverflow = HorizontalWrapMode.Wrap; t.verticalOverflow = VerticalWrapMode.Overflow; var s = r.gameObject.AddComponent<Shadow>(); s.effectColor = new Color(0, 0, 0, .7f); s.effectDistance = Vector2.one; return t; }
         void Update()
         {
             if (!ready || game == null) return;
@@ -183,7 +183,7 @@ namespace GlassTrial
             bool puzzle = warning == null && !success && !timed && !sun && moonHeld;
             if (sun) sunGaugeVisual = true;
             else if (puzzle || gaugeMorph <= 0f) sunGaugeVisual = false;
-            string text = warning ?? (success ? "\ub2ec\uc774 \ud0dc\uc591\uc744 \uac00\ub838\uc2b5\ub2c8\ub2e4." : timed ? game.notice : game.ExitUnlocked ? "\ub9c8\uc9c0\ub9c9 \ucd9c\uad6c" : game.Safe ? "\uadf8\ub298 \uc548\uc804" : "");
+            string text = warning ?? (success ? "\ub2ec\uc774 \ud0dc\uc591\uc744 \uac00\ub838\uc2b5\ub2c8\ub2e4." : timed ? game.notice : game.ExitUnlocked ? "\ub9c8\uc9c0\ub9c9 \ucd9c\uad6c" : game.Safe ? "그늘 · 안전" : "");
             bool show = warning != null || success || timed || sun || puzzle || game.ExitUnlocked || game.Safe;
             visibility = Mathf.MoveTowards(visibility, show ? 1f : 0f, Time.unscaledDeltaTime / .25f);
             if (show) transition.Update(new MuseumHudTextTransition.View { Mode = sun || puzzle ? 1 : 0, Caption = text }, Time.unscaledDeltaTime, warning != null || sun);

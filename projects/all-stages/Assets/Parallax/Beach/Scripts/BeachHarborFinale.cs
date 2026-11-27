@@ -77,7 +77,7 @@ namespace ShadeLink.Beach
   public void HandleInput(float dt)
   {
    if(!Manipulating||game==null||!game.active||geometryFrozen)return;
-   bool helpPointer=GlassTrial.HelpHudController.PointerInUse;
+   bool helpPointer=GlassTrial.HelpHudController.PointerInUse||GlassTrial.HelpHudController.ClickConsumed;
    if(Input.GetKeyDown(KeyCode.Backspace)||Input.GetKeyDown(KeyCode.Return)||!helpPointer&&(Input.GetMouseButtonDown(1)||Input.GetMouseButtonDown(0)&&Time.unscaledTime-selectedAt>.15f)){CancelInteraction();return;}
    var p=pierData[selected];Vector2 m=new Vector2((Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0),(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0))*Mathf.Max(0,dt)*1.65f;
    if(!helpPointer&&Input.GetMouseButton(0))m+=new Vector2(Input.GetAxisRaw("Mouse X"),Input.GetAxisRaw("Mouse Y"))*.13f;

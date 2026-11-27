@@ -225,7 +225,7 @@ namespace ShadeLink.Eclipse
             { if (paused) Play(); else Pause(); return; }
             if (paused) return;
             if (PlayerControls.Pressed(PlayerControls.Action.Reset)) { ResetGame(); return; }
-            if (PlayerControls.Pressed(PlayerControls.Action.Hints) && GameShellSettingsRuntime.ShowControlHints) hint = (hint + 1) % 4;
+            if (PlayerControls.Pressed(PlayerControls.Action.Hints) && GameShellSettingsRuntime.ShowControlHints && !GlassTrial.HelpHudController.IsPresented && !GlassTrial.HelpHudController.EclipseHintTransitioning) hint = (hint + 1) % 4;
             if (Cursor.lockState != CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse) { Pause(); return; }
             float dt = Time.deltaTime;
             UpdateAim();
@@ -248,7 +248,6 @@ namespace ShadeLink.Eclipse
         {
             ClearSharedControlInput(); exposure = 0; hint = 0;
             SetCursor(true);
-            Tell("Exit 표지를 키워 i의 빈 통로로 나가세요.", 7);
         }
 
         public void TickEndingSequence(float dt, bool spaceHeld, bool escapePressed)

@@ -35,6 +35,8 @@ namespace ShadeLink.Beach
         public Quaternion heldRotation { get => Interaction.Rotation; set => Interaction.Rotation=value; }
         public bool active, started, won, safe=true, invalid, automated, showHints;
         public bool visitedUpper,endingMenuVisible;
+        public string HintKey { get; private set; }
+        public int HintPage { get; private set; }
         public int checkpoint, respawns, grabs, drops;
         public string notice, invalidReason;
         public float noticeUntil;
@@ -228,7 +230,10 @@ namespace ShadeLink.Beach
             if(!active||won)return;
             if(Cursor.lockState!=CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse){Pause();return;}
             if(PlayerControls.Pressed(PlayerControls.Action.Reset)){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
-            if(PlayerControls.Pressed(PlayerControls.Action.Hints))showHints=!showHints;
+            string hintKey = GlassTrial.HintCatalogue.Beach(this);
+            if (hintKey != HintKey) { HintKey = hintKey; if (showHints && hintKey != null) HintPage = 1; else if (hintKey == null) HintPage = 0; }
+            if (PlayerControls.Pressed(PlayerControls.Action.Hints) && !GlassTrial.HelpHudController.IsPresented && !GlassTrial.HelpHudController.EclipseHintTransitioning)
+            { if (HintKey != null) { HintPage = (HintPage + 1) % 4; showHints = HintPage > 0; } else showHints = !showHints; }
             if(harborFinale!=null&&harborFinale.Manipulating){harborFinale.HandleInput(Time.deltaTime);Tick(Time.deltaTime,Vector2.zero);return;}
             var frame=controls.Read(Time.deltaTime,aimed!=null,held!=null);
             if(checkpoint==2&&held==null&&boat!=null&&PlayerControls.Pressed(PlayerControls.Action.Interact))boat.TryLaunch();

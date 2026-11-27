@@ -20,7 +20,7 @@ namespace ShadeLink.Beach
         void OnGUI()
         {
             if(game==null)return;
-            if(text==null){text=new GUIStyle(GUI.skin.label){font=game.font,fontSize=22,wordWrap=true};text.normal.textColor=paper;title=new GUIStyle(text){fontSize=38,fontStyle=FontStyle.Bold};small=new GUIStyle(text){fontSize=18};button=new GUIStyle(GUI.skin.button){font=game.font,fontSize=24};goal=new GUIStyle(small){fontStyle=FontStyle.Bold};goal.normal.textColor=new Color(1,.78f,.38f);}
+            if(text==null){text=new GUIStyle(GUI.skin.label){font=(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),fontSize=22,wordWrap=true};text.normal.textColor=paper;title=new GUIStyle(text){fontSize=38,fontStyle=FontStyle.Bold};small=new GUIStyle(text){fontSize=18};button=new GUIStyle(GUI.skin.button){font=(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),fontSize=24};goal=new GUIStyle(small){fontStyle=FontStyle.Bold};goal.normal.textColor=new Color(1,.78f,.38f);}
             float textScale=global::GameShellSettingsRuntime.TextScale;
             text.fontSize=Mathf.RoundToInt(22*textScale);title.fontSize=Mathf.RoundToInt(38*textScale);small.fontSize=Mathf.RoundToInt(18*textScale);button.fontSize=Mathf.RoundToInt(24*textScale);goal.fontSize=small.fontSize;
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
@@ -60,25 +60,23 @@ namespace ShadeLink.Beach
                 else if(!glassReady&&game.checkpoint==3&&game.skyShip!=null&&game.skyShip.IsAboard)GUI.Label(new Rect(460,650,800,60),game.skyShip.Status,text);
                 else if(game.harborFinale!=null&&game.harborFinale.HasAimTarget(game.view))GUI.Label(new Rect(460,475,780,50),game.harborFinale.AimText(game.view),text);
                 else if(!hoverReady&&game.aimed!=null)GUI.Label(new Rect(540,475,630,36),"[왼쪽 클릭] "+game.aimed.title,text);
-                if(game.showHints){Panel(new Rect(25,hoist?275:207,630,230),ink);GUI.Label(new Rect(47,hoist?292:224,587,204),BeachWorld.Hints[game.checkpoint],text);}
+                if(game.showHints && game.HintKey != null && game.HintPage > 0)
+                    GlassTrial.HelpHudController.DrawEclipseHintPanel("HINT " + game.HintPage + " / 3", GlassTrial.HintCatalogue.Text(game.HintKey, game.HintPage), game.HintPage, 1570, 855, 520);
+                else if(game.showHints && game.HintKey == null) GlassTrial.HelpHudController.DrawHintPanel("힌트", BeachWorld.Hints[game.checkpoint], 1570, 855, 520);
                 if(!glassReady&&Time.unscaledTime<game.noticeUntil)GUI.Label(new Rect(hoist?25:300,hoist?811:789,hoist?1550:1090,hoist?30:50),game.notice,small);
-                if(global::GameShellSettingsRuntime.ShowControlHints)
-                {
-                Panel(new Rect(0,851,1600,49),ink);GUI.Label(new Rect(25,861,1550,34),ControlGuide(),small);
-                }
             }
             if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.07f,.10f,.52f));Panel(new Rect(320,55,960,790),ink);
-                if(StageTravelMenu.DrawPauseTabs(new Rect(320,15,960,34),game.font,ref stageTravelTab))
+                if(StageTravelMenu.DrawPauseTabs(new Rect(320,15,960,34),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),ref stageTravelTab))
                 {
-                    StageTravelMenu.DrawDestinations(new Rect(366,160,865,570),game.font);
+                    StageTravelMenu.DrawDestinations(new Rect(366,160,865,570),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font));
                     return;
                 }
                 GUI.Label(new Rect(366,95,870,62),game.won?"마지막 항해를 떠났습니다":game.started?"잠시 쉬어 가기":"PARALLAX / 마지막 해변",title);
                 GUI.Label(new Rect(366,180,865,235),game.won?"원근·반사광·그늘·물살·점프를 연결해 마지막 스테이지를 완료했습니다.\n\n기록  "+System.TimeSpan.FromSeconds(game.elapsed).ToString(@"mm\:ss")+"  ·  복귀 "+game.respawns+"회\n\n3D 소품: Beach Surf and Paddle Kit / 3DAssets.dev / CC0":
                     "멀리 정박한 하늘행 배를 향해 길을 만드세요.\n한낮의 해변에서는 스스로 만든 그늘로 이동하세요.\n\n01  태양빛을 거울로 반사해 두 수신기를 연결하세요.\n02  판자로 물길을 잇고 파라솔로 그 위를 가리세요.\n03  그림자에서 배를 꺼내 키우고 그늘에 승선하세요.\n04  해안 바위를 키워 추 받침에 놓고 천막 다리를 인양하세요.\n\n그늘 길이 완성되면 배 갑판에서 E 출항 · H 힌트",text);
-                PlayerControls.DrawOptions(new Rect(366,440,865,143),game.font);
+                PlayerControls.DrawOptions(new Rect(366,440,865,143),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font));
                 if(GUI.Button(new Rect(366,615,414,63),game.won?"처음부터 다시":game.started?"계속하기":"해변 입장",button))game.Resume();
                 if(GUI.Button(new Rect(816,615,414,63),"종료",button))Application.Quit();
                 game.showHints=GUI.Toggle(new Rect(366,710,800,35),game.showHints,"구역별 힌트 표시 (플레이 중 H로 변경)",small);
@@ -117,7 +115,7 @@ namespace ShadeLink.Beach
             if(harbor!=null&&harbor.Materializing)return harbor.Dropping?"작은 배가 보드 앞 받침으로 떨어집니다":"그림자 완성 · 보드의 배가 작아지고 있습니다";
             var boat=game.boat;
             if(boat==null)return "세워진 제작 보드에서 그림자 배를 완성하세요";
-            if(boat.Arrived)return "그늘 배 도착 완료 · 열린 길을 따라 돌과 그림자의 항구로";
+            if(boat.Arrived)return "";
             if(boat.Departed)return "배의 실제 그늘 안에서 항해 중";
             if(boat.IsAboard)return "승선 완료 · 그늘 안에서 E 출항";
             if(game.held==boat.Prop)return "손에 든 배를 출항 부두 앞 물에 크게 놓으세요";

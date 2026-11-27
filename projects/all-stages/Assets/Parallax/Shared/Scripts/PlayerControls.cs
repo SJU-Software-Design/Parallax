@@ -10,7 +10,7 @@ namespace ShadeLink
         static KeyCode[] bindings = DefaultBindings();
         public static KeyCode[] DefaultBindings()
         { return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
-            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.J }; }
+            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.H }; }
         public static KeyCode KeyFor(Action action) { return bindings[(int)action]; }
         public static bool Held(Action action) { return Input.GetKey(KeyFor(action)); }
         public static bool Pressed(Action action) { return Input.GetKeyDown(KeyFor(action)); }
@@ -146,7 +146,7 @@ namespace ShadeLink
         { return new Vector2(look.x, -look.y) * Mathf.Rad2Deg; }
 
         public static bool PausePressed
-        { get { return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button6) || Input.GetKeyDown(KeyCode.Joystick1Button7); } }
+        { get { return (Input.GetKeyDown(KeyCode.Escape) && !GlassTrial.HelpHudController.EscapeConsumed) || Input.GetKeyDown(KeyCode.Joystick1Button6) || Input.GetKeyDown(KeyCode.Joystick1Button7); } }
         public static bool RotationHeld
         { get { return Held(Action.Rotate) || Input.GetKey(KeyCode.Joystick1Button4) || Input.GetAxisRaw(Triggers) < -.5f; } }
 
@@ -181,7 +181,7 @@ namespace ShadeLink
                 Move = move, Look = look,
                 JumpPressed = Pressed(Action.Jump) || Input.GetKeyDown(KeyCode.Joystick1Button0),
                 JumpHeld = Held(Action.Jump) || Input.GetKey(KeyCode.Joystick1Button0),
-                GrabPressed = (!GlassTrial.HelpHudController.PointerInUse || (KeyFor(Action.Grab) != KeyCode.Mouse0 && KeyFor(Action.Grab) != KeyCode.Mouse1 && KeyFor(Action.Grab) != KeyCode.Mouse2)) && Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+                GrabPressed = (!GlassTrial.HelpHudController.PointerInUse && !GlassTrial.HelpHudController.ClickConsumed || (KeyFor(Action.Grab) != KeyCode.Mouse0 && KeyFor(Action.Grab) != KeyCode.Mouse1 && KeyFor(Action.Grab) != KeyCode.Mouse2)) && Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
                     Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick1Button5) || (grabTrigger && !previousGrabTrigger),
                 RotateHeld = held && (!GlassTrial.HelpHudController.PointerInUse || (KeyFor(Action.Rotate) != KeyCode.Mouse0 && KeyFor(Action.Rotate) != KeyCode.Mouse1 && KeyFor(Action.Rotate) != KeyCode.Mouse2)) && RotationHeld,
                 CancelPressed = Pressed(Action.Cancel)

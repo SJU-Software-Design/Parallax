@@ -89,7 +89,7 @@ namespace GlassTrial
             var iconRect = Rect("Left mouse button", panel); iconRect.anchoredPosition = new Vector2(15,-9); iconRect.sizeDelta = new Vector2(27,36);
             mouseIcon = iconRect.gameObject.AddComponent<Image>(); mouseIcon.sprite = MakeMouseSprite(); mouseIcon.preserveAspect = true; mouseIcon.raycastTarget = false;
             var textRect = Rect("Object name", panel); textRect.anchoredPosition = new Vector2(54,-10); textRect.sizeDelta = new Vector2(210,34);
-            label = textRect.gameObject.AddComponent<Text>(); label.font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label = textRect.gameObject.AddComponent<Text>(); label.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             label.fontSize = 20; label.fontStyle = FontStyle.Bold;
             label.horizontalOverflow = HorizontalWrapMode.Wrap; label.verticalOverflow = VerticalWrapMode.Overflow;
             label.color = Color.white; label.alignment = TextAnchor.MiddleLeft; label.raycastTarget = false;

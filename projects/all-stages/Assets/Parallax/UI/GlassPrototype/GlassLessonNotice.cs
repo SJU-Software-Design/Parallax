@@ -45,7 +45,7 @@ namespace GlassTrial
             scaler.referenceResolution = new Vector2(1600, 900); scaler.matchWidthOrHeight = .5f;
             var panel = Rect("Lesson glass panel", root.transform, new Vector2(1195, -130), new Vector2(377, 260));
             backdrop = panel.gameObject.AddComponent<RawImage>(); backdrop.material = material; backdrop.color = new Color(1, 1, 1, .97f); backdrop.raycastTarget = false;
-            Font font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            Font font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             title = Label(panel, font, 22, FontStyle.Bold, new Vector2(17, -14), new Vector2(341, 55));
             detail = Label(panel, font, 18, FontStyle.Normal, new Vector2(17, -67), new Vector2(341, 134));
             status = Label(panel, font, 18, FontStyle.Normal, new Vector2(17, -198), new Vector2(341, 52));
