@@ -113,6 +113,7 @@ Save-Json (Join-Path $ResultDirectory 'existing-players-before.json') @($existin
 $completed = @()
 $failure = $null
 $seenPids = New-Object 'System.Collections.Generic.HashSet[int]'
+$seenProcessInstances = New-Object 'System.Collections.Generic.HashSet[string]'
 $specifications = @(
     [PSCustomObject]@{suite='ending';phase='exercise';report='eclipse-ending-results.json';checks=546},
     [PSCustomObject]@{suite='ending';phase='reload';report='eclipse-ending-reload-results.json';checks=27},
@@ -145,15 +146,23 @@ function Invoke-NativePhase($Spec) {
     }
     $arguments += @('-logFile',$log)
     $worker = $null; $native = $null; $phaseFailure = $null; $exitCode = $null; $waitObserved = $false
+    $processStartedUtc = $null; $processInstanceKey = $null
     try {
         if ((File-Hash $assembly) -ine $ExpectedAssemblySha256) { throw 'Player DLL changed before a native process.' }
         $argumentLine = ($arguments | ForEach-Object { Quote-Argument ([string]$_) }) -join ' '
         $worker = Start-Process -FilePath $player -WorkingDirectory $PlayerDirectory -WindowStyle Hidden -PassThru -ArgumentList $argumentLine
+        $processStarted = $worker.StartTime.ToUniversalTime()
+        $processStartedUtc = $processStarted.ToString('o')
+        $processInstanceKey = [string]$worker.Id + ':' + $processStarted.Ticks
         Save-Json (Join-Path $directory ($Spec.phase + '-process.json')) ([PSCustomObject]@{
             suite=$Spec.suite;phase=$Spec.phase;processId=$worker.Id;startedUtc=[DateTime]::UtcNow.ToString('o');
+            processStartedUtc=$processStartedUtc;processInstanceKey=$processInstanceKey;
             assemblySha256=$ExpectedAssemblySha256;arguments=$arguments;hidden=$true;muted=$true;forceD3D11=$true})
         Write-Host "Started $($Spec.suite)/$($Spec.phase), own PID=$($worker.Id)"
-        if (!$seenPids.Add($worker.Id)) { throw 'Native phases must use seven distinct process IDs.' }
+        # Windows can reuse a PID after an earlier phase exits. The start time
+        # distinguishes a fresh native process from an accidentally reused instance.
+        if (!$seenProcessInstances.Add($processInstanceKey)) { throw 'Native phases must use seven distinct process instances.' }
+        $null = $seenPids.Add($worker.Id)
         $clock = [Diagnostics.Stopwatch]::StartNew(); $nextUpdate = 30
         while (!$worker.WaitForExit(1000)) {
             if ($clock.Elapsed.TotalSeconds -ge $nextUpdate) {
@@ -194,6 +203,7 @@ function Invoke-NativePhase($Spec) {
     $phaseResult = [PSCustomObject]@{
         suite=$Spec.suite;phase=$Spec.phase;passed=(!$phaseFailure -and $storageUnchanged);
         failure=$phaseFailure;processId=if($worker){$worker.Id}else{$null};waitForExitObserved=$waitObserved;
+        processStartedUtc=$processStartedUtc;processInstanceKey=$processInstanceKey;
         exitCode=$exitCode;terminatedByRunner=$false;report=$reportPath;log=$log;
         nativeChecks=if($native){@($native.checks).Count}else{0};expectedChecks=$Spec.checks;
         assemblySha256=(File-Hash $assembly);productionStorageUnchanged=$storageUnchanged;
@@ -215,16 +225,17 @@ $storageFinal = @(Compare-Storage $storageBefore)
 $storageUnchanged = @($storageFinal | Where-Object { !$_.unchanged }).Count -eq 0
 $finalAssembly = File-Hash $assembly
 $summary = [PSCustomObject]@{
-    passed=(!$failure -and $storageUnchanged -and $finalAssembly -ieq $ExpectedAssemblySha256 -and $completed.Count -eq 7 -and $seenPids.Count -eq 7);
+    passed=(!$failure -and $storageUnchanged -and $finalAssembly -ieq $ExpectedAssemblySha256 -and $completed.Count -eq 7 -and $seenProcessInstances.Count -eq 7);
     failure=$failure;startedUtc=$startedUtc;completedUtc=[DateTime]::UtcNow.ToString('o');
     playerDirectory=$PlayerDirectory;sourceProject=$SourceProject;resultDirectory=$ResultDirectory;
     expectedAssemblySha256=$ExpectedAssemblySha256;assemblySha256=$finalAssembly;
-    processes=$completed;distinctProcessCount=$seenPids.Count;nativeChecks=($completed | Measure-Object nativeChecks -Sum).Sum;
+    processes=$completed;distinctProcessCount=$seenProcessInstances.Count;distinctProcessIdCount=$seenPids.Count;
+    nativeChecks=($completed | Measure-Object nativeChecks -Sum).Sum;
     productionStorageUnchanged=$storageUnchanged;productionStorage=$storageFinal;
     existingPlayersBefore=$existingBefore;existingPlayersAfter=@(Existing-Players);
     captureCount=($completed | Measure-Object captureCount -Sum).Sum;osInputCount=0;existingUserAppsTerminated=0;
     renderedPixelsVerified=$false;subjectiveListeningVerified=$false;
-    scope='Seven sequential distinct hidden muted D3D11 native processes: ending exercise/reload, shell exercise/reload, hand fall, administrator full coverage, last-Gallery startup. Explicit fixtures and real production ticks/PhysX; source-image CPU samples and glyph projection data. No screenshots, explicit rendering/readback, OS input, Unity Editor invocation, or process termination. Timed-out processes are left running and later suites are not started.'
+    scope='Seven sequential distinct hidden muted D3D11 native process instances (PID plus actual UTC start ticks): ending exercise/reload, shell exercise/reload, hand fall, administrator full coverage, last-Gallery startup. Explicit fixtures and real production ticks/PhysX; source-image CPU samples and glyph projection data. No screenshots, explicit rendering/readback, OS input, Unity Editor invocation, or process termination. Timed-out processes are left running and later suites are not started.'
 }
 Save-Json (Join-Path $ResultDirectory 'native-validation-summary.json') $summary
 $summary | Select-Object passed,nativeChecks,distinctProcessCount,productionStorageUnchanged,assemblySha256,failure | ConvertTo-Json | Write-Host

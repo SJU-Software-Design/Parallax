@@ -15,7 +15,34 @@ public sealed class GameShellConfig
     public static KeyCode[] DefaultBindings()
     {
         return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
-            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.J };
+            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.H };
+    }
+    // Keep the upstream J-to-H default migration without taking a custom H key.
+    public bool MigrateLegacyHintBinding()
+    {
+        if (bindings == null || bindings.Length != DefaultBindings().Length) return false;
+        int hint = (int)ShadeLink.PlayerControls.Action.Hints;
+        if (bindings[hint] != KeyCode.J || Array.IndexOf(bindings, KeyCode.H) >= 0) return false;
+        bindings[hint] = KeyCode.H;
+        return true;
+    }
+    // Preserve pre-help settings that legitimately used K. Prefer the action's
+    // original key, then an unused default key; never replace another binding.
+    // Returns the migrated action index so the shell can explain the new key.
+    public int MigrateReservedHelpBinding()
+    {
+        var defaults = DefaultBindings();
+        if (bindings == null || bindings.Length != defaults.Length) return -1;
+        int action = Array.IndexOf(bindings, KeyCode.K);
+        if (action < 0) return -1;
+        var used = new HashSet<KeyCode>(bindings);
+        KeyCode replacement = defaults[action];
+        if (used.Contains(replacement))
+            foreach (KeyCode candidate in defaults)
+                if (!used.Contains(candidate)) { replacement = candidate; break; }
+        if (used.Contains(replacement)) return -1;
+        bindings[action] = replacement;
+        return action;
     }
     public static GameShellConfig Defaults() { return new GameShellConfig(); }
     public GameShellConfig DeepCopy()
@@ -81,9 +108,16 @@ public partial class ParallaxGameShell : MonoBehaviour
             if (!validationMode && File.Exists(settingsSavePath))
             {
                 var saved = JsonUtility.FromJson<GameShellConfig>(File.ReadAllText(settingsSavePath));
+                int migratedHelpAction = saved != null ? saved.MigrateReservedHelpBinding() : -1;
                 var failures = new List<string>();
                 CheckConfig(saved, failures);
-                if (failures.Count == 0) { appliedConfig = saved.DeepCopy(); loadedSavedSettings = true; }
+                if (failures.Count == 0)
+                {
+                    saved.MigrateLegacyHintBinding();
+                    appliedConfig = saved.DeepCopy(); loadedSavedSettings = true;
+                    if (migratedHelpAction >= 0)
+                        Notify(BindingLabels[migratedHelpAction] + " 키를 " + KeyName(saved.bindings[migratedHelpAction]) + "(으)로 옮겼습니다. K는 조작 안내 전용입니다.");
+                }
                 else Notify("저장된 설정을 읽지 못해 기본값을 사용합니다.");
             }
         }
@@ -158,7 +192,7 @@ public partial class ParallaxGameShell : MonoBehaviour
         if (config.bindings == null || config.bindings.Length != BindingLabels.Length) { errors.Add("Invalid binding count."); return; }
         var used = new HashSet<KeyCode>();
         foreach (KeyCode key in config.bindings)
-            if (!Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || key == KeyCode.Escape || !used.Add(key)) errors.Add("Invalid or duplicate key binding.");
+            if (!Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || ShadeLink.PlayerControls.IsReservedBindingKey(key) || !used.Add(key)) errors.Add("Invalid or duplicate key binding.");
     }
     static bool FiniteRange(float value, float low, float high)
     { return !float.IsNaN(value) && !float.IsInfinity(value) && value >= low && value <= high; }
@@ -200,7 +234,9 @@ public partial class ParallaxGameShell : MonoBehaviour
             if (Time.realtimeSinceStartup < captureArmedAt) { e.Use(); return; }
             KeyCode key = e.type == EventType.MouseDown ? (KeyCode)((int)KeyCode.Mouse0 + Mathf.Clamp(e.button, 0, 6)) : e.keyCode;
             e.Use();
-            if (key == KeyCode.None || key == KeyCode.Escape) { PlayUi("denied"); return; }
+            if (key == KeyCode.K)
+            { PlayUi("denied"); Notify("K는 조작 안내 전용 키입니다. 다른 키를 선택해 주세요."); return; }
+            if (key == KeyCode.None || ShadeLink.PlayerControls.IsReservedBindingKey(key)) { PlayUi("denied"); return; }
             requestedBinding = key;
             for (int i = 0; i < draftConfig.bindings.Length; i++)
                 if (i != bindingCapture && draftConfig.bindings[i] == key) { bindingConflict = i; return; }
@@ -405,7 +441,7 @@ public partial class ParallaxGameShell : MonoBehaviour
     }
     void DrawBindingRows(bool enabled)
     {
-        DrawText(new Rect(165, 310, 1510, 32), "항목을 선택한 뒤 키 또는 마우스 버튼을 누르세요. 같은 키를 지정하면 서로 교환할 수 있습니다.", 22, Muted);
+        DrawText(new Rect(165, 310, 1510, 32), "키 또는 마우스 버튼을 선택하세요. 중복 키는 교환됩니다. Esc와 K(조작 안내)는 전용 키입니다.", 22, Muted);
         for (int i = 0; i < BindingLabels.Length; i++)
         {
             int index = i; float x = i < 6 ? 155 : 975, y = 350 + (i < 6 ? i : i - 6) * 75;

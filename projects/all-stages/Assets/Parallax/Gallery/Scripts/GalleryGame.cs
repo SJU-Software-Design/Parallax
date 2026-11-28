@@ -51,6 +51,10 @@ namespace ShadeLink.Gallery
         public bool MovableNike => nikeLight!=null&&nikeLight.statue!=null;
         public bool NikeCanvasPuzzle => nikeLight!=null&&nikeLight.canvas!=null;
         public bool NikeKeyPuzzle => shadowCourse!=null&&shadowCourse.nikeSocket!=null;
+        public bool NikeStepHints => conceptLayout && checkpoint == 1 && NikeKeyPuzzle && NikeCanvasPuzzle && (bottleBalance == null || !bottleBalance.InRoom);
+        public int NikeHintPage { get; private set; }
+        public string HintKey { get; private set; }
+        public int NikeHintStage => GlassTrial.NikeHintGuide.Stage(NikeCanvasPuzzle && nikeLight.canvas.Complete, shadowCourse != null && shadowCourse.NikeUnlocked);
         public string NikeSocketHint => NikeKeyPuzzle&&held==shadowCourse.nikeSocket.canvas.portablePainting&&
             shadowCourse.nikeSocket.Targeted(view)?shadowCourse.nikeSocket.FitHint(held)??"크기가 맞아요 · 왼쪽 클릭으로 액자를 끼우세요.":null;
         public string Objective => bottleBalance!=null&&bottleBalance.InRoom?bottleBalance.Status:checkpoint==0?"청동 조형물을 키워 그늘로 빛 구간을 건너세요":checkpoint==1?
@@ -334,7 +338,7 @@ namespace ShadeLink.Gallery
             if(global::ParallaxGameShell.BlocksGameplay)return;
             if(!global::ParallaxGameShell.OwnsPauseMenus&&PlayerControls.PausePressed){if(active){MuseumAudio.TryPlay("ui.cancel",this,view.transform.position);Pause();}else Resume();return;}
             if(!active||won)return;
-            if(Cursor.lockState!=CursorLockMode.Locked)
+            if(Cursor.lockState!=CursorLockMode.Locked && !GlassTrial.HelpHudController.PointerInUse)
             {
                 // Arrival owns input until the visitor leaves the cabin. A focus
                 // loss must not enter a pause state whose menu is guarded there.
@@ -342,7 +346,18 @@ namespace ShadeLink.Gallery
                 else{Pause();return;}
             }
             if(PlayerControls.Pressed(PlayerControls.Action.Reset)&&!ElevatorArrival){if(Input.GetKey(KeyCode.LeftShift))ResetAll();else ResetZone();return;}
-            if(PlayerControls.Pressed(PlayerControls.Action.Hints))showHints=!showHints;
+            string hintKey = GlassTrial.HintCatalogue.Gallery(this);
+            if (hintKey != HintKey)
+            {
+                HintKey = hintKey;
+                if (showHints && hintKey != null) NikeHintPage = 1;
+                else if (hintKey == null) NikeHintPage = 0;
+            }
+            if (PlayerControls.Pressed(PlayerControls.Action.Hints) && !GlassTrial.HelpHudController.IsPresented && !GlassTrial.HelpHudController.EclipseHintTransitioning)
+            {
+                if (HintKey != null) { NikeHintPage = (NikeHintPage + 1) % 4; showHints = NikeHintPage > 0; }
+                else showHints = !showHints;
+            }
             var frame=controls.Read(Time.deltaTime,aimed!=null||bottleBalance?.Reward?.Targeted==true,held!=null||bottleBalance?.Reward?.Carrying==true);
             motor.SmoothKeyboardInput=!controls.UsingGamepad;
             Interaction.PickupAssistRadius=controls.UsingGamepad?.1f:.05f;

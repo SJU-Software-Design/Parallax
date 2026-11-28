@@ -100,10 +100,10 @@ namespace ShadeLink.Gallery
             if(game==null||game.Transitioning||game.conceptCapture)return;
             if(text==null)
             {
-                text=new GUIStyle(GUI.skin.label){font=game.font,fontSize=21,wordWrap=true};text.normal.textColor=paper;
+                text=new GUIStyle(GUI.skin.label){font=(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),fontSize=21,wordWrap=true};text.normal.textColor=paper;
                 title=new GUIStyle(text){fontSize=35,fontStyle=FontStyle.Bold};
                 small=new GUIStyle(text){fontSize=17};
-                button=new GUIStyle(GUI.skin.button){font=game.font,fontSize=22};
+                button=new GUIStyle(GUI.skin.button){font=(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),fontSize=22};
             }
             float textScale=global::GameShellSettingsRuntime.TextScale;
             text.fontSize=Mathf.RoundToInt(21*textScale);title.fontSize=Mathf.RoundToInt(35*textScale);small.fontSize=Mathf.RoundToInt(17*textScale);button.fontSize=Mathf.RoundToInt(22*textScale);
@@ -170,25 +170,23 @@ namespace ShadeLink.Gallery
                     GUI.Label(new Rect(550,654,570,42),"[왼쪽 클릭]  거울 각도 조절",text);
                 else if(game.aimed!=null)
                     GUI.Label(new Rect(570,654,520,42),"[왼쪽 클릭]  "+game.aimed.title,text);
-                if(game.showHints){Panel(new Rect(28,190,635,235),new Color(.035f,.065f,.08f,.93f));GUI.Label(new Rect(48,205,590,205),game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint],small);}
+                if(game.showHints && game.HintKey != null && game.NikeHintPage > 0)
+                    GlassTrial.HelpHudController.DrawEclipseHintPanel("HINT " + game.NikeHintPage + " / 3", GlassTrial.HintCatalogue.Text(game.HintKey, game.NikeHintPage), game.NikeHintPage, 1570, 855, 520);
+                else if(game.showHints && game.HintKey == null)
+                    GlassTrial.HelpHudController.DrawHintPanel("힌트", game.conceptLayout?game.RoomHint:GalleryWorld.Hints[game.checkpoint], 1570, 855, 520);
                 bool glassAvailable=GlassTrial.GlassExposureGauge.CanDisplay(game);
                 string bottomNotice=GlassTrial.MuseumStageGuide.HideLegacyCommonNotice(game.notice,glassAvailable)||GlassTrial.MuseumStageGuide.SuppressCoveredBottomNotice(game.notice,
                     GlassTrial.GlassStageNotice.CurrentStage(game),glassAvailable)?"":BottomNoticeText(game.notice);
                 if(Time.unscaledTime<game.noticeUntil&&!game.showHints&&!GlassTrial.GlassStageNotice.EntryRequested(game)&&!string.IsNullOrEmpty(bottomNotice))
                     GUI.Label(new Rect(380,GlassTrial.GlassExposureGauge.CanDisplay(game)?793:806,900,36),bottomNotice,small);
-                if(global::GameShellSettingsRuntime.ShowControlHints)
-                {
-                Panel(new Rect(0,851,1600,49),new Color(.035f,.065f,.08f,.93f));
-                GUI.Label(new Rect(30,861,1550,36),ControlGuide()+(GlassTrial.GlassStageNotice.CurrentStage(game)>=0?"   ·   J 스테이지 안내":""),small);
-                }
             }
             if((!game.active||game.won)&&!global::ParallaxGameShell.OwnsPauseMenus)
             {
                 Panel(new Rect(0,0,1600,900),new Color(.025f,.045f,.055f,.7f));
                 Panel(new Rect(362,55,876,790),new Color(.04f,.075f,.09f,.96f));
-                if(StageTravelMenu.DrawPauseTabs(new Rect(362,15,876,34),game.font,ref stageTravelTab))
+                if(StageTravelMenu.DrawPauseTabs(new Rect(362,15,876,34),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font),ref stageTravelTab))
                 {
-                    StageTravelMenu.DrawDestinations(new Rect(412,160,770,570),game.font);
+                    StageTravelMenu.DrawDestinations(new Rect(412,160,770,570),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font));
                     return;
                 }
                 GUI.Label(new Rect(412,95,770,66),game.won?"전시의 끝에 도착했습니다":game.started?"잠시 쉬어 가기":"PARALLAX  /  MUSEUM v"+GalleryGame.Version,title);
@@ -205,7 +203,7 @@ namespace ShadeLink.Gallery
                     "미술관 구상안을 기준으로 새로 구성한 전시 공간입니다.\n실제 명화와 니케의 실물 3D 스캔을 가까이에서 감상하세요.\n\n해변맵과 같은 최신 이동·사물 조작을 사용합니다.\n이젤의 복제작품과 시점 설치물은 크기와 위치를 바꿀 수 있습니다.\n\n현재는 공간 디자인 검토 버전입니다.\n출구 조각과 퍼즐 진행은 제작 중입니다.":game.won?
                     "높이와 그늘을 함께 설계해 출구에 도착했습니다.\n\n클리어 시간  "+System.TimeSpan.FromSeconds(game.elapsed).ToString(@"mm\:ss")+"   /   재시도  "+game.respawns+"회":
                     "명화와 조각 사이에서 그늘을 이어 이동하세요.\n시선이 향한 표면의 거리에 따라 사물의 실제 크기가 바뀝니다.\n\n거울로 빛의 방향을 바꾸고, 시점의 전시를 맞춰 보세요.\n마지막 조각의 바람을 따라, 커진 입 안으로 들어갑니다.\n\n왼쪽 클릭 잡기 / 놓기 · 오른쪽 버튼 + 마우스 회전\nBackspace 취소 · R 구역 초기화 · H 힌트",text);
-                PlayerControls.DrawOptions(new Rect(412,440,770,143),game.font);
+                PlayerControls.DrawOptions(new Rect(412,440,770,143),(Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font));
                 if(GUI.Button(new Rect(412,615,370,62),game.won?"처음부터 다시 전시 보기":game.started?"계속하기":"미술관 입장",button))game.Resume();
                 if(GUI.Button(new Rect(812,615,370,62),"종료",button))Application.Quit();
                 if(game.conceptLayout)

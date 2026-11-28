@@ -108,7 +108,7 @@ namespace GlassTrial
             // in the remaining area, including when the panel wraps on narrow screens.
             textRect.offsetMin = new Vector2(56, NoticeVerticalPadding); textRect.offsetMax = new Vector2(-20, -NoticeVerticalPadding);
             caption = textRect.gameObject.AddComponent<Text>();
-            caption.font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Arial" }, 20);
+            caption.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular");
             if (caption.font == null) caption.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             caption.fontSize = 20; caption.color = Color.white; caption.alignment = TextAnchor.MiddleCenter;
             caption.horizontalOverflow = HorizontalWrapMode.Wrap; caption.verticalOverflow = VerticalWrapMode.Overflow;
@@ -312,7 +312,9 @@ namespace GlassTrial
                 game.AdvanceCornerGuide(Time.deltaTime);
             // Measure the caption at its final width, as in the museum HUD.
             float available = Mathf.Max(1f, ((RectTransform)canvas.transform).rect.width - 56f);
-            float textWidth = Mathf.Min(Mathf.Max(1f, available - 76f), Mathf.Max(1f, caption.preferredWidth));
+            // Leave a little room for font metrics and pixel rounding so short
+            // notices do not wrap despite apparently fitting their measured width.
+            float textWidth = Mathf.Min(Mathf.Max(1f, available - 76f), Mathf.Max(1f, caption.preferredWidth + 8f));
             var settings = caption.GetGenerationSettings(new Vector2(textWidth, 0));
             float textHeight = caption.cachedTextGeneratorForLayout.GetPreferredHeight(caption.text, settings) / caption.pixelsPerUnit;
             float descriptionWidth = Mathf.Min(available, Mathf.Max(120f, textWidth + 76f));

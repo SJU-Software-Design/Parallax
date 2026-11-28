@@ -96,7 +96,7 @@ namespace GlassTrial
             textMask.gameObject.AddComponent<RectMask2D>();
             var text = Rect("Exposure status", textMask, new Vector2(20, -17), new Vector2(337, 70));
             caption = text.gameObject.AddComponent<Text>();
-            caption.font = game.font != null ? game.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            caption.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? game.font ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             caption.fontSize = 20;
             caption.alignment = TextAnchor.MiddleLeft;
             caption.horizontalOverflow = HorizontalWrapMode.Wrap;
@@ -624,7 +624,8 @@ namespace GlassTrial
             float barLeft = redGauge ? 50 : 14;
             ((RectTransform)bar.transform).anchoredPosition = new Vector2(barLeft, gaugeY + 7);
             ((RectTransform)bar.transform).sizeDelta = new Vector2(Mathf.Max(1, width - barLeft - 14), 14);
-            bool panelRequested = renderStage || renderGauge || !string.IsNullOrEmpty(caption.text);
+            // Keep stage timing and notice priority while hiding the entry panel.
+            bool panelRequested = !renderStage && (renderGauge || !string.IsNullOrEmpty(caption.text));
             panelGroup.alpha = danger ? 1f : Mathf.MoveTowards(panelGroup.alpha, panelRequested ? 1f : 0f, Time.unscaledDeltaTime / .2f);
             backdrop.enabled = panelGroup.alpha > .001f;
             captionGroup.alpha = captionAlpha;

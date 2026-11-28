@@ -10,10 +10,17 @@ namespace ShadeLink
         static KeyCode[] bindings = DefaultBindings();
         public static KeyCode[] DefaultBindings()
         { return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
-            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.J }; }
+            KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.H }; }
         public static KeyCode KeyFor(Action action) { return bindings[(int)action]; }
-        public static bool Held(Action action) { return Input.GetKey(KeyFor(action)); }
-        public static bool Pressed(Action action) { return Input.GetKeyDown(KeyFor(action)); }
+        public static bool IsReservedBindingKey(KeyCode key) { return key == KeyCode.Escape || key == KeyCode.K; }
+        // The help panel owns every mouse binding, including the outside click
+        // that closes it. Keyboard/gamepad input remains available to the stage.
+        public static bool FilterActionInput(KeyCode key, bool inputActive, bool helpPointerInUse, bool helpClickConsumed = false)
+        { return inputActive && (!(helpPointerInUse || helpClickConsumed) || key < KeyCode.Mouse0 || key > KeyCode.Mouse6); }
+        public static bool Held(Action action)
+        { KeyCode key = KeyFor(action); return FilterActionInput(key, Input.GetKey(key), GlassTrial.HelpHudController.PointerInUse, GlassTrial.HelpHudController.ClickConsumed); }
+        public static bool Pressed(Action action)
+        { KeyCode key = KeyFor(action); return FilterActionInput(key, Input.GetKeyDown(key), GlassTrial.HelpHudController.PointerInUse, GlassTrial.HelpHudController.ClickConsumed); }
         public static string BindingLabel(Action action)
         {
             KeyCode key = KeyFor(action);
@@ -29,8 +36,8 @@ namespace ShadeLink
             if (value == null || value.Length != 11) throw new System.ArgumentException("Eleven input bindings are required.");
             var unique = new System.Collections.Generic.HashSet<KeyCode>();
             foreach (KeyCode key in value)
-                if (!System.Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || key == KeyCode.Escape || !unique.Add(key))
-                    throw new System.ArgumentException("Bindings must be unique and Esc is reserved.");
+                if (!System.Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || IsReservedBindingKey(key) || !unique.Add(key))
+                    throw new System.ArgumentException("Bindings must be unique; Esc and K are reserved.");
             bindings = (KeyCode[])value.Clone();
         }
         public struct Frame
@@ -146,7 +153,7 @@ namespace ShadeLink
         { return new Vector2(look.x, -look.y) * Mathf.Rad2Deg; }
 
         public static bool PausePressed
-        { get { return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button6) || Input.GetKeyDown(KeyCode.Joystick1Button7); } }
+        { get { return (Input.GetKeyDown(KeyCode.Escape) && !GlassTrial.HelpHudController.EscapeConsumed) || Input.GetKeyDown(KeyCode.Joystick1Button6) || Input.GetKeyDown(KeyCode.Joystick1Button7); } }
         public static bool RotationHeld
         { get { return Held(Action.Rotate) || Input.GetKey(KeyCode.Joystick1Button4) || Input.GetAxisRaw(Triggers) < -.5f; } }
 
@@ -172,7 +179,7 @@ namespace ShadeLink
             Vector2 start = new Vector2(RampStart(lookRamp.x, previousStick.x, stick.x), RampStart(lookRamp.y, previousStick.y, stick.y));
             Vector2 average = new Vector2(stick.x == 0 ? 0 : AverageRamp(start.x, dt), stick.y == 0 ? 0 : AverageRamp(start.y, dt));
             lookRamp = StepLookRamp(lookRamp, previousStick, stick, dt); previousStick = stick;
-            Vector2 mouse = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+            Vector2 mouse = GlassTrial.HelpHudController.PointerInUse ? Vector2.zero : new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
             Vector2 look = MouseLookDelta(mouse,
                 settings.Sensitivity, settings.InvertX, settings.InvertY) + GamepadLookDelta(stick, average, dt,
                 aimedGrabbable, held, settings.Sensitivity, settings.InvertX, settings.InvertY);
@@ -243,6 +250,7 @@ namespace ShadeLink
 
         public static void DrawCursor(Vector2 center, bool aimedGrabbable, bool held, bool blocked, Color accent, Color idle)
         {
+            if (GlassTrial.HelpHudController.PointerInUse) return;
             if (!cursorTexturesLoaded)
             {
                 cursorDefault = Resources.Load<Texture2D>("ParallaxCursor/cursor_default");

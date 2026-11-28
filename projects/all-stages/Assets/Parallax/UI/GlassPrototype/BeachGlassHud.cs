@@ -112,7 +112,7 @@ namespace GlassTrial
             // in the remaining area, including when the panel wraps on narrow screens.
             textRect.offsetMin = new Vector2(56, NoticeVerticalPadding); textRect.offsetMax = new Vector2(-20, -NoticeVerticalPadding);
             caption = textRect.gameObject.AddComponent<Text>();
-            caption.font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Arial" }, 20);
+            caption.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular");
             if (caption.font == null) caption.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             caption.fontSize = 20; caption.color = Color.white; caption.alignment = TextAnchor.MiddleCenter;
             caption.horizontalOverflow = HorizontalWrapMode.Wrap; caption.verticalOverflow = VerticalWrapMode.Overflow;

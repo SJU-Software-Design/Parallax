@@ -12,7 +12,7 @@ namespace ShadeLink.Eclipse
 
         void Awake()
         {
-            font = Resources.Load<Font>("Preview/BodyFont");
+            font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular") ?? Resources.Load<Font>("Preview/BodyFont");
             if (font == null) font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "Arial" }, 32);
         }
 
@@ -86,11 +86,6 @@ namespace ShadeLink.Eclipse
                             Key(PlayerControls.Action.Rotate) + " + 마우스 회전", 20, ivory, TextAnchor.MiddleCenter);
                     }
                     if (game.hint > 0) Hint();
-                    Label(new Rect(36, 1022, 1848, 42),
-                        Key(PlayerControls.Action.Forward) + Key(PlayerControls.Action.Backward) +
-                        Key(PlayerControls.Action.Left) + Key(PlayerControls.Action.Right) + " 이동    " +
-                        Key(PlayerControls.Action.Jump) + " 점프    " + Key(PlayerControls.Action.Hints) + " 힌트    ESC 일시정지",
-                        19, new Color(.80f, .81f, .79f, .8f));
                 }
                 if (!GlassTrial.EclipseGlassHud.ReplacesHud(game) && game.noticeUntil > Time.unscaledTime)
                     Label(new Rect(370, 132, 1180, 78), game.notice, 25, ivory, TextAnchor.MiddleCenter);
@@ -106,19 +101,8 @@ namespace ShadeLink.Eclipse
 
         void Hint()
         {
-            string[] moon = {
-                "달을 잡고 태양을 향해 들어 보세요.",
-                "달에 가까이 다가가 잡으면 더 크게 만들 수 있습니다. 태양 가장자리에 빛이 조금 남아도 괜찮습니다.",
-                "태양을 충분히 가렸다면 달을 놓아 보세요."
-            };
-            string[] exit = {
-                "표지판의 소문자 i를 살펴보세요.",
-                "i의 점 아래, 검은 세로획은 실제로 비어 있습니다.",
-                "Exit 표지판을 크게 만들어 놓고 i의 빈 통로로 나가세요."
-            };
-            Fill(new Rect(36, 750, 510, 220), new Color(.018f, .022f, .026f, .84f));
-            Label(new Rect(58, 768, 460, 43), "HINT " + game.hint + " / 3", 19, ivory);
-            Label(new Rect(58, 816, 460, 140), (game.ExitUnlocked ? exit : moon)[Mathf.Clamp(game.hint - 1, 0, 2)], 24, ivory);
+            string key = game.ExitUnlocked ? "eclipse.exit" : "eclipse.moon";
+            GlassTrial.HelpHudController.DrawEclipseHintPanel("HINT " + game.hint + " / 3", GlassTrial.HintCatalogue.Text(key, game.hint), game.hint, 1884, 1026, 624);
         }
 
         void StandaloneMenu()

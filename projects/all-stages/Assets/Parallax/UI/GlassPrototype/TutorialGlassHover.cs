@@ -84,7 +84,7 @@ namespace GlassTrial
             mouseIcon = icon.gameObject.AddComponent<Image>(); mouseIcon.sprite = MakeMouseSprite(); mouseIcon.preserveAspect = true; mouseIcon.raycastTarget = false;
             var text = Rect("Object name", panel); text.anchoredPosition = new Vector2(54, -10); text.sizeDelta = new Vector2(90, 34);
             label = text.gameObject.AddComponent<Text>();
-            label.font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Arial" }, 20);
+            label.font = Resources.Load<Font>("HelpHudFonts/NotoSansKR-Regular");
             if (label.font == null) label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             label.text = "주사위"; label.fontSize = 20; label.fontStyle = FontStyle.Bold; label.color = Color.white;
             label.alignment = TextAnchor.MiddleLeft; label.horizontalOverflow = HorizontalWrapMode.Wrap;
