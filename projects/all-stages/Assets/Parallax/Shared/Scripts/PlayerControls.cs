@@ -12,8 +12,15 @@ namespace ShadeLink
         { return new[] { KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space,
             KeyCode.Mouse0, KeyCode.Mouse1, KeyCode.E, KeyCode.Backspace, KeyCode.R, KeyCode.H }; }
         public static KeyCode KeyFor(Action action) { return bindings[(int)action]; }
-        public static bool Held(Action action) { return Input.GetKey(KeyFor(action)); }
-        public static bool Pressed(Action action) { return Input.GetKeyDown(KeyFor(action)); }
+        public static bool IsReservedBindingKey(KeyCode key) { return key == KeyCode.Escape || key == KeyCode.K; }
+        // The help panel owns every mouse binding, including the outside click
+        // that closes it. Keyboard/gamepad input remains available to the stage.
+        public static bool FilterActionInput(KeyCode key, bool inputActive, bool helpPointerInUse, bool helpClickConsumed = false)
+        { return inputActive && (!(helpPointerInUse || helpClickConsumed) || key < KeyCode.Mouse0 || key > KeyCode.Mouse6); }
+        public static bool Held(Action action)
+        { KeyCode key = KeyFor(action); return FilterActionInput(key, Input.GetKey(key), GlassTrial.HelpHudController.PointerInUse, GlassTrial.HelpHudController.ClickConsumed); }
+        public static bool Pressed(Action action)
+        { KeyCode key = KeyFor(action); return FilterActionInput(key, Input.GetKeyDown(key), GlassTrial.HelpHudController.PointerInUse, GlassTrial.HelpHudController.ClickConsumed); }
         public static string BindingLabel(Action action)
         {
             KeyCode key = KeyFor(action);
@@ -29,8 +36,8 @@ namespace ShadeLink
             if (value == null || value.Length != 11) throw new System.ArgumentException("Eleven input bindings are required.");
             var unique = new System.Collections.Generic.HashSet<KeyCode>();
             foreach (KeyCode key in value)
-                if (!System.Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || key == KeyCode.Escape || !unique.Add(key))
-                    throw new System.ArgumentException("Bindings must be unique and Esc is reserved.");
+                if (!System.Enum.IsDefined(typeof(KeyCode), key) || key == KeyCode.None || IsReservedBindingKey(key) || !unique.Add(key))
+                    throw new System.ArgumentException("Bindings must be unique; Esc and K are reserved.");
             bindings = (KeyCode[])value.Clone();
         }
         public struct Frame
@@ -181,9 +188,9 @@ namespace ShadeLink
                 Move = move, Look = look,
                 JumpPressed = Pressed(Action.Jump) || Input.GetKeyDown(KeyCode.Joystick1Button0),
                 JumpHeld = Held(Action.Jump) || Input.GetKey(KeyCode.Joystick1Button0),
-                GrabPressed = (!GlassTrial.HelpHudController.PointerInUse && !GlassTrial.HelpHudController.ClickConsumed || (KeyFor(Action.Grab) != KeyCode.Mouse0 && KeyFor(Action.Grab) != KeyCode.Mouse1 && KeyFor(Action.Grab) != KeyCode.Mouse2)) && Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
+                GrabPressed = Pressed(Action.Grab) || Input.GetKeyDown(KeyCode.Joystick1Button1) ||
                     Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick1Button5) || (grabTrigger && !previousGrabTrigger),
-                RotateHeld = held && (!GlassTrial.HelpHudController.PointerInUse || (KeyFor(Action.Rotate) != KeyCode.Mouse0 && KeyFor(Action.Rotate) != KeyCode.Mouse1 && KeyFor(Action.Rotate) != KeyCode.Mouse2)) && RotationHeld,
+                RotateHeld = held && RotationHeld,
                 CancelPressed = Pressed(Action.Cancel)
             };
             if (keys.sqrMagnitude > 0)

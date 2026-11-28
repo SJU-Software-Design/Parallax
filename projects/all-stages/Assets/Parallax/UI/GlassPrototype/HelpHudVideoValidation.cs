@@ -21,9 +21,13 @@ namespace GlassTrial
         {
             Application.runInBackground = true;
             var args = Environment.GetCommandLineArgs(); int index = Array.IndexOf(args, "-help-hud-check-output");
+            bool noCapture = Array.IndexOf(args, "-help-hud-check-no-capture") >= 0;
+            if (noCapture && (!Application.isBatchMode || Array.IndexOf(args, "-preview-validate") < 0))
+            { Debug.LogError("HELP_HUD_VIDEO_FAILED: no-capture checks require -batchmode and -preview-validate isolation"); Application.Quit(1); yield break; }
             if (index < 0 || index + 1 >= args.Length || !Path.IsPathRooted(args[index + 1]))
             { Debug.LogError("HELP_HUD_VIDEO_FAILED: absolute output directory required"); Application.Quit(1); yield break; }
             string directory = args[index + 1]; Directory.CreateDirectory(directory);
+            if (noCapture) Debug.Log("HELP_HUD_VIDEO_NO_CAPTURE: captureCount=0; pixel readback, PNG output and explicit camera rendering disabled.");
             var player = gameObject.AddComponent<VideoPlayer>(); player.playOnAwake = false;
             player.source = VideoSource.Url; player.renderMode = VideoRenderMode.RenderTexture;
             player.audioOutputMode = VideoAudioOutputMode.None; player.isLooping = true; player.waitForFirstFrame = true;
@@ -41,22 +45,25 @@ namespace GlassTrial
                 player.Play(); deadline = Time.realtimeSinceStartup + 12;
                 while (player.frame < 10 && !failed && Time.realtimeSinceStartup < deadline) yield return null;
                 if (player.frame < 10 || failed) { Debug.LogError("HELP_HUD_VIDEO_FAILED decode " + name + ": " + error); failed = true; break; }
-                var old = RenderTexture.active; RenderTexture.active = target;
-                var image = new Texture2D(608, 210, TextureFormat.RGB24, false);
-                image.ReadPixels(new Rect(0, 0, 608, 210), 0, 0); image.Apply();
-                File.WriteAllBytes(Path.Combine(directory, Path.GetFileNameWithoutExtension(name) + "-unity.png"), image.EncodeToPNG());
-                Destroy(image); RenderTexture.active = old;
+                if (!noCapture)
+                {
+                    var old = RenderTexture.active; RenderTexture.active = target;
+                    var image = new Texture2D(608, 210, TextureFormat.RGB24, false);
+                    image.ReadPixels(new Rect(0, 0, 608, 210), 0, 0); image.Apply();
+                    File.WriteAllBytes(Path.Combine(directory, Path.GetFileNameWithoutExtension(name) + "-unity.png"), image.EncodeToPNG());
+                    Destroy(image); RenderTexture.active = old;
+                }
                 while (!looped && !failed && Time.realtimeSinceStartup < deadline) yield return null;
                 if (!looped || failed) { Debug.LogError("HELP_HUD_VIDEO_FAILED loop " + name + ": " + error); failed = true; break; }
                 Debug.Log("HELP_HUD_VIDEO_PASSED " + name + " duration=" + player.length);
             }
             player.Stop(); player.targetTexture = null; target.Release(); Destroy(target);
-            if (!failed) yield return CheckIntegratedPages(directory, message => { failed = true; error = message; });
+            if (!failed) yield return CheckIntegratedPages(directory, noCapture, message => { failed = true; error = message; });
             if (failed && error != null) Debug.LogError("HELP_HUD_VIDEO_FAILED " + error);
             if (!failed) Debug.Log("HELP_HUD_VIDEOS_ALL_PASSED");
             Application.Quit(failed ? 1 : 0);
         }
-        static IEnumerator CheckIntegratedPages(string directory, Action<string> fail)
+        static IEnumerator CheckIntegratedPages(string directory, bool noCapture, Action<string> fail)
         {
             var root = new GameObject("Help HUD integrated video probe");
             var display = new GameObject("Display", typeof(RectTransform)); display.transform.SetParent(root.transform, false);
@@ -72,12 +79,15 @@ namespace GlassTrial
                 while ((!videos[i].isPrepared || !videos[i].isPlaying || videos[i].frame < 10) && Time.realtimeSinceStartup < deadline);
                 if (!videos[i].isPrepared || !videos[i].isPlaying || videos[i].frame < 10)
                 { fail("integrated playback " + Names[i]); break; }
-                Canvas.ForceUpdateCanvases(); var camera = root.GetComponentInChildren<Camera>(true); camera.Render();
-                var old = RenderTexture.active; RenderTexture.active = faces.Texture;
-                var image = new Texture2D(faces.Texture.width, faces.Texture.height, TextureFormat.RGBA32, false);
-                image.ReadPixels(new Rect(0, 0, image.width, image.height), 0, 0); image.Apply();
-                File.WriteAllBytes(Path.Combine(directory, "page-" + (i + 1) + "-integrated.png"), image.EncodeToPNG());
-                Destroy(image); RenderTexture.active = old;
+                if (!noCapture)
+                {
+                    Canvas.ForceUpdateCanvases(); var camera = root.GetComponentInChildren<Camera>(true); camera.Render();
+                    var old = RenderTexture.active; RenderTexture.active = faces.Texture;
+                    var image = new Texture2D(faces.Texture.width, faces.Texture.height, TextureFormat.RGBA32, false);
+                    image.ReadPixels(new Rect(0, 0, image.width, image.height), 0, 0); image.Apply();
+                    File.WriteAllBytes(Path.Combine(directory, "page-" + (i + 1) + "-integrated.png"), image.EncodeToPNG());
+                    Destroy(image); RenderTexture.active = old;
+                }
                 Debug.Log("HELP_HUD_INTEGRATED_PAGE_PASSED " + Names[i]);
             }
             state.Close(); state.Tick(HelpHudState.CollapseSeconds); faces.Render(state);

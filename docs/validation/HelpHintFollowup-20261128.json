@@ -1,0 +1,102 @@
+{
+  "pr": 55,
+  "upstreamHead": "1d24c3391834132b2ce79726484941f2e9854861",
+  "date": "2026-11-28",
+  "changes": [
+    "Reserve K for help and safely migrate existing K bindings while retaining the upstream J-to-H hint-key migration.",
+    "Filter every Mouse0..6 configurable gameplay action while help owns pointer input, including its outside-close click.",
+    "Align help title, button and hover coordinates with the actual Canvas transform.",
+    "Keep staged hint panels, TMP glyphs and page indicators uniformly scaled and inside the viewport."
+  ],
+  "verification": {
+    "unity": "6000.3.24f1",
+    "target": "Windows x64 Mono",
+    "scenes": 5,
+    "buildErrors": 0,
+    "buildWarnings": 22,
+    "uiEditorSuites": 8,
+    "coreEditorSuites": 3,
+    "inputPolicyChecks": 251,
+    "hintGeometryChecks": 7688,
+    "hintGroups": 35,
+    "hintPages": 105,
+    "displays": [
+      "1920x1080",
+      "3440x1440",
+      "3840x1080",
+      "1280x960"
+    ],
+    "textScales": [
+      90,
+      100,
+      120
+    ],
+    "hintPanelWidths": [
+      520,
+      624
+    ],
+    "assemblySha256": "5302A8A0385D480B36965345A81618D1C370DDEE3CB15EE4D7E9410E6109E516",
+    "nativeStatus": "passed",
+    "nativeChecks": 2249,
+    "independentNativeProcesses": 7,
+    "videoChecks": 9,
+    "productionStorageUnchanged": true,
+    "captureCount": 0,
+    "osInputCount": 0
+  },
+  "limits": [
+    "Checks validate state, physics, actual font metrics, numeric geometry and video decoder progress. They do not replace final pixel review, subjective audio review or unassisted manual completion.",
+    "Previously existing UI working trees, players, personal settings and saves are preserved."
+  ],
+  "publication": {
+    "newPullRequest": false,
+    "targetBranch": "codex/k-help-hud-20261125",
+    "mergePerformed": false
+  },
+  "validatedInputs": [
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HelpHudInputPolicyTests.cs",
+      "sha256": "8C0C6A716D1834AA103D2EE57699414672B7E06DB0497FFF081EDC8615CBA4AF"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HelpHudInputPolicyTests.cs.meta",
+      "sha256": "F3C9CAC1F5727543412A52B864A50DD3A3E008BDE94F06174917D55E8E66FA03"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HelpHudLayoutTests.cs",
+      "sha256": "B1E8ED68B321627FCD5DD2EB6845D28BD0598E143AEA3CC68558943A19E0A15D"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HelpHudLayoutTests.cs.meta",
+      "sha256": "929A0BCE68400A68EB1624F22006DC14858CBF0038E6182B14EED2BC0EAEF168"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HintPanelGeometryTests.cs",
+      "sha256": "90C4AC57EC2A09BAA4486A2C5E69F31E1703394A9922E6384674024BF6CB6770"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Editor/HintPanelGeometryTests.cs.meta",
+      "sha256": "C4167CB8DCBC34A6B9E504E229125827FE0754B67487CD602A2D7CA7428F8F39"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Scripts/PlayerControls.cs",
+      "sha256": "796C33CA48E62588735431D29B375BB1ADD0983196C13384C6E64DF125A1FBBA"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/Shared/Scripts/UI/ParallaxGameShell.Settings.cs",
+      "sha256": "CF8B562AEB2335241B3BBF40AACB20563D0138AB568768D4223D38A79B1BE214"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/UI/GlassPrototype/HelpHudController.cs",
+      "sha256": "3AB50778968A6FF0CD219E690E00E43E1F43FED1481F458DA7E7CC4442592F7A"
+    },
+    {
+      "path": "projects/all-stages/Assets/Parallax/UI/GlassPrototype/HelpHudVideoValidation.cs",
+      "sha256": "2E284A8D174F2FF236CF6BA8F202B99E1EED4BFAC137935564DAC168E2C13553"
+    },
+    {
+      "path": "scripts/validate-player-shell.ps1",
+      "sha256": "03DC8E5E6BEEAA3194304F1BDE9C377F50F7C0414537B6AE4D687FBA2DE68BE7"
+    }
+  ]
+}

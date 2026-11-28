@@ -116,6 +116,7 @@ namespace GlassTrial
             Camera cam = PlayerControls.ConfiguredCamera != null ? PlayerControls.ConfiguredCamera : Camera.main;
             capture = cam != null ? cam.GetComponent<GlassCameraCapture>() : null;
             canvas.enabled = true;
+            UpdatePresentation();
         }
         void RestoreCursor()
         {
@@ -151,16 +152,27 @@ namespace GlassTrial
                 { clickConsumedFrame = Time.frameCount; state.Close(); RestoreCursor(); }
                 else if (Input.GetKeyDown(KeyCode.LeftArrow)) state.Turn(-1);
                 else if (Input.GetKeyDown(KeyCode.RightArrow)) state.Turn(1);
-                else if (Input.anyKeyDown && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(2))
+                else if (Input.anyKeyDown && !PointerButtonPressed())
                 { state.Close(); RestoreCursor(); }
             }
             else if (state.Current == HelpHudState.Phase.Collapsing && Input.GetKeyDown(KeyCode.Escape)) escapeConsumedFrame = Time.frameCount;
             state.Tick(Time.unscaledDeltaTime);
-            UpdateNavigationHighlight();
             int selected = state.Current == HelpHudState.Phase.Turning ? state.NextPage : state.Page;
             for (int i = 0; i < indicator.Length; i++)
                 indicator[i] = Mathf.MoveTowards(indicator[i], i == selected ? 1 : 0, Time.unscaledDeltaTime / .32f);
             if (!state.IsActive) { canvas.enabled = false; pages.Render(state); return; }
+            UpdatePresentation();
+            UpdateNavigationHighlight();
+        }
+        static bool PointerButtonPressed()
+        {
+            // Side buttons remain owned by the help HUD just like the main buttons.
+            for (int button = 0; button <= 6; button++)
+                if (Input.GetMouseButtonDown(button)) return true;
+            return false;
+        }
+        void UpdatePresentation()
+        {
             float t = state.Expansion;
             panel.sizeDelta = Vector2.Lerp(new Vector2(210, 46), new Vector2(760, 454), t);
             panel.anchoredPosition = new Vector2(0, 200 * t);
@@ -257,10 +269,11 @@ namespace GlassTrial
             {
                 if (Event.current.type == EventType.Repaint)
                 {
-                    Vector3 point = GUI.matrix.MultiplyPoint3x4(new Vector3(rect.x, rect.y, 0));
-                    float scale = GUI.matrix.m00;
+                    float scale;
+                    Rect screenRect = HintPanelScreenRect(GUI.matrix, new Vector2(Screen.width, Screen.height),
+                        right, bottom, width, height, out scale);
                     if (hintShadow != null) { hintShadow.SetColor("_Color", Color.white); hintShadow.SetVector("_PanelSize", new Vector4(width, height, 0, 0)); }
-                    eclipseHintOverlay.Present(title, content, eclipsePage, new Rect(point.x, point.y, rect.width * scale, rect.height * scale), scale,
+                    eclipseHintOverlay.Present(title, content, eclipsePage, screenRect, scale,
                         shortcutCapture != null ? shortcutCapture.blurred : null, hintGlass, hintShadow);
                 }
             }
@@ -270,6 +283,29 @@ namespace GlassTrial
                 GUI.Label(new Rect(rect.x + 24, rect.y + 42, width - 48, bodyHeight + 4), content, hintText);
             }
             GUI.color = previous;
+        }
+        // Align IMGUI navigation with the actual CanvasScaler and animated panel.
+        public static Matrix4x4 PanelGuiMatrix(RectTransform target, Canvas owner, float screenHeight)
+        {
+            var camera = owner.renderMode == RenderMode.ScreenSpaceOverlay ? null : owner.worldCamera;
+            Vector2 center = RectTransformUtility.WorldToScreenPoint(camera, target.TransformPoint(target.rect.center));
+            return Matrix4x4.TRS(new Vector3(center.x, screenHeight - center.y, 0), Quaternion.identity,
+                new Vector3(owner.scaleFactor, owner.scaleFactor, 1));
+        }
+        // Legacy map HUDs use different X/Y scales. Preserve their screen-space
+        // corner while keeping the TMP panel, glyphs and padding uniformly scaled.
+        public static Rect HintPanelScreenRect(Matrix4x4 guiMatrix, Vector2 viewport,
+            float right, float bottom, float width, float height, out float scale)
+        {
+            Vector3 corner = guiMatrix.MultiplyPoint3x4(new Vector3(right, bottom, 0));
+            scale = Mathf.Max(.0001f, Mathf.Min(Mathf.Abs(guiMatrix.m00), Mathf.Abs(guiMatrix.m11)));
+            float margin = Mathf.Min(12f * scale, Mathf.Min(viewport.x, viewport.y) * .05f);
+            scale = Mathf.Min(scale, Mathf.Max(1f, viewport.x - 2 * margin) / width,
+                Mathf.Max(1f, viewport.y - 2 * margin) / height);
+            float panelWidth = width * scale, panelHeight = height * scale;
+            float x = Mathf.Clamp(corner.x - panelWidth, margin, Mathf.Max(margin, viewport.x - margin - panelWidth));
+            float y = Mathf.Clamp(corner.y - panelHeight, margin, Mathf.Max(margin, viewport.y - margin - panelHeight));
+            return new Rect(x, y, panelWidth, panelHeight);
         }
         void Styles()
         {
@@ -296,9 +332,9 @@ namespace GlassTrial
         }
         void UpdateNavigationHighlight()
         {
-            float scale = Mathf.Lerp(Screen.width / 1600f, Screen.height / 900f, .5f);
-            Vector2 pos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            pos = (pos - new Vector2(Screen.width * .5f, Screen.height * (5f / 6f) - 200f * scale)) / scale + new Vector2(380, 227);
+            Vector3 guiPoint = PanelGuiMatrix(panel, canvas, Screen.height).inverse.MultiplyPoint3x4(
+                new Vector3(Input.mousePosition.x, Screen.height - Input.mousePosition.y, 0));
+            Vector2 pos = new Vector2(guiPoint.x + 380, guiPoint.y + 227);
             bool active = pointerInUse && state.Expansion >= .95f && state.Current != HelpHudState.Phase.Collapsing;
             bool left = active && new Rect(0, 48, 110, 356).Contains(pos);
             bool right = active && new Rect(650, 48, 110, 356).Contains(pos);
@@ -410,7 +446,7 @@ namespace GlassTrial
                 if (shortcutPill != null) Destroy(shortcutPill);
                 shortcutPill = MakeShortcutShape(textureWidth, 44, 22, new Color32(250, 253, 255, 219), new Color32(255, 255, 255, 245));
             }
-            float scale = Mathf.Lerp(Screen.width / 1600f, Screen.height / 900f, .5f);
+            float scale = canvas.scaleFactor;
             var shortcutShader = Resources.Load<Shader>("TutorialIslandGlass");
             bool glassReady = shortcutCapture != null && shortcutCapture.blurred != null && shortcutShader != null && shortcutShader.isSupported;
             shortcutText.normal.textColor = glassReady ? Color.white : new Color32(34, 46, 58, 255);
@@ -481,8 +517,7 @@ namespace GlassTrial
             }
             if (!state.IsActive || state.Expansion < .95f || Event.current == null) return;
             Styles();
-            float scale = Mathf.Lerp(Screen.width / 1600f, Screen.height / 900f, .5f);
-            var old = GUI.matrix; GUI.matrix = Matrix4x4.TRS(new Vector3(Screen.width * .5f, Screen.height * (5f / 6f) - 200f * scale, 0), Quaternion.identity, Vector3.one * scale);
+            var old = GUI.matrix; GUI.matrix = PanelGuiMatrix(panel, canvas, Screen.height);
             GUI.BeginGroup(new Rect(-380, -227, 760, 454));
             DrawNavigationHighlight();
             GUI.Label(new Rect(60, 26, 640, 34), "조작 안내", heading);
